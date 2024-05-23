@@ -83,7 +83,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
   {
     title: 'Aprendizes',
     icon: 'mdi-account-multiple',
-    routeName: 'membros',
+    routeName: 'aprendizes',
     hide: true,
     display: () => 'none',
   },

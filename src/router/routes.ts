@@ -12,9 +12,14 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        name: 'membros',
-        path: '/membros',
-        component: () => import('pages/membro/MembroList.vue'),
+        name: 'aprendizes',
+        path: '/aprendizes',
+        component: () => import('pages/aprendizes/AprendizList.vue'),
+      },
+      {
+        name: 'aprendiz-novo',
+        path: '/aprendiz-novo',
+        component: () => import('pages/aprendizes/AprendizForm.vue'),
       },
       {
         name: 'novo-membro',
