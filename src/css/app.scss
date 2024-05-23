@@ -1,0 +1,6 @@
+// app global css in SCSS form
+
+//Essa configuração evita que a ação puxar-para-atualizar seja realizadada no pwa dentro dos dispositivos móveis.
+body {
+  overscroll-behavior: none;
+}
