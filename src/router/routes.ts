@@ -10,7 +10,6 @@ const routes: RouteRecordRaw[] = [
         path: '/painel',
         component: () => import('pages/painel/PainelPage.vue'),
       },
-
       {
         name: 'aprendizes',
         path: '/aprendizes',
@@ -22,9 +21,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/aprendizes/AprendizForm.vue'),
       },
       {
-        name: 'novo-membro',
-        path: 'novo/membro',
-        component: () => import('pages/membro/MembroForm.vue'),
+        name: 'treinamentos',
+        path: '/treinamentos',
+        component: () => import('pages/treinamentos/TreinamentoList.vue'),
+      },
+      {
+        name: 'treinamento-novo',
+        path: '/treinamento-novo',
+        component: () => import('pages/treinamentos/TreinamentoForm.vue'),
       },
       {
         name: 'editar-membro',
