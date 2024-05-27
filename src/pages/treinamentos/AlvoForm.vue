@@ -7,10 +7,23 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-        repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis
-        perferendis totam, ea at omnis vel numquam exercitationem aut, natus
-        minima, porro labore.
+        <q-input
+          label="Nome do Alvo"
+          v-model="form.nomeCompleto"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
+
+        <q-input
+          label="Pergunta"
+          v-model="form.nomeCompleto"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
+
+        <q-input
+          label="Descrição"
+          v-model="form.nomeCompleto"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -141,4 +154,8 @@
 import { ref } from 'vue';
 
 const visible = ref(false);
+
+const form = ref({
+  nomeCompleto: '',
+});
 </script>

@@ -9,31 +9,33 @@
       align="justify"
       narrow-indicator
     >
-      <q-tab name="mails" label="Treino" />
-      <q-tab name="alarms" label="Alvos" />
+      <q-tab name="treinamento" label="Treino" />
+      <q-tab name="alvos" label="Alvos" />
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated>
-      <q-tab-panel name="mails">
+      <q-tab-panel name="treinamento">
         <q-form
           class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md"
           @submit.prevent="handleSubmit"
         >
           <q-input
             label="Nome do Treinamento"
-            v-model="form.nomeCompleto"
+            v-model="form.treinamento"
             :rules="[(val) => (val && val.length > 0) || 'Name is required']"
           />
 
-          <q-input
+          <q-select
+            v-model="form.protocolo"
+            :options="protocolos"
             label="Tipo de Protocolo"
-            v-model="form.nascimento"
             :rules="[(val) => (val && val.length > 0) || 'Name is required']"
           />
 
           <q-input
-            label="Descrição"
-            v-model="form.nomeMae"
+            label="Descrição do Treinamento"
+            v-model="form.descricao"
+            type="textarea"
             :rules="[(val) => (val && val.length > 0) || 'Name is required']"
           />
 
@@ -56,7 +58,7 @@
         </q-form>
       </q-tab-panel>
 
-      <q-tab-panel name="alarms">
+      <q-tab-panel name="alvos">
         <AlvoForm />
       </q-tab-panel>
 
@@ -68,24 +70,23 @@
   </q-page>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
 import AlvoForm from './AlvoForm.vue';
 
-import { ref } from 'vue';
+const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
 
-const isUpdate = ref('Update');
+const isUpdate = ref('Salvar');
 
-const tab = ref('mails');
+const tab = ref('treinamento');
 
 const form = ref({
-  nomeCompleto: '',
-  nascimento: '',
-  nomeMae: '',
-  nomePai: '',
-  nomeResponsavel: '',
-  observacao: '',
+  treinamento: '',
+  protocolo: '',
+  descricao: '',
 });
 
 function handleSubmit() {
   console.log('submit');
 }
+
 </script>
