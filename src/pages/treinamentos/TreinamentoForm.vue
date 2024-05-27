@@ -20,12 +20,14 @@
           @submit.prevent="handleSubmit"
         >
           <q-input
+            outlined
             label="Nome do Treinamento"
             v-model="form.treinamento"
             :rules="[(val) => (val && val.length > 0) || 'Name is required']"
           />
 
           <q-select
+            outlined
             v-model="form.protocolo"
             :options="protocolos"
             label="Tipo de Protocolo"
@@ -33,6 +35,7 @@
           />
 
           <q-input
+            outlined
             label="Descrição do Treinamento"
             v-model="form.descricao"
             type="textarea"
@@ -40,7 +43,7 @@
           />
 
           <q-btn
-            :label="isUpdate ? 'Update' : 'Save'"
+            :label="isUpdate ? 'Salvar' : 'Atualizar'"
             color="primary"
             class="full-width"
             rounded
@@ -59,7 +62,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="alvos">
-        <AlvoForm />
+        <AlvoForm :treinamento-uuid="form.uuid" />
       </q-tab-panel>
 
       <q-tab-panel name="movies">
@@ -72,6 +75,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AlvoForm from './AlvoForm.vue';
+import { IndexedDBService } from '../../services/IndexedDBService';
+
+const indexedDB = new IndexedDBService();
 
 const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
 
@@ -80,13 +86,15 @@ const isUpdate = ref('Salvar');
 const tab = ref('treinamento');
 
 const form = ref({
+  uuid: '',
   treinamento: '',
   protocolo: '',
   descricao: '',
 });
 
 function handleSubmit() {
-  console.log('submit');
+  indexedDB.save('treinamentos', form.value).then((res) => {
+    form.value = res;
+  });
 }
-
 </script>

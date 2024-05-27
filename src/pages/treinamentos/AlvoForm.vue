@@ -1,33 +1,53 @@
 <template>
   <!-- Modal que abre o cadastro do alvo-->
   <q-dialog v-model="visible">
-    <q-card>
+    <q-card class="full-width">
       <q-card-section>
-        <div class="text-h6">Alert</div>
+        <div class="text-h6">Cadastro de Alvo</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <q-input
+          outlined
           label="Nome do Alvo"
-          v-model="form.nomeCompleto"
+          v-model="form.nome_alvo"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
         />
 
         <q-input
+          outlined
           label="Pergunta"
-          v-model="form.nomeCompleto"
+          v-model="form.pergunta"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+          type="textarea"
+          autogrow
         />
 
         <q-input
-          label="Descrição"
-          v-model="form.nomeCompleto"
+          outlined
+          label="Descrição do alvo"
+          v-model="form.descricao_alvo"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+          type="textarea"
+        />
+
+        <q-input
+          outlined
+          label="Repetir"
+          type="number"
+          v-model="form.repetir"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
         />
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="OK" color="primary" v-close-popup />
+        <q-btn
+          label="Salvar"
+          class="full-width"
+          color="primary"
+          v-close-popup
+          @click="handleSubmit"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -41,7 +61,7 @@
     <q-card-section>
       <div class="row items-center no-wrap">
         <div class="col">
-          <div class="text-h6">Our Planet</div>
+          <div class="text-h6">{{ treinamentoUuid }}</div>
           <div class="text-subtitle2">by John Doe</div>
         </div>
 
@@ -50,13 +70,10 @@
             <q-menu cover auto-close>
               <q-list>
                 <q-item clickable>
-                  <q-item-section>Remove Card</q-item-section>
+                  <q-item-section>Editar</q-item-section>
                 </q-item>
                 <q-item clickable>
-                  <q-item-section>Send Feedback</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Share</q-item-section>
+                  <q-item-section>Remover</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -151,11 +168,30 @@
   </q-page-sticky>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toRaw } from 'vue';
+import { IndexedDBService } from '../../services/IndexedDBService';
+
+const indexedDB = new IndexedDBService();
+
+const treinamentoUuidFk = defineProps({
+  treinamentoUuid: String,
+});
 
 const visible = ref(false);
 
 const form = ref({
-  nomeCompleto: '',
+  uuid: '',
+  nome_alvo: '',
+  pergunta: '',
+  descricao_alvo: '',
+  repetir: 0,
+  treinamento_uuid_fk: toRaw(treinamentoUuidFk).treinamentoUuid ?? '',
 });
+
+function handleSubmit() {
+  if (form.value.treinamento_uuid_fk === '') {
+    throw new Error('Treinamento não informado');
+  }
+  indexedDB.save('alvos', form.value);
+}
 </script>
