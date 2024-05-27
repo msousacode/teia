@@ -11,7 +11,6 @@
     >
       <q-tab name="mails" label="Treino" />
       <q-tab name="alarms" label="Alvos" />
-      <q-tab name="movies" label="Configurações" />
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated>
@@ -58,113 +57,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="alarms">
-        <q-card
-          flat
-          bordered
-          class="my-card"
-          :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-        >
-          <q-card-section>
-            <div class="row items-center no-wrap">
-              <div class="col">
-                <div class="text-h6">Our Planet</div>
-                <div class="text-subtitle2">by John Doe</div>
-              </div>
-
-              <div class="col-auto">
-                <q-btn color="grey-7" round flat icon="more_vert">
-                  <q-menu cover auto-close>
-                    <q-list>
-                      <q-item clickable>
-                        <q-item-section>Remove Card</q-item-section>
-                      </q-item>
-                      <q-item clickable>
-                        <q-item-section>Send Feedback</q-item-section>
-                      </q-item>
-                      <q-item clickable>
-                        <q-item-section>Share</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
-              </div>
-            </div>
-          </q-card-section>
-
-          <q-card-section> TEste </q-card-section>
-        </q-card>
-
-        <q-card
-          flat
-          bordered
-          class="my-card"
-          :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-        >
-          <q-card-section>
-            <div class="row items-center no-wrap">
-              <div class="col">
-                <div class="text-h6">Our Planet</div>
-                <div class="text-subtitle2">by John Doe</div>
-              </div>
-
-              <div class="col-auto">
-                <q-btn color="grey-7" round flat icon="more_vert">
-                  <q-menu cover auto-close>
-                    <q-list>
-                      <q-item clickable>
-                        <q-item-section>Remove Card</q-item-section>
-                      </q-item>
-                      <q-item clickable>
-                        <q-item-section>Send Feedback</q-item-section>
-                      </q-item>
-                      <q-item clickable>
-                        <q-item-section>Share</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
-              </div>
-            </div>
-          </q-card-section>
-
-          <q-card-section> TEste </q-card-section>
-        </q-card>
-
-        <q-card
-          flat
-          bordered
-          class="my-card"
-          :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-        >
-          <q-card-section>
-            <div class="row items-center no-wrap">
-              <div class="col">
-                <div class="text-h6">Our Planet</div>
-                <div class="text-subtitle2">by John Doe</div>
-              </div>
-
-              <div class="col-auto">
-                <q-btn color="grey-7" round flat icon="more_vert">
-                  <q-menu cover auto-close>
-                    <q-list>
-                      <q-item clickable>
-                        <q-item-section>Remove Card</q-item-section>
-                      </q-item>
-                      <q-item clickable>
-                        <q-item-section>Send Feedback</q-item-section>
-                      </q-item>
-                      <q-item clickable>
-                        <q-item-section>Share</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
-              </div>
-            </div>
-          </q-card-section>
-
-          <q-card-section> TEste </q-card-section>
-        </q-card>
+        <AlvoForm />
       </q-tab-panel>
 
       <q-tab-panel name="movies">
@@ -175,6 +68,8 @@
   </q-page>
 </template>
 <script setup lang="ts">
+import AlvoForm from './AlvoForm.vue';
+
 import { ref } from 'vue';
 
 const isUpdate = ref('Update');
@@ -190,7 +85,7 @@ const form = ref({
   observacao: '',
 });
 
-async function handleSubmit() {
-  console.log('cadastro');
+function handleSubmit() {
+  console.log('submit');
 }
 </script>
