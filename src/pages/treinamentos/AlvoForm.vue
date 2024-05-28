@@ -85,78 +85,6 @@
     <q-card-section> TEste </q-card-section>
   </q-card>
 
-  <q-card
-    flat
-    bordered
-    class="my-card"
-    :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-  >
-    <q-card-section>
-      <div class="row items-center no-wrap">
-        <div class="col">
-          <div class="text-h6">Our Planet</div>
-          <div class="text-subtitle2">by John Doe</div>
-        </div>
-
-        <div class="col-auto">
-          <q-btn color="grey-7" round flat icon="more_vert">
-            <q-menu cover auto-close>
-              <q-list>
-                <q-item clickable>
-                  <q-item-section>Remove Card</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Send Feedback</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Share</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-        </div>
-      </div>
-    </q-card-section>
-
-    <q-card-section> TEste </q-card-section>
-  </q-card>
-
-  <q-card
-    flat
-    bordered
-    class="my-card"
-    :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-  >
-    <q-card-section>
-      <div class="row items-center no-wrap">
-        <div class="col">
-          <div class="text-h6">Our Planet</div>
-          <div class="text-subtitle2">by John Doe</div>
-        </div>
-
-        <div class="col-auto">
-          <q-btn color="grey-7" round flat icon="more_vert">
-            <q-menu cover auto-close>
-              <q-list>
-                <q-item clickable>
-                  <q-item-section>Remove Card</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Send Feedback</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Share</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-        </div>
-      </div>
-    </q-card-section>
-
-    <q-card-section> TEste </q-card-section>
-  </q-card>
-
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
     <q-btn
       v-if="$q.platform.is.mobile"
@@ -169,9 +97,6 @@
 </template>
 <script setup lang="ts">
 import { ref, toRaw } from 'vue';
-import { IndexedDBService } from '../../services/IndexedDBService';
-
-const indexedDB = new IndexedDBService();
 
 const treinamentoUuidFk = defineProps({
   treinamentoUuid: String,
@@ -186,12 +111,12 @@ const form = ref({
   descricao_alvo: '',
   repetir: 0,
   treinamento_uuid_fk: toRaw(treinamentoUuidFk).treinamentoUuid ?? '',
+  sync: false,
 });
 
 function handleSubmit() {
   if (form.value.treinamento_uuid_fk === '') {
     throw new Error('Treinamento não informado');
   }
-  indexedDB.save('alvos', form.value);
 }
 </script>

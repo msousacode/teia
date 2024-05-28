@@ -73,11 +73,10 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toRaw } from 'vue';
 import AlvoForm from './AlvoForm.vue';
-import { IndexedDBService } from '../../services/IndexedDBService';
-
-const indexedDB = new IndexedDBService();
+import { db } from 'src/db';
+import { v4 as uuid } from 'uuid';
 
 const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
 
@@ -90,11 +89,21 @@ const form = ref({
   treinamento: '',
   protocolo: '',
   descricao: '',
+  sync: false,
 });
 
 function handleSubmit() {
-  indexedDB.save('treinamentos', form.value).then((res) => {
-    form.value = res;
-  });
+  form.value.uuid = uuid();  
+
+  const data = toRaw(form.value);
+
+  db.treinamentos
+    .add(data)
+    .then((res) => {
+      form.value = res;
+    })
+    .catch(() => {
+      throw Error('Ocorreu um erro ao tentar salvar');
+    });
 }
 </script>
