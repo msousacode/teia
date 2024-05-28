@@ -5,6 +5,7 @@ export interface Treinamento {
   treinamento: string;
   protocolo: string;
   descricao: string;
+  sync: boolean;
 }
 
 export interface Alvo {
@@ -14,6 +15,7 @@ export interface Alvo {
   descricao_alvo: string;
   repetir: number;
   treinamento_uuid_fk: string;
+  sync: boolean;
 }
 
 export class DataBase extends Dexie {
@@ -26,7 +28,7 @@ export class DataBase extends Dexie {
     super('teiaDB');
     this.version(1).stores({
       treinamentos: 'uuid, sync',
-      alvos: 'uuid, sync',
+      alvos: 'uuid, treinamento_uuid_fk, sync',
       //behaviors: '++cod, behaviorId, [programId+patientId]'//Primary key and indexed props
     });
   }

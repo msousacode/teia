@@ -85,7 +85,7 @@ const isUpdate = ref('Salvar');
 const tab = ref('treinamento');
 
 const form = ref({
-  uuid: '',
+  uuid: uuid(),
   treinamento: '',
   protocolo: '',
   descricao: '',
@@ -93,7 +93,6 @@ const form = ref({
 });
 
 function handleSubmit() {
-  form.value.uuid = uuid();  
 
   const data = toRaw(form.value);
 

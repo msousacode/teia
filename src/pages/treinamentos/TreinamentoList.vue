@@ -56,12 +56,22 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { columnsCategory } from './table';
+import { db } from 'src/db';
+//import { liveQuery } from 'dexie';
 
 const loading = ref(false);
 
-const categories = ref([{ name: 'Category 1' }, { name: 'Category 2' }]);
+const categories = ref({
+  uuid: '',
+  nome_alvo: '',
+  pergunta: '',
+  descricao_alvo: '',
+  repetir: 0,
+  treinamento_uuid_fk: '',
+  sync: false,
+});
 
 function handleEdit(x: any) {
   console.log(x);
@@ -70,4 +80,45 @@ function handleEdit(x: any) {
 function handleRemoveCategory(x: any) {
   console.log(x);
 }
+
+function getAlvos() {
+  /*   const x = toRaw(treinamentoUuidFk).treinamentoUuid; TODO colocar na storage pínia
+
+  if (x === undefined || x === '') {
+    throw new Error('Treinamento não informado');
+  }
+ */
+  db.alvos
+    .where('treinamento_uuid_fk')
+    .equals('a21eae51-8855-4d3f-9354-068ea7ec1611')
+    .toArray()
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+onMounted(() => {
+  getAlvos();
+});
+
+/* onMounted(() => {
+  liveQuery(() => db.alvos.toArray()).subscribe(
+    (data) => {
+      const raw = toRaw(data)[0];
+
+      categories.value.uuid = raw.uuid ?? '';
+      categories.value.nome_alvo = raw.nome_alvo;
+      categories.value.pergunta = raw.pergunta;
+      categories.value.descricao_alvo = raw.descricao_alvo;
+      categories.value.repetir = raw.repetir;
+      categories.value.treinamento_uuid_fk = raw.treinamento_uuid_fk;
+      categories.value.sync = raw.sync;
+    },
+    (error) => {
+      throw new Error(error);
+    }
+  );
+
+  console.log(categories);
+}); */
 </script>

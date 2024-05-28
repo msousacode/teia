@@ -97,6 +97,8 @@
 </template>
 <script setup lang="ts">
 import { ref, toRaw } from 'vue';
+import { db } from 'src/db';
+import { v4 as uuid } from 'uuid';
 
 const treinamentoUuidFk = defineProps({
   treinamentoUuid: String,
@@ -118,5 +120,17 @@ function handleSubmit() {
   if (form.value.treinamento_uuid_fk === '') {
     throw new Error('Treinamento não informado');
   }
+  form.value.uuid = uuid();
+
+  const data = toRaw(form.value);
+
+  db.alvos
+    .add(data)
+    .then((res) => {
+      form.value = res;
+    })
+    .catch(() => {
+      throw Error('Ocorreu um erro ao tentar salvar');
+    });
 }
 </script>
