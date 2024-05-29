@@ -3,13 +3,17 @@
     <div class="row">
       <q-table
         :rows="treinamentos"
-        :columns="columns"
-        row-key="id"
+        :columns="props.selecionarTreinamento ? visibleColumns : columns"
+        row-key="uuid"
         class="col-12"
         :loading="loading"
+        selection="multiple"
+        v-model:selected="selected"
       >
         <template v-slot:top>
-          <span class="text-h6"> Treinamentos </span>
+          <span class="text-h6">
+            Treinamentos {{ props.selecionarTreinamento }}
+          </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -34,6 +38,15 @@
           </q-td>
         </template>
       </q-table>
+
+      <q-btn
+        label="OK"
+        color="primary"
+        class="full-width q-mt-md"
+        rounded
+        @click="handleSelectTreinamentos"
+        v-show="props.selecionarTreinamento"
+      />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn
@@ -48,7 +61,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { columns } from './table';
+import { columns, visibleColumns } from './table';
 import { db } from 'src/db';
 import { liveQuery } from 'dexie';
 import { useTreinamentoStore } from 'src/stores/treinamento';
@@ -61,6 +74,12 @@ const loading = ref(false);
 const store = useTreinamentoStore();
 
 let treinamentos = ref<any[]>([]);
+
+const selected = ref([]);
+
+const props = defineProps<{
+  selecionarTreinamento: boolean;
+}>();
 
 onMounted(() => {
   loading.value = true;
@@ -78,5 +97,9 @@ function handleEdit(treinamento: any) {
 
 function handleRemoveCategory(x: any) {
   console.log(x);
+}
+
+function handleSelectTreinamentos() {
+  console.log(selected);
 }
 </script>

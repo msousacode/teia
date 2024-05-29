@@ -1,4 +1,10 @@
 <template>
+  <q-dialog v-model="visible">
+    <q-card class="my-card">
+      <TreinamentoList :selecionar-treinamento="true" />
+    </q-card>
+  </q-dialog>
+
   <q-page class="q-pa-sm">
     <div class="row justify-center">
       <div class="col-12 text-center">
@@ -22,6 +28,14 @@
           type="date"
           v-model="form.data_inicio"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
+
+        <q-btn
+          label="Adicionar Treinamentos"
+          color="teal"
+          rounded
+          type="submit"
+          @click="visible = true"
         />
 
         <q-btn
@@ -51,6 +65,9 @@ import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { liveQuery } from 'dexie';
+import TreinamentoList from '../treinamentos/TreinamentoList.vue';
+
+const visible = ref(false);
 
 const store = useAprendizStore();
 
