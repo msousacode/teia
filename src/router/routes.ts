@@ -31,6 +31,21 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/treinamentos/TreinamentoForm.vue'),
       },
       {
+        name: 'atendimentos',
+        path: '/atendimentos',
+        component: () => import('pages/atendimentos/AtendimentoList.vue'),
+      },
+      {
+        name: 'atendimento-novo',
+        path: '/atendimento-novo/:action?',
+        component: () => import('pages/atendimentos/AtendimentoForm.vue'),
+      },
+
+      /**TODO
+       * deletar daqui para baixo
+       */
+
+      {
         name: 'editar-membro',
         path: 'editar/membro',
         component: () => import('pages/membro/MembroForm.vue'),

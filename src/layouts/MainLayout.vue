@@ -74,13 +74,6 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Agenda',
-    icon: 'mdi-star',
-    routeName: 'assinatura',
-    hide: false,
-    display: () => 'none',
-  },
-  {
     title: 'Aprendizes',
     icon: 'mdi-account-multiple',
     routeName: 'aprendizes',
@@ -90,7 +83,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
   {
     title: 'Atendimentos',
     icon: 'mdi-chart-line',
-    routeName: 'receitas',
+    routeName: 'atendimentos',
     hide: true,
     display: () => 'none',
   },
@@ -100,7 +93,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     routeName: 'treinamentos',
     hide: true,
     display: () => 'none',
-  },    
+  },
 ]);
 
 const leftDrawerOpen = ref(false);

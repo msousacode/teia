@@ -29,6 +29,14 @@ export interface Aprendiz {
   sync: boolean;
 }
 
+export interface Atendimento {
+  uuid?: string;
+  aprendiz: string;
+  data_inicio: string;
+  aprendiz_uuid_fk: string;
+  sync: boolean;
+}
+
 export class DataBase extends Dexie {
   treinamentos!: Table<Treinamento>;
 
@@ -36,13 +44,15 @@ export class DataBase extends Dexie {
 
   aprendizes!: Table<Aprendiz>;
 
+  atendimentos!: Table<Atendimento>;
+
   constructor() {
     super('teiaDB');
     this.version(1).stores({
       aprendizes: 'uuid',
       treinamentos: 'uuid',
       alvos: 'uuid, treinamento_uuid_fk',
-      //behaviors: '++cod, behaviorId, [programId+patientId]'//Primary key and indexed props
+      atendimentos: 'uuid, aprendiz_uuid_fk',
     });
   }
 }
