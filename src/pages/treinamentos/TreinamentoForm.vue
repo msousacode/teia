@@ -74,11 +74,14 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import AlvoForm from './AlvoForm.vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
+import { useRoute } from 'vue-router';
+
+const routeLocation = useRoute();
 
 const store = useTreinamentoStore();
 
@@ -89,7 +92,7 @@ const isUpdate = ref('Salvar');
 const tab = ref('treinamento');
 
 const form = ref({
-  uuid: uuid(),
+  uuid: '',
   treinamento: '',
   protocolo: '',
   descricao: '',
@@ -97,6 +100,7 @@ const form = ref({
 });
 
 function handleSubmit() {
+  form.value.uuid = uuid();
   const data = toRaw(form.value);
 
   db.treinamentos
@@ -108,4 +112,23 @@ function handleSubmit() {
       throw Error('Ocorreu um erro ao tentar salvar');
     });
 }
+
+onMounted(() => {
+  if (routeLocation.params.action === 'edit') {
+    db.treinamentos
+      .get(store.getTreinamentoUuid)
+      .then((res) => {
+        if (res) {
+          form.value.uuid = res.uuid || '';
+          form.value.treinamento = res.treinamento;
+          form.value.protocolo = res.protocolo;
+          form.value.descricao = res.descricao;
+          form.value.sync = res.sync;
+        }
+      })
+      .catch(() => {
+        throw Error('Ocorreu um erro ao tentar buscar o treinamento');
+      });
+  }
+});
 </script>
