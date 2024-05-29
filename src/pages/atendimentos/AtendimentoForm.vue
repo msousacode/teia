@@ -33,6 +33,7 @@
         <q-btn
           label="Adicionar Treinamentos"
           color="teal"
+          class="full-width q-mb-md"
           rounded
           type="submit"
           @click="visible = true"
@@ -41,7 +42,7 @@
         <q-btn
           label="Salvar"
           color="primary"
-          class="full-width"
+          class="full-width q-mb-md"
           rounded
           type="submit"
         />
@@ -49,7 +50,7 @@
         <q-btn
           label="Voltar"
           color="primary"
-          class="full-width"
+          class="full-width q-mb-md"
           rounded
           flat
           :to="{ name: 'aprendizes' }"

@@ -75,7 +75,7 @@ const store = useTreinamentoStore();
 
 let treinamentos = ref<any[]>([]);
 
-const selected = ref([]);
+const selected = ref<any[]>([]);
 
 const props = defineProps<{
   selecionarTreinamento: boolean;
@@ -100,6 +100,6 @@ function handleRemoveCategory(x: any) {
 }
 
 function handleSelectTreinamentos() {
-  console.log(selected);
+  store.$state.treinamentosSelecionados = selected.value;
 }
 </script>
