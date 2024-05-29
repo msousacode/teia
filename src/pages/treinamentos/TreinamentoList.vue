@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <div class="q-pa-md">
     <div class="row">
       <q-table
         :rows="treinamentos"
@@ -11,9 +11,7 @@
         v-model:selected="selected"
       >
         <template v-slot:top>
-          <span class="text-h6">
-            Treinamentos {{ props.selecionarTreinamento }}
-          </span>
+          <span class="text-h6"> Treinamentos </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -40,7 +38,7 @@
       </q-table>
 
       <q-btn
-        label="OK"
+        label="CONFIRMAR"
         color="primary"
         class="full-width q-mt-md"
         rounded
@@ -48,7 +46,11 @@
         v-show="props.selecionarTreinamento"
       />
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[18, 18]"
+      v-show="!props.selecionarTreinamento"
+    >
       <q-btn
         v-if="$q.platform.is.mobile"
         fab
@@ -57,7 +59,7 @@
         :to="{ name: 'treinamento-novo' }"
       />
     </q-page-sticky>
-  </q-page>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';

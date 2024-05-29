@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <div class="q-pa-md">
     <div class="row">
       <q-table
         :rows="atendimentos"
@@ -53,7 +53,7 @@
         :to="{ name: 'atendimento-novo' }"
       />
     </q-page-sticky>
-  </q-page>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
