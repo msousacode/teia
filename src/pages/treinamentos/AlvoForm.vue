@@ -7,6 +7,14 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
+        <q-select
+          outlined
+          v-model="form.tipo_aprendizado"
+          :options="aprendizados"
+          label="Tipo de Aprendizado"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
+
         <q-input
           outlined
           label="Nome do Alvo"
@@ -31,13 +39,22 @@
           type="textarea"
         />
 
-        <q-input
+        <q-select
           outlined
-          label="Repetir por semana"
-          type="number"                  
           v-model="form.repetir"
+          :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+          label="Repetir"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
         />
+
+        <div class="q-gutter-sm q-mb-md">
+          <q-checkbox dense v-model="form.seg" label="SEG" color="teal" />
+          <q-checkbox dense v-model="form.ter" label="TER" color="teal" />
+          <q-checkbox dense v-model="form.qua" label="QUA" color="teal" />
+          <q-checkbox dense v-model="form.qui" label="QUI" color="teal" />
+          <q-checkbox dense v-model="form.sex" label="SEX" color="teal" />
+          <q-checkbox dense v-model="form.sab" label="SAB" color="teal" />
+        </div>
 
         <q-input
           outlined
@@ -128,14 +145,29 @@ const visible = ref(false);
 
 const alvos = ref<any>([]);
 
+const aprendizados = [
+  'Habilidades de Atenção',
+  'Habilidades de Imitação',
+  'Habilidades de Linguagem Receptiva',
+  'Habilidades de Linguagem Expressiva',
+  'Habilidades Pré-Acadêmicas',
+];
+
 const form = ref({
   uuid: uuid(),
   nome_alvo: '',
   pergunta: '',
   descricao_alvo: '',
-  repetir: 0,
+  repetir: 1,
   treinamento_uuid_fk: store.getTreinamentoUuid,
   sync: false,
+  tipo_aprendizado: 'Habilidades de Atenção',
+  seg: true,
+  ter: false,
+  qua: false,
+  qui: false,
+  sex: false,
+  sab: false,
 });
 
 function handleSubmit() {
