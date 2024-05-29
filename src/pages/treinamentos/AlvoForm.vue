@@ -33,8 +33,16 @@
 
         <q-input
           outlined
-          label="Repetir"
-          type="number"
+          label="Repetir por semana"
+          type="number"                  
+          v-model="form.repetir"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
+
+        <q-input
+          outlined
+          label="Finalizar em:"
+          type="date"
           v-model="form.repetir"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
         />
