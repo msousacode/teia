@@ -5,6 +5,44 @@
     </q-card>
   </q-dialog>
 
+  <q-dialog v-model="visibleConfiguracao">
+    <q-card class="my-card">
+      <div class="row q-pa-md">
+        <q-banner class="bg-blue-1 text-blue-9 q-mb-md">
+          <span class="text-body1"
+            >Configure a quantidade de vezes que os alvos serão praticados na
+            semana e indique os dias da semana que o alvo será praticado.</span
+          ></q-banner
+        >
+        <q-select
+          class="col-12 q-mb-md"
+          outlined
+          v-model="form.repetir"
+          :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+          label="Repetir"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+        />
+
+        <div class="q-gutter-sm q-mb-md">
+          <q-checkbox dense v-model="form.seg" label="SEG" color="teal" />
+          <q-checkbox dense v-model="form.ter" label="TER" color="teal" />
+          <q-checkbox dense v-model="form.qua" label="QUA" color="teal" />
+          <q-checkbox dense v-model="form.qui" label="QUI" color="teal" />
+          <q-checkbox dense v-model="form.sex" label="SEX" color="teal" />
+          <q-checkbox dense v-model="form.sab" label="SAB" color="teal" />
+        </div>
+
+        <q-btn
+          label="Confirmar"
+          color="green"
+          class="full-width q-mb-md"
+          rounded
+          @click="visibleConfiguracao = false"
+        />
+      </div>
+    </q-card>
+  </q-dialog>
+
   <q-page class="q-pa-sm">
     <div class="row justify-center">
       <div class="col-12 text-center">
@@ -56,6 +94,15 @@
                 }}</q-item-label>
                 <q-item-label caption>{{ item.protocolo }}</q-item-label>
               </q-item-section>
+              <q-item-section side>
+                <q-btn
+                  dense
+                  label="Configurar"
+                  color="primary"
+                  rounded
+                  @click="visibleConfiguracao = true"
+                />
+              </q-item-section>
             </q-item>
           </q-list>
         </div>
@@ -92,6 +139,8 @@ import { useTreinamentoStore } from 'src/stores/treinamento';
 
 const visible = ref(false);
 
+const visibleConfiguracao = ref(false);
+
 const storeAprendiz = useAprendizStore();
 
 const storeTreinamento = useTreinamentoStore();
@@ -106,6 +155,13 @@ const form = ref({
   data_inicio: '',
   aprendiz_uuid_fk: '',
   sync: false,
+  repetir: 1,
+  seg: false,
+  ter: false,
+  qua: false,
+  qui: false,
+  sex: false,
+  sab: false,
 });
 
 function handleSubmit() {
