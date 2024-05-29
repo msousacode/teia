@@ -77,6 +77,9 @@ import { ref, toRaw } from 'vue';
 import AlvoForm from './AlvoForm.vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
+import { useTreinamentoStore } from 'src/stores/treinamento';
+
+const store = useTreinamentoStore();
 
 const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
 
@@ -93,16 +96,15 @@ const form = ref({
 });
 
 function handleSubmit() {
-
   const data = toRaw(form.value);
 
   db.treinamentos
     .add(data)
-    .then((res) => {
-      form.value = res;
+    .then((res) => {      
+      store.$state.treinamentoUuid = res;
     })
     .catch(() => {
       throw Error('Ocorreu um erro ao tentar salvar');
     });
-}
+} 
 </script>
