@@ -9,16 +9,7 @@
         :loading="loading"
       >
         <template v-slot:top>
-          <span class="text-h6"> Treinamentos </span>
-          <q-space />
-          <q-btn
-            v-if="$q.platform.is.desktop"
-            label="Add New"
-            color="primary"
-            icon="mdi-plus"
-            dense
-            :to="{ name: 'form-category' }"
-          />
+          <span class="text-h6"> Treinamentos </span>          
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">

@@ -61,7 +61,7 @@
     <q-card-section>
       <div class="row items-center no-wrap">
         <div class="col">
-          <div class="text-h6">{{ treinamentoUuid }}</div>
+          <div class="text-h6">Teste</div>
           <div class="text-subtitle2">by John Doe</div>
         </div>
 
@@ -99,28 +99,29 @@
 import { ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
+import { useTreinamentoStore } from 'src/stores/treinamento';
 
-const treinamentoUuidFk = defineProps({
-  treinamentoUuid: String,
-});
+const store = useTreinamentoStore();
 
 const visible = ref(false);
 
 const form = ref({
-  uuid: '',
+  uuid: uuid(),
   nome_alvo: '',
   pergunta: '',
   descricao_alvo: '',
   repetir: 0,
-  treinamento_uuid_fk: toRaw(treinamentoUuidFk).treinamentoUuid ?? '',
+  treinamento_uuid_fk: store.getTreinamentoUuid,
   sync: false,
 });
 
 function handleSubmit() {
-  if (form.value.treinamento_uuid_fk === '') {
+  if (
+    form.value.treinamento_uuid_fk === '' ||
+    form.value.treinamento_uuid_fk === null
+  ) {
     throw new Error('Treinamento não informado');
   }
-  form.value.uuid = uuid();
 
   const data = toRaw(form.value);
 

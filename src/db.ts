@@ -14,7 +14,7 @@ export interface Alvo {
   pergunta: string;
   descricao_alvo: string;
   repetir: number;
-  treinamento_uuid_fk: string;
+  treinamento_uuid_fk: string | null;
   sync: boolean;
 }
 

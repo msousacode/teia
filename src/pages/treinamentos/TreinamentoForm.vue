@@ -10,7 +10,8 @@
       narrow-indicator
     >
       <q-tab name="treinamento" label="Treino" />
-      <q-tab name="alvos" label="Alvos" />
+      <q-tab name="alvos" label="Alvos" v-if="store.getTreinamentoUuid" />
+      <q-tab name="alvos" label="Alvos" v-else disable />
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated>
@@ -62,7 +63,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="alvos">
-        <AlvoForm :treinamento-uuid="form.uuid" />
+        <AlvoForm />
       </q-tab-panel>
 
       <q-tab-panel name="movies">
@@ -100,11 +101,11 @@ function handleSubmit() {
 
   db.treinamentos
     .add(data)
-    .then((res) => {      
+    .then((res) => {
       store.$state.treinamentoUuid = res;
     })
     .catch(() => {
       throw Error('Ocorreu um erro ao tentar salvar');
     });
-} 
+}
 </script>
