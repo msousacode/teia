@@ -2,14 +2,14 @@
   <q-page padding>
     <div class="row">
       <q-table
-        :rows="categories"
-        :columns="columnsCategory"
+        :rows="treinamentos"
+        :columns="columns"
         row-key="id"
         class="col-12"
         :loading="loading"
       >
         <template v-slot:top>
-          <span class="text-h6"> Treinamentos </span>          
+          <span class="text-h6"> Treinamentos </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -47,25 +47,33 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { columnsCategory } from './table';
+import { onMounted, ref } from 'vue';
+import { columns } from './table';
+import { db } from 'src/db';
+import { liveQuery } from 'dexie';
+import { useTreinamentoStore } from 'src/stores/treinamento';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const loading = ref(false);
 
-/* const categories = ref({
-  uuid: '',
-  nome_alvo: '',
-  pergunta: '',
-  descricao_alvo: '',
-  repetir: 0,
-  treinamento_uuid_fk: '',
-  sync: false,
-}); */
+const store = useTreinamentoStore();
 
-const categories = ref([]);
+let treinamentos = ref<any[]>([]);
 
-function handleEdit(x: any) {
-  console.log(x);
+onMounted(() => {
+  loading.value = true;
+
+  liveQuery(() => db.treinamentos.toArray()).subscribe((res) => {
+    treinamentos.value = res;
+    loading.value = false;
+  });
+});
+
+function handleEdit(treinamento: any) {
+  store.$state.treinamentoUuid = treinamento.uuid;
+  router.push({ name: 'treinamento-novo', params: { action: 'edit' } });
 }
 
 function handleRemoveCategory(x: any) {

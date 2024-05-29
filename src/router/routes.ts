@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'treinamento-novo',
-        path: '/treinamento-novo',
+        path: '/treinamento-novo/:action?',
         component: () => import('pages/treinamentos/TreinamentoForm.vue'),
       },
       {
