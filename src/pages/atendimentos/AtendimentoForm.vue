@@ -104,9 +104,8 @@
 
         <q-btn
           label="Selecionar Treinamentos"
-          color="teal"
+          color="primary"
           class="full-width q-mb-md"
-          rounded
           type="submit"
           @click="visible = true"
         />
@@ -127,13 +126,62 @@
                   item.treinamento
                 }}</q-item-label>
                 <q-item-label caption>{{ item.protocolo }}</q-item-label>
+
+                <div v-if="item.configuracoes">
+                  <q-item-label caption
+                    >Repete: {{ item.configuracoes.repetir }}</q-item-label
+                  >
+                  <q-item-label caption>
+                    <q-chip
+                      color="brown-5"
+                      text-color="white"
+                      v-if="item.configuracoes.seg"
+                    >
+                      {{ item.configuracoes.seg ? 'SEG' : '' }}
+                    </q-chip>
+                    <q-chip
+                      color="brown-5"
+                      text-color="white"
+                      v-if="item.configuracoes.ter"
+                    >
+                      {{ item.configuracoes.ter ? 'TER' : '' }}
+                    </q-chip>
+                    <q-chip
+                      color="brown-5"
+                      text-color="white"
+                      v-if="item.configuracoes.qua"
+                    >
+                      {{ item.configuracoes.qua ? 'QUA' : '' }}
+                    </q-chip>
+                    <q-chip
+                      color="brown-5"
+                      text-color="white"
+                      v-if="item.configuracoes.qui"
+                    >
+                      {{ item.configuracoes.qui ? 'QUI' : '' }}
+                    </q-chip>
+                    <q-chip
+                      color="brown-5"
+                      text-color="white"
+                      v-if="item.configuracoes.sex"
+                    >
+                      {{ item.configuracoes.sex ? 'SEX' : '' }}
+                    </q-chip>
+                    <q-chip
+                      color="brown-5"
+                      text-color="white"
+                      v-if="item.configuracoes.sab"
+                    >
+                      {{ item.configuracoes.sab ? 'SAB' : '' }}
+                    </q-chip>
+                  </q-item-label>
+                </div>
               </q-item-section>
               <q-item-section side>
                 <q-btn
                   dense
                   label="Configurar"
-                  color="primary"
-                  rounded
+                  color="teal"
                   @click="handleOpenConfig(item)"
                 />
               </q-item-section>
@@ -143,9 +191,8 @@
 
         <q-btn
           label="Salvar"
-          color="primary"
+          color="green"
           class="full-width q-mb-md"
-          rounded
           type="submit"
         />
 
@@ -155,7 +202,7 @@
           class="full-width q-mb-md"
           rounded
           flat
-          :to="{ name: 'aprendizes' }"
+          :to="{ name: 'atendimentos' }"
         />
       </q-form>
     </div>
@@ -182,8 +229,6 @@ const storeTreinamento = useTreinamentoStore();
 const routeLocation = useRoute();
 
 const aprendizes = ref<any[]>([]);
-
-//const treinamentosSelecionados = storeTreinamento.getTreinamentosSelecionados;
 
 const form = ref({
   uuid: '',
@@ -239,9 +284,23 @@ function handleOpenConfig(item: any) {
 }
 
 function handleSelecionarConfigTreinamento() {
-  storeTreinamento.$state.treinamentoConfig = {
-    ...storeTreinamento.$state.treinamentoConfig,
-    ...{ configuracoes: toRaw(formTreinamento.value) },
+  storeTreinamento.treinamentosSelecionados
+    .filter(
+      (treinamento) =>
+        treinamento.uuid === storeTreinamento.treinamentoConfig.uuid
+    )
+    .map((treinamento) => {
+      treinamento.configuracoes = toRaw(formTreinamento.value);
+    });
+
+  formTreinamento.value = {
+    repetir: 1,
+    seg: false,
+    ter: false,
+    qua: false,
+    qui: false,
+    sex: false,
+    sab: false,
   };
 }
 

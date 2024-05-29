@@ -26,8 +26,5 @@ export const useTreinamentoStore = defineStore('treinamento', {
     setTreinamentosSelecionados(treinamentos: []) {
       this.treinamentosSelecionados = treinamentos;
     },
-    setTreinamentoConfig(treinamentoConfig: any) {
-      this.treinamentoConfig = treinamentoConfig;
-    },
   },
 });
