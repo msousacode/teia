@@ -31,13 +31,34 @@
         />
 
         <q-btn
-          label="Adicionar Treinamentos"
+          label="Selecionar Treinamentos"
           color="teal"
           class="full-width q-mb-md"
           rounded
           type="submit"
           @click="visible = true"
         />
+
+        <div class="text-body2 q-mb-sm">Treinamentos</div>
+        <div class="q-mb-md">
+          <q-list
+            bordered
+            separator
+            v-for="(
+              item, index
+            ) in storeTreinamento.getTreinamentosSelecionados"
+            :key="index"
+          >
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label class="text-body1">{{
+                  item.treinamento
+                }}</q-item-label>
+                <q-item-label caption>{{ item.protocolo }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
 
         <q-btn
           label="Salvar"
@@ -64,13 +85,16 @@ import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
-import { useAprendizStore } from 'src/stores/aprendiz';
 import { liveQuery } from 'dexie';
 import TreinamentoList from '../treinamentos/TreinamentoList.vue';
+import { useAprendizStore } from 'src/stores/aprendiz';
+import { useTreinamentoStore } from 'src/stores/treinamento';
 
 const visible = ref(false);
 
-const store = useAprendizStore();
+const storeAprendiz = useAprendizStore();
+
+const storeTreinamento = useTreinamentoStore();
 
 const routeLocation = useRoute();
 
@@ -105,7 +129,7 @@ function handleSubmit() {
 
 function handleUpdate() {
   db.aprendizes
-    .update(store.getAprendizUuid, toRaw(form.value))
+    .update(storeAprendiz.getAprendizUuid, toRaw(form.value))
     .then(() => {
       console.log('Atualizado com sucesso');
     })
