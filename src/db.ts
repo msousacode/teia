@@ -33,8 +33,8 @@ export interface Atendimento {
   uuid?: string;
   aprendiz: string;
   data_inicio: string;
-  aprendiz_uuid_fk: string;
   sync: boolean;
+  treinamentos: any[];  
 }
 
 export class DataBase extends Dexie {

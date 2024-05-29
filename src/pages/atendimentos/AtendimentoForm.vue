@@ -14,30 +14,64 @@
             semana e indique os dias da semana que o alvo será praticado.</span
           ></q-banner
         >
-        <q-select
-          class="col-12 q-mb-md"
-          outlined
-          v-model="form.repetir"
-          :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-          label="Repetir"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
 
-        <div class="q-gutter-sm q-mb-md">
-          <q-checkbox dense v-model="form.seg" label="SEG" color="teal" />
-          <q-checkbox dense v-model="form.ter" label="TER" color="teal" />
-          <q-checkbox dense v-model="form.qua" label="QUA" color="teal" />
-          <q-checkbox dense v-model="form.qui" label="QUI" color="teal" />
-          <q-checkbox dense v-model="form.sex" label="SEX" color="teal" />
-          <q-checkbox dense v-model="form.sab" label="SAB" color="teal" />
-        </div>
+        <q-form class="col-md-7 col-xs-12 col-sm-12">
+          <q-select
+            class="col-12 q-mb-md"
+            outlined
+            v-model="formTreinamento.repetir"
+            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+            label="Repetir"
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+          />
+
+          <div class="q-gutter-sm q-mb-md">
+            <q-checkbox
+              dense
+              v-model="formTreinamento.seg"
+              label="SEG"
+              color="teal"
+            />
+            <q-checkbox
+              dense
+              v-model="formTreinamento.ter"
+              label="TER"
+              color="teal"
+            />
+            <q-checkbox
+              dense
+              v-model="formTreinamento.qua"
+              label="QUA"
+              color="teal"
+            />
+            <q-checkbox
+              dense
+              v-model="formTreinamento.qui"
+              label="QUI"
+              color="teal"
+            />
+            <q-checkbox
+              dense
+              v-model="formTreinamento.sex"
+              label="SEX"
+              color="teal"
+            />
+            <q-checkbox
+              dense
+              v-model="formTreinamento.sab"
+              label="SAB"
+              color="teal"
+            />
+          </div>
+        </q-form>
 
         <q-btn
           label="Confirmar"
           color="green"
           class="full-width q-mb-md"
           rounded
-          @click="visibleConfiguracao = false"
+          @click="handleSelecionarConfigTreinamento"
+          v-close-popup
         />
       </div>
     </q-card>
@@ -100,7 +134,7 @@
                   label="Configurar"
                   color="primary"
                   rounded
-                  @click="visibleConfiguracao = true"
+                  @click="handleOpenConfig(item)"
                 />
               </q-item-section>
             </q-item>
@@ -149,12 +183,17 @@ const routeLocation = useRoute();
 
 const aprendizes = ref<any[]>([]);
 
+//const treinamentosSelecionados = storeTreinamento.getTreinamentosSelecionados;
+
 const form = ref({
   uuid: '',
   aprendiz: '',
   data_inicio: '',
-  aprendiz_uuid_fk: '',
   sync: false,
+  treinamentos: [storeTreinamento.getTreinamentosSelecionados],
+});
+
+const formTreinamento = ref({
   repetir: 1,
   seg: false,
   ter: false,
@@ -192,6 +231,18 @@ function handleUpdate() {
     .catch(() => {
       throw Error('Ocorreu um erro ao tentar atualizar');
     });
+}
+
+function handleOpenConfig(item: any) {
+  storeTreinamento.$state.treinamentoConfig = item;
+  visibleConfiguracao.value = true;
+}
+
+function handleSelecionarConfigTreinamento() {
+  storeTreinamento.$state.treinamentoConfig = {
+    ...storeTreinamento.$state.treinamentoConfig,
+    ...{ configuracoes: toRaw(formTreinamento.value) },
+  };
 }
 
 onMounted(() => {

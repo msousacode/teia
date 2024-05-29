@@ -4,6 +4,7 @@ export const useTreinamentoStore = defineStore('treinamento', {
   state: () => ({
     treinamentoUuid: '' as string | null,
     treinamentosSelecionados: [] as any[],
+    treinamentoConfig: {} as any,
   }),
 
   getters: {
@@ -13,6 +14,9 @@ export const useTreinamentoStore = defineStore('treinamento', {
     getTreinamentosSelecionados(state) {
       return state.treinamentosSelecionados;
     },
+    getTreinamentoConfig(state) {
+      return state.treinamentoConfig;
+    },
   },
 
   actions: {
@@ -21,6 +25,9 @@ export const useTreinamentoStore = defineStore('treinamento', {
     },
     setTreinamentosSelecionados(treinamentos: []) {
       this.treinamentosSelecionados = treinamentos;
+    },
+    setTreinamentoConfig(treinamentoConfig: any) {
+      this.treinamentoConfig = treinamentoConfig;
     },
   },
 });

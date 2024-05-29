@@ -44,6 +44,7 @@
         rounded
         @click="handleSelectTreinamentos"
         v-show="props.selecionarTreinamento"
+        v-close-popup
       />
     </div>
     <q-page-sticky
