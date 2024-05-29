@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'aprendiz-novo',
-        path: '/aprendiz-novo',
+        path: '/aprendiz-novo/:action?',
         component: () => import('pages/aprendizes/AprendizForm.vue'),
       },
       {

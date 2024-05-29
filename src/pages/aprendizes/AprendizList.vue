@@ -2,7 +2,7 @@
   <q-page padding>
     <div class="row">
       <q-table
-        :rows="categories"
+        :rows="aprendizes"
         :columns="columnsCategory"
         row-key="id"
         class="col-12"
@@ -56,15 +56,33 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { columnsCategory } from './table';
+import { useAprendizStore } from 'src/stores/aprendiz';
+import { useRouter } from 'vue-router';
+import { liveQuery } from 'dexie';
+import { db } from 'src/db';
+
+const router = useRouter();
 
 const loading = ref(false);
 
-const categories = ref([{ name: 'Category 1' }, { name: 'Category 2' }]);
+const store = useAprendizStore();
 
-function handleEdit(x: any) {
-  console.log(x);
+const aprendizes = ref<any[]>([]);
+
+onMounted(() => {
+  loading.value = true;
+
+  liveQuery(() => db.aprendizes.toArray()).subscribe((res) => {
+    aprendizes.value = res;
+    loading.value = false;
+  });
+});
+
+function handleEdit(aprendiz: any) {
+  store.$state.aprendizUuid = aprendiz.uuid;
+  router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
 }
 
 function handleRemoveCategory(x: any) {

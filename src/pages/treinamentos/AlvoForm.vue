@@ -38,31 +38,6 @@
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
           type="textarea"
         />
-
-        <q-select
-          outlined
-          v-model="form.repetir"
-          :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-          label="Repetir"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
-
-        <div class="q-gutter-sm q-mb-md">
-          <q-checkbox dense v-model="form.seg" label="SEG" color="teal" />
-          <q-checkbox dense v-model="form.ter" label="TER" color="teal" />
-          <q-checkbox dense v-model="form.qua" label="QUA" color="teal" />
-          <q-checkbox dense v-model="form.qui" label="QUI" color="teal" />
-          <q-checkbox dense v-model="form.sex" label="SEX" color="teal" />
-          <q-checkbox dense v-model="form.sab" label="SAB" color="teal" />
-        </div>
-
-        <q-input
-          outlined
-          label="Finalizar em:"
-          type="date"
-          v-model="form.repetir"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -160,14 +135,7 @@ const form = ref({
   descricao_alvo: '',
   repetir: 1,
   treinamento_uuid_fk: store.getTreinamentoUuid,
-  sync: false,
   tipo_aprendizado: 'Habilidades de Atenção',
-  seg: true,
-  ter: false,
-  qua: false,
-  qui: false,
-  sex: false,
-  sab: false,
 });
 
 function handleSubmit() {
