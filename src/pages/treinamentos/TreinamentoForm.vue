@@ -44,7 +44,7 @@
           />
 
           <q-btn
-            :label="isUpdate ? 'Salvar' : 'Atualizar'"
+            label="Salvar"
             color="primary"
             class="full-width"
             rounded
@@ -52,12 +52,12 @@
           />
 
           <q-btn
-            label="Cancel"
+            label="Voltar"
             color="primary"
             class="full-width"
             rounded
             flat
-            :to="{ name: 'aprendizes' }"
+            :to="{ name: 'treinamentos' }"
           />
         </q-form>
       </q-tab-panel>
@@ -87,8 +87,6 @@ const store = useTreinamentoStore();
 
 const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
 
-const isUpdate = ref('Salvar');
-
 const tab = ref('treinamento');
 
 const form = ref({
@@ -100,6 +98,11 @@ const form = ref({
 });
 
 function handleSubmit() {
+  if (routeLocation.params.action === 'edit') {
+    handleUpdate();
+    return;
+  }
+
   form.value.uuid = uuid();
   const data = toRaw(form.value);
 
@@ -110,6 +113,17 @@ function handleSubmit() {
     })
     .catch(() => {
       throw Error('Ocorreu um erro ao tentar salvar');
+    });
+}
+
+function handleUpdate() {
+  db.treinamentos
+    .update(store.getTreinamentoUuid, toRaw(form.value))
+    .then(() => {
+      console.log('Atualizado com sucesso');
+    })
+    .catch(() => {
+      throw Error('Ocorreu um erro ao tentar atualizar');
     });
 }
 

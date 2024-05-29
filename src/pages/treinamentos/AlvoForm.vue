@@ -52,38 +52,47 @@
     </q-card>
   </q-dialog>
 
-  <q-card
-    flat
-    bordered
-    class="my-card"
-    :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-  >
-    <q-card-section>
-      <div class="row items-center no-wrap">
-        <div class="col">
-          <div class="text-h6">Teste</div>
-          <div class="text-subtitle2">by John Doe</div>
-        </div>
+  <div v-for="(item, index) in alvos" :key="index" class="q-pa-sm">
+    <q-card
+      flat
+      bordered
+      class="my-card"
+      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+    >
+      <q-card-section>
+        <div class="row items-center no-wrap">
+          <div class="col">
+            <span class="text-subtitle2 text-teal">Nome do Alvo: </span>
+            <div class="text-subtitle1">{{ item.nome_alvo }}</div>
 
-        <div class="col-auto">
-          <q-btn color="grey-7" round flat icon="more_vert">
-            <q-menu cover auto-close>
-              <q-list>
-                <q-item clickable>
-                  <q-item-section>Editar</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Remover</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-        </div>
-      </div>
-    </q-card-section>
+            <span class="text-subtitle2 text-teal">Pergunta: </span>
+            <div class="text-subtitle1">{{ item.pergunta }}</div>
 
-    <q-card-section> TEste </q-card-section>
-  </q-card>
+            <span class="text-subtitle2 text-teal">Descrição do Alvo: </span>
+            <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
+
+            <span class="text-subtitle2 text-teal">Repetições: </span>
+            <div class="text-subtitle1">{{ item.repetir }}</div>
+          </div>
+
+          <div class="col-auto">
+            <q-btn color="grey-7" round flat icon="more_vert">
+              <q-menu cover auto-close>
+                <q-list>
+                  <q-item clickable>
+                    <q-item-section>Editar</q-item-section>
+                  </q-item>
+                  <q-item clickable>
+                    <q-item-section>Remover</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+  </div>
 
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
     <q-btn
@@ -96,14 +105,20 @@
   </q-page-sticky>
 </template>
 <script setup lang="ts">
-import { ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
+import { useRoute } from 'vue-router';
+import { liveQuery } from 'dexie';
+
+const routeLocation = useRoute();
 
 const store = useTreinamentoStore();
 
 const visible = ref(false);
+
+const alvos = ref<any>([]);
 
 const form = ref({
   uuid: uuid(),
@@ -134,4 +149,16 @@ function handleSubmit() {
       throw Error('Ocorreu um erro ao tentar salvar');
     });
 }
+
+onMounted(() => {
+  if (routeLocation.params.action === 'edit') {
+    liveQuery(() =>
+      db.alvos
+        .where({ treinamento_uuid_fk: store.getTreinamentoUuid })
+        .toArray()
+    ).subscribe((data) => {
+      alvos.value = toRaw(data);
+    });
+  }
+});
 </script>
