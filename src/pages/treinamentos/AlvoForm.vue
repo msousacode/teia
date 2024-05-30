@@ -65,14 +65,14 @@
             <span class="text-subtitle2 text-teal">Nome do Alvo: </span>
             <div class="text-subtitle1">{{ item.nome_alvo }}</div>
 
+            <span class="text-subtitle2 text-teal">Tipo de aprendizado: </span>
+            <div class="text-subtitle1">{{ item.tipo_aprendizado }}</div>
+
             <span class="text-subtitle2 text-teal">Pergunta: </span>
             <div class="text-subtitle1">{{ item.pergunta }}</div>
 
             <span class="text-subtitle2 text-teal">Descrição do Alvo: </span>
             <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
-
-            <span class="text-subtitle2 text-teal">Repetições: </span>
-            <div class="text-subtitle1">{{ item.repetir }}</div>
           </div>
 
           <div class="col-auto">
@@ -132,8 +132,7 @@ const form = ref({
   uuid: uuid(),
   nome_alvo: '',
   pergunta: '',
-  descricao_alvo: '',
-  repetir: 1,
+  descricao_alvo: '',  
   treinamento_uuid_fk: store.getTreinamentoUuid,
   tipo_aprendizado: 'Habilidades de Atenção',
 });

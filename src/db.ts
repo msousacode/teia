@@ -34,7 +34,7 @@ export interface Atendimento {
   aprendiz: string;
   data_inicio: string;
   sync: boolean;
-  treinamentos: any[];  
+  treinamentos: any[];
 }
 
 export class DataBase extends Dexie {

@@ -82,10 +82,7 @@
       <div class="col-12 text-center">
         <p class="text-h6">Cadastro Atendimento</p>
       </div>
-      <q-form
-        class="col-md-7 col-xs-12 col-sm-12"
-        @submit.prevent="handleSubmit"
-      >
+      <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select
           outlined
           v-model="form.aprendiz"
@@ -194,6 +191,7 @@
           color="green"
           class="full-width q-mb-md"
           type="submit"
+          @click="handleSubmit"
         />
 
         <q-btn
@@ -235,7 +233,7 @@ const form = ref({
   aprendiz: '',
   data_inicio: '',
   sync: false,
-  treinamentos: [storeTreinamento.getTreinamentosSelecionados],
+  treinamentos: [{}],
 });
 
 const formTreinamento = ref({
@@ -249,10 +247,22 @@ const formTreinamento = ref({
 });
 
 function handleSubmit() {
+  form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
+    (treinamento) => {
+      return {
+        uuid: treinamento.uuid,
+        treinamento: treinamento.treinamento,
+        protocolo: treinamento.protocolo,
+        configuracoes: toRaw(treinamento.configuracoes),
+      };
+    }
+  );
+  
   if (routeLocation.params.action === 'edit') {
     handleUpdate();
     return;
   }
+  debugger;
 
   form.value.uuid = uuid();
   const data = toRaw(form.value);
@@ -315,25 +325,5 @@ onMounted(() => {
       });
     });
   });
-
-  /*     if (routeLocation.params.action === 'edit') {
-      db.aprendizes
-        .get(store.getAprendizUuid)
-        .then((res) => {
-          if (res) {
-            form.value.uuid = res.uuid || '';
-            form.value.nome_aprendiz = res.nome_aprendiz;
-            form.value.nasc_aprendiz = res.nasc_aprendiz;
-            form.value.nome_mae = res.nome_mae;
-            form.value.nome_pai = res.nome_pai;
-            form.value.nome_responsavel = res.nome_responsavel;
-            form.value.observacao = res.observacao;
-            form.value.sync = res.sync;
-          }
-        })
-        .catch(() => {
-          throw Error('Ocorreu um erro ao tentar buscar o treinamento');
-        });
-    } */
 });
 </script>
