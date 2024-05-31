@@ -164,8 +164,8 @@ function handleSubmit() {
 
   db.atendimentos
     .add(data)
-    .then((res) => {
-      console.log(res);
+    .then(() => {
+      handleGerarColetas(data);
     })
     .catch(() => {
       throw Error('Ocorreu um erro ao tentar salvar');
@@ -208,6 +208,52 @@ function handleSelecionarConfigTreinamento() {
     sex: false,
     sab: false,
   };
+}
+
+const coleta = {
+  uuid: uuid(),
+  aprendiz_uuid_fk: '',
+  treinamento_uuid_fk: '',
+  data_coleta: '',
+  resposta: '',
+  sync: false,
+  foi_respondido: false,
+  dia_coleta: new Date().getDate(),
+  alvo: {},
+}
+
+function handleGerarColetas(data: any) {
+
+  const aprendizUuuiFk = data.aprendiz.value;
+  const treinamentoUuidFk = data.treinamentos[0].uuid;
+  const quantidadeRepticao = data.treinamentos[0].configuracoes.repetir;
+
+  liveQuery(() => db.alvos.where({ treinamento_uuid_fk: treinamentoUuidFk }).toArray()).subscribe((data) => {
+    const raw = toRaw(data)
+
+    raw.forEach((alvo) => {
+
+      let count = 0;
+
+      while (count < quantidadeRepticao) {
+        count++;
+
+        coleta.uuid = uuid();
+        coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+        coleta.treinamento_uuid_fk = treinamentoUuidFk;
+        coleta.alvo = alvo;
+
+        db.coletas
+          .add(coleta)
+          .then((res) => {
+            console.log('Coleta gerada com sucesso' + res);
+          })
+          .catch(() => {
+            throw Error('Ocorreu um erro ao tentar salvar');
+          });
+      }
+    });
+  });
 }
 
 onMounted(() => {

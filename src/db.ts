@@ -37,6 +37,18 @@ export interface Atendimento {
   treinamentos: any[];
 }
 
+export interface Coleta {
+  uuid?: string;
+  aprendiz_uuid_fk: string;
+  treinamento_uuid_fk: string;
+  data_coleta: string;
+  resposta: string;
+  sync: boolean;
+  foi_respondido: boolean;
+  dia_coleta: number;
+  alvo: any;
+}
+
 export class DataBase extends Dexie {
   treinamentos!: Table<Treinamento>;
 
@@ -46,6 +58,8 @@ export class DataBase extends Dexie {
 
   atendimentos!: Table<Atendimento>;
 
+  coletas!: Table<Coleta>;
+
   constructor() {
     super('teiaDB');
     this.version(1).stores({
@@ -53,6 +67,7 @@ export class DataBase extends Dexie {
       treinamentos: 'uuid',
       alvos: 'uuid, treinamento_uuid_fk',
       atendimentos: 'uuid, aprendiz_uuid_fk',
+      coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
     });
   }
 }
