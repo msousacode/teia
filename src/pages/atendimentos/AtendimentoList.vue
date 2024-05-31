@@ -37,7 +37,7 @@
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn dense label="Coletar" color="primary" />
+                <q-btn dense label="Coletar" color="primary" :to="{ name: 'coletas' }" />
               </q-item-section>
             </q-item>
           </q-list>

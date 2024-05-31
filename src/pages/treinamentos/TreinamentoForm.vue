@@ -65,11 +65,7 @@
       <q-tab-panel name="alvos">
         <AlvoForm />
       </q-tab-panel>
-
-      <q-tab-panel name="movies">
-        <div class="text-h6">Movies</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </q-tab-panel>
+      
     </q-tab-panels>
   </q-page>
 </template>

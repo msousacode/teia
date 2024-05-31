@@ -40,6 +40,11 @@ const routes: RouteRecordRaw[] = [
         path: '/atendimento-novo/:action?',
         component: () => import('pages/atendimentos/AtendimentoForm.vue'),
       },
+      {
+        name: 'coletas',
+        path: '/coletas/:uuidTreinamento?/uuidAprendiz?',
+        component: () => import('pages/coletas/ColetaList.vue'),
+      },
 
       /**TODO
        * deletar daqui para baixo
