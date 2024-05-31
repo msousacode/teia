@@ -9,70 +9,29 @@
     <q-card class="my-card">
       <div class="row q-pa-md">
         <q-banner class="bg-blue-1 text-blue-9 q-mb-md">
-          <span class="text-body1"
-            >Configure a quantidade de vezes que os alvos serão praticados na
-            semana e indique os dias da semana que o alvo será praticado.</span
-          ></q-banner
-        >
+          <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
+            semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
 
         <q-form class="col-md-7 col-xs-12 col-sm-12">
-          <q-select
-            class="col-12 q-mb-md"
-            outlined
-            v-model="formTreinamento.repetir"
-            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-            label="Repetir"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-          />
+          <q-input outlined label="Data Final de Treinamento" type="date" v-model="formTreinamento.data_final"
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+
+          <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
+            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
           <div class="q-gutter-sm q-mb-md">
-            <q-checkbox
-              dense
-              v-model="formTreinamento.seg"
-              label="SEG"
-              color="teal"
-            />
-            <q-checkbox
-              dense
-              v-model="formTreinamento.ter"
-              label="TER"
-              color="teal"
-            />
-            <q-checkbox
-              dense
-              v-model="formTreinamento.qua"
-              label="QUA"
-              color="teal"
-            />
-            <q-checkbox
-              dense
-              v-model="formTreinamento.qui"
-              label="QUI"
-              color="teal"
-            />
-            <q-checkbox
-              dense
-              v-model="formTreinamento.sex"
-              label="SEX"
-              color="teal"
-            />
-            <q-checkbox
-              dense
-              v-model="formTreinamento.sab"
-              label="SAB"
-              color="teal"
-            />
+            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" />
           </div>
         </q-form>
 
-        <q-btn
-          label="Confirmar"
-          color="green"
-          class="full-width q-mb-md"
-          rounded
-          @click="handleSelecionarConfigTreinamento"
-          v-close-popup
-        />
+        <q-btn label="Confirmar" color="green" class="full-width q-mb-md" rounded
+          @click="handleSelecionarConfigTreinamento" v-close-popup />
       </div>
     </q-card>
   </q-dialog>
@@ -83,125 +42,61 @@
         <p class="text-h6">Cadastro Atendimento</p>
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
-        <q-select
-          outlined
-          v-model="form.aprendiz"
-          :options="aprendizes"
-          label="Selecione o Aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+        <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-input
-          outlined
-          label="Data Ínicio"
-          type="date"
-          v-model="form.data_inicio"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+        <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-btn
-          label="Selecionar Treinamentos"
-          color="primary"
-          class="full-width q-mb-md"
-          type="submit"
-          @click="visible = true"
-        />
+        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-mb-md" type="submit"
+          @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
         <div class="q-mb-md">
-          <q-list
-            bordered
-            separator
-            v-for="(
+          <q-list bordered separator v-for="(
               item, index
-            ) in storeTreinamento.getTreinamentosSelecionados"
-            :key="index"
-          >
+            ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
             <q-item clickable v-ripple>
               <q-item-section>
                 <q-item-label class="text-body1">{{
-                  item.treinamento
-                }}</q-item-label>
+    item.treinamento
+  }}</q-item-label>
                 <q-item-label caption>{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <q-item-label caption
-                    >Repete: {{ item.configuracoes.repetir }}</q-item-label
-                  >
+                  <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label caption>
-                    <q-chip
-                      color="brown-5"
-                      text-color="white"
-                      v-if="item.configuracoes.seg"
-                    >
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip
-                      color="brown-5"
-                      text-color="white"
-                      v-if="item.configuracoes.ter"
-                    >
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip
-                      color="brown-5"
-                      text-color="white"
-                      v-if="item.configuracoes.qua"
-                    >
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip
-                      color="brown-5"
-                      text-color="white"
-                      v-if="item.configuracoes.qui"
-                    >
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip
-                      color="brown-5"
-                      text-color="white"
-                      v-if="item.configuracoes.sex"
-                    >
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip
-                      color="brown-5"
-                      text-color="white"
-                      v-if="item.configuracoes.sab"
-                    >
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn
-                  dense
-                  label="Configurar"
-                  color="teal"
-                  @click="handleOpenConfig(item)"
-                />
+                <q-btn dense label="Configurar" color="teal" @click="handleOpenConfig(item)" />
               </q-item-section>
             </q-item>
           </q-list>
         </div>
 
-        <q-btn
-          label="Salvar"
-          color="green"
-          class="full-width q-mb-md"
-          type="submit"
-          @click="handleSubmit"
-        />
+        <q-btn label="Salvar" color="green" class="full-width q-mb-md" type="submit" @click="handleSubmit" />
 
-        <q-btn
-          label="Voltar"
-          color="primary"
-          class="full-width q-mb-md"
-          rounded
-          flat
-          :to="{ name: 'atendimentos' }"
-        />
+        <q-btn label="Voltar" color="primary" class="full-width q-mb-md" rounded flat :to="{ name: 'atendimentos' }" />
       </q-form>
     </div>
   </q-page>
@@ -237,6 +132,7 @@ const form = ref({
 });
 
 const formTreinamento = ref({
+  data_final: '',
   repetir: 1,
   seg: false,
   ter: false,
@@ -257,12 +153,11 @@ function handleSubmit() {
       };
     }
   );
-  
+
   if (routeLocation.params.action === 'edit') {
     handleUpdate();
     return;
   }
-  debugger;
 
   form.value.uuid = uuid();
   const data = toRaw(form.value);
@@ -304,6 +199,7 @@ function handleSelecionarConfigTreinamento() {
     });
 
   formTreinamento.value = {
+    data_final: '',
     repetir: 1,
     seg: false,
     ter: false,
@@ -318,9 +214,8 @@ onMounted(() => {
   liveQuery(() => db.aprendizes.toArray()).subscribe((res) => {
     res.forEach((aprendiz) => {
       aprendizes.value.push({
-        label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${
-          aprendiz.nasc_aprendiz
-        }`,
+        label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
+          }`,
         value: aprendiz.uuid,
       });
     });
