@@ -84,15 +84,6 @@ const props = defineProps<{
   selecionarTreinamento: boolean;
 }>();
 
-onMounted(() => {
-  loading.value = true;
-
-  liveQuery(() => db.treinamentos.toArray()).subscribe((res) => {
-    treinamentos.value = res;
-    loading.value = false;
-  });
-});
-
 function handleEdit(treinamento: any) {
   store.$state.treinamentoUuid = treinamento.uuid;
   router.push({ name: 'treinamento-novo', params: { action: 'edit' } });
@@ -105,4 +96,13 @@ function handleRemoveCategory(x: any) {
 function handleSelectTreinamentos() {
   store.$state.treinamentosSelecionados = selected.value;
 }
+
+onMounted(() => {
+  loading.value = true;
+
+  liveQuery(() => db.treinamentos.toArray()).subscribe((res) => {
+    treinamentos.value = res;
+    loading.value = false;
+  });
+});
 </script>
