@@ -1,5 +1,50 @@
 <template>
   <div class="q-pa-md">
+
+    <q-dialog v-model="visible" header="Aprendizes" modal="true">
+      <q-card class="my-card">
+        <div class="q-pa-md">
+          <q-list bordered separator v-for="(
+              item, index
+            ) in treinamentos" :key="index">
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label class="text-body1">{{ item.treinamento }}</q-item-label>
+                <q-item-label caption>{{ item.protocolo }}</q-item-label>
+
+                <div v-if="item.configuracoes">
+                  <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
+                  <q-item-label caption>
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.seg">
+                      {{ item.configuracoes.seg ? 'SEG' : '' }}
+                    </q-chip>
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.ter">
+                      {{ item.configuracoes.ter ? 'TER' : '' }}
+                    </q-chip>
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qua">
+                      {{ item.configuracoes.qua ? 'QUA' : '' }}
+                    </q-chip>
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qui">
+                      {{ item.configuracoes.qui ? 'QUI' : '' }}
+                    </q-chip>
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sex">
+                      {{ item.configuracoes.sex ? 'SEX' : '' }}
+                    </q-chip>
+                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sab">
+                      {{ item.configuracoes.sab ? 'SAB' : '' }}
+                    </q-chip>
+                  </q-item-label>
+                </div>
+              </q-item-section>
+              <q-item-section side>
+                <q-btn dense label="Coletar" color="primary" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+      </q-card>
+    </q-dialog>
+
     <div class="row">
       <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12" :loading="loading">
         <template v-slot:top>
@@ -10,7 +55,7 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-play-outline" label="iniciar" color="teal" dense size="sm" @click="handleEdit(props.row)">
+            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="visible = true">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
           </q-td>
@@ -23,32 +68,32 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
-//import { useAtendimentoStore } from 'src/stores/atendimento';
-import { useRouter } from 'vue-router';
+//import { useRouter } from 'vue-router';
 import { liveQuery } from 'dexie';
 import { db } from 'src/db';
 
-const router = useRouter();
+//const router = useRouter();
 
 const loading = ref(false);
 
-//const store = useAtendimentoStore();
+const visible = ref(false);
 
 const atendimentos = ref<any[]>([]);
 
-function handleEdit(aprendiz: any) {
-  console.log(aprendiz);
-  //store.$state.aprendizUuid = aprendiz.uuid;
-  router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
-}
+const treinamentos = ref<any[]>([]);
 
 onMounted(() => {
   loading.value = true;
 
   liveQuery(() => db.atendimentos.toArray()).subscribe((res) => {
-    atendimentos.value = res;
+    atendimentos.value = toRaw(res);
+
+    atendimentos.value.forEach((item) => {
+      treinamentos.value = toRaw(item.treinamentos)
+    });
+
     loading.value = false;
   });
 });

@@ -59,8 +59,8 @@
             <q-item clickable v-ripple>
               <q-item-section>
                 <q-item-label class="text-body1">{{
-    item.treinamento
-  }}</q-item-label>
+                    item.treinamento
+                  }}</q-item-label>
                 <q-item-label caption>{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
