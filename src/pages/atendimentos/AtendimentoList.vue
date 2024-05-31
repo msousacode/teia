@@ -10,11 +10,8 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="handleEdit(props.row)">
+            <q-btn icon="mdi-play-outline" label="iniciar" color="teal" dense size="sm" @click="handleEdit(props.row)">
               <q-tooltip> Edit </q-tooltip>
-            </q-btn>
-            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="handleRemoveCategory(props.row)">
-              <q-tooltip> Delete </q-tooltip>
             </q-btn>
           </q-td>
         </template>
@@ -45,10 +42,6 @@ function handleEdit(aprendiz: any) {
   console.log(aprendiz);
   //store.$state.aprendizUuid = aprendiz.uuid;
   router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
-}
-
-function handleRemoveCategory(x: any) {
-  console.log(x);
 }
 
 onMounted(() => {
