@@ -218,8 +218,15 @@ const coleta = {
   resposta: '',
   sync: false,
   foi_respondido: false,
-  dia_coleta: new Date().getDate(),
+  dia_coleta: '',
   alvo: {},
+  data_final_coleta: '',
+  seg: false,
+  ter: false,
+  qua: false,
+  qui: false,
+  sex: false,
+  sab: false,
 }
 
 function handleGerarColetas(data: any) {
@@ -227,6 +234,14 @@ function handleGerarColetas(data: any) {
   const aprendizUuuiFk = data.aprendiz.value;
   const treinamentoUuidFk = data.treinamentos[0].uuid;
   const quantidadeRepticao = data.treinamentos[0].configuracoes.repetir;
+  const seg = data.treinamentos[0].configuracoes.seg;
+  const ter = data.treinamentos[0].configuracoes.ter;
+  const qua = data.treinamentos[0].configuracoes.qua;
+  const qui = data.treinamentos[0].configuracoes.qui;
+  const sex = data.treinamentos[0].configuracoes.sex;
+  const sab = data.treinamentos[0].configuracoes.sab;
+
+  const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
 
   liveQuery(() => db.alvos.where({ treinamento_uuid_fk: treinamentoUuidFk }).toArray()).subscribe((data) => {
     const raw = toRaw(data)
@@ -241,7 +256,14 @@ function handleGerarColetas(data: any) {
         coleta.uuid = uuid();
         coleta.aprendiz_uuid_fk = aprendizUuuiFk;
         coleta.treinamento_uuid_fk = treinamentoUuidFk;
+        coleta.data_final_coleta = dataFinalColeta;
         coleta.alvo = alvo;
+        coleta.seg = seg;
+        coleta.ter = ter;
+        coleta.qua = qua;
+        coleta.qui = qui;
+        coleta.sex = sex;
+        coleta.sab = sab;
 
         db.coletas
           .add(coleta)

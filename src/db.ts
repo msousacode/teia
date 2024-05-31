@@ -45,8 +45,15 @@ export interface Coleta {
   resposta: string;
   sync: boolean;
   foi_respondido: boolean;
-  dia_coleta: number;
+  dia_coleta: string;
   alvo: any;
+  data_final_coleta: string,
+  seg: boolean,
+  ter: boolean,
+  qua: boolean,
+  qui: boolean,
+  sex: boolean,
+  sab: boolean,
 }
 
 export class DataBase extends Dexie {
