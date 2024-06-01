@@ -66,13 +66,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     hide: true,
     display: () => 'none',
   },
-  {
+  /* {
     title: 'Painel',
     icon: 'mdi-view-dashboard',
     routeName: 'painel',
     hide: true,
     display: () => 'none',
-  },
+  }, */
   {
     title: 'Aprendizes',
     icon: 'mdi-account-multiple',
