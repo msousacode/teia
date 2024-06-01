@@ -34,11 +34,11 @@
                         </q-card-section>
 
                         <q-radio v-model="respostas[item.identificador]" val="nao-fez" label="NÃO FEZ" keep-color
-                            color="red" size="lg" @click="handleResposta(item.identicador)" />
+                            color="red" size="lg" />
                         <q-radio v-model="respostas[item.identificador]" val="com-ajuda" label="COM AJUDA" keep-color
-                            color="orange" size="lg" @click="handleResposta(item.identicador)" />
+                            color="orange" size="lg" />
                         <q-radio v-model="respostas[item.identificador]" val="sem-ajuda" label="SEM AJUDA" keep-color
-                            color="green" size="lg" @click="handleResposta(item.identicador)" />
+                            color="green" size="lg" />
 
                     </q-card>
                 </div>
@@ -52,6 +52,10 @@
                 Anotações
             </q-tab-panel>
         </q-tab-panels>
+
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn v-if="$q.platform.is.mobile" fab icon="mdi-plus" color="primary" @click="handleSalvarRespostas" />
+        </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
@@ -88,9 +92,20 @@ interface Alvo {
 
 const alvosPendentes = ref<Alvo[]>([]);
 
-function handleResposta(uuid: string) {
-    console.log(uuid)
-    console.log(toRaw(respostas.value))
+function handleSalvarRespostas() {
+    const _respostas = toRaw(respostas.value);
+    const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
+
+    console.log(arr);
+
+    arr.map(i => {
+        db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
+            if (updated)
+                console.log("Resposta atualizada");
+            else
+                console.log("Nada foi atualizado");
+        });
+    });
 }
 
 onMounted(() => {

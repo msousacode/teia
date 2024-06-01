@@ -43,10 +43,9 @@ export interface Coleta {
   aprendiz_uuid_fk: string;
   treinamento_uuid_fk: string;
   data_coleta: string;
-  resposta: string;
+  resposta: string | number;
   sync: boolean;
-  foi_respondido: boolean;
-  dia_coleta: string;
+  foi_respondido: boolean;  
   alvo: any;
   data_final_coleta: string,
   seg: boolean,
