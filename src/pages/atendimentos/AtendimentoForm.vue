@@ -142,14 +142,32 @@ const formTreinamento = ref({
   sab: false,
 });
 
+const coleta = {
+  uuid: uuid(),
+  aprendiz_uuid_fk: '',
+  treinamento_uuid_fk: '',
+  data_coleta: '',
+  resposta: '',
+  sync: false,
+  foi_respondido: false,
+  alvo: { identificador: '' },
+  data_final_coleta: '',
+  seg: false,
+  ter: false,
+  qua: false,
+  qui: false,
+  sex: false,
+  sab: false,
+}
+
 function handleSubmit() {
   form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
-    (treinamento) => {
+    (_treinamento) => {
       return {
-        uuid: treinamento.uuid,
-        treinamento: treinamento.treinamento,
-        protocolo: treinamento.protocolo,
-        configuracoes: toRaw(treinamento.configuracoes),
+        uuid: _treinamento.uuid,
+        treinamento: _treinamento.treinamento,
+        protocolo: _treinamento.protocolo,
+        configuracoes: toRaw(_treinamento.configuracoes),
       };
     }
   );
@@ -210,25 +228,13 @@ function handleSelecionarConfigTreinamento() {
   };
 }
 
-const coleta = {
-  uuid: uuid(),
-  aprendiz_uuid_fk: '',
-  treinamento_uuid_fk: '',
-  data_coleta: '',
-  resposta: '',
-  sync: false,
-  foi_respondido: false,
-  alvo: { identificador: '' },
-  data_final_coleta: '',
-  seg: false,
-  ter: false,
-  qua: false,
-  qui: false,
-  sex: false,
-  sab: false,
-}
-
 function handleGerarColetas(data: any) {
+
+  const dataInicioTreinamento = data.data_inicio;
+  const dataFinalTreinamento = data.treinamentos[0].configuracoes.data_final;
+
+  console.log(dataInicioTreinamento);
+  console.log(dataFinalTreinamento);
 
   const aprendizUuuiFk = data.aprendiz.value;
   const treinamentoUuidFk = data.treinamentos[0].uuid;
