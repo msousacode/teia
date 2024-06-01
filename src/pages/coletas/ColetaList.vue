@@ -18,7 +18,30 @@
 
         <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="pendentes">
-                Treinamento
+                <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
+                    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                        <q-card-section>
+                            <div class="row items-center no-wrap">
+                                <div class="col">
+                                    <span class="text-subtitle2 text-teal">Descrição do Alvo: </span>
+                                    <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
+
+                                    <span class="text-subtitle2 text-teal">Pergunta: </span>
+                                    <div class="text-subtitle1">{{ item.pergunta }}</div>
+
+                                </div>
+                            </div>
+                        </q-card-section>
+                        <!--TODO criar um diferenciador um ID no alvo para poder identificar qual alvo foi clicado-->
+                        <q-radio v-model="respostas[item.uuid]" val="nao-fez" label="NÃO FEZ" keep-color color="red"
+                            size="lg" @click="handleResposta(item.uuid)" />
+                        <q-radio v-model="respostas[item.uuid]" val="com-ajuda" label="COM AJUDA" keep-color
+                            color="orange" size="lg" @click="handleResposta(item.uuid)" />
+                        <q-radio v-model="respostas[item.uuid]" val="sem-ajuda" label="SEM AJUDA" keep-color
+                            color="green" size="lg" @click="handleResposta(item.uuid)" />
+
+                    </q-card>
+                </div>
             </q-tab-panel>
 
             <q-tab-panel name="coletados">
@@ -50,6 +73,25 @@ const formTreinamento = ref({
     sab: false,
 });
 
+//const items = ref<any[]>([]); // seus itens
+const respostas = ref<any>({}); // um objeto para armazenar as respostas
+
+interface Alvo {
+    descricao_alvo: string;
+    nome_alvo: string;
+    pergunta: string;
+    tipo_aprendizado: string;
+    treinamento_uuid_fk: string;
+    uuid: string;
+}
+
+const alvosPendentes = ref<Alvo[]>([]);
+
+function handleResposta(uuid: string) {
+    console.log(uuid)
+    console.log(toRaw(respostas.value))
+}
+
 onMounted(() => {
 
     const _uuidTreinamento = routeLocation.params.uuidTreinamento;
@@ -61,7 +103,9 @@ onMounted(() => {
 
     liveQuery(() => db.coletas.where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento }).toArray()).subscribe((data) => {
         const raw = toRaw(data)
-        console.log(raw)
+        raw.map(i => {
+            alvosPendentes.value.push(i.alvo)
+        })
     })
 });
 </script>
