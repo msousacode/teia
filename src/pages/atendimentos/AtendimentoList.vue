@@ -37,7 +37,8 @@
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn dense label="Coletar" color="primary" :to="{ name: 'coletas' }" />
+                <q-btn dense label="Coletar" color="primary"
+                  @click="handleRedirectColetas(item.uuid, aprendizUuidSelecionado)" />
               </q-item-section>
             </q-item>
           </q-list>
@@ -50,13 +51,10 @@
         <template v-slot:top>
           <span class="text-h6"> Atendimentos </span>
           <q-space />
-          <q-btn v-if="$q.platform.is.desktop" label="Add New" color="primary" icon="mdi-plus" dense
-            :to="{ name: 'form-category' }" />
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="visible = true">
-              <q-tooltip> Edit </q-tooltip>
+            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="handleSelectAtendimento(props.row)">
             </q-btn>
           </q-td>
         </template>
@@ -70,11 +68,11 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
-//import { useRouter } from 'vue-router';
 import { liveQuery } from 'dexie';
 import { db } from 'src/db';
+import { useRouter } from 'vue-router';
 
-//const router = useRouter();
+const router = useRouter();
 
 const loading = ref(false);
 
@@ -83,6 +81,19 @@ const visible = ref(false);
 const atendimentos = ref<any[]>([]);
 
 const treinamentos = ref<any[]>([]);
+
+const aprendizUuidSelecionado = ref('');
+
+function handleSelectAtendimento(atendimento: any) {
+  const raw = toRaw(atendimento);
+  aprendizUuidSelecionado.value = raw.aprendiz.value;
+  console.log(aprendizUuidSelecionado.value);
+  visible.value = true;
+}
+
+function handleRedirectColetas(_uuidTreinamento: string, _uuidAprendiz: string) {
+  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz } });
+}
 
 onMounted(() => {
   loading.value = true;
