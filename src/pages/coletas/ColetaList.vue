@@ -32,7 +32,12 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { liveQuery } from 'dexie';
+import { onMounted, ref, toRaw } from 'vue';
+import { useRoute } from 'vue-router';
+import { db } from 'src/db';
+
+const routeLocation = useRoute();
 
 const tab = ref('pendentes');
 
@@ -43,5 +48,20 @@ const formTreinamento = ref({
     qui: false,
     sex: false,
     sab: false,
+});
+
+onMounted(() => {
+
+    const _uuidTreinamento = routeLocation.params.uuidTreinamento;
+    const _uuidAprendiz = routeLocation.params.uuidAprendiz;
+
+    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined) {
+        throw new Error('uuidTreinamento ou uuidAprendiz não informado');
+    }
+
+    liveQuery(() => db.coletas.where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento }).toArray()).subscribe((data) => {
+        const raw = toRaw(data)
+        console.log(raw)
+    })
 });
 </script>
