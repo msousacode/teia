@@ -219,7 +219,7 @@ const coleta = {
   sync: false,
   foi_respondido: false,
   dia_coleta: '',
-  alvo: {},
+  alvo: {identificador: ''},
   data_final_coleta: '',
   seg: false,
   ter: false,
@@ -253,6 +253,7 @@ function handleGerarColetas(data: any) {
       while (count < quantidadeRepticao) {
         count++;
 
+
         coleta.uuid = uuid();
         coleta.aprendiz_uuid_fk = aprendizUuuiFk;
         coleta.treinamento_uuid_fk = treinamentoUuidFk;
@@ -264,6 +265,8 @@ function handleGerarColetas(data: any) {
         coleta.qui = qui;
         coleta.sex = sex;
         coleta.sab = sab;
+
+        coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
 
         db.coletas
           .add(coleta)

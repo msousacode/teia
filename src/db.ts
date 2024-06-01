@@ -16,6 +16,7 @@ export interface Alvo {
   repetir: number;
   treinamento_uuid_fk: string | null;
   sync: boolean;
+  identificador: string;
 }
 
 export interface Aprendiz {

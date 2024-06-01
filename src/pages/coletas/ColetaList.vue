@@ -32,13 +32,13 @@
                                 </div>
                             </div>
                         </q-card-section>
-                        <!--TODO criar um diferenciador um ID no alvo para poder identificar qual alvo foi clicado-->
-                        <q-radio v-model="respostas[item.uuid]" val="nao-fez" label="NÃO FEZ" keep-color color="red"
-                            size="lg" @click="handleResposta(item.uuid)" />
-                        <q-radio v-model="respostas[item.uuid]" val="com-ajuda" label="COM AJUDA" keep-color
-                            color="orange" size="lg" @click="handleResposta(item.uuid)" />
-                        <q-radio v-model="respostas[item.uuid]" val="sem-ajuda" label="SEM AJUDA" keep-color
-                            color="green" size="lg" @click="handleResposta(item.uuid)" />
+
+                        <q-radio v-model="respostas[item.identificador]" val="nao-fez" label="NÃO FEZ" keep-color
+                            color="red" size="lg" @click="handleResposta(item.identicador)" />
+                        <q-radio v-model="respostas[item.identificador]" val="com-ajuda" label="COM AJUDA" keep-color
+                            color="orange" size="lg" @click="handleResposta(item.identicador)" />
+                        <q-radio v-model="respostas[item.identificador]" val="sem-ajuda" label="SEM AJUDA" keep-color
+                            color="green" size="lg" @click="handleResposta(item.identicador)" />
 
                     </q-card>
                 </div>
@@ -83,6 +83,7 @@ interface Alvo {
     tipo_aprendizado: string;
     treinamento_uuid_fk: string;
     uuid: string;
+    identificador: string;
 }
 
 const alvosPendentes = ref<Alvo[]>([]);
