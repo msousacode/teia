@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="visible">
-    <q-card class="my-card">
+    <q-card class="my-card">      
       <TreinamentoList :selecionar-treinamento="true" />
     </q-card>
   </q-dialog>
