@@ -20,7 +20,8 @@
             <q-tab-panel name="pendentes">
                 <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
 
-                    <q-chip color="pink-4" text-color="white" v-if="exibirDivisorAlvosPorSemana(item)">1ª
+                    <q-chip color="pink-4" text-color="white" v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
+                item.semana }}ª
                         SEMANA</q-chip>
 
                     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
@@ -28,10 +29,10 @@
                             <div class="row items-center no-wrap">
                                 <div class="col">
                                     <span class="text-subtitle2 text-teal">Descrição do Alvo: </span>
-                                    <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
+                                    <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal">Pergunta: </span>
-                                    <div class="text-subtitle1">{{ item.pergunta }}</div>
+                                    <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
 
                                 </div>
                             </div>
@@ -63,7 +64,6 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { liveQuery } from 'dexie';
 import { onMounted, ref, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
 import { db } from 'src/db';
@@ -81,20 +81,9 @@ const formTreinamento = ref({
     sab: false,
 });
 
-//const items = ref<any[]>([]); // seus itens
 const respostas = ref<any>({}); // um objeto para armazenar as respostas
 
-interface Alvo {
-    descricao_alvo: string;
-    nome_alvo: string;
-    pergunta: string;
-    tipo_aprendizado: string;
-    treinamento_uuid_fk: string;
-    uuid: string;
-    identificador: string;
-}
-
-const alvosPendentes = ref<Alvo[]>([]);
+const alvosPendentes = ref<any[]>([]);
 
 function handleSalvarRespostas() {
     const _respostas = toRaw(respostas.value);
@@ -112,9 +101,19 @@ function handleSalvarRespostas() {
     });
 }
 
-function exibirDivisorAlvosPorSemana(item: Alvo) {
-    console.log(item.identificador);
-    return true;
+let value = 0;
+
+function exibirDivisorAlvosPorSemana(semana: number) {
+
+    let returnValue = false;
+
+    if (value !== semana) {
+        returnValue = true;
+    }
+
+    value = semana;
+
+    return returnValue;//TODO ordenar a query para trazer os resultados organizados por semana para facilitar a função.
 }
 
 onMounted(() => {
@@ -126,11 +125,13 @@ onMounted(() => {
         throw new Error('uuidTreinamento ou uuidAprendiz não informado');
     }
 
-    liveQuery(() => db.coletas.where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento }).toArray()).subscribe((data) => {
-        const raw = toRaw(data)
-        raw.map(i => {
-            alvosPendentes.value.push(i.alvo)
-        })
-    })
+    db.coletas
+        .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
+        .sortBy('semana').then((data) => {
+            const raw = toRaw(data)
+            raw.map(i => {
+                alvosPendentes.value.push(i)
+            })
+        });
 });
 </script>
