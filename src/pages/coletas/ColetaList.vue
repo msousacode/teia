@@ -21,7 +21,7 @@
                 <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
 
                     <div class="flex justify-center">
-                        <q-chip color="primary" text-color="white" v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
+                        <q-chip color="primary" text-color="white text-body1 q-mb-sm" v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
                 item.semana }}ª
                             SEMANA</q-chip>
                     </div>
