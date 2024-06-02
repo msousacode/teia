@@ -158,6 +158,7 @@ const coleta = {
   qui: false,
   sex: false,
   sab: false,
+  semana: 0,
 }
 
 function handleSubmit() {
@@ -230,11 +231,7 @@ function handleSelecionarConfigTreinamento() {
 
 function handleGerarColetas(data: any) {
 
-  const dataInicioTreinamento = data.data_inicio;
-  const dataFinalTreinamento = data.treinamentos[0].configuracoes.data_final;
-
-  console.log(dataInicioTreinamento);
-  console.log(dataFinalTreinamento);
+  const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
 
   const aprendizUuuiFk = data.aprendiz.value;
   const treinamentoUuidFk = data.treinamentos[0].uuid;
@@ -254,10 +251,11 @@ function handleGerarColetas(data: any) {
     raw.forEach((alvo) => {
 
       let count = 0;
+      let countSemana = 0;
 
-      while (count < quantidadeRepticao) {
+      while (count < (quantidadeRepticao * numeroSemanas)) {
         count++;
-
+        countSemana++;
 
         coleta.uuid = uuid();
         coleta.aprendiz_uuid_fk = aprendizUuuiFk;
@@ -270,8 +268,12 @@ function handleGerarColetas(data: any) {
         coleta.qui = qui;
         coleta.sex = sex;
         coleta.sab = sab;
-
+        coleta.semana = countSemana;//contador para identificar a semana da coleta.
         coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+
+        if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
+          countSemana = 0;
+        }
 
         db.coletas
           .add(coleta)
@@ -284,6 +286,19 @@ function handleGerarColetas(data: any) {
       }
     });
   });
+}
+
+function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
+
+  if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
+
+  const dataInicioDate = new Date(dataInicio);
+  const dataFinalDate = new Date(dataFinal);
+
+  const diffTime = Math.abs(dataFinalDate.getTime() - dataInicioDate.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return Math.ceil(diffDays / 7);
 }
 
 onMounted(() => {

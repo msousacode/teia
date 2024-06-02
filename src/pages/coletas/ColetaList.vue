@@ -19,6 +19,10 @@
         <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="pendentes">
                 <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
+
+                    <q-chip color="pink-4" text-color="white" v-if="exibirDivisorAlvosPorSemana(item)">1ª
+                        SEMANA</q-chip>
+
                     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
                         <q-card-section>
                             <div class="row items-center no-wrap">
@@ -106,6 +110,11 @@ function handleSalvarRespostas() {
                 console.log("Nada foi atualizado");
         });
     });
+}
+
+function exibirDivisorAlvosPorSemana(item: Alvo) {
+    console.log(item.identificador);
+    return true;
 }
 
 onMounted(() => {
