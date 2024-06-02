@@ -20,9 +20,11 @@
             <q-tab-panel name="pendentes">
                 <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
 
-                    <q-chip color="pink-4" text-color="white" v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
+                    <div class="flex justify-center">
+                        <q-chip color="primary" text-color="white" v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
                 item.semana }}ª
-                        SEMANA</q-chip>
+                            SEMANA</q-chip>
+                    </div>
 
                     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
                         <q-card-section>
