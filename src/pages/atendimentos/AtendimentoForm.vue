@@ -186,7 +186,8 @@ function handleSubmit() {
   db.atendimentos
     .add(data)
     .then(() => {
-      handleGerarColetas(data);
+      handleGerarColetas(data)
+      success('Coletas geradas com sucesso');
     })
     .catch((_error) => {
       error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
@@ -279,9 +280,6 @@ function handleGerarColetas(data: any) {
 
         db.coletas
           .add(coleta)
-          .then(() => {
-            success('Coleta geradas com sucesso');
-          })
           .catch((_error) => {
             error('Ocorreu um erro ao tentar salvar', _error);
           });

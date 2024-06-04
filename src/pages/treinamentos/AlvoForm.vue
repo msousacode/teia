@@ -114,8 +114,8 @@ function handleSubmit() {
 
   db.alvos
     .add(data)
-    .then((res) => {
-      form.value = res;
+    .then(() => {
+      getAlvos();
       success();
     })
     .catch((_error) => {
@@ -123,16 +123,20 @@ function handleSubmit() {
     });
 }
 
+function getAlvos() {
+  db.alvos
+    .where({ treinamento_uuid_fk: store.getTreinamentoUuid })
+    .toArray()
+    .then((data) => {
+      alvos.value = toRaw(data);
+    }).catch((_error) => {
+      error('Erro ao consultar alvos', _error);
+    });
+}
+
 onMounted(() => {
   if (routeLocation.params.action === 'edit') {
-    db.alvos
-      .where({ treinamento_uuid_fk: store.getTreinamentoUuid })
-      .toArray()
-      .then((data) => {
-        alvos.value = toRaw(data);
-      }).catch((_error) => {
-        error('Erro ao consultar alvos', _error);
-      });
+    getAlvos();
   }
 });
 </script>
