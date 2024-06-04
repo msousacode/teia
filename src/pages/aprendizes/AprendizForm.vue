@@ -4,70 +4,28 @@
       <div class="col-12 text-center">
         <p class="text-h6">Cadastro Aprendiz</p>
       </div>
-      <q-form
-        class="col-md-7 col-xs-12 col-sm-12"
-        @submit.prevent="handleSubmit"
-      >
-        <q-input
-          outlined
-          label="Nome do Aprendiz"
-          v-model="form.nome_aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+      <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
+        <q-input outlined label="Nome do Aprendiz" v-model="form.nome_aprendiz"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-input
-          outlined
-          label="Nascimento"
-          type="date"
-          v-model="form.nasc_aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+        <q-input outlined label="Nascimento" type="date" v-model="form.nasc_aprendiz"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-input
-          outlined
-          label="Nome da Mãe"
-          v-model="form.nome_mae"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+        <q-input outlined label="Nome da Mãe" v-model="form.nome_mae"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-input
-          outlined
-          label="Nome do Pai"
-          v-model="form.nome_pai"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+        <q-input outlined label="Nome do Pai" v-model="form.nome_pai"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-input
-          outlined
-          label="Nome do Responsável"
-          v-model="form.nome_responsavel"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-        />
+        <q-input outlined label="Nome do Responsável" v-model="form.nome_responsavel"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-        <q-input
-          outlined
-          label="Observações"
-          v-model="form.observacao"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-          type="textarea"
-        />
+        <q-input outlined label="Observações" v-model="form.observacao"
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" type="textarea" />
 
-        <q-btn
-          label="Salvar"
-          color="primary"
-          class="full-width"
-          rounded
-          type="submit"
-        />
+        <q-btn label="Salvar" color="primary" class="full-width" rounded type="submit" />
 
-        <q-btn
-          label="Voltar"
-          color="primary"
-          class="full-width"
-          rounded
-          flat
-          :to="{ name: 'aprendizes' }"
-        />
+        <q-btn label="Voltar" color="primary" class="full-width" rounded flat :to="{ name: 'aprendizes' }" />
       </q-form>
     </div>
   </q-page>
@@ -78,6 +36,9 @@ import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
 import { useAprendizStore } from 'src/stores/aprendiz';
+import useNotify from 'src/composables/UseNotify';
+
+const { success, error } = useNotify();
 
 const store = useAprendizStore();
 
@@ -105,11 +66,11 @@ function handleSubmit() {
 
   db.aprendizes
     .add(data)
-    .then((res) => {
-      console.log(res);
+    .then(() => {
+      success();
     })
-    .catch(() => {
-      throw Error('Ocorreu um erro ao tentar salvar');
+    .catch((error) => {
+      error(error)
     });
 }
 
@@ -117,10 +78,10 @@ function handleUpdate() {
   db.aprendizes
     .update(store.getAprendizUuid, toRaw(form.value))
     .then(() => {
-      console.log('Atualizado com sucesso');
+      success();
     })
     .catch(() => {
-      throw Error('Ocorreu um erro ao tentar atualizar');
+      error('Ocorreu um erro ao tentar atualizar o aprendiz');
     });
 }
 
@@ -140,8 +101,8 @@ onMounted(() => {
           form.value.sync = res.sync;
         }
       })
-      .catch(() => {
-        throw Error('Ocorreu um erro ao tentar buscar o treinamento');
+      .catch((error) => {
+        error(error);
       });
   }
 });

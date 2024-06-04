@@ -1,14 +1,7 @@
 <template>
   <q-page padding>
-    <q-tabs
-      v-model="tab"
-      dense
-      class="text-grey"
-      active-color="primary"
-      indicator-color="primary"
-      align="justify"
-      narrow-indicator
-    >
+    <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
+      narrow-indicator>
       <q-tab name="treinamento" label="Treino" />
       <q-tab name="alvos" label="Alvos" v-if="store.getTreinamentoUuid" />
       <q-tab name="alvos" label="Alvos" v-else disable />
@@ -16,56 +9,26 @@
 
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="treinamento">
-        <q-form
-          class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md"
-          @submit.prevent="handleSubmit"
-        >
-          <q-input
-            outlined
-            label="Nome do Treinamento"
-            v-model="form.treinamento"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-          />
+        <q-form class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md" @submit.prevent="handleSubmit">
+          <q-input outlined label="Nome do Treinamento" v-model="form.treinamento"
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-          <q-select
-            outlined
-            v-model="form.protocolo"
-            :options="protocolos"
-            label="Tipo de Protocolo"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-          />
+          <q-select outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-          <q-input
-            outlined
-            label="Descrição do Treinamento"
-            v-model="form.descricao"
-            type="textarea"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
-          />
+          <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
 
-          <q-btn
-            label="Salvar"
-            color="primary"
-            class="full-width"
-            rounded
-            type="submit"
-          />
+          <q-btn label="Salvar" color="primary" class="full-width" rounded type="submit" />
 
-          <q-btn
-            label="Voltar"
-            color="primary"
-            class="full-width"
-            rounded
-            flat
-            :to="{ name: 'treinamentos' }"
-          />
+          <q-btn label="Voltar" color="primary" class="full-width" rounded flat :to="{ name: 'treinamentos' }" />
         </q-form>
       </q-tab-panel>
 
       <q-tab-panel name="alvos">
         <AlvoForm />
       </q-tab-panel>
-      
+
     </q-tab-panels>
   </q-page>
 </template>
@@ -76,6 +39,9 @@ import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
+import useNotify from 'src/composables/UseNotify';
+
+const { success, error } = useNotify();
 
 const routeLocation = useRoute();
 
@@ -106,9 +72,10 @@ function handleSubmit() {
     .add(data)
     .then((res) => {
       store.$state.treinamentoUuid = res;
+      success();
     })
-    .catch(() => {
-      throw Error('Ocorreu um erro ao tentar salvar');
+    .catch((_error) => {
+      error(_error);
     });
 }
 
@@ -116,10 +83,10 @@ function handleUpdate() {
   db.treinamentos
     .update(store.getTreinamentoUuid, toRaw(form.value))
     .then(() => {
-      console.log('Atualizado com sucesso');
+      success();
     })
-    .catch(() => {
-      throw Error('Ocorreu um erro ao tentar atualizar');
+    .catch((_error) => {
+      error('Ocorreu um erro ao tentar atualizar o treinamento', _error);
     });
 }
 
@@ -136,8 +103,8 @@ onMounted(() => {
           form.value.sync = res.sync;
         }
       })
-      .catch(() => {
-        throw Error('Ocorreu um erro ao tentar buscar o treinamento');
+      .catch((_error) => {
+        error('Erro ao tentar consultar os treinamentos', _error);
       });
   }
 });

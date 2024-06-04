@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="visible">
-    <q-card class="my-card">      
+    <q-card class="my-card">
       <TreinamentoList :selecionar-treinamento="true" />
     </q-card>
   </q-dialog>
@@ -106,10 +106,12 @@ import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
-import { liveQuery } from 'dexie';
 import TreinamentoList from '../treinamentos/TreinamentoList.vue';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
+import useNotify from 'src/composables/UseNotify';
+
+const { success, error } = useNotify();
 
 const visible = ref(false);
 
@@ -186,8 +188,8 @@ function handleSubmit() {
     .then(() => {
       handleGerarColetas(data);
     })
-    .catch(() => {
-      throw Error('Ocorreu um erro ao tentar salvar');
+    .catch((_error) => {
+      error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
     });
 }
 
@@ -245,7 +247,7 @@ function handleGerarColetas(data: any) {
 
   const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
 
-  liveQuery(() => db.alvos.where({ treinamento_uuid_fk: treinamentoUuidFk }).toArray()).subscribe((data) => {
+  db.alvos.where({ treinamento_uuid_fk: treinamentoUuidFk }).toArray().then((data) => {
     const raw = toRaw(data)
 
     raw.forEach((alvo) => {
@@ -277,11 +279,11 @@ function handleGerarColetas(data: any) {
 
         db.coletas
           .add(coleta)
-          .then((res) => {
-            console.log('Coleta gerada com sucesso' + res);
+          .then(() => {
+            success('Coleta geradas com sucesso');
           })
-          .catch(() => {
-            throw Error('Ocorreu um erro ao tentar salvar');
+          .catch((_error) => {
+            error('Ocorreu um erro ao tentar salvar', _error);
           });
       }
     });
@@ -302,7 +304,7 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 }
 
 onMounted(() => {
-  liveQuery(() => db.aprendizes.toArray()).subscribe((res) => {
+  db.aprendizes.toArray().then((res) => {
     res.forEach((aprendiz) => {
       aprendizes.value.push({
         label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
