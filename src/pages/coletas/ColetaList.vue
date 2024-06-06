@@ -1,6 +1,16 @@
 <template>
     <q-page padding>
 
+        <q-dialog v-model="visibleAnotacao">
+            <q-card class="my-card q-pa-md full-width">
+                <div class="text-center text-body1">Anotação</div>
+                <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
+                    :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+                <q-btn label="Salvar" color="primary" class="full-width q-mb-md" type="submit"
+                    @click="salvarAnotacao" />
+            </q-card>
+        </q-dialog>
+
         <q-dialog v-model="visible">
             <q-card class="my-card q-pa-md">
                 <div class="text-center text-body1">Selecione o dia para Coleta</div>
@@ -44,7 +54,18 @@
 
                                     <span class="text-subtitle2 text-teal">Pergunta: </span>
                                     <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
-
+                                </div>
+                                <div class="col-auto">
+                                    <q-btn color="grey-7" round flat icon="more_vert">
+                                        <q-menu cover auto-close>
+                                            <q-list>
+                                                <q-item clickable>
+                                                    <q-item-section
+                                                        @click="abreModalAnotacao(item)">Anotar</q-item-section>
+                                                </q-item>
+                                            </q-list>
+                                        </q-menu>
+                                    </q-btn>
                                 </div>
                             </div>
                         </q-card-section>
@@ -55,8 +76,8 @@
                             color="orange" size="lg" />
                         <q-radio v-model="respostas[item.identificador]" val="sem-ajuda" label="SEM AJUDA" keep-color
                             color="green" size="lg" />
-
                     </q-card>
+
                 </div>
             </q-tab-panel>
 
@@ -78,8 +99,15 @@
 import { ref, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
 import { db } from 'src/db';
+import { v4 as uuid } from 'uuid';
+import useNotify from 'src/composables/UseNotify';
+import { Coleta } from 'src/db';
+
+const { success, error } = useNotify();
 
 const visible = ref(true);
+
+const visibleAnotacao = ref(false);
 
 const routeLocation = useRoute();
 
@@ -94,6 +122,10 @@ const diaColeta = ref('');
 const respostas = ref<any>({}); // um objeto para armazenar as respostas
 
 const alvosPendentes = ref<any[]>([]);
+
+const anotacao = ref('');
+
+const alvoSelecionadoToAnotacao = ref<Coleta>();
 
 function handleSalvarRespostas() {
     const _respostas = toRaw(respostas.value);
@@ -178,6 +210,29 @@ async function getDiasSemanasQueTemColeta() {
     }
 
     return arr;
+}
+
+function abreModalAnotacao(item: any) {
+    visibleAnotacao.value = true;
+    alvoSelecionadoToAnotacao.value = item;
+}
+
+async function salvarAnotacao() {
+    await db.anotacoes.add({
+        uuid: uuid(),
+        alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
+        treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
+        data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
+        anotacao: anotacao.value,
+        sync: false
+    }).then(() => {
+        success("Anotação salva com sucesso");
+    }).catch((_error) => {
+        error("Ocorreu um erro ao salvar a anotação: ", _error);
+    });
+
+    visibleAnotacao.value = false;
+    anotacao.value = '';
 }
 
 </script>
