@@ -124,12 +124,12 @@
                             </div>
                         </q-card-section>
 
-                        <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
-                            size="lg" />
+                        <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red" size="lg"
+                            disable />
                         <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
-                            size="lg" />
+                            size="lg" disable />
                         <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
-                            size="lg" />
+                            size="lg" disable />
                     </q-card>
 
                 </div>
@@ -344,8 +344,8 @@ async function salvarAnotacao() {
         anotacao: anotacao.value,
         sync: false
     }).then(() => {
-        success("Anotação salva com sucesso");
         getColetasNaoRespondidas();
+        success("Anotação salva com sucesso");
     }).catch((_error) => {
         error("Ocorreu um erro ao salvar a anotação: ", _error);
     });

@@ -68,7 +68,6 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
-import { liveQuery } from 'dexie';
 import { db } from 'src/db';
 import { useRouter } from 'vue-router';
 
@@ -87,7 +86,7 @@ const aprendizUuidSelecionado = ref('');
 function handleSelectAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
   aprendizUuidSelecionado.value = raw.aprendiz.value;
-  console.log(aprendizUuidSelecionado.value);
+  treinamentos.value = raw.treinamentos
   visible.value = true;
 }
 
@@ -98,7 +97,7 @@ function handleRedirectColetas(_uuidTreinamento: string, _uuidAprendiz: string) 
 onMounted(() => {
   loading.value = true;
 
-  liveQuery(() => db.atendimentos.toArray()).subscribe((res) => {
+  db.atendimentos.toArray().then(res => {
     atendimentos.value = toRaw(res);
 
     atendimentos.value.forEach((item) => {
@@ -106,6 +105,6 @@ onMounted(() => {
     });
 
     loading.value = false;
-  });
+  })
 });
 </script>

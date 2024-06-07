@@ -163,7 +163,7 @@ const coleta = {
   semana: 0,
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
     (_treinamento) => {
       return {
@@ -183,7 +183,7 @@ function handleSubmit() {
   form.value.uuid = uuid();
   const data = toRaw(form.value);
 
-  db.atendimentos
+  await db.atendimentos
     .add(data)
     .then(() => {
       handleGerarColetas(data)
@@ -232,7 +232,7 @@ function handleSelecionarConfigTreinamento() {
   };
 }
 
-function handleGerarColetas(data: any) {
+async function handleGerarColetas(data: any) {
 
   const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
 
