@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'coletas',
-        path: '/coletas/treinamento/:uuidTreinamento?/aprendiz/:uuidAprendiz?',
+        path: '/coletas/treinamento/:uuidTreinamento?/aprendiz/:uuidAprendiz?/diaColeta/:diaColeta?',
         component: () => import('pages/coletas/ColetaList.vue'),
       },
     ],

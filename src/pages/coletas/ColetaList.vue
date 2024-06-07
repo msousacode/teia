@@ -11,22 +11,6 @@
             </q-card>
         </q-dialog>
 
-        <q-dialog v-model="visible">
-            <q-card class="my-card q-pa-md">
-                <div class="text-center text-body1">Selecione o dia para Coleta</div>
-                <div class="q-gutter-sm q-pa-md">
-                    <q-radio v-model="diaColeta" val="seg" label="SEG" color="teal" />
-                    <q-radio v-model="diaColeta" val="ter" label="TER" color="teal" />
-                    <q-radio v-model="diaColeta" val="qua" label="QUA" color="teal" />
-                    <q-radio v-model="diaColeta" val="qui" label="QUI" color="teal" />
-                    <q-radio v-model="diaColeta" val="sex" label="SEX" color="teal" />
-                    <q-radio v-model="diaColeta" val="sab" label="SAB" color="teal" />
-                </div>
-                <q-btn label="Selecionar" color="primary" class="full-width q-mb-md" type="submit"
-                    @click="getColetasNaoRespondidas" />
-            </q-card>
-        </q-dialog>
-
         <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="pendentes" label="Pendentes" />
@@ -177,7 +161,7 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
 import { Anotacao, db } from 'src/db';
 import { v4 as uuid } from 'uuid';
@@ -185,8 +169,6 @@ import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
 
 const { success, error } = useNotify();
-
-const visible = ref(true);
 
 const visibleAnotacao = ref(false);
 
@@ -196,9 +178,9 @@ const _uuidTreinamento = routeLocation.params.uuidTreinamento;
 
 const _uuidAprendiz = routeLocation.params.uuidAprendiz;
 
-const tab = ref('pendentes');
+const _diaColeta = routeLocation.params.diaColeta;
 
-const diaColeta = ref('');
+const tab = ref('pendentes');
 
 const respostas = ref<any>({}); // um objeto para armazenar as respostas
 
@@ -243,8 +225,8 @@ function exibirDivisorAlvosPorSemana(semana: number) {
 
 async function getColetasNaoRespondidas() {
 
-    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined) {
-        throw new Error('uuidTreinamento ou uuidAprendiz não informado');
+    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
+        throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
 
     const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
@@ -255,11 +237,10 @@ async function getColetasNaoRespondidas() {
         .sortBy('semana').then((data) => {
             const raw = toRaw(data)
             raw.map(coleta => {
-                if (diasSemanasQueTemColeta.includes(diaColeta.value)) {
+                if (diasSemanasQueTemColeta.includes(_diaColeta.toString())) {
                     alvosPendentes.value.push(coleta)
                 }
             })
-            visible.value = false;
         });
 
     getColetasRespondidas();
@@ -271,8 +252,8 @@ async function getColetasNaoRespondidas() {
 
 async function getColetasRespondidas() {
 
-    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined) {
-        throw new Error('uuidTreinamento ou uuidAprendiz não informado');
+    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
+        throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
 
     const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
@@ -281,13 +262,12 @@ async function getColetasRespondidas() {
         .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
         .and(coleta => coleta.foi_respondido === true)
         .sortBy('semana').then((data) => {
-            const raw = toRaw(data)
+            const raw = toRaw(data);
             raw.map(coleta => {
-                if (diasSemanasQueTemColeta.includes(diaColeta.value)) {
+                if (diasSemanasQueTemColeta.includes(_diaColeta.toString())) {
                     alvosColetados.value.push(coleta)
                 }
             })
-            visible.value = false;
         });
 
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
@@ -298,13 +278,11 @@ async function getColetasRespondidas() {
 async function getDiasSemanasQueTemColeta() {
     let configuracoesTreinamento;
 
-    try {
-        configuracoesTreinamento = await db.coletas
-            .orderBy('aprendiz_uuid_fk')
-            .first();
-    } catch (error) {
-        console.error("Ocorreu um erro ao buscar o primeiro registro: ", error);
-    }
+    await db.coletas.where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento }).toArray().then(res => {
+        configuracoesTreinamento = res[0]
+    }).catch(_error => {
+        error(_error);
+    });
 
     let arr = []
 
@@ -353,5 +331,9 @@ async function salvarAnotacao() {
     visibleAnotacao.value = false;
     anotacao.value = '';
 }
+
+onMounted(() => {
+    getColetasNaoRespondidas()
+});
 
 </script>

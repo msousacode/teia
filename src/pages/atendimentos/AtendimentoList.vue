@@ -2,7 +2,7 @@
   <div class="q-pa-md">
 
     <q-dialog v-model="visible" header="Aprendizes" modal="true">
-      <q-card class="my-card">
+      <q-card class="my-card full-width">
         <div class="q-pa-md">
           <q-list bordered separator v-for="(
               item, index
@@ -15,24 +15,25 @@
                 <div v-if="item.configuracoes">
                   <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label caption>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.seg">
-                      {{ item.configuracoes.seg ? 'SEG' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.ter">
-                      {{ item.configuracoes.ter ? 'TER' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qua">
-                      {{ item.configuracoes.qua ? 'QUA' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qui">
-                      {{ item.configuracoes.qui ? 'QUI' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sex">
-                      {{ item.configuracoes.sex ? 'SEX' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sab">
-                      {{ item.configuracoes.sab ? 'SAB' : '' }}
-                    </q-chip>
+
+                    <q-radio class="text-body2" v-model="diaColeta" val="seg" label="SEG" color="teal"
+                      v-if="item.configuracoes.seg" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" val="ter" label="TER" color="teal"
+                      v-if="item.configuracoes.ter" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" val="qua" label="QUA" color="teal"
+                      v-if="item.configuracoes.qua" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" val="qui" label="QUI" color="teal"
+                      v-if="item.configuracoes.qui" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" val="sex" label="SEX" color="teal"
+                      v-if="item.configuracoes.sex" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" val="sab" label="SAB" color="teal"
+                      v-if="item.configuracoes.sab" />
+
                   </q-item-label>
                 </div>
               </q-item-section>
@@ -83,6 +84,8 @@ const treinamentos = ref<any[]>([]);
 
 const aprendizUuidSelecionado = ref('');
 
+const diaColeta = ref('');
+
 function handleSelectAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
   aprendizUuidSelecionado.value = raw.aprendiz.value;
@@ -91,7 +94,7 @@ function handleSelectAtendimento(atendimento: any) {
 }
 
 function handleRedirectColetas(_uuidTreinamento: string, _uuidAprendiz: string) {
-  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz } });
+  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaColeta.value } });
 }
 
 onMounted(() => {
