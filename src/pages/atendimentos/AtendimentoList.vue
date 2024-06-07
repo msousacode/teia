@@ -4,6 +4,7 @@
     <q-dialog v-model="visible" header="Aprendizes" modal="true">
       <q-card class="my-card full-width">
         <div class="q-pa-md">
+          <div class="text-body1 q-mb-sm">Selecione o dia para coleta:</div>
           <q-list bordered separator v-for="(
               item, index
             ) in treinamentos" :key="index">
