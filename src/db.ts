@@ -45,15 +45,24 @@ export interface Coleta {
   data_coleta: string;
   resposta: string | number;
   sync: boolean;
-  foi_respondido: boolean;  
+  foi_respondido: boolean;
   alvo: any;
-  data_final_coleta: string,
-  seg: boolean,
-  ter: boolean,
-  qua: boolean,
-  qui: boolean,
-  sex: boolean,
-  sab: boolean,
+  data_final_coleta: string;
+  seg: boolean;
+  ter: boolean;
+  qua: boolean;
+  qui: boolean;
+  sex: boolean;
+  sab: boolean;
+}
+
+export interface Anotacao {
+  uuid: string;
+  alvo_identidicador_fk: string;
+  treinamento_uuid_fk: string;
+  data_anotacao: string;
+  anotacao: string;
+  sync: boolean;
 }
 
 export class DataBase extends Dexie {
@@ -67,6 +76,8 @@ export class DataBase extends Dexie {
 
   coletas!: Table<Coleta>;
 
+  anotacoes!: Table<Anotacao>;
+
   constructor() {
     super('teiaDB');
     this.version(1).stores({
@@ -75,6 +86,7 @@ export class DataBase extends Dexie {
       alvos: 'uuid, treinamento_uuid_fk',
       atendimentos: 'uuid, aprendiz_uuid_fk',
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
+      anotacoes: 'uuid, treinamento_uuid_fk',
     });
   }
 }
