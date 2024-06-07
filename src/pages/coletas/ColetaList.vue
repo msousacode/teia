@@ -23,7 +23,7 @@
                     <q-radio v-model="diaColeta" val="sab" label="SAB" color="teal" />
                 </div>
                 <q-btn label="Selecionar" color="primary" class="full-width q-mb-md" type="submit"
-                    @click="getColetas" />
+                    @click="getColetasNaoRespondidas" />
             </q-card>
         </q-dialog>
 
@@ -37,7 +37,6 @@
         <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="pendentes">
                 <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
-
                     <div class="flex justify-center">
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
@@ -75,19 +74,65 @@
                             </div>
                         </q-card-section>
 
-                        <q-radio v-model="respostas[item.identificador]" val="nao-fez" label="NÃO FEZ" keep-color
+                        <q-radio v-model="respostas[item.alvo.identificador]" val="nao-fez" label="NÃO FEZ" keep-color
                             color="red" size="lg" />
-                        <q-radio v-model="respostas[item.identificador]" val="com-ajuda" label="COM AJUDA" keep-color
-                            color="orange" size="lg" />
-                        <q-radio v-model="respostas[item.identificador]" val="sem-ajuda" label="SEM AJUDA" keep-color
-                            color="green" size="lg" />
+                        <q-radio v-model="respostas[item.alvo.identificador]" val="com-ajuda" label="COM AJUDA"
+                            keep-color color="orange" size="lg" />
+                        <q-radio v-model="respostas[item.alvo.identificador]" val="sem-ajuda" label="SEM AJUDA"
+                            keep-color color="green" size="lg" />
                     </q-card>
 
                 </div>
             </q-tab-panel>
 
             <q-tab-panel name="coletados">
-                Coletados
+                <div v-for="(item, index) in alvosColetados" :key="index" class="q-mb-sm">
+                    <div class="flex justify-center">
+                        <q-chip color="primary" text-color="white text-body2 q-mb-sm"
+                            v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
+            item.semana }}ª
+                            SEMANA</q-chip>
+                    </div>
+
+                    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                        <q-card-section>
+                            <div class="row items-center no-wrap">
+                                <div class="col">
+                                    <span class="text-subtitle2 text-teal"
+                                        v-if="item.alvo.descricao_alvo.length > 0">Descrição do Alvo:</span>
+                                    <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
+
+                                    <span class="text-subtitle2 text-teal">Alvo: </span>
+                                    <div class="text-subtitle1">{{ item.alvo.nome_alvo }}</div>
+
+                                    <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
+                                    </span>
+                                    <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <q-btn color="grey-7" round flat icon="more_vert">
+                                        <q-menu cover auto-close>
+                                            <q-list>
+                                                <q-item clickable>
+                                                    <q-item-section
+                                                        @click="abreModalAnotacao(item)">Anotar</q-item-section>
+                                                </q-item>
+                                            </q-list>
+                                        </q-menu>
+                                    </q-btn>
+                                </div>
+                            </div>
+                        </q-card-section>
+
+                        <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
+                            size="lg" />
+                        <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
+                            size="lg" />
+                        <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
+                            size="lg" />
+                    </q-card>
+
+                </div>
             </q-tab-panel>
 
             <q-tab-panel name="anotacoes">
@@ -159,6 +204,8 @@ const respostas = ref<any>({}); // um objeto para armazenar as respostas
 
 const alvosPendentes = ref<any[]>([]);
 
+const alvosColetados = ref<any[]>([]);
+
 const anotacao = ref('');
 
 const alvoSelecionadoToAnotacao = ref<Coleta>();
@@ -194,7 +241,7 @@ function exibirDivisorAlvosPorSemana(semana: number) {
     return returnValue;//TODO ordenar a query para trazer os resultados organizados por semana para facilitar a função.
 }
 
-async function getColetas() {
+async function getColetasNaoRespondidas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined) {
         throw new Error('uuidTreinamento ou uuidAprendiz não informado');
@@ -204,11 +251,40 @@ async function getColetas() {
 
     db.coletas
         .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
+        .and(coleta => coleta.foi_respondido === false)
         .sortBy('semana').then((data) => {
             const raw = toRaw(data)
             raw.map(coleta => {
                 if (diasSemanasQueTemColeta.includes(diaColeta.value)) {
                     alvosPendentes.value.push(coleta)
+                }
+            })
+            visible.value = false;
+        });
+
+    getColetasRespondidas();
+
+    db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
+        anotacoesFeitas.value = data;
+    });
+}
+
+async function getColetasRespondidas() {
+
+    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined) {
+        throw new Error('uuidTreinamento ou uuidAprendiz não informado');
+    }
+
+    const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
+
+    db.coletas
+        .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
+        .and(coleta => coleta.foi_respondido === true)
+        .sortBy('semana').then((data) => {
+            const raw = toRaw(data)
+            raw.map(coleta => {
+                if (diasSemanasQueTemColeta.includes(diaColeta.value)) {
+                    alvosColetados.value.push(coleta)
                 }
             })
             visible.value = false;
@@ -269,7 +345,7 @@ async function salvarAnotacao() {
         sync: false
     }).then(() => {
         success("Anotação salva com sucesso");
-        getColetas();
+        getColetasNaoRespondidas();
     }).catch((_error) => {
         error("Ocorreu um erro ao salvar a anotação: ", _error);
     });
