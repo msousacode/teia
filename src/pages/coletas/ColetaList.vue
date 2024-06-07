@@ -49,10 +49,15 @@
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
-                                    <span class="text-subtitle2 text-teal">Descrição do Alvo: </span>
+                                    <span class="text-subtitle2 text-teal"
+                                        v-if="item.alvo.descricao_alvo.length > 0">Descrição do Alvo:</span>
                                     <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
 
-                                    <span class="text-subtitle2 text-teal">Pergunta: </span>
+                                    <span class="text-subtitle2 text-teal">Alvo: </span>
+                                    <div class="text-subtitle1">{{ item.alvo.nome_alvo }}</div>
+
+                                    <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
+                                    </span>
                                     <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
                                 </div>
                                 <div class="col-auto">
@@ -86,19 +91,50 @@
             </q-tab-panel>
 
             <q-tab-panel name="anotacoes">
-                Anotações
+
+                <div v-for="(item, index) in anotacoesFeitas" :key="index" class="q-mb-sm">
+                    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                        <q-card-section>
+                            <div class="row items-center no-wrap">
+                                <div class="col">
+
+                                    <div class="text-subtitle2 text-teal">Data da anotação:
+                                        <span class="text-subtitle1" style="color:black !important">{{
+            item.data_anotacao
+        }}</span>
+                                    </div>
+
+                                    <span class="text-subtitle2 text-teal">Anotação: </span>
+                                    <div class="text-subtitle1">{{ item.anotacao }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <q-btn color="grey-7" round flat icon="more_vert">
+                                        <q-menu cover auto-close>
+                                            <q-list>
+                                                <q-item clickable>
+                                                    <q-item-section
+                                                        @click="abreModalAnotacao({})">Editar</q-item-section>
+                                                </q-item>
+                                            </q-list>
+                                        </q-menu>
+                                    </q-btn>
+                                </div>
+                            </div>
+                        </q-card-section>
+                    </q-card>
+                </div>
             </q-tab-panel>
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn v-if="$q.platform.is.mobile" fab icon="mdi-plus" color="primary" @click="handleSalvarRespostas" />
+            <q-btn fab icon="mdi-check" color="green" @click="handleSalvarRespostas" />
         </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
 import { ref, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
-import { db } from 'src/db';
+import { Anotacao, db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
@@ -126,6 +162,8 @@ const alvosPendentes = ref<any[]>([]);
 const anotacao = ref('');
 
 const alvoSelecionadoToAnotacao = ref<Coleta>();
+
+const anotacoesFeitas = ref<Anotacao[]>([]);
 
 function handleSalvarRespostas() {
     const _respostas = toRaw(respostas.value);
@@ -175,6 +213,10 @@ async function getColetas() {
             })
             visible.value = false;
         });
+
+    db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
+        anotacoesFeitas.value = data;
+    });
 }
 
 async function getDiasSemanasQueTemColeta() {
@@ -227,6 +269,7 @@ async function salvarAnotacao() {
         sync: false
     }).then(() => {
         success("Anotação salva com sucesso");
+        getColetas();
     }).catch((_error) => {
         error("Ocorreu um erro ao salvar a anotação: ", _error);
     });

@@ -86,7 +86,7 @@ export class DataBase extends Dexie {
       alvos: 'uuid, treinamento_uuid_fk',
       atendimentos: 'uuid, aprendiz_uuid_fk',
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
-      anotacoes: 'uuid, [alvo_identidicador_fk+treinamento_uuid_fk]',
+      anotacoes: 'uuid, treinamento_uuid_fk',
     });
   }
 }
