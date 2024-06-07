@@ -248,42 +248,45 @@ async function handleGerarColetas(data: any) {
 
   const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
 
-  db.alvos.where({ treinamento_uuid_fk: treinamentoUuidFk }).toArray().then((data) => {
-    const raw = toRaw(data)
+  data.treinamentos.forEach((t: any) => {
 
-    raw.forEach((alvo) => {
+    db.alvos.where({ treinamento_uuid_fk: t.uuid }).toArray().then((data) => {
+      const raw = toRaw(data)
 
-      let count = 0;
-      let countSemana = 0;
+      raw.forEach((alvo) => {
 
-      while (count < (quantidadeRepticao * numeroSemanas)) {
-        count++;
-        countSemana++;
+        let count = 0;
+        let countSemana = 0;
 
-        coleta.uuid = uuid();
-        coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-        coleta.treinamento_uuid_fk = treinamentoUuidFk;
-        coleta.data_final_coleta = dataFinalColeta;
-        coleta.alvo = alvo;
-        coleta.seg = seg;
-        coleta.ter = ter;
-        coleta.qua = qua;
-        coleta.qui = qui;
-        coleta.sex = sex;
-        coleta.sab = sab;
-        coleta.semana = countSemana;//contador para identificar a semana da coleta.
-        coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+        while (count < (quantidadeRepticao * numeroSemanas)) {
+          count++;
+          countSemana++;
 
-        if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
-          countSemana = 0;
+          coleta.uuid = uuid();
+          coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+          coleta.treinamento_uuid_fk = treinamentoUuidFk;
+          coleta.data_final_coleta = dataFinalColeta;
+          coleta.alvo = alvo;
+          coleta.seg = seg;
+          coleta.ter = ter;
+          coleta.qua = qua;
+          coleta.qui = qui;
+          coleta.sex = sex;
+          coleta.sab = sab;
+          coleta.semana = countSemana;//contador para identificar a semana da coleta.
+          coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+
+          if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
+            countSemana = 0;
+          }
+
+          db.coletas
+            .add(coleta)
+            .catch((_error) => {
+              error('Ocorreu um erro ao tentar salvar', _error);
+            });
         }
-
-        db.coletas
-          .add(coleta)
-          .catch((_error) => {
-            error('Ocorreu um erro ao tentar salvar', _error);
-          });
-      }
+      });
     });
   });
 }
