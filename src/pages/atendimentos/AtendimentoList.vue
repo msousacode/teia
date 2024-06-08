@@ -56,6 +56,8 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
+            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editarAtendimento(props.row)">
+            </q-btn>
             <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="handleSelectAtendimento(props.row)">
             </q-btn>
           </q-td>
@@ -98,6 +100,12 @@ function handleRedirectColetas(_uuidTreinamento: string, _uuidAprendiz: string) 
   const diaPesquisa = diaColeta.value.split('$')[0];
   router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa } });
 }
+
+function editarAtendimento(atendimento: any) {
+  const raw = toRaw(atendimento);
+  router.push({ name: 'atendimento-novo', params: { action: 'edit', uuidAtendimento: raw.uuid } });
+}
+
 
 onMounted(() => {
   loading.value = true;

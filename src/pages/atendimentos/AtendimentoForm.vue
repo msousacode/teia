@@ -18,15 +18,15 @@
 
           <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
             :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']" :readonly="editMode" />
 
           <div class="q-gutter-sm q-mb-md">
-            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" :readonly="editMode" />
           </div>
         </q-form>
 
@@ -43,10 +43,10 @@
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" :readonly="editMode" />
 
         <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          :rules="[(val) => (val && val.length > 0) || 'Name is required']" :readonly="editMode" />
 
         <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-mb-md" type="submit"
           @click="visible = true" />
@@ -111,6 +111,10 @@ import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import useNotify from 'src/composables/UseNotify';
 
+const routeLocation = useRoute();
+
+const editMode = routeLocation.params.action === 'edit';
+
 const { success, error } = useNotify();
 
 const visible = ref(false);
@@ -120,8 +124,6 @@ const visibleConfiguracao = ref(false);
 const storeAprendiz = useAprendizStore();
 
 const storeTreinamento = useTreinamentoStore();
-
-const routeLocation = useRoute();
 
 const aprendizes = ref<any[]>([]);
 
@@ -175,8 +177,8 @@ async function handleSubmit() {
     }
   );
 
-  if (routeLocation.params.action === 'edit') {
-    handleUpdate();
+  if (editMode) {
+    atualizar();
     return;
   }
 
@@ -194,7 +196,7 @@ async function handleSubmit() {
     });
 }
 
-function handleUpdate() {
+function atualizar() {
   db.aprendizes
     .update(storeAprendiz.getAprendizUuid, toRaw(form.value))
     .then(() => {
@@ -305,14 +307,28 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 }
 
 onMounted(() => {
-  db.aprendizes.toArray().then((res) => {
-    res.forEach((aprendiz) => {
-      aprendizes.value.push({
-        label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
-          }`,
-        value: aprendiz.uuid,
+
+  if (editMode) {
+
+    const uuidAtendimento = routeLocation.params.uuidAtendimento;
+
+    db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
+      const raw = toRaw(res);
+      form.value = raw;
+      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos;
+
+    });
+
+  } else {
+    db.aprendizes.toArray().then((res) => {
+      res.forEach((aprendiz) => {
+        aprendizes.value.push({
+          label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
+            }`,
+          value: aprendiz.uuid,
+        });
       });
     });
-  });
+  }
 });
 </script>

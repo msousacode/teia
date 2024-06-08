@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'atendimento-novo',
-        path: '/atendimento-novo/:action?',
+        path: '/atendimento-novo/:action?/atendimento/:uuidAtendimento?',
         component: () => import('pages/atendimentos/AtendimentoForm.vue'),
       },
       {
