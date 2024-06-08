@@ -18,7 +18,8 @@
 
           <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
             :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" :readonly="editMode" />
+            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
+            :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
 
           <div class="q-gutter-sm q-mb-md">
             <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" :readonly="editMode" />
@@ -31,7 +32,7 @@
         </q-form>
 
         <q-btn label="Confirmar" color="green" class="full-width q-mb-md" rounded
-          @click="handleSelecionarConfigTreinamento" v-close-popup />
+          @click="confirmarConfiguracaoTreinamento" v-close-popup />
       </div>
     </q-card>
   </q-dialog>
@@ -94,7 +95,7 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="green" class="full-width q-mb-md" type="submit" @click="handleSubmit" />
+        <q-btn label="Salvar" color="green" class="full-width q-mb-md" type="submit" @click="salvarAtendimento" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-mb-md" rounded flat :to="{ name: 'atendimentos' }" />
       </q-form>
@@ -110,10 +111,13 @@ import TreinamentoList from '../treinamentos/TreinamentoList.vue';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import useNotify from 'src/composables/UseNotify';
+import useFormatUtil from 'src/composables/UseFormatUtil';
 
 const routeLocation = useRoute();
 
 const editMode = routeLocation.params.action === 'edit';
+
+const uuidAtendimento = routeLocation.params.uuidAtendimento;
 
 const { success, error } = useNotify();
 
@@ -126,6 +130,8 @@ const storeAprendiz = useAprendizStore();
 const storeTreinamento = useTreinamentoStore();
 
 const aprendizes = ref<any[]>([]);
+
+const { formatDataDB } = useFormatUtil()
 
 const form = ref({
   uuid: '',
@@ -165,35 +171,70 @@ const coleta = {
   semana: 0,
 }
 
-async function handleSubmit() {
-  form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
-    (_treinamento) => {
-      return {
-        uuid: _treinamento.uuid,
-        treinamento: _treinamento.treinamento,
-        protocolo: _treinamento.protocolo,
-        configuracoes: toRaw(_treinamento.configuracoes),
-      };
-    }
-  );
+async function salvarAtendimento() {
 
+  if (storeTreinamento.treinamentoConfig.new) {
+    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados
+      .filter(treinamento => treinamento.uuid === storeTreinamento.$state.treinamentoConfig.uuid).map(
+        (_treinamento) => {
+          return {
+            uuid: _treinamento.uuid,
+            treinamento: _treinamento.treinamento,
+            protocolo: _treinamento.protocolo,
+            configuracoes: toRaw(_treinamento.configuracoes),
+          };
+        }
+      );
+  } else {
+    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
+      (_treinamento) => {
+        return {
+          uuid: _treinamento.uuid,
+          treinamento: _treinamento.treinamento,
+          protocolo: _treinamento.protocolo,
+          configuracoes: toRaw(_treinamento.configuracoes),
+        };
+      }
+    );
+  }
+
+  //TODO investigar por talvez não precise disso.
   if (editMode) {
     atualizar();
-    return;
   }
 
   form.value.uuid = uuid();
   const data = toRaw(form.value);
 
-  await db.atendimentos
-    .add(data)
-    .then(() => {
-      handleGerarColetas(data)
-      success('Coletas geradas com sucesso');
-    })
-    .catch((_error) => {
-      error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
+  if (storeTreinamento.treinamentoConfig.new && editMode) {
+
+    await db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
+      let raw = toRaw(res);
+      raw?.treinamentos.push(...data.treinamentos);
+
+      if (raw === undefined) {
+        error('Não foi possível atualizar os treinamentos do atendimento');
+        throw new Error('Não foi possível atualizar os treinamentos do atendimento');
+      }
+
+      db.atendimentos.put(raw).catch(() => {
+        throw Error('Ocorreu um erro ao tentar atualizar');
+      });
     });
+
+  } else {
+    await db.atendimentos
+      .add(data)
+      .catch((_error) => {
+        error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
+      });
+  }
+
+  await handleGerarColetas(data).then(() => {
+    success('Coletas geradas com sucesso!');
+  }).catch(() => {
+    throw Error('Ocorreu um erro ao tentar gerar as coletas');
+  });
 }
 
 function atualizar() {
@@ -212,7 +253,7 @@ function handleOpenConfig(item: any) {
   visibleConfiguracao.value = true;
 }
 
-function handleSelecionarConfigTreinamento() {
+function confirmarConfiguracaoTreinamento() {
   storeTreinamento.treinamentosSelecionados
     .filter(
       (treinamento) =>
@@ -294,6 +335,10 @@ async function handleGerarColetas(data: any) {
 }
 
 function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
+
+  if (storeTreinamento.getTreinamentoConfig.new && editMode) {
+    dataInicio = formatDataDB(dataInicio);
+  }
 
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 

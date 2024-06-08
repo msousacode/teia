@@ -27,16 +27,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { columns, visibleColumns } from './table';
 import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 
 const { error } = useNotify();
 
-const router = useRouter();
+const routeLocation = useRoute();
+
+const editMode = routeLocation.params.action === 'edit';
 
 const loading = ref(false);
 
@@ -60,17 +62,29 @@ function handleRemoveCategory(x: any) {
 }
 
 function handleSelectTreinamentos() {
-  store.$state.treinamentosSelecionados = selected.value;
+  selected.value.forEach((selected) => {
+    selected.new = true;
+  });
+  store.$state.treinamentosSelecionados.push(...toRaw(selected.value));
 }
 
-onMounted(() => {
-  loading.value = true;
-
-  db.treinamentos.toArray().then((res) => {
+async function getTreinamentos() {
+  await db.treinamentos.toArray().then((res) => {
     treinamentos.value = res;
     loading.value = false;
   }).catch((_error) => {
     error(_error);
-  })
+  });
+}
+
+onMounted(async () => {
+  loading.value = true;
+
+  await getTreinamentos();
+  if (editMode) {
+    store.getTreinamentosSelecionados.forEach((treinamento) => {
+      treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
+    });
+  }
 });
 </script>
