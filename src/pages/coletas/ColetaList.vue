@@ -142,7 +142,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao({})">Editar</q-item-section>
+                                                        @click="abreModalAnotacao(item)">Editar</q-item-section>
                                                 </q-item>
                                             </q-list>
                                         </q-menu>
@@ -187,6 +187,8 @@ const respostas = ref<any>({}); // um objeto para armazenar as respostas
 const alvosPendentes = ref<any[]>([]);
 
 const alvosColetados = ref<any[]>([]);
+
+const uuidAnotacaoEdit = ref('');
 
 const anotacao = ref('');
 
@@ -310,10 +312,18 @@ async function getDiasSemanasQueTemColeta() {
 
 function abreModalAnotacao(item: any) {
     visibleAnotacao.value = true;
-    alvoSelecionadoToAnotacao.value = item;
+    uuidAnotacaoEdit.value = item.uuid;
+    anotacao.value = item.anotacao;
+
 }
 
 async function salvarAnotacao() {
+
+    if (uuidAnotacaoEdit.value) {
+        atualizarAnotacao()
+        return;
+    }
+
     await db.anotacoes.add({
         uuid: uuid(),
         alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
@@ -326,6 +336,18 @@ async function salvarAnotacao() {
         success("Anotação salva com sucesso");
     }).catch((_error) => {
         error("Ocorreu um erro ao salvar a anotação: ", _error);
+    });
+
+    visibleAnotacao.value = false;
+    anotacao.value = '';
+}
+
+async function atualizarAnotacao() {
+    await db.anotacoes.update(uuidAnotacaoEdit.value, { anotacao: anotacao.value }).then(() => {
+        getColetasNaoRespondidas();
+        success("Anotação atualizada com sucesso");
+    }).catch((_error) => {
+        error("Ocorreu um erro ao atualizar a anotação: ", _error);
     });
 
     visibleAnotacao.value = false;

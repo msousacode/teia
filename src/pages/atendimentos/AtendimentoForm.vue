@@ -295,6 +295,11 @@ async function handleGerarColetas(data: any) {
 
   const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
 
+  if (numeroSemanas > 12) {
+    error('O período de treinamento não pode ser superior há 3 meses.');
+    throw new Error('O período de treinamento não pode ser maior que 3 meses.');
+  }
+
   const aprendizUuuiFk = data.aprendiz.value;
   const treinamentoUuidFk = data.treinamentos[0].uuid;
   const quantidadeRepticao = data.treinamentos[0].configuracoes.repetir;
