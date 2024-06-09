@@ -12,13 +12,29 @@
           <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
             semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
 
-        <q-form class="col-md-7 col-xs-12 col-sm-12">
-          <q-input outlined label="Data Final de Treinamento" type="date" v-model="formTreinamento.data_final"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="confirmarConfiguracaoTreinamento">
+          <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
+            :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="formTreinamento.data_final" :locale="{
+    days: dias,
+    months: meses,
+    daysShort: diasAbreviados,
+    monthsShort: meses,
+  }" mask="DD/MM/YYYY">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
 
           <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
             :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']"
             :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
 
           <div class="q-gutter-sm q-mb-md">
@@ -29,10 +45,9 @@
             <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" :readonly="editMode" />
             <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" :readonly="editMode" />
           </div>
+          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" type="subimit" />
         </q-form>
 
-        <q-btn label="Confirmar" color="green" class="full-width q-mb-md" rounded
-          @click="confirmarConfiguracaoTreinamento" v-close-popup />
       </div>
     </q-card>
   </q-dialog>
@@ -44,12 +59,12 @@
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" :readonly="editMode" />
+          :rules="[(val) => (val && val.length > 0) || 'Aprendiz é obrigatório']" :readonly="editMode" />
 
         <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" :readonly="editMode" />
+          :rules="[(val) => (val && val.length > 0) || 'Data de ínicio obrigatório']" :readonly="editMode" />
 
-        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-mb-md" type="submit"
+        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-pa-sm q-mb-md" type="submit"
           @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
@@ -111,9 +126,10 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="green" class="full-width q-mb-md" type="submit" @click="salvarAtendimento" />
+        <q-btn label="Salvar" color="green" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-mb-md" rounded flat :to="{ name: 'atendimentos' }" />
+        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
+          :to="{ name: 'atendimentos' }" />
       </q-form>
     </div>
   </q-page>
@@ -128,6 +144,11 @@ import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import useNotify from 'src/composables/UseNotify';
 import useFormatUtil from 'src/composables/UseFormatUtil';
+import {
+  dias,
+  diasAbreviados,
+  meses
+} from 'src/composables/utils';
 
 const routeLocation = useRoute();
 
@@ -189,6 +210,19 @@ const coleta = {
 
 async function salvarAtendimento() {
 
+  if (storeTreinamento.getTreinamentosSelecionados.length === 0) {
+    error('Selecione ao menos um treinamento');
+    throw new Error('Selecione ao menos um treinamento');
+  } else {
+
+    storeTreinamento.getTreinamentosSelecionados.forEach((treinamento) => {
+      if (treinamento.configuracoes === undefined) {
+        error('Configure todos os treinamentos');
+        throw new Error('Configure todos os treinamentos');
+      }
+    });
+  }
+
   if (storeTreinamento.treinamentoConfig.new) {
     form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados
       .filter(treinamento => treinamento.uuid === storeTreinamento.$state.treinamentoConfig.uuid).map(
@@ -214,7 +248,6 @@ async function salvarAtendimento() {
     );
   }
 
-  //TODO investigar por talvez não precise disso.
   if (editMode) {
     atualizar();
   }
@@ -270,6 +303,9 @@ function abrirConfiguracoes(item: any) {
 }
 
 function confirmarConfiguracaoTreinamento() {
+
+  validarSeFoiSelecionadoDiaDaSemana();
+
   storeTreinamento.treinamentosSelecionados
     .filter(
       (treinamento) =>
@@ -289,6 +325,8 @@ function confirmarConfiguracaoTreinamento() {
     sex: false,
     sab: false,
   };
+
+  visibleConfiguracao.value = false
 }
 
 async function handleGerarColetas(data: any) {
@@ -370,6 +408,19 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   return Math.ceil(diffDays / 7);
+}
+
+function validarSeFoiSelecionadoDiaDaSemana() {
+  if (
+    !formTreinamento.value.seg &&
+    !formTreinamento.value.ter &&
+    !formTreinamento.value.qua &&
+    !formTreinamento.value.qui &&
+    !formTreinamento.value.sex &&
+    !formTreinamento.value.sab) {
+    error('Informe pelo menos um dia da semana');
+    throw new Error('Informe pelo menos um dia da semana');
+  }
 }
 
 onMounted(() => {
