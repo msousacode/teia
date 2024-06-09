@@ -144,6 +144,10 @@
                                                     <q-item-section
                                                         @click="abreModalAnotacao(item)">Editar</q-item-section>
                                                 </q-item>
+                                                <q-item clickable>
+                                                    <q-item-section
+                                                        @click="excluirAnotacao(item)">Excluir</q-item-section>
+                                                </q-item>
                                             </q-list>
                                         </q-menu>
                                     </q-btn>
@@ -167,6 +171,9 @@ import { Anotacao, db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const { success, error } = useNotify();
 
@@ -352,6 +359,24 @@ async function atualizarAnotacao() {
 
     visibleAnotacao.value = false;
     anotacao.value = '';
+}
+
+function excluirAnotacao(item: any) {
+
+    $q.dialog({
+        title: 'Confirma a exclusão da Anotação?',
+        ok: true,
+        cancel: true,
+    })
+        .onOk(async () => {
+            db.anotacoes.delete(item.uuid).then(() => {
+                getColetasNaoRespondidas();
+                success("Anotação excluída com sucesso");
+            }).catch((_error) => {
+                error("Ocorreu um erro ao excluir a anotação: ", _error);
+            });
+        })
+        .onDismiss(() => { });
 }
 
 onMounted(() => {
