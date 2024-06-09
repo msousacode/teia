@@ -7,22 +7,21 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
+          <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
+            :rules="[(val) => (val && val.length > 0) || 'Tipo de aprendizado é obrigatório']" />
 
-        <q-input outlined label="Nome do Alvo" v-model="form.nome_alvo"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          <q-input outlined label="Nome do Alvo" v-model="form.nome_alvo"
+            :rules="[(val) => (val && val.length > 0) || 'Nome do alvo é obrigatório']" />
 
-        <q-input outlined label="Pergunta" v-model="form.pergunta"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" type="textarea" autogrow />
+          <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow />
 
-        <q-input outlined label="Descrição do alvo" v-model="form.descricao_alvo"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" type="textarea" />
+          <q-input outlined label="Descrição do alvo" v-model="form.descricao_alvo" type="textarea" class="q-mt-md" />
+
+          <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" color="primary" type="submit" />
+        </q-form>
       </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn label="Salvar" class="full-width" color="primary" v-close-popup @click="handleSubmit" />
-      </q-card-actions>
     </q-card>
   </q-dialog>
 
@@ -109,6 +108,7 @@ async function handleSubmit() {
 
   if (form.value.uuid) {
     await db.alvos.put(toRaw(form.value)).then(() => {
+      visible.value = false;
       success("Alvo atualizado com sucesso");
     }).catch((_error) => {
       error("Ocorreu um erro ao atualizar a anotação: ", _error);
@@ -143,6 +143,7 @@ async function handleSubmit() {
     .add(data)
     .then(() => {
       getAlvos();
+      visible.value = false;
       success();
     })
     .catch((_error) => {
