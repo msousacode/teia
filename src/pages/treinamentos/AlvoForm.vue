@@ -52,7 +52,7 @@
                     <q-item-section @click="editarAlvo(item)">Editar</q-item-section>
                   </q-item>
                   <q-item clickable>
-                    <q-item-section>Remover</q-item-section>
+                    <q-item-section @click="deletarAlvo(item)">Remover</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -74,6 +74,9 @@ import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const { success, error } = useNotify();
 
@@ -161,6 +164,27 @@ function getAlvos() {
 function editarAlvo(item: any) {
   form.value = toRaw(item);
   visible.value = true;
+}
+
+function deletarAlvo(item: any) {
+
+  $q.dialog({
+    title: 'Confirma a exclusão do Alvo?',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+      db.alvos
+        .delete(item.uuid)
+        .then(() => {
+          getAlvos();
+          success();
+        })
+        .catch((_error) => {
+          error('Erro ao tentar deletar o alvo', _error);
+        });
+    })
+    .onDismiss(() => { });
 }
 
 onMounted(() => {

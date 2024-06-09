@@ -4,28 +4,41 @@
       <div class="col-12 text-center">
         <p class="text-h6">Cadastro Aprendiz</p>
       </div>
-      <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
+      <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
         <q-input outlined label="Nome do Aprendiz" v-model="form.nome_aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          :rules="[(val) => (val && val.length > 0) || 'Nome do aprendiz é obrigatório']" />
 
-        <q-input outlined label="Nascimento" type="date" v-model="form.nasc_aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-input label="Data de Nasimento" outlined v-model="form.nasc_aprendiz"
+          :rules="[(val) => (val && val.length > 0) || 'Data de nascimento é obrigatório']">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="form.nasc_aprendiz" :locale="{
+        days: dias,
+        months: meses,
+        daysShort: diasAbreviados,
+        monthsShort: meses,
+      }" mask="DD/MM/YYYY">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
 
-        <q-input outlined label="Nome da Mãe" v-model="form.nome_mae"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-input outlined label="Nome da Mãe" v-model="form.nome_mae" class="q-mb-md" />
 
-        <q-input outlined label="Nome do Pai" v-model="form.nome_pai"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-input outlined label="Nome do Pai" v-model="form.nome_pai" class="q-mb-md" />
 
-        <q-input outlined label="Nome do Responsável" v-model="form.nome_responsavel"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-input outlined label="Nome do Responsável" v-model="form.nome_responsavel" class="q-mb-md" />
 
-        <q-input outlined label="Observações" v-model="form.observacao"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" type="textarea" />
+        <q-input outlined label="Observações" v-model="form.observacao" type="textarea" class="q-mb-md" />
 
-        <q-btn label="Salvar" color="primary" class="full-width" rounded type="submit" />
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" />
 
-        <q-btn label="Voltar" color="primary" class="full-width" rounded flat :to="{ name: 'aprendizes' }" />
+        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat :to="{ name: 'aprendizes' }" />
       </q-form>
     </div>
   </q-page>
@@ -37,6 +50,11 @@ import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import useNotify from 'src/composables/UseNotify';
+import {
+  dias,
+  diasAbreviados,
+  meses
+} from 'src/composables/utils';
 
 const { success, error } = useNotify();
 
@@ -55,7 +73,7 @@ const form = ref({
   sync: false,
 });
 
-function handleSubmit() {
+function submit() {
   if (routeLocation.params.action === 'edit') {
     handleUpdate();
     return;
