@@ -62,35 +62,58 @@
                 <q-item-label class="text-body1">{{
     item.treinamento
   }}</q-item-label>
+
                 <q-item-label caption>{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
+                  <q-item-label caption>Termina em: {{ item.configuracoes.data_final }}</q-item-label>
                   <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label caption>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.seg">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.ter">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qua">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qui">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sex">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sab">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn dense label="Configurar" color="teal" @click="handleOpenConfig(item)" />
+                <q-btn color="grey-7" round flat icon="more_vert">
+                  <q-menu cover auto-close>
+                    <q-list>
+                      <q-item clickable v-if="!item.configuracoes">
+                        <q-item-section @click="abrirConfiguracoes(item)">Configurar</q-item-section>
+                      </q-item>
+                      <q-item clickable v-if="item.configuracoes">
+                        <q-item-section @click="abrirConfiguracoes(item)">Concluir</q-item-section>
+                      </q-item>
+                      <q-item clickable v-if="item.configuracoes">
+                        <q-item-section @click="abrirConfiguracoes(item)">Deletar</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
               </q-item-section>
+              <!-- <q-item-section side>
+                <q-btn dense label="Configurar" color="teal" class="q-pa-sm" @click="abrirConfiguracoes(item)"
+                  v-if="!item.configuracoes" />
+
+                <q-btn dense label="Finalizar" color="indigo-6" class="q-pa-sm" @click="abrirConfiguracoes(item)"
+                  v-if="item.configuracoes" />
+              </q-item-section> -->
             </q-item>
           </q-list>
         </div>
@@ -248,7 +271,7 @@ function atualizar() {
     });
 }
 
-function handleOpenConfig(item: any) {
+function abrirConfiguracoes(item: any) {
   storeTreinamento.$state.treinamentoConfig = item;
   visibleConfiguracao.value = true;
 }
