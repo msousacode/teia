@@ -37,12 +37,12 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'atendimento-novo',
-        path: '/atendimento-novo/:action?',
+        path: '/atendimento-novo/:action?/atendimento/:uuidAtendimento?',
         component: () => import('pages/atendimentos/AtendimentoForm.vue'),
       },
       {
         name: 'coletas',
-        path: '/coletas/treinamento/:uuidTreinamento?/aprendiz/:uuidAprendiz?',
+        path: '/coletas/treinamento/:uuidTreinamento?/aprendiz/:uuidAprendiz?/diaColeta/:diaColeta?',
         component: () => import('pages/coletas/ColetaList.vue'),
       },
     ],

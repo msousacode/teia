@@ -7,22 +7,21 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
+          <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
+            :rules="[(val) => (val && val.length > 0) || 'Tipo de aprendizado é obrigatório']" />
 
-        <q-input outlined label="Nome do Alvo" v-model="form.nome_alvo"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          <q-input outlined label="Nome do Alvo" v-model="form.nome_alvo"
+            :rules="[(val) => (val && val.length > 0) || 'Nome do alvo é obrigatório']" />
 
-        <q-input outlined label="Pergunta" v-model="form.pergunta"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" type="textarea" autogrow />
+          <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow />
 
-        <q-input outlined label="Descrição do alvo" v-model="form.descricao_alvo"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" type="textarea" />
+          <q-input outlined label="Descrição do alvo" v-model="form.descricao_alvo" type="textarea" class="q-mt-md" />
+
+          <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" color="primary" type="submit" />
+        </q-form>
       </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn label="Salvar" class="full-width" color="primary" v-close-popup @click="handleSubmit" />
-      </q-card-actions>
     </q-card>
   </q-dialog>
 
@@ -49,10 +48,10 @@
               <q-menu cover auto-close>
                 <q-list>
                   <q-item clickable>
-                    <q-item-section>Editar</q-item-section>
+                    <q-item-section @click="editarAlvo(item)">Editar</q-item-section>
                   </q-item>
                   <q-item clickable>
-                    <q-item-section>Remover</q-item-section>
+                    <q-item-section @click="deletarAlvo(item)">Remover</q-item-section>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -74,6 +73,9 @@ import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const { success, error } = useNotify();
 
@@ -94,7 +96,7 @@ const aprendizados = [
 ];
 
 const form = ref({
-  uuid: uuid(),
+  uuid: '',
   nome_alvo: '',
   pergunta: '',
   descricao_alvo: '',
@@ -102,7 +104,30 @@ const form = ref({
   tipo_aprendizado: 'Habilidades de Atenção',
 });
 
-function handleSubmit() {
+async function handleSubmit() {
+
+  if (form.value.uuid) {
+    await db.alvos.put(toRaw(form.value)).then(() => {
+      visible.value = false;
+      success("Alvo atualizado com sucesso");
+    }).catch((_error) => {
+      error("Ocorreu um erro ao atualizar a anotação: ", _error);
+    });
+
+    visible.value = false;
+
+    form.value = {
+      uuid: '',
+      nome_alvo: '',
+      pergunta: '',
+      descricao_alvo: '',
+      treinamento_uuid_fk: store.getTreinamentoUuid,
+      tipo_aprendizado: 'Habilidades de Atenção',
+    };
+
+    return;
+  }
+
   if (
     form.value.treinamento_uuid_fk === '' ||
     form.value.treinamento_uuid_fk === null
@@ -110,12 +135,15 @@ function handleSubmit() {
     throw new Error('Treinamento não informado');
   }
 
+  form.value.uuid = uuid();
+
   const data = toRaw(form.value);
 
   db.alvos
     .add(data)
     .then(() => {
       getAlvos();
+      visible.value = false;
       success();
     })
     .catch((_error) => {
@@ -132,6 +160,32 @@ function getAlvos() {
     }).catch((_error) => {
       error('Erro ao consultar alvos', _error);
     });
+}
+
+function editarAlvo(item: any) {
+  form.value = toRaw(item);
+  visible.value = true;
+}
+
+function deletarAlvo(item: any) {
+
+  $q.dialog({
+    title: 'Confirma a exclusão do Alvo?',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+      db.alvos
+        .delete(item.uuid)
+        .then(() => {
+          getAlvos();
+          success();
+        })
+        .catch((_error) => {
+          error('Erro ao tentar deletar o alvo', _error);
+        });
+    })
+    .onDismiss(() => { });
 }
 
 onMounted(() => {

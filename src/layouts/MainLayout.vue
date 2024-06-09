@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title> </q-toolbar-title>
 
@@ -34,12 +27,7 @@
       <q-list>
         <q-item-label header> Menu </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-          @click="link.display"
-        />
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" @click="link.display" />
       </q-list>
     </q-drawer>
 
@@ -74,16 +62,16 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   }, */
   {
-    title: 'Aprendizes',
-    icon: 'mdi-account-multiple',
-    routeName: 'aprendizes',
+    title: 'Atendimentos',
+    icon: 'mdi-chart-line',
+    routeName: 'atendimentos',
     hide: true,
     display: () => 'none',
   },
   {
-    title: 'Atendimentos',
-    icon: 'mdi-chart-line',
-    routeName: 'atendimentos',
+    title: 'Aprendizes',
+    icon: 'mdi-account-multiple',
+    routeName: 'aprendizes',
     hide: true,
     display: () => 'none',
   },

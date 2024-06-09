@@ -12,26 +12,42 @@
           <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
             semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
 
-        <q-form class="col-md-7 col-xs-12 col-sm-12">
-          <q-input outlined label="Data Final de Treinamento" type="date" v-model="formTreinamento.data_final"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="confirmarConfiguracaoTreinamento">
+          <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
+            :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="formTreinamento.data_final" :locale="{
+    days: dias,
+    months: meses,
+    daysShort: diasAbreviados,
+    monthsShort: meses,
+  }" mask="DD/MM/YYYY">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
 
           <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
             :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+            :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
 
           <div class="q-gutter-sm q-mb-md">
-            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" />
-            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" />
+            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" :readonly="editMode" />
           </div>
+          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" type="subimit" />
         </q-form>
 
-        <q-btn label="Confirmar" color="green" class="full-width q-mb-md" rounded
-          @click="handleSelecionarConfigTreinamento" v-close-popup />
       </div>
     </q-card>
   </q-dialog>
@@ -43,12 +59,12 @@
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          :rules="[(val) => (val && val.length > 0) || 'Aprendiz é obrigatório']" :readonly="editMode" />
 
         <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          :rules="[(val) => (val && val.length > 0) || 'Data de ínicio obrigatório']" :readonly="editMode" />
 
-        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-mb-md" type="submit"
+        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-pa-sm q-mb-md" type="submit"
           @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
@@ -58,45 +74,62 @@
             ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
             <q-item clickable v-ripple>
               <q-item-section>
-                <q-item-label class="text-body1">{{
+                <q-item-label class="text-body1">Treinamento: {{
     item.treinamento
   }}</q-item-label>
-                <q-item-label caption>{{ item.protocolo }}</q-item-label>
+
+                <q-item-label class="q-pa-sm">{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
-                  <q-item-label caption>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.seg">
+                  <q-item-label class="q-pa-sm">Termina em: {{ item.configuracoes.data_final }}</q-item-label>
+                  <q-item-label>Repete: {{ item.configuracoes.repetir }}</q-item-label>
+                  <q-item-label>
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.ter">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qua">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qui">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sex">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sab">
+                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn dense label="Configurar" color="teal" @click="handleOpenConfig(item)" />
+                <q-btn color="grey-7" round flat icon="more_vert">
+                  <q-menu cover auto-close>
+                    <q-list>
+                      <q-item clickable v-if="!item.configuracoes">
+                        <q-item-section @click="abrirConfiguracoes(item)">Configurar</q-item-section>
+                      </q-item>
+                      <q-item clickable v-if="item.configuracoes">
+                        <q-item-section @click="abrirConfiguracoes(item)">Concluir</q-item-section>
+                      </q-item>
+                      <q-item clickable v-if="item.configuracoes">
+                        <q-item-section @click="abrirConfiguracoes(item)">Deletar</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
               </q-item-section>
             </q-item>
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="green" class="full-width q-mb-md" type="submit" @click="handleSubmit" />
+        <q-btn label="Salvar" color="green" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-mb-md" rounded flat :to="{ name: 'atendimentos' }" />
+        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
+          :to="{ name: 'atendimentos' }" />
       </q-form>
     </div>
   </q-page>
@@ -110,6 +143,18 @@ import TreinamentoList from '../treinamentos/TreinamentoList.vue';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import useNotify from 'src/composables/UseNotify';
+import useFormatUtil from 'src/composables/UseFormatUtil';
+import {
+  dias,
+  diasAbreviados,
+  meses
+} from 'src/composables/utils';
+
+const routeLocation = useRoute();
+
+const editMode = routeLocation.params.action === 'edit';
+
+const uuidAtendimento = routeLocation.params.uuidAtendimento;
 
 const { success, error } = useNotify();
 
@@ -121,9 +166,9 @@ const storeAprendiz = useAprendizStore();
 
 const storeTreinamento = useTreinamentoStore();
 
-const routeLocation = useRoute();
-
 const aprendizes = ref<any[]>([]);
+
+const { formatDataDB } = useFormatUtil()
 
 const form = ref({
   uuid: '',
@@ -163,38 +208,90 @@ const coleta = {
   semana: 0,
 }
 
-function handleSubmit() {
-  form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
-    (_treinamento) => {
-      return {
-        uuid: _treinamento.uuid,
-        treinamento: _treinamento.treinamento,
-        protocolo: _treinamento.protocolo,
-        configuracoes: toRaw(_treinamento.configuracoes),
-      };
-    }
-  );
+async function salvarAtendimento() {
 
-  if (routeLocation.params.action === 'edit') {
-    handleUpdate();
-    return;
+  if (form.value.data_inicio === '') {
+    error('Data de início é obrigatória');
+    throw new Error('Data de início é obrigatória');
+  }
+
+  if (storeTreinamento.getTreinamentosSelecionados.length === 0) {
+    error('Selecione ao menos um treinamento');
+    throw new Error('Selecione ao menos um treinamento');
+  } else {
+
+    storeTreinamento.getTreinamentosSelecionados.forEach((treinamento) => {
+      if (treinamento.configuracoes === undefined) {
+        error('Configure todos os treinamentos');
+        throw new Error('Configure todos os treinamentos');
+      }
+    });
+  }
+
+  if (storeTreinamento.treinamentoConfig.new) {
+    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados
+      .filter(treinamento => treinamento.uuid === storeTreinamento.$state.treinamentoConfig.uuid).map(
+        (_treinamento) => {
+          return {
+            uuid: _treinamento.uuid,
+            treinamento: _treinamento.treinamento,
+            protocolo: _treinamento.protocolo,
+            configuracoes: toRaw(_treinamento.configuracoes),
+          };
+        }
+      );
+  } else {
+    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
+      (_treinamento) => {
+        return {
+          uuid: _treinamento.uuid,
+          treinamento: _treinamento.treinamento,
+          protocolo: _treinamento.protocolo,
+          configuracoes: toRaw(_treinamento.configuracoes),
+        };
+      }
+    );
+  }
+
+  if (editMode) {
+    atualizar();
   }
 
   form.value.uuid = uuid();
   const data = toRaw(form.value);
 
-  db.atendimentos
-    .add(data)
-    .then(() => {
-      handleGerarColetas(data)
-      success('Coletas geradas com sucesso');
-    })
-    .catch((_error) => {
-      error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
+  if (storeTreinamento.treinamentoConfig.new && editMode) {
+
+    await db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
+      let raw = toRaw(res);
+      raw?.treinamentos.push(...data.treinamentos);
+
+      if (raw === undefined) {
+        error('Não foi possível atualizar os treinamentos do atendimento');
+        throw new Error('Não foi possível atualizar os treinamentos do atendimento');
+      }
+
+      db.atendimentos.put(raw).catch(() => {
+        throw Error('Ocorreu um erro ao tentar atualizar');
+      });
     });
+
+  } else {
+    await db.atendimentos
+      .add(data)
+      .catch((_error) => {
+        error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
+      });
+  }
+
+  await handleGerarColetas(data).then(() => {
+    success('Coletas geradas com sucesso!');
+  }).catch(() => {
+    throw Error('Ocorreu um erro ao tentar gerar as coletas');
+  });
 }
 
-function handleUpdate() {
+function atualizar() {
   db.aprendizes
     .update(storeAprendiz.getAprendizUuid, toRaw(form.value))
     .then(() => {
@@ -205,12 +302,15 @@ function handleUpdate() {
     });
 }
 
-function handleOpenConfig(item: any) {
+function abrirConfiguracoes(item: any) {
   storeTreinamento.$state.treinamentoConfig = item;
   visibleConfiguracao.value = true;
 }
 
-function handleSelecionarConfigTreinamento() {
+function confirmarConfiguracaoTreinamento() {
+
+  validarSeFoiSelecionadoDiaDaSemana();
+
   storeTreinamento.treinamentosSelecionados
     .filter(
       (treinamento) =>
@@ -230,11 +330,18 @@ function handleSelecionarConfigTreinamento() {
     sex: false,
     sab: false,
   };
+
+  visibleConfiguracao.value = false
 }
 
-function handleGerarColetas(data: any) {
+async function handleGerarColetas(data: any) {
 
   const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
+
+  if (numeroSemanas > 12) {
+    error('O período de treinamento não pode ser superior há 3 meses.');
+    throw new Error('O período de treinamento não pode ser maior que 3 meses.');
+  }
 
   const aprendizUuuiFk = data.aprendiz.value;
   const treinamentoUuidFk = data.treinamentos[0].uuid;
@@ -248,47 +355,54 @@ function handleGerarColetas(data: any) {
 
   const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
 
-  db.alvos.where({ treinamento_uuid_fk: treinamentoUuidFk }).toArray().then((data) => {
-    const raw = toRaw(data)
+  data.treinamentos.forEach((t: any) => {
 
-    raw.forEach((alvo) => {
+    db.alvos.where({ treinamento_uuid_fk: t.uuid }).toArray().then((data) => {
+      const raw = toRaw(data)
 
-      let count = 0;
-      let countSemana = 0;
+      raw.forEach((alvo) => {
 
-      while (count < (quantidadeRepticao * numeroSemanas)) {
-        count++;
-        countSemana++;
+        let count = 0;
+        let countSemana = 0;
 
-        coleta.uuid = uuid();
-        coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-        coleta.treinamento_uuid_fk = treinamentoUuidFk;
-        coleta.data_final_coleta = dataFinalColeta;
-        coleta.alvo = alvo;
-        coleta.seg = seg;
-        coleta.ter = ter;
-        coleta.qua = qua;
-        coleta.qui = qui;
-        coleta.sex = sex;
-        coleta.sab = sab;
-        coleta.semana = countSemana;//contador para identificar a semana da coleta.
-        coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+        while (count < (quantidadeRepticao * numeroSemanas)) {
+          count++;
+          countSemana++;
 
-        if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
-          countSemana = 0;
+          coleta.uuid = uuid();
+          coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+          coleta.treinamento_uuid_fk = treinamentoUuidFk;
+          coleta.data_final_coleta = dataFinalColeta;
+          coleta.alvo = alvo;
+          coleta.seg = seg;
+          coleta.ter = ter;
+          coleta.qua = qua;
+          coleta.qui = qui;
+          coleta.sex = sex;
+          coleta.sab = sab;
+          coleta.semana = countSemana;//contador para identificar a semana da coleta.
+          coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+
+          if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
+            countSemana = 0;
+          }
+
+          db.coletas
+            .add(coleta)
+            .catch((_error) => {
+              error('Ocorreu um erro ao tentar salvar', _error);
+            });
         }
-
-        db.coletas
-          .add(coleta)
-          .catch((_error) => {
-            error('Ocorreu um erro ao tentar salvar', _error);
-          });
-      }
+      });
     });
   });
 }
 
 function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
+
+  if (storeTreinamento.getTreinamentoConfig.new && editMode) {
+    dataInicio = formatDataDB(dataInicio);
+  }
 
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 
@@ -301,15 +415,42 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
   return Math.ceil(diffDays / 7);
 }
 
+function validarSeFoiSelecionadoDiaDaSemana() {
+  if (
+    !formTreinamento.value.seg &&
+    !formTreinamento.value.ter &&
+    !formTreinamento.value.qua &&
+    !formTreinamento.value.qui &&
+    !formTreinamento.value.sex &&
+    !formTreinamento.value.sab) {
+    error('Informe pelo menos um dia da semana');
+    throw new Error('Informe pelo menos um dia da semana');
+  }
+}
+
 onMounted(() => {
-  db.aprendizes.toArray().then((res) => {
-    res.forEach((aprendiz) => {
-      aprendizes.value.push({
-        label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
-          }`,
-        value: aprendiz.uuid,
+
+  if (editMode) {
+
+    const uuidAtendimento = routeLocation.params.uuidAtendimento;
+
+    db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
+      const raw = toRaw(res);
+      form.value = raw;
+      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos;
+
+    });
+
+  } else {
+    db.aprendizes.toArray().then((res) => {
+      res.forEach((aprendiz) => {
+        aprendizes.value.push({
+          label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
+            }`,
+          value: aprendiz.uuid,
+        });
       });
     });
-  });
+  }
 });
 </script>

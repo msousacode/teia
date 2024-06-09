@@ -9,19 +9,19 @@
 
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="treinamento">
-        <q-form class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md" @submit.prevent="handleSubmit">
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
           <q-input outlined label="Nome do Treinamento" v-model="form.treinamento"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+            :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']" />
 
           <q-select outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+            :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" />
 
-          <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
-            :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
+          <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md" />
 
-          <q-btn label="Salvar" color="primary" class="full-width" rounded type="submit" />
+          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" />
 
-          <q-btn label="Voltar" color="primary" class="full-width" rounded flat :to="{ name: 'treinamentos' }" />
+          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
+            :to="{ name: 'treinamentos' }" />
         </q-form>
       </q-tab-panel>
 

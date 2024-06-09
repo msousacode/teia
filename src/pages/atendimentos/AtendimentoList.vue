@@ -2,8 +2,9 @@
   <div class="q-pa-md">
 
     <q-dialog v-model="visible" header="Aprendizes" modal="true">
-      <q-card class="my-card">
+      <q-card class="my-card full-width">
         <div class="q-pa-md">
+          <div class="text-body1 q-mb-sm">Selecione o dia para coleta:</div>
           <q-list bordered separator v-for="(
               item, index
             ) in treinamentos" :key="index">
@@ -15,24 +16,25 @@
                 <div v-if="item.configuracoes">
                   <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label caption>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.seg">
-                      {{ item.configuracoes.seg ? 'SEG' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.ter">
-                      {{ item.configuracoes.ter ? 'TER' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qua">
-                      {{ item.configuracoes.qua ? 'QUA' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.qui">
-                      {{ item.configuracoes.qui ? 'QUI' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sex">
-                      {{ item.configuracoes.sex ? 'SEX' : '' }}
-                    </q-chip>
-                    <q-chip color="brown-5" text-color="white" v-if="item.configuracoes.sab">
-                      {{ item.configuracoes.sab ? 'SAB' : '' }}
-                    </q-chip>
+
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'seg$' + item.uuid" label="SEG" color="teal"
+                      v-if="item.configuracoes.seg" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'ter$' + item.uuid" label="TER" color="teal"
+                      v-if="item.configuracoes.ter" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'qua$' + item.uuid" label="QUA" color="teal"
+                      v-if="item.configuracoes.qua" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'qui$' + item.uuid" label="QUI" color="teal"
+                      v-if="item.configuracoes.qui" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'sex$' + item.uuid" label="SEX" color="teal"
+                      v-if="item.configuracoes.sex" />
+
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'sab$' + item.uuid" label="SAB" color="teal"
+                      v-if="item.configuracoes.sab" />
+
                   </q-item-label>
                 </div>
               </q-item-section>
@@ -54,6 +56,8 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
+            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editarAtendimento(props.row)">
+            </q-btn>
             <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="handleSelectAtendimento(props.row)">
             </q-btn>
           </q-td>
@@ -68,7 +72,6 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
-import { liveQuery } from 'dexie';
 import { db } from 'src/db';
 import { useRouter } from 'vue-router';
 
@@ -84,21 +87,30 @@ const treinamentos = ref<any[]>([]);
 
 const aprendizUuidSelecionado = ref('');
 
+const diaColeta = ref('');
+
 function handleSelectAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
   aprendizUuidSelecionado.value = raw.aprendiz.value;
-  console.log(aprendizUuidSelecionado.value);
+  treinamentos.value = raw.treinamentos
   visible.value = true;
 }
 
 function handleRedirectColetas(_uuidTreinamento: string, _uuidAprendiz: string) {
-  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz } });
+  const diaPesquisa = diaColeta.value.split('$')[0];
+  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa } });
 }
+
+function editarAtendimento(atendimento: any) {
+  const raw = toRaw(atendimento);
+  router.push({ name: 'atendimento-novo', params: { action: 'edit', uuidAtendimento: raw.uuid } });
+}
+
 
 onMounted(() => {
   loading.value = true;
 
-  liveQuery(() => db.atendimentos.toArray()).subscribe((res) => {
+  db.atendimentos.toArray().then(res => {
     atendimentos.value = toRaw(res);
 
     atendimentos.value.forEach((item) => {
@@ -106,6 +118,6 @@ onMounted(() => {
     });
 
     loading.value = false;
-  });
+  })
 });
 </script>

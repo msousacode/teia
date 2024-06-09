@@ -54,11 +54,10 @@ export default function useFormatUtil() {
    * @param data
    * @returns
    */
-  const formatDataDB = (data: string | null) => {
-    if (data === null) {
-      return null;
+  const formatDataDB = (data: string) => {
+    if (data === undefined || data === null) {
+      throw new Error('Data não pode ser nula');
     }
-
     const partes = data.split('/');
     return `${partes[2]}-${partes[1]}-${partes[0]}`;
   };
