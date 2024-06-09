@@ -49,7 +49,7 @@
               <q-menu cover auto-close>
                 <q-list>
                   <q-item clickable>
-                    <q-item-section>Editar</q-item-section>
+                    <q-item-section @click="editarAlvo(item)">Editar</q-item-section>
                   </q-item>
                   <q-item clickable>
                     <q-item-section>Remover</q-item-section>
@@ -94,7 +94,7 @@ const aprendizados = [
 ];
 
 const form = ref({
-  uuid: uuid(),
+  uuid: '',
   nome_alvo: '',
   pergunta: '',
   descricao_alvo: '',
@@ -102,13 +102,37 @@ const form = ref({
   tipo_aprendizado: 'Habilidades de Atenção',
 });
 
-function handleSubmit() {
+async function handleSubmit() {
+
+  if (form.value.uuid) {
+    await db.alvos.put(toRaw(form.value)).then(() => {
+      success("Alvo atualizado com sucesso");
+    }).catch((_error) => {
+      error("Ocorreu um erro ao atualizar a anotação: ", _error);
+    });
+
+    visible.value = false;
+
+    form.value = {
+      uuid: '',
+      nome_alvo: '',
+      pergunta: '',
+      descricao_alvo: '',
+      treinamento_uuid_fk: store.getTreinamentoUuid,
+      tipo_aprendizado: 'Habilidades de Atenção',
+    };
+
+    return;
+  }
+
   if (
     form.value.treinamento_uuid_fk === '' ||
     form.value.treinamento_uuid_fk === null
   ) {
     throw new Error('Treinamento não informado');
   }
+
+  form.value.uuid = uuid();
 
   const data = toRaw(form.value);
 
@@ -132,6 +156,11 @@ function getAlvos() {
     }).catch((_error) => {
       error('Erro ao consultar alvos', _error);
     });
+}
+
+function editarAlvo(item: any) {
+  form.value = toRaw(item);
+  visible.value = true;
 }
 
 onMounted(() => {

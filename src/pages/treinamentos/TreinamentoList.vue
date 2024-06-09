@@ -31,10 +31,12 @@ import { onMounted, ref, toRaw } from 'vue';
 import { columns, visibleColumns } from './table';
 import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 
 const { error } = useNotify();
+
+const router = useRouter();
 
 const routeLocation = useRoute();
 
