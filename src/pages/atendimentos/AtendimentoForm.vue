@@ -59,16 +59,16 @@
             ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
             <q-item clickable v-ripple>
               <q-item-section>
-                <q-item-label class="text-body1">{{
+                <q-item-label class="text-body1">Treinamento: {{
     item.treinamento
   }}</q-item-label>
 
-                <q-item-label caption>{{ item.protocolo }}</q-item-label>
+                <q-item-label class="q-pa-sm">{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <q-item-label caption>Termina em: {{ item.configuracoes.data_final }}</q-item-label>
-                  <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
-                  <q-item-label caption>
+                  <q-item-label class="q-pa-sm">Termina em: {{ item.configuracoes.data_final }}</q-item-label>
+                  <q-item-label>Repete: {{ item.configuracoes.repetir }}</q-item-label>
+                  <q-item-label>
                     <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
@@ -107,13 +107,6 @@
                   </q-menu>
                 </q-btn>
               </q-item-section>
-              <!-- <q-item-section side>
-                <q-btn dense label="Configurar" color="teal" class="q-pa-sm" @click="abrirConfiguracoes(item)"
-                  v-if="!item.configuracoes" />
-
-                <q-btn dense label="Finalizar" color="indigo-6" class="q-pa-sm" @click="abrirConfiguracoes(item)"
-                  v-if="item.configuracoes" />
-              </q-item-section> -->
             </q-item>
           </q-list>
         </div>
