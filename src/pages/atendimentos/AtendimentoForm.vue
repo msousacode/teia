@@ -210,6 +210,11 @@ const coleta = {
 
 async function salvarAtendimento() {
 
+  if (form.value.data_inicio === '') {
+    error('Data de início é obrigatória');
+    throw new Error('Data de início é obrigatória');
+  }
+
   if (storeTreinamento.getTreinamentosSelecionados.length === 0) {
     error('Selecione ao menos um treinamento');
     throw new Error('Selecione ao menos um treinamento');
