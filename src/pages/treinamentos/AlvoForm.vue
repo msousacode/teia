@@ -7,7 +7,7 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
           <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
             :rules="[(val) => (val && val.length > 0) || 'Tipo de aprendizado é obrigatório']" />
 
@@ -104,11 +104,12 @@ const form = ref({
   tipo_aprendizado: 'Habilidades de Atenção',
 });
 
-async function handleSubmit() {
+async function salvarAlvo() {
 
   if (form.value.uuid) {
     await db.alvos.put(toRaw(form.value)).then(() => {
       visible.value = false;
+      reset();
       success("Alvo atualizado com sucesso");
     }).catch((_error) => {
       error("Ocorreu um erro ao atualizar a anotação: ", _error);
@@ -144,6 +145,7 @@ async function handleSubmit() {
     .then(() => {
       getAlvos();
       visible.value = false;
+      reset();
       success();
     })
     .catch((_error) => {
@@ -179,6 +181,7 @@ function deletarAlvo(item: any) {
         .delete(item.uuid)
         .then(() => {
           getAlvos();
+          reset();
           success();
         })
         .catch((_error) => {
@@ -186,6 +189,21 @@ function deletarAlvo(item: any) {
         });
     })
     .onDismiss(() => { });
+}
+
+function reset() {
+  form.value = {
+    uuid: '',
+    nome_alvo: '',
+    pergunta: '',
+    descricao_alvo: '',
+    treinamento_uuid_fk: store.getTreinamentoUuid,
+    tipo_aprendizado: 'Habilidades de Atenção',
+  }
+
+  alvos.value = [];
+
+  store.$reset();
 }
 
 onMounted(() => {

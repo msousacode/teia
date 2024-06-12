@@ -285,6 +285,7 @@ async function salvarAtendimento() {
   }
 
   await handleGerarColetas(data).then(() => {
+    reset();
     success('Coletas geradas com sucesso!');
   }).catch(() => {
     throw Error('Ocorreu um erro ao tentar gerar as coletas');
@@ -295,6 +296,7 @@ function atualizar() {
   db.aprendizes
     .update(storeAprendiz.getAprendizUuid, toRaw(form.value))
     .then(() => {
+      reset();
       console.log('Atualizado com sucesso');
     })
     .catch(() => {
@@ -426,6 +428,30 @@ function validarSeFoiSelecionadoDiaDaSemana() {
     error('Informe pelo menos um dia da semana');
     throw new Error('Informe pelo menos um dia da semana');
   }
+}
+
+function reset() {
+  form.value = {
+    uuid: '',
+    aprendiz: '',
+    data_inicio: '',
+    sync: false,
+    treinamentos: [{}],
+  };
+
+  formTreinamento.value = {
+    data_final: '',
+    repetir: 1,
+    seg: false,
+    ter: false,
+    qua: false,
+    qui: false,
+    sex: false,
+    sab: false
+  }
+
+  storeAprendiz.$reset();
+  storeTreinamento.$reset();
 }
 
 onMounted(() => {

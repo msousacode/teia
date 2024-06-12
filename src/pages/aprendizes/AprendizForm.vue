@@ -96,11 +96,27 @@ function handleUpdate() {
   db.aprendizes
     .update(store.getAprendizUuid, toRaw(form.value))
     .then(() => {
+      reset();
       success();
     })
     .catch(() => {
       error('Ocorreu um erro ao tentar atualizar o aprendiz');
     });
+}
+
+function reset() {
+  form.value = {
+    uuid: '',
+    nome_aprendiz: '',
+    nasc_aprendiz: '',
+    nome_mae: '',
+    nome_pai: '',
+    nome_responsavel: '',
+    observacao: '',
+    sync: false,
+  };
+
+  store.$reset();
 }
 
 onMounted(() => {
