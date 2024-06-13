@@ -1,16 +1,11 @@
 <template>
-  <q-item
-    clickable
-    :to="{ name: routeName }"
-    exact
-    v-if="hide"
-    :style="title === 'Seja Premium' ? { backgroundColor: 'yellow' } : {}"
-  >
-    <q-item-section v-if="icon" avatar class="text-teal-8">
+  <q-item clickable :to="{ name: routeName }" exact v-if="hide"
+    :style="title === 'Seja Premium' ? { backgroundColor: 'yellow' } : {}">
+    <q-item-section v-if="icon" avatar style="color: #e91e63">
       <q-icon :name="icon" />
     </q-item-section>
 
-    <q-item-section class="text-teal-8 text-h6">
+    <q-item-section class="text-h6" style="color: #e91e63">
       <q-item-label>{{ title }}</q-item-label>
       <q-item-label caption>{{ caption }}</q-item-label>
     </q-item-section>

@@ -72,6 +72,7 @@ function handleSubmit() {
     .add(data)
     .then((res) => {
       store.$state.treinamentoUuid = res;
+      reset();
       success();
     })
     .catch((_error) => {
@@ -83,6 +84,7 @@ function handleUpdate() {
   db.treinamentos
     .update(store.getTreinamentoUuid, toRaw(form.value))
     .then(() => {
+      reset();
       success();
     })
     .catch((_error) => {
@@ -90,6 +92,17 @@ function handleUpdate() {
     });
 }
 
+function reset() {
+  form.value = {
+    uuid: '',
+    treinamento: '',
+    protocolo: '',
+    descricao: '',
+    sync: false,
+  };
+
+  store.$reset();
+}
 onMounted(() => {
   if (routeLocation.params.action === 'edit') {
     db.treinamentos
