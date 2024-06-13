@@ -253,10 +253,6 @@ async function salvarAtendimento() {
     );
   }
 
-  if (editMode) {
-    atualizar();
-  }
-
   form.value.uuid = uuid();
   const data = toRaw(form.value);
 
@@ -276,6 +272,8 @@ async function salvarAtendimento() {
       });
     });
 
+  } else if (storeTreinamento.treinamentoConfig.new === undefined && editMode) {
+    atualizar();
   } else {
     await db.atendimentos
       .add(data)
@@ -284,7 +282,7 @@ async function salvarAtendimento() {
       });
   }
 
-  await handleGerarColetas(data).then(() => {
+  await gerarColetas(data).then(() => {
     reset();
     success('Coletas geradas com sucesso!');
   }).catch(() => {
@@ -336,7 +334,7 @@ function confirmarConfiguracaoTreinamento() {
   visibleConfiguracao.value = false
 }
 
-async function handleGerarColetas(data: any) {
+async function gerarColetas(data: any) {
 
   const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
 
@@ -402,14 +400,10 @@ async function handleGerarColetas(data: any) {
 
 function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 
-  if (storeTreinamento.getTreinamentoConfig.new && editMode) {
-    dataInicio = formatDataDB(dataInicio);
-  }
-
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 
   const dataInicioDate = new Date(dataInicio);
-  const dataFinalDate = new Date(dataFinal);
+  const dataFinalDate = new Date(formatDataDB(dataFinal));
 
   const diffTime = Math.abs(dataFinalDate.getTime() - dataInicioDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

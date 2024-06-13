@@ -59,6 +59,7 @@ export default function useFormatUtil() {
       throw new Error('Data não pode ser nula');
     }
     const partes = data.split('/');
+
     return `${partes[2]}-${partes[1]}-${partes[0]}`;
   };
 
