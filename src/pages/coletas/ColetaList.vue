@@ -160,7 +160,7 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="mdi-check" color="green" @click="handleSalvarRespostas" />
+            <q-btn fab icon="mdi-check" color="primary" @click="salvarRespostas" />
         </q-page-sticky>
     </q-page>
 </template>
@@ -203,16 +203,16 @@ const alvoSelecionadoToAnotacao = ref<Coleta>();
 
 const anotacoesFeitas = ref<Anotacao[]>([]);
 
-function handleSalvarRespostas() {
+function salvarRespostas() {
     const _respostas = toRaw(respostas.value);
     const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
 
     arr.map(i => {
         db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
-            if (updated)
-                console.log("Resposta atualizada");
-            else
-                console.log("Nada foi atualizado");
+            if (updated) {
+                success("Respostas salvas com sucesso!");
+            } else
+                error("Nada foi atualizado");
         });
     });
 }
@@ -238,15 +238,16 @@ async function getColetasNaoRespondidas() {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
 
-    const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
-
     db.coletas
         .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
         .and(coleta => coleta.foi_respondido === false)
         .sortBy('semana').then((data) => {
             const raw = toRaw(data)
             raw.map(coleta => {
-                if (diasSemanasQueTemColeta.includes(_diaColeta.toString())) {
+
+                const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+
+                if (dia === _diaColeta.toString()) {
                     alvosPendentes.value.push(coleta)
                 }
             })
@@ -265,15 +266,16 @@ async function getColetasRespondidas() {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
 
-    const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
-
     db.coletas
         .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
         .and(coleta => coleta.foi_respondido === true)
         .sortBy('semana').then((data) => {
             const raw = toRaw(data);
             raw.map(coleta => {
-                if (diasSemanasQueTemColeta.includes(_diaColeta.toString())) {
+
+                const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+
+                if (dia === _diaColeta.toString()) {
                     alvosColetados.value.push(coleta)
                 }
             })
@@ -282,39 +284,6 @@ async function getColetasRespondidas() {
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
         anotacoesFeitas.value = data;
     });
-}
-
-async function getDiasSemanasQueTemColeta() {
-    let configuracoesTreinamento;
-
-    await db.coletas.where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento }).toArray().then(res => {
-        configuracoesTreinamento = res[0]
-    }).catch(_error => {
-        error(_error);
-    });
-
-    let arr = []
-
-    if (configuracoesTreinamento?.seg) {
-        arr.push('seg')
-    }
-    if (configuracoesTreinamento?.ter) {
-        arr.push('ter')
-    }
-    if (configuracoesTreinamento?.qua) {
-        arr.push('qua')
-    }
-    if (configuracoesTreinamento?.qui) {
-        arr.push('qui')
-    }
-    if (configuracoesTreinamento?.sex) {
-        arr.push('sex')
-    }
-    if (configuracoesTreinamento?.sab) {
-        arr.push('sab')
-    }
-
-    return arr;
 }
 
 function abreModalAnotacao(item: any) {

@@ -109,7 +109,6 @@ async function salvarAlvo() {
   if (form.value.uuid) {
     await db.alvos.put(toRaw(form.value)).then(() => {
       visible.value = false;
-      reset();
       success("Alvo atualizado com sucesso");
     }).catch((_error) => {
       error("Ocorreu um erro ao atualizar a anotação: ", _error);

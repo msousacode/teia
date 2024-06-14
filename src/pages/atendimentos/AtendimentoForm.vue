@@ -353,6 +353,16 @@ async function gerarColetas(data: any) {
   const sex = data.treinamentos[0].configuracoes.sex;
   const sab = data.treinamentos[0].configuracoes.sab;
 
+  const diasDaSemana: any[] = [];
+  diasDaSemana[0] = { value: 'seg', selected: seg };
+  diasDaSemana[1] = { value: 'ter', selected: ter };
+  diasDaSemana[2] = { value: 'qua', selected: qua };
+  diasDaSemana[3] = { value: 'qui', selected: qui };
+  diasDaSemana[4] = { value: 'sex', selected: sex };
+  diasDaSemana[5] = { value: 'sab', selected: sab };
+
+  const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
+
   const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
 
   data.treinamentos.forEach((t: any) => {
@@ -369,29 +379,58 @@ async function gerarColetas(data: any) {
           count++;
           countSemana++;
 
-          coleta.uuid = uuid();
-          coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-          coleta.treinamento_uuid_fk = treinamentoUuidFk;
-          coleta.data_final_coleta = dataFinalColeta;
-          coleta.alvo = alvo;
-          coleta.seg = seg;
-          coleta.ter = ter;
-          coleta.qua = qua;
-          coleta.qui = qui;
-          coleta.sex = sex;
-          coleta.sab = sab;
-          coleta.semana = countSemana;//contador para identificar a semana da coleta.
-          coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+          diasDaSemanaComTreinamento.map((_dia) => {
+
+            coleta.uuid = uuid();
+            coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+            coleta.treinamento_uuid_fk = treinamentoUuidFk;
+            coleta.data_final_coleta = dataFinalColeta;
+            coleta.alvo = alvo;
+
+            if (_dia.value === 'seg')
+              coleta.seg = diasDaSemana[0].selected;
+            else
+              coleta.seg = false;
+
+            if (_dia.value === 'ter')
+              coleta.ter = diasDaSemana[1].selected;
+            else
+              coleta.ter = false;
+
+            if (_dia.value === 'qua')
+              coleta.qua = diasDaSemana[2].selected;
+            else
+              coleta.qua = false;
+
+            if (_dia.value === 'qui')
+              coleta.qui = diasDaSemana[3].selected;
+            else
+              coleta.qui = false;
+
+            if (_dia.value === 'sex')
+              coleta.sex = diasDaSemana[4].selected;
+            else
+              coleta.sex = false;
+
+            if (_dia.value === 'sab')
+              coleta.sab = diasDaSemana[5].selected;
+            else
+              coleta.sab = false;
+
+            coleta.semana = countSemana;//contador para identificar a semana da coleta.
+            coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+
+            db.coletas
+              .add(coleta)
+              .catch((_error) => {
+                error('Ocorreu um erro ao tentar salvar', _error);
+              });
+
+          });
 
           if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
             countSemana = 0;
           }
-
-          db.coletas
-            .add(coleta)
-            .catch((_error) => {
-              error('Ocorreu um erro ao tentar salvar', _error);
-            });
         }
       });
     });
