@@ -12,7 +12,7 @@
           <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
             semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
 
-        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="confirmarConfiguracaoTreinamento">
+        <q-form class="col-md-7 col-xs-12 col-sm-12">
           <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
             :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
             <template v-slot:append>
@@ -38,14 +38,14 @@
             :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
 
           <div class="q-gutter-sm q-mb-md">
-            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="primary" :readonly="editMode" />
           </div>
-          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" type="subimit" />
+          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" @click="confirmarConfiguracaoTreinamento" />
         </q-form>
 
       </div>
@@ -59,12 +59,14 @@
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Aprendiz é obrigatório']" :readonly="editMode" />
+          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
+          :readonly="editMode" />
 
         <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => (val && val.length > 0) || 'Data de ínicio obrigatório']" :readonly="editMode" />
+          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Data de ínicio obrigatório' : true]"
+          :readonly="editMode" />
 
-        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-pa-sm q-mb-md" type="submit"
+        <q-btn label="Selecionar Treinamentos" color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
@@ -84,22 +86,22 @@
                   <q-item-label class="q-pa-sm">Termina em: {{ item.configuracoes.data_final }}</q-item-label>
                   <q-item-label>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.seg">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.ter">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qua">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qui">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sex">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sab">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>
@@ -126,7 +128,8 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="green" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento" />
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento"
+          :disable="!isSubmitted" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
           :to="{ name: 'atendimentos' }" />
@@ -135,7 +138,7 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
+import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
@@ -168,7 +171,7 @@ const storeTreinamento = useTreinamentoStore();
 
 const aprendizes = ref<any[]>([]);
 
-const { formatDataDB } = useFormatUtil()
+const { formatDataDB } = useFormatUtil();
 
 const form = ref({
   uuid: '',
@@ -207,6 +210,10 @@ const coleta = {
   sab: false,
   semana: 0,
 }
+
+const isSubmitted = computed(() => {
+  return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0;
+});
 
 async function salvarAtendimento() {
 
