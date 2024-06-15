@@ -10,8 +10,8 @@
             </q-form>
         </div>
 
-        <div class="q-mt-sm row items-start q-gutter-md">
-            <q-card class="my-card bg-green text-white">
+        <div class="q-mt-sm row items-start q-gutter-md justify-center">
+            <q-card class="my-card bg-green text-white" style="width: 45%;">
                 <q-card-section>
                     <div class="text-subtitle1">FEZ SEM AJUDA
                         <br /> INDEPENDÊNCIA
@@ -19,9 +19,10 @@
                     <div class="text-h6">70%</div>
                 </q-card-section>
             </q-card>
-            <q-card class="my-card bg-red-5 text-white">
+            <q-card class="my-card bg-red-5 text-white" style="width: 45%;">
                 <q-card-section>
-                    <div class="text-subtitle1">FEZ COM AJUDA <br /> OU NÃO FEZ</div>
+                    <div class=" text-subtitle1">FEZ COM AJUDA <br /> OU NÃO FEZ
+                    </div>
                     <div class="text-h6">30%</div>
                 </q-card-section>
             </q-card>
