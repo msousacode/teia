@@ -186,12 +186,14 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { Anotacao, db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
 import { useQuasar } from 'quasar';
+
+const router = useRouter();
 
 const $q = useQuasar();
 
@@ -257,6 +259,8 @@ function salvarRespostas() {
                 error("Nada foi atualizado");
         });
     });
+
+    router.go(0);
 }
 
 let value = 0;
@@ -299,7 +303,6 @@ function getColetasNaoRespondidas() {
     getColetasRespondidas();
 
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
-        console.log(data);
         anotacoesFeitas.value = data;
     });
 }
@@ -350,6 +353,7 @@ function salvarAnotacao() {
             anotacao: anotacao.value,
             sync: false
         }).then(() => {
+            router.go(0);
             success("Anotação salva com sucesso");
         }).catch((_error) => {
             error("Ocorreu um erro ao salvar a anotação: ", _error);
@@ -362,6 +366,7 @@ function salvarAnotacao() {
 
 function atualizarAnotacao() {
     db.anotacoes.update(alvoSelecionadoToAnotacao.value?.uuid, { anotacao: anotacao.value }).then(() => {
+        router.go(0);
         success("Anotação atualizada com sucesso");
     }).catch((_error) => {
         error("Ocorreu um erro ao atualizar a anotação: ", _error);
@@ -380,7 +385,7 @@ function excluirAnotacao(item: any) {
     })
         .onOk(async () => {
             db.anotacoes.delete(item.uuid).then(() => {
-                getColetasNaoRespondidas();
+                router.go(0);
                 success("Anotação excluída com sucesso");
             }).catch((_error) => {
                 error("Ocorreu um erro ao excluir a anotação: ", _error);
