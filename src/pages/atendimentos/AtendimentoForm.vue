@@ -179,6 +179,7 @@ const form = ref({
   data_inicio: '',
   sync: false,
   treinamentos: [{}],
+  aprendiz_uuid_fk: '',
 });
 
 const formTreinamento = ref({
@@ -262,6 +263,12 @@ async function salvarAtendimento() {
 
   form.value.uuid = uuid();
   const data = toRaw(form.value);
+  data.aprendiz_uuid_fk = form.value.aprendiz.value;
+
+  if (data.aprendiz_uuid_fk === '') {
+    error('Selecione um aprendiz');
+    throw new Error('Selecione um aprendiz');
+  }
 
   if (storeTreinamento.treinamentoConfig.new && editMode) {
 
@@ -298,6 +305,7 @@ async function salvarAtendimento() {
 }
 
 function atualizar() {
+  console.log('Verificar quando é chamado e porque é usado');
   db.aprendizes
     .update(storeAprendiz.getAprendizUuid, toRaw(form.value))
     .then(() => {
