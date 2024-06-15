@@ -49,7 +49,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao(item)">Anotar</q-item-section>
+                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
                                                 </q-item>
                                             </q-list>
                                         </q-menu>
@@ -57,13 +57,27 @@
                                 </div>
                             </div>
                         </q-card-section>
+                        <div v-if="_tipoColeta === 'ocorrencia'">
+                            <q-input v-model="counts[index].count" dense placeholder="0"
+                                class="q-mb-md q-mr-xl q-ml-xl text-h6">
+                                <template v-slot:before>
+                                    <q-btn round dense color="orange-10" icon="remove" @click="counts[index].count--"
+                                        :disable="counts[index].count < 1" />
+                                </template>
 
-                        <q-radio v-model="respostas[item.alvo.identificador]" val="nao-fez" label="NÃO FEZ" keep-color
-                            color="red" size="lg" />
-                        <q-radio v-model="respostas[item.alvo.identificador]" val="com-ajuda" label="COM AJUDA"
-                            keep-color color="orange" size="lg" />
-                        <q-radio v-model="respostas[item.alvo.identificador]" val="sem-ajuda" label="SEM AJUDA"
-                            keep-color color="green" size="lg" />
+                                <template v-slot:after>
+                                    <q-btn round dense color="info" icon="add" @click="counts[index].count++" />
+                                </template>
+                            </q-input>
+                        </div>
+                        <div v-else>
+                            <q-radio v-model="respostas[item.alvo.identificador]" val="nao-fez" label="NÃO FEZ"
+                                keep-color color="red" size="lg" />
+                            <q-radio v-model="respostas[item.alvo.identificador]" val="com-ajuda" label="COM AJUDA"
+                                keep-color color="orange" size="lg" />
+                            <q-radio v-model="respostas[item.alvo.identificador]" val="sem-ajuda" label="SEM AJUDA"
+                                keep-color color="green" size="lg" />
+                        </div>
                     </q-card>
 
                 </div>
@@ -83,7 +97,8 @@
                             <div class="row items-center no-wrap">
                                 <div class="col">
                                     <span class="text-subtitle2 text-teal"
-                                        v-if="item.alvo.descricao_alvo.length > 0">Descrição do Alvo:</span>
+                                        v-if="item.alvo.descricao_alvo.length > 0">Descrição do
+                                        Alvo:</span>
                                     <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal">Alvo: </span>
@@ -99,7 +114,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao(item)">Anotar</q-item-section>
+                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
                                                 </q-item>
                                             </q-list>
                                         </q-menu>
@@ -108,12 +123,17 @@
                             </div>
                         </q-card-section>
 
-                        <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red" size="lg"
-                            disable />
-                        <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
-                            size="lg" disable />
-                        <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
-                            size="lg" disable />
+                        <div v-if="_tipoColeta === 'ocorrencia'">
+                            <div class="text-h6 text-teal q-ml-md q-pb-md">Total: {{ item.resposta }}</div>
+                        </div>
+                        <div v-else>
+                            <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
+                                size="lg" disable />
+                            <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
+                                size="lg" disable />
+                            <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
+                                size="lg" disable />
+                        </div>
                     </q-card>
 
                 </div>
@@ -142,7 +162,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao(item)">Editar</q-item-section>
+                                                        @click="abreModalAnotacao(item, 'editar')">Editar</q-item-section>
                                                 </q-item>
                                                 <q-item clickable>
                                                     <q-item-section
@@ -160,18 +180,20 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="mdi-check" color="green" @click="handleSalvarRespostas" />
+            <q-btn fab icon="save" color="green" @click="salvarRespostas" />
         </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { Anotacao, db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
 import { useQuasar } from 'quasar';
+
+const router = useRouter();
 
 const $q = useQuasar();
 
@@ -187,6 +209,8 @@ const _uuidAprendiz = routeLocation.params.uuidAprendiz;
 
 const _diaColeta = routeLocation.params.diaColeta;
 
+const _tipoColeta = routeLocation.params.tipoColeta;
+
 const tab = ref('pendentes');
 
 const respostas = ref<any>({}); // um objeto para armazenar as respostas
@@ -195,26 +219,48 @@ const alvosPendentes = ref<any[]>([]);
 
 const alvosColetados = ref<any[]>([]);
 
-const uuidAnotacaoEdit = ref('');
-
 const anotacao = ref('');
 
 const alvoSelecionadoToAnotacao = ref<Coleta>();
 
 const anotacoesFeitas = ref<Anotacao[]>([]);
 
-function handleSalvarRespostas() {
+let counts = ref<any[]>([]);
+
+let acaoAnotacao = '';
+
+function salvarRespostas() {
     const _respostas = toRaw(respostas.value);
     const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
 
+    if (_tipoColeta === 'ocorrencia') {
+        counts.value.map((item) => {
+
+            if (item.count === 0) {
+                return;
+            }
+
+            db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
+                if (updated) {
+                    success("Respostas salvas com sucesso!");
+                } else
+                    error("Nada foi atualizado");
+            });
+        });
+
+        return;
+    }
+
     arr.map(i => {
         db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
-            if (updated)
-                console.log("Resposta atualizada");
-            else
-                console.log("Nada foi atualizado");
+            if (updated) {
+                success("Respostas salvas com sucesso!");
+            } else
+                error("Nada foi atualizado");
         });
     });
+
+    router.go(0);
 }
 
 let value = 0;
@@ -232,13 +278,11 @@ function exibirDivisorAlvosPorSemana(semana: number) {
     return returnValue;//TODO ordenar a query para trazer os resultados organizados por semana para facilitar a função.
 }
 
-async function getColetasNaoRespondidas() {
+function getColetasNaoRespondidas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
-
-    const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
 
     db.coletas
         .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
@@ -246,26 +290,31 @@ async function getColetasNaoRespondidas() {
         .sortBy('semana').then((data) => {
             const raw = toRaw(data)
             raw.map(coleta => {
-                if (diasSemanasQueTemColeta.includes(_diaColeta.toString())) {
-                    alvosPendentes.value.push(coleta)
+
+                const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+
+                if (dia === _diaColeta.toString()) {
+                    alvosPendentes.value.push(coleta);
+                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.uuid, count: 0 }));
                 }
             })
         });
 
+    getAnotacoes();
     getColetasRespondidas();
+}
 
+function getAnotacoes() {
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
         anotacoesFeitas.value = data;
     });
 }
 
-async function getColetasRespondidas() {
+function getColetasRespondidas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
-
-    const diasSemanasQueTemColeta = await getDiasSemanasQueTemColeta();
 
     db.coletas
         .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
@@ -273,7 +322,10 @@ async function getColetasRespondidas() {
         .sortBy('semana').then((data) => {
             const raw = toRaw(data);
             raw.map(coleta => {
-                if (diasSemanasQueTemColeta.includes(_diaColeta.toString())) {
+
+                const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+
+                if (dia === _diaColeta.toString()) {
                     alvosColetados.value.push(coleta)
                 }
             })
@@ -284,74 +336,40 @@ async function getColetasRespondidas() {
     });
 }
 
-async function getDiasSemanasQueTemColeta() {
-    let configuracoesTreinamento;
-
-    await db.coletas.where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento }).toArray().then(res => {
-        configuracoesTreinamento = res[0]
-    }).catch(_error => {
-        error(_error);
-    });
-
-    let arr = []
-
-    if (configuracoesTreinamento?.seg) {
-        arr.push('seg')
-    }
-    if (configuracoesTreinamento?.ter) {
-        arr.push('ter')
-    }
-    if (configuracoesTreinamento?.qua) {
-        arr.push('qua')
-    }
-    if (configuracoesTreinamento?.qui) {
-        arr.push('qui')
-    }
-    if (configuracoesTreinamento?.sex) {
-        arr.push('sex')
-    }
-    if (configuracoesTreinamento?.sab) {
-        arr.push('sab')
-    }
-
-    return arr;
-}
-
-function abreModalAnotacao(item: any) {
+function abreModalAnotacao(item: any, acao: string) {
     visibleAnotacao.value = true;
-    uuidAnotacaoEdit.value = item.uuid;
     anotacao.value = item.anotacao;
-
+    alvoSelecionadoToAnotacao.value = item;
+    acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
-async function salvarAnotacao() {
-
-    if (uuidAnotacaoEdit.value) {
+function salvarAnotacao() {
+    if (acaoAnotacao === 'editar') {
         atualizarAnotacao()
-        return;
-    }
+    } else {
 
-    await db.anotacoes.add({
-        uuid: uuid(),
-        alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
-        treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
-        data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
-        anotacao: anotacao.value,
-        sync: false
-    }).then(() => {
-        getColetasNaoRespondidas();
-        success("Anotação salva com sucesso");
-    }).catch((_error) => {
-        error("Ocorreu um erro ao salvar a anotação: ", _error);
-    });
+        db.anotacoes.add({
+            uuid: uuid(),
+            alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
+            treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
+            data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
+            anotacao: anotacao.value,
+            sync: false
+        }).then(() => {
+            getAnotacoes();
+            success("Anotação salva com sucesso");
+        }).catch((_error) => {
+            error("Ocorreu um erro ao salvar a anotação: ", _error);
+        });
+    }
 
     visibleAnotacao.value = false;
     anotacao.value = '';
 }
 
-async function atualizarAnotacao() {
-    await db.anotacoes.update(uuidAnotacaoEdit.value, { anotacao: anotacao.value }).then(() => {
-        getColetasNaoRespondidas();
+function atualizarAnotacao() {
+    db.anotacoes.update(alvoSelecionadoToAnotacao.value?.uuid, { anotacao: anotacao.value }).then(() => {
+        getAnotacoes();
         success("Anotação atualizada com sucesso");
     }).catch((_error) => {
         error("Ocorreu um erro ao atualizar a anotação: ", _error);
@@ -370,7 +388,7 @@ function excluirAnotacao(item: any) {
     })
         .onOk(async () => {
             db.anotacoes.delete(item.uuid).then(() => {
-                getColetasNaoRespondidas();
+                getAnotacoes();
                 success("Anotação excluída com sucesso");
             }).catch((_error) => {
                 error("Ocorreu um erro ao excluir a anotação: ", _error);
@@ -380,7 +398,7 @@ function excluirAnotacao(item: any) {
 }
 
 onMounted(() => {
-    getColetasNaoRespondidas()
+    getColetasNaoRespondidas();
 });
 
 </script>

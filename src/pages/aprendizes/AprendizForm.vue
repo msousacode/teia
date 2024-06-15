@@ -6,10 +6,10 @@
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
         <q-input outlined label="Nome do Aprendiz" v-model="form.nome_aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Nome do aprendiz é obrigatório']" />
+          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
 
-        <q-input label="Data de Nasimento" outlined v-model="form.nasc_aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Data de nascimento é obrigatório']">
+        <q-input label="Data de Nasimento" outlined v-model="form.nasc_aprendiz" mask="##/##/####"
+          :rules="[val => isSubmitted ? (val && val.length > 0) || 'Data de nascimento é obrigatório' : true]">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -36,7 +36,7 @@
 
         <q-input outlined label="Observações" v-model="form.observacao" type="textarea" class="q-mb-md" />
 
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" />
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" :disable="!isSubmitted" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat :to="{ name: 'aprendizes' }" />
       </q-form>
@@ -44,7 +44,7 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
+import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
@@ -62,6 +62,11 @@ const store = useAprendizStore();
 
 const routeLocation = useRoute();
 
+
+let isSubmitted = computed(() => {
+  return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '';
+});
+
 const form = ref({
   uuid: '',
   nome_aprendiz: '',
@@ -74,6 +79,8 @@ const form = ref({
 });
 
 function submit() {
+  isSubmitted.value = true;
+
   if (routeLocation.params.action === 'edit') {
     handleUpdate();
     return;
@@ -85,6 +92,7 @@ function submit() {
   db.aprendizes
     .add(data)
     .then(() => {
+      reset();
       success();
     })
     .catch((error) => {
@@ -105,16 +113,14 @@ function handleUpdate() {
 }
 
 function reset() {
-  form.value = {
-    uuid: '',
-    nome_aprendiz: '',
-    nasc_aprendiz: '',
-    nome_mae: '',
-    nome_pai: '',
-    nome_responsavel: '',
-    observacao: '',
-    sync: false,
-  };
+  form.value.uuid = '';
+  form.value.nome_aprendiz = '';
+  form.value.nasc_aprendiz = '';
+  form.value.nome_mae = '';
+  form.value.nome_pai = '';
+  form.value.nome_responsavel = '';
+  form.value.observacao = '';
+  form.value.sync = false;
 
   store.$reset();
 }

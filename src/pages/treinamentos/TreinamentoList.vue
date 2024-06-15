@@ -18,7 +18,7 @@
         </template>
       </q-table>
 
-      <q-btn label="CONFIRMAR" color="primary" class="full-width q-mt-md" rounded @click="handleSelectTreinamentos"
+      <q-btn label="Confirmar" color="primary" class="full-width q-mt-md q-pa-sm" @click="handleSelectTreinamentos"
         v-show="props.selecionarTreinamento" v-close-popup />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
@@ -31,16 +31,12 @@ import { onMounted, ref, toRaw } from 'vue';
 import { columns, visibleColumns } from './table';
 import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 
 const { error } = useNotify();
 
 const router = useRouter();
-
-const routeLocation = useRoute();
-
-const editMode = routeLocation.params.action === 'edit';
 
 const loading = ref(false);
 
@@ -83,10 +79,9 @@ onMounted(async () => {
   loading.value = true;
 
   await getTreinamentos();
-  if (editMode) {
-    store.getTreinamentosSelecionados.forEach((treinamento) => {
-      treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
-    });
-  }
+
+  store.getTreinamentosSelecionados.forEach((treinamento) => {
+    treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
+  });
 });
 </script>

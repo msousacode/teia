@@ -10,12 +10,12 @@
             ) in treinamentos" :key="index">
             <q-item clickable v-ripple>
               <q-item-section>
-                <q-item-label class="text-body1">{{ item.treinamento }}</q-item-label>
-                <q-item-label caption>{{ item.protocolo }}</q-item-label>
+                <q-item-label class="text-subtitle1 q-mb-sm">{{ item.treinamento }}</q-item-label>
+                <q-item-label class="text-subtitle1 q-mt-sm">{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <q-item-label caption>Repete: {{ item.configuracoes.repetir }}</q-item-label>
-                  <q-item-label caption>
+                  <q-item-label class="text-subtitle1 q-mt-sm">Repete: {{ item.configuracoes.repetir }}</q-item-label>
+                  <q-item-label>
 
                     <q-radio class="text-body2" v-model="diaColeta" :val="'seg$' + item.uuid" label="SEG" color="teal"
                       v-if="item.configuracoes.seg" />
@@ -40,7 +40,7 @@
               </q-item-section>
               <q-item-section side>
                 <q-btn dense label="Coletar" color="primary"
-                  @click="handleRedirectColetas(item.uuid, aprendizUuidSelecionado)" />
+                  @click="redirecionaColetas(item.uuid, item.protocolo, aprendizUuidSelecionado)" />
               </q-item-section>
             </q-item>
           </q-list>
@@ -96,9 +96,10 @@ function handleSelectAtendimento(atendimento: any) {
   visible.value = true;
 }
 
-function handleRedirectColetas(_uuidTreinamento: string, _uuidAprendiz: string) {
+function redirecionaColetas(_uuidTreinamento: string, protocolo: string, _uuidAprendiz: string) {
   const diaPesquisa = diaColeta.value.split('$')[0];
-  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa } });
+  const _tipoColeta = protocolo === 'Protocolo ABC' ? 'abc' : 'ocorrencia';
+  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa, tipoColeta: _tipoColeta } });
 }
 
 function editarAtendimento(atendimento: any) {

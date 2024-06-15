@@ -12,7 +12,7 @@
           <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
             semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
 
-        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="confirmarConfiguracaoTreinamento">
+        <q-form class="col-md-7 col-xs-12 col-sm-12">
           <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
             :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
             <template v-slot:append>
@@ -38,14 +38,14 @@
             :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
 
           <div class="q-gutter-sm q-mb-md">
-            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="teal" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="teal" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="primary" :readonly="editMode" />
+            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="primary" :readonly="editMode" />
           </div>
-          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" type="subimit" />
+          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" @click="confirmarConfiguracaoTreinamento" />
         </q-form>
 
       </div>
@@ -59,12 +59,14 @@
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => (val && val.length > 0) || 'Aprendiz é obrigatório']" :readonly="editMode" />
+          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
+          :readonly="editMode" />
 
         <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => (val && val.length > 0) || 'Data de ínicio obrigatório']" :readonly="editMode" />
+          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Data de ínicio obrigatório' : true]"
+          :readonly="editMode" />
 
-        <q-btn label="Selecionar Treinamentos" color="primary" class="full-width q-pa-sm q-mb-md" type="submit"
+        <q-btn label="Selecionar Treinamentos" color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
@@ -84,22 +86,22 @@
                   <q-item-label class="q-pa-sm">Termina em: {{ item.configuracoes.data_final }}</q-item-label>
                   <q-item-label>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.seg">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.ter">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qua">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.qui">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sex">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip color="blue-grey-6" text-color="white" v-if="item.configuracoes.sab">
+                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>
@@ -126,7 +128,8 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="green" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento" />
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento"
+          :disable="!isSubmitted" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
           :to="{ name: 'atendimentos' }" />
@@ -135,7 +138,7 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
+import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
@@ -168,7 +171,7 @@ const storeTreinamento = useTreinamentoStore();
 
 const aprendizes = ref<any[]>([]);
 
-const { formatDataDB } = useFormatUtil()
+const { formatDataDB } = useFormatUtil();
 
 const form = ref({
   uuid: '',
@@ -207,6 +210,10 @@ const coleta = {
   sab: false,
   semana: 0,
 }
+
+const isSubmitted = computed(() => {
+  return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0;
+});
 
 async function salvarAtendimento() {
 
@@ -253,10 +260,6 @@ async function salvarAtendimento() {
     );
   }
 
-  if (editMode) {
-    atualizar();
-  }
-
   form.value.uuid = uuid();
   const data = toRaw(form.value);
 
@@ -276,6 +279,8 @@ async function salvarAtendimento() {
       });
     });
 
+  } else if (storeTreinamento.treinamentoConfig.new === undefined && editMode) {
+    atualizar();
   } else {
     await db.atendimentos
       .add(data)
@@ -284,7 +289,7 @@ async function salvarAtendimento() {
       });
   }
 
-  await handleGerarColetas(data).then(() => {
+  await gerarColetas(data).then(() => {
     reset();
     success('Coletas geradas com sucesso!');
   }).catch(() => {
@@ -336,7 +341,7 @@ function confirmarConfiguracaoTreinamento() {
   visibleConfiguracao.value = false
 }
 
-async function handleGerarColetas(data: any) {
+async function gerarColetas(data: any) {
 
   const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
 
@@ -355,6 +360,16 @@ async function handleGerarColetas(data: any) {
   const sex = data.treinamentos[0].configuracoes.sex;
   const sab = data.treinamentos[0].configuracoes.sab;
 
+  const diasDaSemana: any[] = [];
+  diasDaSemana[0] = { value: 'seg', selected: seg };
+  diasDaSemana[1] = { value: 'ter', selected: ter };
+  diasDaSemana[2] = { value: 'qua', selected: qua };
+  diasDaSemana[3] = { value: 'qui', selected: qui };
+  diasDaSemana[4] = { value: 'sex', selected: sex };
+  diasDaSemana[5] = { value: 'sab', selected: sab };
+
+  const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
+
   const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
 
   data.treinamentos.forEach((t: any) => {
@@ -371,29 +386,58 @@ async function handleGerarColetas(data: any) {
           count++;
           countSemana++;
 
-          coleta.uuid = uuid();
-          coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-          coleta.treinamento_uuid_fk = treinamentoUuidFk;
-          coleta.data_final_coleta = dataFinalColeta;
-          coleta.alvo = alvo;
-          coleta.seg = seg;
-          coleta.ter = ter;
-          coleta.qua = qua;
-          coleta.qui = qui;
-          coleta.sex = sex;
-          coleta.sab = sab;
-          coleta.semana = countSemana;//contador para identificar a semana da coleta.
-          coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+          diasDaSemanaComTreinamento.map((_dia) => {
+
+            coleta.uuid = uuid();
+            coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+            coleta.treinamento_uuid_fk = treinamentoUuidFk;
+            coleta.data_final_coleta = dataFinalColeta;
+            coleta.alvo = alvo;
+
+            if (_dia.value === 'seg')
+              coleta.seg = diasDaSemana[0].selected;
+            else
+              coleta.seg = false;
+
+            if (_dia.value === 'ter')
+              coleta.ter = diasDaSemana[1].selected;
+            else
+              coleta.ter = false;
+
+            if (_dia.value === 'qua')
+              coleta.qua = diasDaSemana[2].selected;
+            else
+              coleta.qua = false;
+
+            if (_dia.value === 'qui')
+              coleta.qui = diasDaSemana[3].selected;
+            else
+              coleta.qui = false;
+
+            if (_dia.value === 'sex')
+              coleta.sex = diasDaSemana[4].selected;
+            else
+              coleta.sex = false;
+
+            if (_dia.value === 'sab')
+              coleta.sab = diasDaSemana[5].selected;
+            else
+              coleta.sab = false;
+
+            coleta.semana = countSemana;//contador para identificar a semana da coleta.
+            coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+
+            db.coletas
+              .add(coleta)
+              .catch((_error) => {
+                error('Ocorreu um erro ao tentar salvar', _error);
+              });
+
+          });
 
           if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
             countSemana = 0;
           }
-
-          db.coletas
-            .add(coleta)
-            .catch((_error) => {
-              error('Ocorreu um erro ao tentar salvar', _error);
-            });
         }
       });
     });
@@ -402,14 +446,10 @@ async function handleGerarColetas(data: any) {
 
 function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 
-  if (storeTreinamento.getTreinamentoConfig.new && editMode) {
-    dataInicio = formatDataDB(dataInicio);
-  }
-
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 
   const dataInicioDate = new Date(dataInicio);
-  const dataFinalDate = new Date(dataFinal);
+  const dataFinalDate = new Date(formatDataDB(dataFinal));
 
   const diffTime = Math.abs(dataFinalDate.getTime() - dataInicioDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
