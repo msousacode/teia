@@ -14,7 +14,7 @@ export interface Alvo {
   pergunta: string;
   descricao_alvo: string;
   repetir: number;
-  treinamento_uuid_fk: string | null;
+  treinamento_uuid_fk: string;
   sync: boolean;
   identificador: string;
 }
@@ -83,10 +83,10 @@ export class DataBase extends Dexie {
     this.version(1).stores({
       aprendizes: 'uuid',
       treinamentos: 'uuid',
-      alvos: 'uuid, treinamento_uuid_fk',
-      atendimentos: 'uuid, aprendiz_uuid_fk',
+      alvos: 'uuid,treinamento_uuid_fk',
+      atendimentos: 'uuid,aprendiz_uuid_fk',
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
-      anotacoes: 'uuid, treinamento_uuid_fk',
+      anotacoes: 'uuid,treinamento_uuid_fk',
     });
   }
 }

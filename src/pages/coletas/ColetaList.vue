@@ -49,7 +49,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao(item)">Anotar</q-item-section>
+                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
                                                 </q-item>
                                             </q-list>
                                         </q-menu>
@@ -114,7 +114,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao(item)">Anotar</q-item-section>
+                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
                                                 </q-item>
                                             </q-list>
                                         </q-menu>
@@ -162,7 +162,7 @@
                                             <q-list>
                                                 <q-item clickable>
                                                     <q-item-section
-                                                        @click="abreModalAnotacao(item)">Editar</q-item-section>
+                                                        @click="abreModalAnotacao(item, 'editar')">Editar</q-item-section>
                                                 </q-item>
                                                 <q-item clickable>
                                                     <q-item-section
@@ -217,8 +217,6 @@ const alvosPendentes = ref<any[]>([]);
 
 const alvosColetados = ref<any[]>([]);
 
-const uuidAnotacaoEdit = ref('');
-
 const anotacao = ref('');
 
 const alvoSelecionadoToAnotacao = ref<Coleta>();
@@ -226,6 +224,8 @@ const alvoSelecionadoToAnotacao = ref<Coleta>();
 const anotacoesFeitas = ref<Anotacao[]>([]);
 
 let counts = ref<any[]>([]);
+
+let acaoAnotacao = '';
 
 function salvarRespostas() {
     const _respostas = toRaw(respostas.value);
@@ -304,7 +304,7 @@ function getColetasNaoRespondidas() {
     });
 }
 
-async function getColetasRespondidas() {
+function getColetasRespondidas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
@@ -330,14 +330,15 @@ async function getColetasRespondidas() {
     });
 }
 
-function abreModalAnotacao(item: any) {
+function abreModalAnotacao(item: any, acao: string) {
     visibleAnotacao.value = true;
     anotacao.value = item.anotacao;
+    alvoSelecionadoToAnotacao.value = item;
+    acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
 function salvarAnotacao() {
-
-    if (uuidAnotacaoEdit.value) {
+    if (acaoAnotacao === 'editar') {
         atualizarAnotacao()
     } else {
 
@@ -360,8 +361,7 @@ function salvarAnotacao() {
 }
 
 function atualizarAnotacao() {
-    db.anotacoes.update(uuidAnotacaoEdit.value, { anotacao: anotacao.value }).then(() => {
-        getColetasNaoRespondidas();
+    db.anotacoes.update(alvoSelecionadoToAnotacao.value?.uuid, { anotacao: anotacao.value }).then(() => {
         success("Anotação atualizada com sucesso");
     }).catch((_error) => {
         error("Ocorreu um erro ao atualizar a anotação: ", _error);
