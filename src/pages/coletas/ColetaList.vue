@@ -300,8 +300,11 @@ function getColetasNaoRespondidas() {
             })
         });
 
+    getAnotacoes();
     getColetasRespondidas();
+}
 
+function getAnotacoes() {
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
         anotacoesFeitas.value = data;
     });
@@ -353,7 +356,7 @@ function salvarAnotacao() {
             anotacao: anotacao.value,
             sync: false
         }).then(() => {
-            router.go(0);
+            getAnotacoes();
             success("Anotação salva com sucesso");
         }).catch((_error) => {
             error("Ocorreu um erro ao salvar a anotação: ", _error);
@@ -366,7 +369,7 @@ function salvarAnotacao() {
 
 function atualizarAnotacao() {
     db.anotacoes.update(alvoSelecionadoToAnotacao.value?.uuid, { anotacao: anotacao.value }).then(() => {
-        router.go(0);
+        getAnotacoes();
         success("Anotação atualizada com sucesso");
     }).catch((_error) => {
         error("Ocorreu um erro ao atualizar a anotação: ", _error);
@@ -385,7 +388,7 @@ function excluirAnotacao(item: any) {
     })
         .onOk(async () => {
             db.anotacoes.delete(item.uuid).then(() => {
-                router.go(0);
+                getAnotacoes();
                 success("Anotação excluída com sucesso");
             }).catch((_error) => {
                 error("Ocorreu um erro ao excluir a anotação: ", _error);

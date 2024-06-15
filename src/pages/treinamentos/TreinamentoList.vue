@@ -18,7 +18,7 @@
         </template>
       </q-table>
 
-      <q-btn label="Confirmar" color="primary" class="full-width q-mt-md" rounded @click="handleSelectTreinamentos"
+      <q-btn label="Confirmar" color="primary" class="full-width q-mt-md q-pa-sm" @click="handleSelectTreinamentos"
         v-show="props.selecionarTreinamento" v-close-popup />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
