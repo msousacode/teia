@@ -123,12 +123,17 @@
                             </div>
                         </q-card-section>
 
-                        <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red" size="lg"
-                            disable />
-                        <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
-                            size="lg" disable />
-                        <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
-                            size="lg" disable />
+                        <div v-if="_tipoColeta === 'ocorrencia'">
+                            <div class="text-h6 text-teal q-ml-md q-pb-md">Total: {{ item.resposta }}</div>
+                        </div>
+                        <div v-else>
+                            <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
+                                size="lg" disable />
+                            <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
+                                size="lg" disable />
+                            <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
+                                size="lg" disable />
+                        </div>
                     </q-card>
 
                 </div>
@@ -228,7 +233,12 @@ function salvarRespostas() {
 
     if (_tipoColeta === 'ocorrencia') {
         counts.value.map((item) => {
-            db.coletas.update(item.identificador, { resposta: item.count }).then(function (updated) {
+
+            if (item.count === 0) {
+                return;
+            }
+
+            db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
                 if (updated) {
                     success("Respostas salvas com sucesso!");
                 } else
@@ -264,7 +274,7 @@ function exibirDivisorAlvosPorSemana(semana: number) {
     return returnValue;//TODO ordenar a query para trazer os resultados organizados por semana para facilitar a função.
 }
 
-async function getColetasNaoRespondidas() {
+function getColetasNaoRespondidas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
@@ -289,6 +299,7 @@ async function getColetasNaoRespondidas() {
     getColetasRespondidas();
 
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
+        console.log(data);
         anotacoesFeitas.value = data;
     });
 }
@@ -321,38 +332,35 @@ async function getColetasRespondidas() {
 
 function abreModalAnotacao(item: any) {
     visibleAnotacao.value = true;
-    uuidAnotacaoEdit.value = item.uuid;
     anotacao.value = item.anotacao;
-
 }
 
-async function salvarAnotacao() {
+function salvarAnotacao() {
 
     if (uuidAnotacaoEdit.value) {
         atualizarAnotacao()
-        return;
-    }
+    } else {
 
-    await db.anotacoes.add({
-        uuid: uuid(),
-        alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
-        treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
-        data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
-        anotacao: anotacao.value,
-        sync: false
-    }).then(() => {
-        getColetasNaoRespondidas();
-        success("Anotação salva com sucesso");
-    }).catch((_error) => {
-        error("Ocorreu um erro ao salvar a anotação: ", _error);
-    });
+        db.anotacoes.add({
+            uuid: uuid(),
+            alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
+            treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
+            data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
+            anotacao: anotacao.value,
+            sync: false
+        }).then(() => {
+            success("Anotação salva com sucesso");
+        }).catch((_error) => {
+            error("Ocorreu um erro ao salvar a anotação: ", _error);
+        });
+    }
 
     visibleAnotacao.value = false;
     anotacao.value = '';
 }
 
-async function atualizarAnotacao() {
-    await db.anotacoes.update(uuidAnotacaoEdit.value, { anotacao: anotacao.value }).then(() => {
+function atualizarAnotacao() {
+    db.anotacoes.update(uuidAnotacaoEdit.value, { anotacao: anotacao.value }).then(() => {
         getColetasNaoRespondidas();
         success("Anotação atualizada com sucesso");
     }).catch((_error) => {
