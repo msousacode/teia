@@ -57,13 +57,27 @@
                                 </div>
                             </div>
                         </q-card-section>
+                        <div v-if="_tipoColeta === 'ocorrencia'">
+                            <q-input v-model="counts[index].count" dense placeholder="0"
+                                class="q-mb-md q-mr-xl q-ml-xl text-h6">
+                                <template v-slot:before>
+                                    <q-btn round dense color="orange-10" icon="remove" @click="counts[index].count--"
+                                        :disable="counts[index].count < 1" />
+                                </template>
 
-                        <q-radio v-model="respostas[item.alvo.identificador]" val="nao-fez" label="NÃO FEZ" keep-color
-                            color="red" size="lg" />
-                        <q-radio v-model="respostas[item.alvo.identificador]" val="com-ajuda" label="COM AJUDA"
-                            keep-color color="orange" size="lg" />
-                        <q-radio v-model="respostas[item.alvo.identificador]" val="sem-ajuda" label="SEM AJUDA"
-                            keep-color color="green" size="lg" />
+                                <template v-slot:after>
+                                    <q-btn round dense color="info" icon="add" @click="counts[index].count++" />
+                                </template>
+                            </q-input>
+                        </div>
+                        <div v-else>
+                            <q-radio v-model="respostas[item.alvo.identificador]" val="nao-fez" label="NÃO FEZ"
+                                keep-color color="red" size="lg" />
+                            <q-radio v-model="respostas[item.alvo.identificador]" val="com-ajuda" label="COM AJUDA"
+                                keep-color color="orange" size="lg" />
+                            <q-radio v-model="respostas[item.alvo.identificador]" val="sem-ajuda" label="SEM AJUDA"
+                                keep-color color="green" size="lg" />
+                        </div>
                     </q-card>
 
                 </div>
@@ -83,7 +97,8 @@
                             <div class="row items-center no-wrap">
                                 <div class="col">
                                     <span class="text-subtitle2 text-teal"
-                                        v-if="item.alvo.descricao_alvo.length > 0">Descrição do Alvo:</span>
+                                        v-if="item.alvo.descricao_alvo.length > 0">Descrição do
+                                        Alvo:</span>
                                     <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal">Alvo: </span>
@@ -160,7 +175,7 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="mdi-check" color="primary" @click="salvarRespostas" />
+            <q-btn fab icon="save" color="green" @click="salvarRespostas" />
         </q-page-sticky>
     </q-page>
 </template>
@@ -187,6 +202,8 @@ const _uuidAprendiz = routeLocation.params.uuidAprendiz;
 
 const _diaColeta = routeLocation.params.diaColeta;
 
+const _tipoColeta = routeLocation.params.tipoColeta;
+
 const tab = ref('pendentes');
 
 const respostas = ref<any>({}); // um objeto para armazenar as respostas
@@ -203,9 +220,24 @@ const alvoSelecionadoToAnotacao = ref<Coleta>();
 
 const anotacoesFeitas = ref<Anotacao[]>([]);
 
+let counts = ref<any[]>([]);
+
 function salvarRespostas() {
     const _respostas = toRaw(respostas.value);
     const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
+
+    if (_tipoColeta === 'ocorrencia') {
+        counts.value.map((item) => {
+            db.coletas.update(item.identificador, { resposta: item.count }).then(function (updated) {
+                if (updated) {
+                    success("Respostas salvas com sucesso!");
+                } else
+                    error("Nada foi atualizado");
+            });
+        });
+
+        return;
+    }
 
     arr.map(i => {
         db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
@@ -248,7 +280,8 @@ async function getColetasNaoRespondidas() {
                 const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
 
                 if (dia === _diaColeta.toString()) {
-                    alvosPendentes.value.push(coleta)
+                    alvosPendentes.value.push(coleta);
+                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.uuid, count: 0 }));
                 }
             })
         });
@@ -349,7 +382,7 @@ function excluirAnotacao(item: any) {
 }
 
 onMounted(() => {
-    getColetasNaoRespondidas()
+    getColetasNaoRespondidas();
 });
 
 </script>
