@@ -48,22 +48,15 @@ const router = useRouter();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
-    title: 'Meu Perfil',
-    icon: 'mdi-city',
-    routeName: 'editar-terreiro',
+    title: 'Relatórios',
+    icon: 'mdi-chart-line',
+    routeName: 'relatorios',
     hide: true,
     display: () => 'none',
   },
-  /* {
-    title: 'Painel',
-    icon: 'mdi-view-dashboard',
-    routeName: 'painel',
-    hide: true,
-    display: () => 'none',
-  }, */
   {
     title: 'Atendimentos',
-    icon: 'mdi-chart-line',
+    icon: 'mdi-view-dashboard',
     routeName: 'atendimentos',
     hide: true,
     display: () => 'none',
