@@ -88,19 +88,98 @@ function pesquisar() {
 }
 
 function generatePdf() {
+
     const data = [
-        { name: 'John', age: 30, city: 'New York' },
-        { name: 'Jane', age: 40, city: 'Chicago' },
-    ]; // substitua isso pelos seus dados JSON
+        {
+            cabecario: {
+                descricao: 'Relatório gerado em 16/06/2024'
+            },
+            profissional: {
+                nome: 'Catarina Soares Sobral',
+                documento: 'CRO 5406'
+            },
+            aprendiz: {
+                nome: 'José Henrique',
+                idade: '3 anos'
+            },
+            treinamentos: [{
+                titulo: 'Treinamento',
+                data: 'Data Início: //01//06/2024 data Final: 01//08//2024',
+                nomeTreinamento: 'Torquent',
+                protocolo: 'Protocolo ABC',
+                descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis,\n porta nam nisl accumsan pulvinar vulputate hac vehicula\n quisque, \naliquam vulputate egestas ad gravida massa quisque.\n dolor curae faucibus laoreet blandit leo litora platea interdum habitant',
+
+                alvosColetados: [{
+                    dataColeta: '05/06/2024',
+                    alvos: [
+                        {
+                            nomeAlvo: 'Torquent urna sociosqu quis',
+                            tipoAprendizagem: 'Protocolo ABC',
+                            pergunta: 'Torquent urna sociosqu quis lobortis pharetra?',
+                            descricaoAlvo: 'Torquent urna sociosqu quis lobortis pharetra',
+                            resposta: 'Não Fez',
+                            anotacoes: [
+                                {
+                                    data: '01/05/2025',
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra\n non curae turpis, porta nam nisl accumsan pulvinar vulputate hac\n vehicula quisque, aliquam vulputate egestas ad gravida massa\n quisque. dolor curae faucibus laoreet blandit\n leo litora platea interdum habitant.'
+                                },
+                                {
+                                    data: '01/05/2025',
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra\n non curae turpis, porta nam nisl accumsan pulvinar vulputate hac\n vehicula quisque, aliquam vulputate egestas ad gravida massa\n quisque. dolor curae faucibus laoreet blandit\n leo litora platea interdum habitant.'
+                                },
+                                {
+                                    data: '01/05/2025',
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra\n non curae turpis, porta nam nisl accumsan pulvinar vulputate hac\n vehicula quisque, aliquam vulputate egestas ad gravida massa\n quisque. dolor curae faucibus laoreet blandit\n leo litora platea interdum habitant.'
+                                }
+                            ]
+                        }
+                    ]
+                }]
+            }]
+        }
+    ];
 
     const doc = new jsPDF();
 
-    let yPos = 10; // inicializa a posição y
+    let yPos = 30;
 
     data.forEach((item) => {
-        let text = `Name: ${item.name}, Age: ${item.age}, City: ${item.city}`;
+        let text = `${item.cabecario.descricao}
+        \nProfissional: ${item.profissional.nome} ${item.profissional.documento}
+        \nAprendiz: ${item.aprendiz.nome}\nIdade: ${item.aprendiz.idade}
+        `;
+
+        item.treinamentos.forEach((treinamento) => {
+            text += `${treinamento.titulo}
+            \n${treinamento.data}
+            \n${treinamento.nomeTreinamento}
+            \n${treinamento.protocolo}
+            \n${treinamento.descricao}
+            `;
+
+            treinamento.alvosColetados.forEach((alvo) => {
+                text += `${alvo.dataColeta}
+                `;
+
+                alvo.alvos.forEach((alvo) => {
+                    text += `${alvo.nomeAlvo}
+                    \n${alvo.tipoAprendizagem}
+                    \n${alvo.pergunta}
+                    \n${alvo.descricaoAlvo}
+                    \n${alvo.resposta}
+                    `;
+
+                    alvo.anotacoes.forEach((anotacao) => {
+                        text += `${anotacao.data}
+                        \n${anotacao.descricao}
+                        `;
+                    });
+                });
+            });
+        });
+
         doc.text(text, 10, yPos);
-        yPos += 10; // move a posição y para baixo para a próxima linha
+        yPos += 5; // move a posição y para baixo para a próxima linha
     });
 
     doc.save('test.pdf');
