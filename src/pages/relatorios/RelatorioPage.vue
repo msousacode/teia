@@ -104,15 +104,15 @@ function generatePdf() {
             },
             treinamentos: [{
                 titulo: 'Treinamento',
-                data: 'Data Início: //01//06/2024 data Final: 01//08//2024',
+                data: 'Data Início: 01/06/2024 data Final: 01/08/2024',
                 nomeTreinamento: 'Torquent',
                 protocolo: 'Protocolo ABC',
-                descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis,\n porta nam nisl accumsan pulvinar vulputate hac vehicula\n quisque, \naliquam vulputate egestas ad gravida massa quisque.\n dolor curae faucibus laoreet blandit leo litora platea interdum habitant',
+                descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant',
 
                 alvosColetados: [{
-                    dataColeta: '05/06/2024',
                     alvos: [
                         {
+                            dataColeta: '05/06/2024',
                             nomeAlvo: 'Torquent urna sociosqu quis',
                             tipoAprendizagem: 'Protocolo ABC',
                             pergunta: 'Torquent urna sociosqu quis lobortis pharetra?',
@@ -121,15 +121,15 @@ function generatePdf() {
                             anotacoes: [
                                 {
                                     data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra\n non curae turpis, porta nam nisl accumsan pulvinar vulputate hac\n vehicula quisque, aliquam vulputate egestas ad gravida massa\n quisque. dolor curae faucibus laoreet blandit\n leo litora platea interdum habitant.'
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 },
                                 {
                                     data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra\n non curae turpis, porta nam nisl accumsan pulvinar vulputate hac\n vehicula quisque, aliquam vulputate egestas ad gravida massa\n quisque. dolor curae faucibus laoreet blandit\n leo litora platea interdum habitant.'
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 },
                                 {
                                     data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra\n non curae turpis, porta nam nisl accumsan pulvinar vulputate hac\n vehicula quisque, aliquam vulputate egestas ad gravida massa\n quisque. dolor curae faucibus laoreet blandit\n leo litora platea interdum habitant.'
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 }
                             ]
                         }
@@ -139,50 +139,116 @@ function generatePdf() {
         }
     ];
 
-    const doc = new jsPDF();
+    //Cria uma nova instância do jsPDF
+    const pdf = new jsPDF();
 
-    let yPos = 30;
+    // Set document properties
+    pdf.setProperties({
+        title: "Relatório geral de evolução",
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const marginLeft = 10;
+    const marginRight = 10;
+    const maxWidth = pageWidth - marginLeft - marginRight;
+
+    let yPos = 85;
 
     data.forEach((item) => {
-        let text = `${item.cabecario.descricao}
-        \nProfissional: ${item.profissional.nome} ${item.profissional.documento}
-        \nAprendiz: ${item.aprendiz.nome}\nIdade: ${item.aprendiz.idade}
-        `;
+
+        //Cabeçalho do Relatório
+        pdf.setFont('Newsreader', 'normal');
+        pdf.setFontSize(11);//Tamanho da fonte
+        pdf.text(item.cabecario.descricao, 13, 30);
+        pdf.line(10, 32, 200, 32);//Linha divisória
+
+        pdf.setFontSize(14);//Tamanho da fonte
+
+        pdf.setFont('Newsreader', 'bold');
+        pdf.text('Profissional:', 13, 40);
+        pdf.setFont('Newsreader', 'normal');
+        pdf.text(item.profissional.nome, 13, 45);
+
+        pdf.setFont('Newsreader', 'bold');
+        pdf.text('Aprendiz:', 13, 55);
+        pdf.setFont('Newsreader', 'normal');
+        pdf.text(item.aprendiz.nome, 13, 60);
+        pdf.setFont('Newsreader', 'bold');
+        pdf.text('Idade:', 13, 65);
+        pdf.setFont('Newsreader', 'normal');
+        pdf.text(item.aprendiz.idade, 13, 70);
+
+        pdf.line(10, 75, 200, 75);
+
+        pdf.setFontSize(17);
+        pdf.setFont('Newsreader', 'bold');
+        pdf.text('Treinamentos', 13, 85);
+        pdf.setFont('Newsreader', 'normal');
+
+        pdf.setFontSize(12);
+
+        let showTituloAlvos = true;
+        let showTituloAnotacoes = true;
 
         item.treinamentos.forEach((treinamento) => {
-            text += `${treinamento.titulo}
-            \n${treinamento.data}
-            \n${treinamento.nomeTreinamento}
-            \n${treinamento.protocolo}
-            \n${treinamento.descricao}
-            `;
+
+            pdf.text(treinamento.data, 13, yPos += 10);
+            pdf.text(`Treinamento: ${treinamento.nomeTreinamento}`, 13, yPos += 5);
+            pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
+
+            pdf.setFont('Newsreader', 'bold');
+            pdf.text('Descrição:', 13, yPos += 10);
+            pdf.setFont('Newsreader', 'normal');
+            const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
+            pdf.text(lines, 13, yPos += 5);
+
+            yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
 
             treinamento.alvosColetados.forEach((alvo) => {
-                text += `${alvo.dataColeta}
-                `;
+
+                if (showTituloAlvos) {
+                    pdf.setFontSize(17);
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text('Objetivos aplicados', 13, yPos += 10);
+                    pdf.setFontSize(12);
+                }
+
+                showTituloAlvos = false;
 
                 alvo.alvos.forEach((alvo) => {
-                    text += `${alvo.nomeAlvo}
-                    \n${alvo.tipoAprendizagem}
-                    \n${alvo.pergunta}
-                    \n${alvo.descricaoAlvo}
-                    \n${alvo.resposta}
-                    `;
+
+                    pdf.setFont('Newsreader', 'normal');
+                    pdf.text(`Data da anotação: ${alvo.dataColeta}`, 13, yPos += 10);
+                    pdf.text(alvo.nomeAlvo, 13, yPos += 10);
+                    pdf.text(alvo.tipoAprendizagem, 13, yPos += 10);
+                    pdf.text(alvo.pergunta, 13, yPos += 10);
+                    pdf.text(alvo.descricaoAlvo, 13, yPos += 10);
+                    pdf.text(alvo.resposta, 13, yPos += 10);
 
                     alvo.anotacoes.forEach((anotacao) => {
-                        text += `${anotacao.data}
-                        \n${anotacao.descricao}
-                        `;
+
+                        if (showTituloAnotacoes) {
+                            pdf.setFontSize(17);
+                            pdf.setFont('Newsreader', 'bold');
+                            pdf.text('Anotações dos objetivos aplicados', 13, yPos += 10);
+                            pdf.setFont('Newsreader', 'normal');
+                            pdf.setFontSize(12);
+                        }
+
+                        showTituloAnotacoes = false;
+
+                        pdf.text(anotacao.data, 13, yPos += 10);
+                        const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
+                        pdf.text(lines, 13, yPos += 5);
+
+                        yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
                     });
                 });
             });
         });
-
-        doc.text(text, 10, yPos);
-        yPos += 5; // move a posição y para baixo para a próxima linha
     });
 
-    doc.save('test.pdf');
+    pdf.save('test.pdf');
 }
 
 onMounted(() => {
