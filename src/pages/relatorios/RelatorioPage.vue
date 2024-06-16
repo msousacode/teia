@@ -51,13 +51,15 @@
 
         <div class="row justify-center">
             <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl"
-                @click="pesquisar" />
+                @click="generatePdf" />
         </div>
+
     </q-page>
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
+import { jsPDF } from 'jspdf';
 
 const form = ref({
     aprendiz: '',
@@ -83,6 +85,25 @@ function pesquisar() {
             treinamentos.value = toRaw(item.treinamentos)
         });
     })
+}
+
+function generatePdf() {
+    const data = [
+        { name: 'John', age: 30, city: 'New York' },
+        { name: 'Jane', age: 40, city: 'Chicago' },
+    ]; // substitua isso pelos seus dados JSON
+
+    const doc = new jsPDF();
+
+    let yPos = 10; // inicializa a posição y
+
+    data.forEach((item) => {
+        let text = `Name: ${item.name}, Age: ${item.age}, City: ${item.city}`;
+        doc.text(text, 10, yPos);
+        yPos += 10; // move a posição y para baixo para a próxima linha
+    });
+
+    doc.save('test.pdf');
 }
 
 onMounted(() => {
