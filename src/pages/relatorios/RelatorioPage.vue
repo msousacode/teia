@@ -121,11 +121,11 @@ function generatePdf() {
                             anotacoes: [
                                 {
                                     data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 },
                                 {
                                     data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 },
                                 {
                                     data: '01/05/2025',
@@ -182,8 +182,9 @@ function generatePdf() {
 
         pdf.setFontSize(17);
         pdf.setFont('Newsreader', 'bold');
-        pdf.text('Treinamentos', 13, 85);
+        pdf.text('Treinamento', 13, 85);
         pdf.setFont('Newsreader', 'normal');
+        pdf.line(13, yPos += 5, 200, yPos);//Linha divisória
 
         pdf.setFontSize(12);
 
@@ -211,6 +212,7 @@ function generatePdf() {
                     pdf.setFont('Newsreader', 'bold');
                     pdf.text('Objetivos aplicados', 13, yPos += 10);
                     pdf.setFontSize(12);
+                    pdf.line(13, yPos += 5, 200, yPos);//Linha divisória
                 }
 
                 showTituloAlvos = false;
@@ -233,6 +235,7 @@ function generatePdf() {
                             pdf.text('Anotações dos objetivos aplicados', 13, yPos += 10);
                             pdf.setFont('Newsreader', 'normal');
                             pdf.setFontSize(12);
+                            pdf.line(13, yPos += 5, 200, yPos);//Linha divisória
                         }
 
                         showTituloAnotacoes = false;
