@@ -130,6 +130,10 @@ function generatePdf() {
                                 {
                                     data: '01/05/2025',
                                     descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
+                                },
+                                {
+                                    data: '01/05/2025',
+                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 }
                             ]
                         }
@@ -140,7 +144,7 @@ function generatePdf() {
     ];
 
     //Cria uma nova instância do jsPDF
-    const pdf = new jsPDF();
+    const pdf = new jsPDF('p', 'mm', 'a4');
 
     // Set document properties
     pdf.setProperties({
@@ -152,44 +156,42 @@ function generatePdf() {
     const marginRight = 10;
     const maxWidth = pageWidth - marginLeft - marginRight;
 
-    let yPos = 85;
+    let yPos = 60;
 
     data.forEach((item) => {
 
         //Cabeçalho do Relatório
         pdf.setFont('Newsreader', 'normal');
         pdf.setFontSize(11);//Tamanho da fonte
-        pdf.text(item.cabecario.descricao, 13, 30);
-        pdf.line(10, 32, 200, 32);//Linha divisória
+        pdf.text(item.cabecario.descricao, 13, 20);
 
         pdf.setFontSize(14);//Tamanho da fonte
 
         pdf.setFont('Newsreader', 'bold');
-        pdf.text('Profissional:', 13, 40);
+        pdf.text('Profissional:', 13, 30);
         pdf.setFont('Newsreader', 'normal');
-        pdf.text(item.profissional.nome, 13, 45);
+        pdf.text(item.profissional.nome, 40, 30);
 
         pdf.setFont('Newsreader', 'bold');
-        pdf.text('Aprendiz:', 13, 55);
+        pdf.text('Aprendiz:', 13, 40);
         pdf.setFont('Newsreader', 'normal');
-        pdf.text(item.aprendiz.nome, 13, 60);
+        pdf.text(item.aprendiz.nome, 35, 40);
         pdf.setFont('Newsreader', 'bold');
-        pdf.text('Idade:', 13, 65);
+        pdf.text('Idade:', 13, 47);
         pdf.setFont('Newsreader', 'normal');
-        pdf.text(item.aprendiz.idade, 13, 70);
-
-        pdf.line(10, 75, 200, 75);
+        pdf.text(item.aprendiz.idade, 30, 47);
 
         pdf.setFontSize(17);
         pdf.setFont('Newsreader', 'bold');
-        pdf.text('Treinamento', 13, 85);
+        pdf.text('Treinamento:', 13, 60);
         pdf.setFont('Newsreader', 'normal');
-        pdf.line(13, yPos += 5, 200, yPos);//Linha divisória
+        pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
         pdf.setFontSize(12);
 
         let showTituloAlvos = true;
         let showTituloAnotacoes = true;
+        const pageHeight = pdf.internal.pageSize.getHeight();
 
         item.treinamentos.forEach((treinamento) => {
 
@@ -210,24 +212,51 @@ function generatePdf() {
                 if (showTituloAlvos) {
                     pdf.setFontSize(17);
                     pdf.setFont('Newsreader', 'bold');
-                    pdf.text('Objetivos aplicados', 13, yPos += 10);
+                    pdf.text('Objetivos aplicados:', 13, yPos += 10);
                     pdf.setFontSize(12);
-                    pdf.line(13, yPos += 5, 200, yPos);//Linha divisória
+                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
                 }
 
                 showTituloAlvos = false;
 
                 alvo.alvos.forEach((alvo) => {
 
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text(`Data da coleta: `, 13, yPos += 10);
                     pdf.setFont('Newsreader', 'normal');
-                    pdf.text(`Data da anotação: ${alvo.dataColeta}`, 13, yPos += 10);
-                    pdf.text(alvo.nomeAlvo, 13, yPos += 10);
-                    pdf.text(alvo.tipoAprendizagem, 13, yPos += 10);
-                    pdf.text(alvo.pergunta, 13, yPos += 10);
-                    pdf.text(alvo.descricaoAlvo, 13, yPos += 10);
-                    pdf.text(alvo.resposta, 13, yPos += 10);
+                    pdf.text(alvo.dataColeta, 60, yPos);
+
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text('Nome do objetivo:', 13, yPos += 5);
+                    pdf.setFont('Newsreader', 'normal');
+                    pdf.text(alvo.nomeAlvo, 60, yPos);
+
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
+                    pdf.setFont('Newsreader', 'normal');
+                    pdf.text(alvo.tipoAprendizagem, 60, yPos);
+
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text('Pergunta:', 13, yPos += 5);
+                    pdf.setFont('Newsreader', 'normal');
+                    pdf.text(alvo.pergunta, 60, yPos);
+
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text('Descritivo do objetivo:', 13, yPos += 5);
+                    pdf.setFont('Newsreader', 'normal');
+                    pdf.text(alvo.descricaoAlvo, 60, yPos);
+
+                    pdf.setFont('Newsreader', 'bold');
+                    pdf.text('Resposta do objetivo:', 13, yPos += 5);
+                    pdf.setFont('Newsreader', 'normal');
+                    pdf.text(alvo.resposta, 60, yPos);
 
                     alvo.anotacoes.forEach((anotacao) => {
+
+                        if (yPos > pageHeight - 20) {
+                            pdf.addPage();
+                            yPos = 10;
+                        }
 
                         if (showTituloAnotacoes) {
                             pdf.setFontSize(17);
