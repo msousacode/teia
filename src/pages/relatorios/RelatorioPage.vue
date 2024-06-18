@@ -151,6 +151,8 @@ function generatePdf() {
         title: "Relatório geral de evolução",
     });
 
+    const font = 'Newsreader';
+
     const pageWidth = pdf.internal.pageSize.getWidth();
     const marginLeft = 10;
     const marginRight = 10;
@@ -161,30 +163,30 @@ function generatePdf() {
     data.forEach((item) => {
 
         //Cabeçalho do Relatório
-        pdf.setFont('Newsreader', 'normal');
+        pdf.setFont(font, 'normal');
         pdf.setFontSize(11);//Tamanho da fonte
         pdf.text(item.cabecario.descricao, 13, 20);
 
         pdf.setFontSize(14);//Tamanho da fonte
 
-        pdf.setFont('Newsreader', 'bold');
+        pdf.setFont(font, 'bold');
         pdf.text('Profissional:', 13, 30);
-        pdf.setFont('Newsreader', 'normal');
+        pdf.setFont(font, 'normal');
         pdf.text(item.profissional.nome, 40, 30);
 
-        pdf.setFont('Newsreader', 'bold');
+        pdf.setFont(font, 'bold');
         pdf.text('Aprendiz:', 13, 40);
-        pdf.setFont('Newsreader', 'normal');
+        pdf.setFont(font, 'normal');
         pdf.text(item.aprendiz.nome, 35, 40);
-        pdf.setFont('Newsreader', 'bold');
+        pdf.setFont(font, 'bold');
         pdf.text('Idade:', 13, 47);
-        pdf.setFont('Newsreader', 'normal');
+        pdf.setFont(font, 'normal');
         pdf.text(item.aprendiz.idade, 30, 47);
 
         pdf.setFontSize(17);
-        pdf.setFont('Newsreader', 'bold');
+        pdf.setFont(font, 'bold');
         pdf.text('Treinamento:', 13, 60);
-        pdf.setFont('Newsreader', 'normal');
+        pdf.setFont(font, 'normal');
         pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
         pdf.setFontSize(12);
@@ -199,9 +201,9 @@ function generatePdf() {
             pdf.text(`Treinamento: ${treinamento.nomeTreinamento}`, 13, yPos += 5);
             pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
 
-            pdf.setFont('Newsreader', 'bold');
+            pdf.setFont(font, 'bold');
             pdf.text('Descrição:', 13, yPos += 10);
-            pdf.setFont('Newsreader', 'normal');
+            pdf.setFont(font, 'normal');
             const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
             pdf.text(lines, 13, yPos += 5);
 
@@ -211,7 +213,7 @@ function generatePdf() {
 
                 if (showTituloAlvos) {
                     pdf.setFontSize(17);
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text('Objetivos aplicados:', 13, yPos += 10);
                     pdf.setFontSize(12);
                     pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
@@ -221,59 +223,62 @@ function generatePdf() {
 
                 alvo.alvos.forEach((alvo) => {
 
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text(`Data da coleta: `, 13, yPos += 10);
-                    pdf.setFont('Newsreader', 'normal');
+                    pdf.setFont(font, 'normal');
                     pdf.text(alvo.dataColeta, 60, yPos);
 
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text('Nome do objetivo:', 13, yPos += 5);
-                    pdf.setFont('Newsreader', 'normal');
+                    pdf.setFont(font, 'normal');
                     pdf.text(alvo.nomeAlvo, 60, yPos);
 
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
-                    pdf.setFont('Newsreader', 'normal');
+                    pdf.setFont(font, 'normal');
                     pdf.text(alvo.tipoAprendizagem, 60, yPos);
 
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text('Pergunta:', 13, yPos += 5);
-                    pdf.setFont('Newsreader', 'normal');
+                    pdf.setFont(font, 'normal');
                     pdf.text(alvo.pergunta, 60, yPos);
 
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text('Descritivo do objetivo:', 13, yPos += 5);
-                    pdf.setFont('Newsreader', 'normal');
+                    pdf.setFont(font, 'normal');
                     pdf.text(alvo.descricaoAlvo, 60, yPos);
 
-                    pdf.setFont('Newsreader', 'bold');
+                    pdf.setFont(font, 'bold');
                     pdf.text('Resposta do objetivo:', 13, yPos += 5);
-                    pdf.setFont('Newsreader', 'normal');
+                    pdf.setFont(font, 'normal');
                     pdf.text(alvo.resposta, 60, yPos);
 
                     alvo.anotacoes.forEach((anotacao) => {
 
-                        if (yPos > pageHeight - 20) {
-                            pdf.addPage();
-                            yPos = 10;
-                        }
-
                         if (showTituloAnotacoes) {
                             pdf.setFontSize(17);
-                            pdf.setFont('Newsreader', 'bold');
-                            pdf.text('Anotações dos objetivos aplicados', 13, yPos += 10);
-                            pdf.setFont('Newsreader', 'normal');
+                            pdf.setFont(font, 'bold');
+                            pdf.text('Anotações dos objetivos aplicados', 13, yPos += 15);
+                            pdf.setFont(font, 'normal');
                             pdf.setFontSize(12);
-                            pdf.line(13, yPos += 5, 200, yPos);//Linha divisória
+                            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
                         }
 
                         showTituloAnotacoes = false;
 
-                        pdf.text(anotacao.data, 13, yPos += 10);
+                        pdf.setFont(font, 'bold');
+                        pdf.text('Data da anotação: ', 13, yPos += 10);
+                        pdf.setFont(font, 'normal');
+                        pdf.text(anotacao.data, 47, yPos);
                         const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
                         pdf.text(lines, 13, yPos += 5);
 
                         yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+
+                        if (yPos > pageHeight - 40) {
+                            pdf.addPage();
+                            yPos = 10;
+                        }
                     });
                 });
             });
