@@ -22,7 +22,7 @@
         v-show="props.selecionarTreinamento" v-close-popup />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
-      <q-btn v-if="$q.platform.is.mobile" fab icon="mdi-plus" color="primary" :to="{ name: 'treinamento-novo' }" />
+      <q-btn fab icon="mdi-plus" color="primary" :to="{ name: 'treinamento-novo' }" />
     </q-page-sticky>
   </div>
 </template>
