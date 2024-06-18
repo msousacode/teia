@@ -54,12 +54,29 @@
                 @click="generatePdf" />
         </div>
 
+        <Pie id="canvas" :data="data" :options="{ responsive: true }" class="hidden-pie" />
+
     </q-page>
 </template>
+
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Pie } from 'vue-chartjs'
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+const data = ref({
+    labels: ['NÃO FEZ', 'COM AJUDA', 'SEM AJUDA'],
+    datasets: [
+        {
+            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+            data: [40, 20, 10]
+        }
+    ]
+});
 
 const form = ref({
     aprendiz: '',
@@ -175,22 +192,6 @@ function generatePdf() {
                                     data: '01/05/2025',
                                     descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
                                 },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                }
                             ]
                         }
                     ]
@@ -314,7 +315,7 @@ function generatePdf() {
                         if (showTituloAnotacoes) {
                             pdf.setFontSize(17);
                             pdf.setFont(font, 'bold');
-                            pdf.text('Anotações dos objetivos aplicados', 13, yPos += 15);
+                            pdf.text('Anotações dos objetivos aplicados:', 13, yPos += 15);
                             pdf.setFont(font, 'normal');
                             pdf.setFontSize(12);
                             pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
@@ -336,9 +337,19 @@ function generatePdf() {
                             yPos = 10;
                         }
                     });
+
+                    pdf.setFontSize(17);
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Represetação gráfica:', 13, yPos += 10);
+                    pdf.setFont(font, 'normal');
+                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+                    var imgData = document.getElementById("canvas").toDataURL('image/png');
+                    pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
                 });
             });
         });
+
     });
 
     pdf.save('test.pdf');
@@ -356,3 +367,13 @@ onMounted(() => {
     });
 })
 </script>
+
+<style scoped>
+.hidden-pie {
+    visibility: hidden;
+}
+
+.hidden-pie {
+    display: none;
+}
+</style>
