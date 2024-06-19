@@ -10,6 +10,8 @@
             </q-form>
         </div>
 
+        <!--
+        TODO decidir se vai ser exibido ou não
         <div class="q-mt-sm row items-start q-gutter-md justify-center">
             <q-card class="my-card bg-green text-white" style="width: 45%;">
                 <q-card-section>
@@ -26,7 +28,7 @@
                     <div class="text-h6">30%</div>
                 </q-card-section>
             </q-card>
-        </div>
+        </div-->
 
         <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase">Treinamentos em andamento:</div>
         <q-list bordered separator v-for="(
@@ -65,6 +67,7 @@ import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Pie } from 'vue-chartjs'
+import { RelatorioService } from 'src/services/RelatorioService';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -106,99 +109,9 @@ function pesquisar() {
 
 function generatePdf() {
 
-    const data = [
-        {
-            cabecario: {
-                descricao: 'Relatório gerado em 16/06/2024'
-            },
-            profissional: {
-                nome: 'Catarina Soares Sobral',
-                documento: 'CRO 5406'
-            },
-            aprendiz: {
-                nome: 'José Henrique',
-                idade: '3 anos'
-            },
-            treinamentos: [{
-                titulo: 'Treinamento',
-                data: 'Data Início: 01/06/2024 data Final: 01/08/2024',
-                nomeTreinamento: 'Torquent',
-                protocolo: 'Protocolo ABC',
-                descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant',
+    const service = new RelatorioService();
 
-                alvosColetados: [{
-                    alvos: [
-                        {
-                            dataColeta: '05/06/2024',
-                            nomeAlvo: 'Torquent urna sociosqu quis',
-                            tipoAprendizagem: 'Protocolo ABC',
-                            pergunta: 'Torquent urna sociosqu quis lobortis pharetra?',
-                            descricaoAlvo: 'Torquent urna sociosqu quis lobortis pharetra',
-                            resposta: 'Não Fez',
-                            anotacoes: [
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                                {
-                                    data: '01/05/2025',
-                                    descricao: 'Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant. Torquent urna sociosqu quis lobortis pharetra non curae turpis, porta nam nisl accumsan pulvinar vulputate hac vehicula quisque, aliquam vulputate egestas ad gravida massa quisque. dolor curae faucibus laoreet blandit leo litora platea interdum habitant.'
-                                },
-                            ]
-                        }
-                    ]
-                }]
-            }]
-        }
-    ];
+    const data = service.gerarRelatorio();
 
     //Cria uma nova instância do jsPDF
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -250,7 +163,7 @@ function generatePdf() {
 
         let showTituloAlvos = true;
         let showTituloAnotacoes = true;
-        const pageHeight = pdf.internal.pageSize.getHeight();
+        const pageHeight = pdf.internal.pageSize.getHeight() - 40;
 
         item.treinamentos.forEach((treinamento) => {
 
@@ -332,9 +245,9 @@ function generatePdf() {
 
                         yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
 
-                        if (yPos > pageHeight - 40) {
-                            pdf.addPage();
+                        if (yPos > pageHeight) {
                             yPos = 10;
+                            pdf.addPage();
                         }
                     });
 
@@ -342,14 +255,17 @@ function generatePdf() {
                     pdf.setFont(font, 'bold');
                     pdf.text('Represetação gráfica:', 13, yPos += 10);
                     pdf.setFont(font, 'normal');
+                    pdf.setFontSize(12);
                     pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
                     var imgData = document.getElementById("canvas").toDataURL('image/png');
                     pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
                 });
             });
+            yPos = 10;
+            pdf.addPage();
+            pdf.setFont(font, 'normal');
         });
-
     });
 
     pdf.save('test.pdf');
