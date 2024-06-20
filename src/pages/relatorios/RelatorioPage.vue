@@ -57,7 +57,8 @@
                 @click="generatePdf" :disabled="!exibirRelatorioBtn" />
         </div>
 
-        <Pie id="canvas" :data="data" :options="{ responsive: true }" class="hidden-pie" />
+        <Pie id="canvasPie" :data="dataPie" :options="dataPie.options" class="hidden-pie" />
+        <Line id="canvasLine" :data="dataLine" :options="dataPie.options" />
 
     </q-page>
 </template>
@@ -66,13 +67,25 @@
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Pie } from 'vue-chartjs'
+import {
+    Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
+    LinearScale,
+    PointElement,
+    Title,
+    LineElement,
+} from 'chart.js'
+import { Line, Pie } from 'vue-chartjs'
 import { RelatorioService } from 'src/services/RelatorioService';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend);
 
-const data = ref({
+const dataPie = ref({
     labels: ['NÃO FEZ 40%', 'COM AJUDA 20%', 'SEM AJUDA 10%'],
     datasets: [
         {
@@ -80,6 +93,23 @@ const data = ref({
             data: [40, 20, 10]
         }
     ],
+    options: {
+        responsive: true,
+    }
+});
+
+const dataLine = ref({
+    labels: ['1ª Sem', '2ª Sem', '3ª Sem', '4ª Sem', '5ª Sem', '6ª Sem', '7ª Sem', '8ª Sem', '9ª Sem', '10ª Sem', '11ª Sem', '12ª Sem'],
+    datasets: [
+        {
+            label: '2024',
+            backgroundColor: '#f87979',
+            data: [40, 39, 10, 40, 39, 80, 40, 39, 10, 40, 39, 80]
+        }
+    ],
+    options: {
+        responsive: true,
+    }
 });
 
 const form = ref({
@@ -135,6 +165,8 @@ function generatePdf() {
 
     let yPos = 60;
 
+    let tipoProtocolo: string = '';
+
     data.forEach((item) => {
 
         //Cabeçalho do Relatório
@@ -173,6 +205,7 @@ function generatePdf() {
 
             pdf.text(`Treinamento: ${treinamento.nomeTreinamento}`, 13, yPos += 5);
             pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
+            tipoProtocolo = treinamento.protocolo;
 
             pdf.setFont(font, 'bold');
             pdf.text('Descrição:', 13, yPos += 10);
@@ -253,13 +286,17 @@ function generatePdf() {
             pdf.setFontSize(12);
             pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
-            var imgData = document.getElementById("canvas").toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
-            pdf.text('Dados:', yPos, yPos);
-            pdf.text('Quantidade de objetos trabalhados: 34', yPos, yPos += 5);
-            pdf.text('Quantidade de objetos trabalhados: 34', yPos -= 5, yPos += 5);
-            pdf.text('Quantidade de objetos trabalhados: 34', yPos, yPos += 5);
+            console.log(tipoProtocolo)
 
+            if (tipoProtocolo == 'Protocolo ABC') {
+                var imgData = document.getElementById("canvasPie").toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+            }
+
+            if (tipoProtocolo == 'Ocorrência de respostas') {
+                var imgData = document.getElementById("canvasLine").toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
+            }
 
             yPos = 10;
             pdf.addPage();
