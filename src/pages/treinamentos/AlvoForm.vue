@@ -198,11 +198,7 @@ function reset() {
     descricao_alvo: '',
     treinamento_uuid_fk: store.getTreinamentoUuid,
     tipo_aprendizado: 'Habilidades de Atenção',
-  }
-
-  alvos.value = [];
-
-  store.$reset();
+  };
 }
 
 onMounted(() => {
