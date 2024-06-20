@@ -95,11 +95,11 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Legend);
 
 const dataPie = ref({
-    labels: ['NÃO FEZ 40%', 'COM AJUDA 20%', 'SEM AJUDA 10%'],
+    labels: ['NÃO FEZ 80%', 'COM AJUDA 18%', 'SEM AJUDA 2%'],
     datasets: [
         {
-            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-            data: [80, 20, 0]
+            backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
+            data: [80, 18, 2]
         }
     ],
     options: {
@@ -113,7 +113,7 @@ const dataLine = ref({
         {
             label: '2024',
             backgroundColor: '#f87979',
-            data: [40, 39, 10, 40, 39, 80, 40, 39, 10, 40, 39, 80]
+            data: [0, 0, 1, 4, 6, 5, 6, 8, 10, 11, 15, 22]
         }
     ],
     options: {
