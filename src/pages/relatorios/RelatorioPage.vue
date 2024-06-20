@@ -32,33 +32,42 @@
 
         <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="exibirRelatorioBtn">Treinamentos em
             andamento:</div>
-        <q-list bordered separator v-for="(
+        <div v-for="(
               item, index
             ) in treinamentos" :key="index">
-            <q-item clickable v-ripple>
-                <q-item-section>
-                    <q-item-label class="text-subtitle1 q-mb-sm">{{ item.treinamento }}</q-item-label>
-                    <q-item-label class="text-subtitle1 q-mb-sm" caption>Início: 15/06/2024</q-item-label>
-                    <q-item-label class="text-subtitle1 q-mb-sm" caption>Final: 15/06/2024</q-item-label>
-                    <q-item-label>
-                        Progresso:
-                    </q-item-label>
-                    <q-linear-progress size="25px" :value="progress1" color="green-5">
-                        <div class="absolute-full flex flex-center">
-                            <q-badge color="white" text-color="accent" :label="progressLabel1" />
+            <q-card flat bordered class="my-card q-mb-sm" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                <q-card-section>
+                    <div class="row items-center no-wrap">
+                        <div class="col">
+
+                            <div class="text-body1"><span class="text-teal">Treinamento:</span> {{ item.treinamento
+                                }}</div>
+                            <div class="text-body1"><span class="text-teal">Protocolo: </span>{{
+                    item.protocolo }}
+                                <div class="text-caption">Início 01/06/24 até 30/06/24</div>
+                            </div>
+                            <div class="q-mb-md"></div>
+                            <q-item-label>
+                                Progresso:
+                            </q-item-label>
+                            <q-linear-progress size="25px" :value="progress1" color="green-5">
+                                <div class="absolute-full flex flex-center">
+                                    <q-badge color="white" text-color="accent" :label="progressLabel1" />
+                                </div>
+                            </q-linear-progress>
                         </div>
-                    </q-linear-progress>
-                </q-item-section>
-            </q-item>
-        </q-list>
+                    </div>
+                </q-card-section>
+            </q-card>
+        </div>
 
         <div class="row justify-center">
-            <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl"
+            <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl q-pa-sm"
                 @click="generatePdf" :disabled="!exibirRelatorioBtn" />
         </div>
 
         <Pie id="canvasPie" :data="dataPie" :options="dataPie.options" class="hidden-pie" />
-        <Line id="canvasLine" :data="dataLine" :options="dataPie.options" />
+        <Line id="canvasLine" :data="dataLine" :options="dataPie.options" class="hidden-pie" />
 
     </q-page>
 </template>
