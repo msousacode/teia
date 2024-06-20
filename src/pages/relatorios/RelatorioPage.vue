@@ -176,8 +176,13 @@ function generatePdf() {
 
     let tipoProtocolo: string = '';
 
+    let nomeArquivo: string = '';
+
     data.forEach((item) => {
 
+        if (nomeArquivo === '') {
+            nomeArquivo = item.profissional.nome + ' - ' + item.aprendiz.nome + '-' + new Date().toLocaleDateString();
+        }
         //Cabeçalho do Relatório
         pdf.setFont(font, 'normal');
         pdf.setFontSize(11);//Tamanho da fonte
@@ -313,7 +318,7 @@ function generatePdf() {
         });
     });
 
-    pdf.save('test.pdf');
+    pdf.save(`${nomeArquivo}.pdf`);
 }
 
 onMounted(() => {
