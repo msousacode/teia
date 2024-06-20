@@ -99,7 +99,7 @@ const dataPie = ref({
     datasets: [
         {
             backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-            data: [40, 20, 10]
+            data: [80, 20, 0]
         }
     ],
     options: {
@@ -208,6 +208,8 @@ function generatePdf() {
 
         item.treinamentos.forEach((treinamento) => {
 
+            let objetivoCount = 1;
+
             pdf.setFontSize(17);
             pdf.setFont(font, 'bold');
             pdf.text('Treinamento:', 13, yPos += 5);
@@ -233,7 +235,7 @@ function generatePdf() {
 
                 pdf.setFontSize(17);
                 pdf.setFont(font, 'bold');
-                pdf.text('Objetivo aplicado:', 13, yPos += 10);
+                pdf.text(`${objetivoCount++} - Objetivo aplicado:`, 13, yPos += 10);
                 pdf.setFontSize(12);
                 pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
