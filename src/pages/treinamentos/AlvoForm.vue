@@ -3,7 +3,7 @@
   <q-dialog v-model="visible">
     <q-card class="full-width">
       <q-card-section>
-        <div class="text-h6">Cadastro de Alvo</div>
+        <div class="text-h6">Cadastro de Objetivo</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
@@ -11,12 +11,13 @@
           <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
             :rules="[(val) => (val && val.length > 0) || 'Tipo de aprendizado é obrigatório']" />
 
-          <q-input outlined label="Nome do Alvo" v-model="form.nome_alvo"
-            :rules="[(val) => (val && val.length > 0) || 'Nome do alvo é obrigatório']" />
+          <q-input outlined label="Nome do Objetivo" v-model="form.nome_alvo"
+            :rules="[(val) => (val && val.length > 0) || 'Nome do Objetivo é obrigatório']" />
 
           <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow />
 
-          <q-input outlined label="Descrição do alvo" v-model="form.descricao_alvo" type="textarea" class="q-mt-md" />
+          <q-input outlined label="Descrição do Objetivo" v-model="form.descricao_alvo" type="textarea"
+            class="q-mt-md" />
 
           <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" color="primary" type="submit" />
         </q-form>
@@ -30,7 +31,7 @@
       <q-card-section>
         <div class="row items-center no-wrap">
           <div class="col">
-            <span class="text-subtitle2 text-teal">Nome do Alvo: </span>
+            <span class="text-subtitle2 text-teal">Nome do Objetivo: </span>
             <div class="text-subtitle1">{{ item.nome_alvo }}</div>
 
             <span class="text-subtitle2 text-teal">Tipo de aprendizado: </span>
@@ -39,7 +40,7 @@
             <span class="text-subtitle2 text-teal">Pergunta: </span>
             <div class="text-subtitle1">{{ item.pergunta }}</div>
 
-            <span class="text-subtitle2 text-teal">Descrição do Alvo: </span>
+            <span class="text-subtitle2 text-teal">Descrição do Objetivo: </span>
             <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
           </div>
 
@@ -63,7 +64,7 @@
   </div>
 
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn v-if="$q.platform.is.mobile" fab icon="mdi-plus" color="primary" @click="visible = true" />
+    <q-btn fab icon="mdi-plus" color="primary" @click="visible = true" />
   </q-page-sticky>
 </template>
 <script setup lang="ts">

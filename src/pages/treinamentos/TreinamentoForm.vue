@@ -3,8 +3,8 @@
     <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
       narrow-indicator>
       <q-tab name="treinamento" label="Treino" />
-      <q-tab name="alvos" label="Alvos" v-if="store.getTreinamentoUuid" />
-      <q-tab name="alvos" label="Alvos" v-else disable />
+      <q-tab name="alvos" label="Objetivos" v-if="store.getTreinamentoUuid" />
+      <q-tab name="alvos" label="Objetivos" v-else disable />
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated>

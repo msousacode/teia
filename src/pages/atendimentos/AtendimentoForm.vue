@@ -74,6 +74,7 @@
           <q-list bordered separator v-for="(
               item, index
             ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
+
             <q-item clickable v-ripple>
               <q-item-section>
                 <q-item-label class="text-body1">Treinamento: {{
