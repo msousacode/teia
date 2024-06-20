@@ -6,7 +6,7 @@
             </div>
             <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-                    @input="pesquisar" />
+                    @update:model-value="pesquisar" />
             </q-form>
         </div>
 
@@ -30,7 +30,8 @@
             </q-card>
         </div-->
 
-        <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase">Treinamentos em andamento:</div>
+        <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="exibirRelatorioBtn">Treinamentos em
+            andamento:</div>
         <q-list bordered separator v-for="(
               item, index
             ) in treinamentos" :key="index">
@@ -53,7 +54,7 @@
 
         <div class="row justify-center">
             <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl"
-                @click="generatePdf" />
+                @click="generatePdf" :disabled="!exibirRelatorioBtn" />
         </div>
 
         <Pie id="canvas" :data="data" :options="{ responsive: true }" class="hidden-pie" />
@@ -72,13 +73,13 @@ import { RelatorioService } from 'src/services/RelatorioService';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const data = ref({
-    labels: ['NÃO FEZ', 'COM AJUDA', 'SEM AJUDA'],
+    labels: ['NÃO FEZ 40%', 'COM AJUDA 20%', 'SEM AJUDA 10%'],
     datasets: [
         {
             backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
             data: [40, 20, 10]
         }
-    ]
+    ],
 });
 
 const form = ref({
@@ -93,6 +94,8 @@ const atendimentos = ref<any[]>([]);
 
 const progress1 = ref(0.3)
 
+const exibirRelatorioBtn = ref(false);
+
 let progressLabel1 = computed(() => (progress1.value * 100).toFixed(2) + '%');
 
 function pesquisar() {
@@ -105,6 +108,8 @@ function pesquisar() {
             treinamentos.value = toRaw(item.treinamentos)
         });
     })
+
+    exibirRelatorioBtn.value = true;
 }
 
 function generatePdf() {
@@ -153,21 +158,19 @@ function generatePdf() {
         pdf.setFont(font, 'normal');
         pdf.text(item.aprendiz.idade, 30, 47);
 
-        pdf.setFontSize(17);
-        pdf.setFont(font, 'bold');
-        pdf.text('Treinamento:', 13, 60);
-        pdf.setFont(font, 'normal');
-        pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-
-        pdf.setFontSize(12);
-
-        let showTituloAlvos = true;
-        let showTituloAnotacoes = true;
         const pageHeight = pdf.internal.pageSize.getHeight() - 40;
 
         item.treinamentos.forEach((treinamento) => {
 
-            pdf.text(treinamento.data, 13, yPos += 10);
+            pdf.setFontSize(17);
+            pdf.setFont(font, 'bold');
+            pdf.text('Treinamento:', 13, yPos += 5);
+            pdf.text(treinamento.data, 135, yPos);
+            pdf.setFont(font, 'normal');
+            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+            pdf.setFontSize(12);
+
             pdf.text(`Treinamento: ${treinamento.nomeTreinamento}`, 13, yPos += 5);
             pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
 
@@ -181,87 +184,83 @@ function generatePdf() {
 
             treinamento.alvosColetados.forEach((alvo) => {
 
-                if (showTituloAlvos) {
-                    pdf.setFontSize(17);
+                pdf.setFontSize(17);
+                pdf.setFont(font, 'bold');
+                pdf.text('Objetivo aplicado:', 13, yPos += 10);
+                pdf.setFontSize(12);
+                pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+                pdf.setFont(font, 'bold');
+                pdf.text(`Data da coleta: `, 13, yPos += 10);
+                pdf.setFont(font, 'normal');
+                pdf.text(alvo.dataColeta, 60, yPos);
+
+                pdf.setFont(font, 'bold');
+                pdf.text('Nome do objetivo:', 13, yPos += 5);
+                pdf.setFont(font, 'normal');
+                pdf.text(alvo.nomeAlvo, 60, yPos);
+
+                pdf.setFont(font, 'bold');
+                pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
+                pdf.setFont(font, 'normal');
+                pdf.text(alvo.tipoAprendizagem, 60, yPos);
+
+                pdf.setFont(font, 'bold');
+                pdf.text('Pergunta:', 13, yPos += 5);
+                pdf.setFont(font, 'normal');
+                pdf.text(alvo.pergunta, 60, yPos);
+
+                pdf.setFont(font, 'bold');
+                pdf.text('Descritivo do objetivo:', 13, yPos += 5);
+                pdf.setFont(font, 'normal');
+                pdf.text(alvo.descricaoAlvo, 60, yPos);
+
+                pdf.setFont(font, 'bold');
+                pdf.text('Resposta do objetivo:', 13, yPos += 5);
+                pdf.setFont(font, 'normal');
+                pdf.text(alvo.resposta, 60, yPos);
+
+                pdf.setFontSize(17);
+                pdf.setFont(font, 'bold');
+                pdf.text('Anotações feitas no objetivo:', 13, yPos += 15);
+                pdf.setFont(font, 'normal');
+                pdf.setFontSize(12);
+                pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+                alvo.anotacoes.forEach((anotacao) => {
+
                     pdf.setFont(font, 'bold');
-                    pdf.text('Objetivos aplicados:', 13, yPos += 10);
-                    pdf.setFontSize(12);
-                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-                }
-
-                showTituloAlvos = false;
-
-                alvo.alvos.forEach((alvo) => {
-
-                    pdf.setFont(font, 'bold');
-                    pdf.text(`Data da coleta: `, 13, yPos += 10);
+                    pdf.text('Data da anotação: ', 13, yPos += 10);
                     pdf.setFont(font, 'normal');
-                    pdf.text(alvo.dataColeta, 60, yPos);
+                    pdf.text(anotacao.data, 47, yPos);
+                    const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
+                    pdf.text(lines, 13, yPos += 5);
 
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Nome do objetivo:', 13, yPos += 5);
-                    pdf.setFont(font, 'normal');
-                    pdf.text(alvo.nomeAlvo, 60, yPos);
+                    yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
 
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
-                    pdf.setFont(font, 'normal');
-                    pdf.text(alvo.tipoAprendizagem, 60, yPos);
-
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Pergunta:', 13, yPos += 5);
-                    pdf.setFont(font, 'normal');
-                    pdf.text(alvo.pergunta, 60, yPos);
-
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Descritivo do objetivo:', 13, yPos += 5);
-                    pdf.setFont(font, 'normal');
-                    pdf.text(alvo.descricaoAlvo, 60, yPos);
-
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Resposta do objetivo:', 13, yPos += 5);
-                    pdf.setFont(font, 'normal');
-                    pdf.text(alvo.resposta, 60, yPos);
-
-                    alvo.anotacoes.forEach((anotacao) => {
-
-                        if (showTituloAnotacoes) {
-                            pdf.setFontSize(17);
-                            pdf.setFont(font, 'bold');
-                            pdf.text('Anotações dos objetivos aplicados:', 13, yPos += 15);
-                            pdf.setFont(font, 'normal');
-                            pdf.setFontSize(12);
-                            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-                        }
-
-                        showTituloAnotacoes = false;
-
-                        pdf.setFont(font, 'bold');
-                        pdf.text('Data da anotação: ', 13, yPos += 10);
-                        pdf.setFont(font, 'normal');
-                        pdf.text(anotacao.data, 47, yPos);
-                        const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
-                        pdf.text(lines, 13, yPos += 5);
-
-                        yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
-
-                        if (yPos > pageHeight) {
-                            yPos = 10;
-                            pdf.addPage();
-                        }
-                    });
-
-                    pdf.setFontSize(17);
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Represetação gráfica:', 13, yPos += 10);
-                    pdf.setFont(font, 'normal');
-                    pdf.setFontSize(12);
-                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-
-                    var imgData = document.getElementById("canvas").toDataURL('image/png');
-                    pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+                    if (yPos > pageHeight) {
+                        yPos = 10;
+                        pdf.addPage();
+                    }
                 });
+
             });
+
+            pdf.setFontSize(17);
+            pdf.setFont(font, 'bold');
+            pdf.text('Represetação gráfica:', 13, yPos += 10);
+            pdf.setFont(font, 'normal');
+            pdf.setFontSize(12);
+            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+            var imgData = document.getElementById("canvas").toDataURL('image/png');
+            pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+            pdf.text('Dados:', yPos, yPos);
+            pdf.text('Quantidade de objetos trabalhados: 34', yPos, yPos += 5);
+            pdf.text('Quantidade de objetos trabalhados: 34', yPos -= 5, yPos += 5);
+            pdf.text('Quantidade de objetos trabalhados: 34', yPos, yPos += 5);
+
+
             yPos = 10;
             pdf.addPage();
             pdf.setFont(font, 'normal');
