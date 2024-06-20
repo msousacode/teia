@@ -9,7 +9,7 @@
 
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="treinamento">
-        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="handleSubmit">
+        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvar">
           <q-input outlined label="Nome do Treinamento" v-model="form.treinamento"
             :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']" />
 
@@ -59,7 +59,7 @@ const form = ref({
   sync: false,
 });
 
-function handleSubmit() {
+function salvar() {
   if (routeLocation.params.action === 'edit') {
     handleUpdate();
     return;
@@ -72,7 +72,6 @@ function handleSubmit() {
     .add(data)
     .then((res) => {
       store.$state.treinamentoUuid = res;
-      reset();
       success();
     })
     .catch((_error) => {
