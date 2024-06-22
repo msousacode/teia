@@ -1,7 +1,8 @@
 <template>
   <div class="q-pa-md">
     <div class="row">
-      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12" :loading="loading">
+      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12" :loading="loading"
+        :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
           <span class="text-h6"> Aprendizes </span>
         </template>

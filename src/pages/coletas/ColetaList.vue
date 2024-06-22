@@ -242,13 +242,13 @@ function salvarRespostas() {
 
             db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
                 if (updated) {
-                    router.go(0);//Esse código faz um redirect para a mesma página, atualizando os dados.
                     success("Respostas salvas com sucesso!");
                 } else
                     error("Nada foi atualizado");
             });
         });
 
+        router.go(0);
         return;
     }
 

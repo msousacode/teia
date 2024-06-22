@@ -63,7 +63,7 @@
 
         <div class="row justify-center">
             <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl q-pa-sm"
-                @click="generatePdf" :disabled="!exibirRelatorioBtn" />
+                @click="gerarRelatorio" :disabled="!exibirRelatorioBtn" />
         </div>
 
         <Pie id="canvasPie" :data="dataPie" :options="dataPie.options" class="hidden-pie" />
@@ -95,11 +95,11 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Legend);
 
 const dataPie = ref({
-    labels: ['NÃO FEZ 40%', 'COM AJUDA 20%', 'SEM AJUDA 10%'],
+    labels: ['NÃO FEZ 80%', 'COM AJUDA 18%', 'SEM AJUDA 2%'],
     datasets: [
         {
-            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-            data: [40, 20, 10]
+            backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
+            data: [80, 18, 2]
         }
     ],
     options: {
@@ -112,8 +112,8 @@ const dataLine = ref({
     datasets: [
         {
             label: '2024',
-            backgroundColor: '#f87979',
-            data: [40, 39, 10, 40, 39, 80, 40, 39, 10, 40, 39, 80]
+            backgroundColor: '#249be5',
+            data: [0, 0, 1, 4, 6, 5, 6, 8, 10, 11, 15, 22]
         }
     ],
     options: {
@@ -151,11 +151,12 @@ function pesquisar() {
     exibirRelatorioBtn.value = true;
 }
 
-function generatePdf() {
+async function gerarRelatorio() {
 
     const service = new RelatorioService();
 
-    const data = service.gerarRelatorio();
+    const uuidAprendiz = toRaw(form.value.aprendiz.value);
+    const data = await service.gerarRelatorio(uuidAprendiz);
 
     //Cria uma nova instância do jsPDF
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -208,6 +209,8 @@ function generatePdf() {
 
         item.treinamentos.forEach((treinamento) => {
 
+            let objetivoCount = 1;
+
             pdf.setFontSize(17);
             pdf.setFont(font, 'bold');
             pdf.text('Treinamento:', 13, yPos += 5);
@@ -217,7 +220,7 @@ function generatePdf() {
 
             pdf.setFontSize(12);
 
-            pdf.text(`Treinamento: ${treinamento.nomeTreinamento}`, 13, yPos += 5);
+            pdf.text(`Treinamento: ${treinamento.titulo}`, 13, yPos += 5);
             pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
             tipoProtocolo = treinamento.protocolo;
 
@@ -233,7 +236,7 @@ function generatePdf() {
 
                 pdf.setFontSize(17);
                 pdf.setFont(font, 'bold');
-                pdf.text('Objetivo aplicado:', 13, yPos += 10);
+                pdf.text(`${objetivoCount++} - Objetivo aplicado:`, 13, yPos += 10);
                 pdf.setFontSize(12);
                 pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
