@@ -2,7 +2,7 @@ class Relatorio {
   cabecario: Cabecario;
   profissional: Profissional;
   aprendiz?: Aprendiz;
-  //treinamentos?: Treinamento[];
+  treinamentos?: Treinamento[];
 
   constructor(
     _cabecario: Cabecario,
@@ -43,32 +43,32 @@ class Aprendiz {
   }
 }
 
-/* 
 class Treinamento {
-  titulo: string;
-  data: string;
+  uuid: string;
+  dataInicio: string; //Informação vem do Atendimento.
   nomeTreinamento: string;
   protocolo: string;
   descricao: string;
-  alvosColetados: AlvoColetado[];
+  //alvosColetados: AlvoColetado[];
 
   constructor(
-    titulo: string,
-    data: string,
-    nomeTreinamento: string,
-    protocolo: string,
-    descricao: string,
-    alvosColetados: AlvoColetado[]
+    _uuid: string,
+    _dataInicio: string,
+    _nomeTreinamento: string,
+    _protocolo: string,
+    _descricao: string
+    //alvosColetados: AlvoColetado[]
   ) {
-    this.titulo = titulo;
-    this.data = data;
-    this.nomeTreinamento = nomeTreinamento;
-    this.protocolo = protocolo;
-    this.descricao = descricao;
-    this.alvosColetados = alvosColetados;
+    this.uuid = _uuid;
+    this.dataInicio = _dataInicio;
+    this.nomeTreinamento = _nomeTreinamento;
+    this.protocolo = _protocolo;
+    this.descricao = _descricao;
+    //this.alvosColetados = alvosColetados;
   }
 }
 
+/* 
 class AlvoColetado {
   dataColeta: string;
   nomeAlvo: string;
@@ -111,10 +111,6 @@ import { db } from 'src/db';
 
 export class RelatorioService {
   async gerarRelatorio(uuid: string) {
-    db.treinamentos.get({ uuid: uuid }).then((treinamentos) => {
-      console.log(treinamentos);
-    });
-
     const cabecario = new Cabecario(
       `Relatório gerado em ${this.getDataAtual()}`
     );
@@ -126,20 +122,59 @@ export class RelatorioService {
 
     const aprendiz = await this.getAprendiz(uuid);
 
-    const relatorio = new Relatorio(cabecario, profissional, aprendiz);
+    const treinamentos = await this.getAtendimentos(uuid).then((res) => {
+      console.log('res');
+      console.log(res);
+    });
+    console.log(treinamentos);
 
+    const relatorio = new Relatorio(cabecario, profissional, aprendiz);
     console.log(relatorio);
   }
 
-  getAprendiz(uuid: string) {
+  getAprendiz(uuidAprendiz: string) {
     return db.aprendizes
-      .get(uuid)
+      .get(uuidAprendiz)
       .then((res) => {
-        return new Aprendiz(res?.nome_aprendiz, res?.nasc_aprendiz);
+        if (!res) throw new Error('Aprendiz não encontrado');
+        return new Aprendiz(res.nome_aprendiz, res.nasc_aprendiz);
       })
       .catch((error) => {
         throw new Error(error);
       });
+  }
+
+  async getAtendimentos(uuidAprendiz: string) {
+    const res = await db.atendimentos
+      .where({ aprendiz_uuid_fk: uuidAprendiz })
+      .toArray();
+
+    if (!res) throw new Error('Atendimento não encontrado');
+
+    const treinamentosPromises = res.map(async (atendimento) => {
+      const treinamentos = await Promise.all(
+        atendimento.treinamentos.map(async (treinamento) => {
+          const descricao = await db.treinamentos
+            .get(treinamento.uuid)
+            .then((res) => {
+              return res?.descricao;
+            });
+          return new Treinamento(
+            treinamento.uuid,
+            atendimento.data_inicio,
+            treinamento.treinamento,
+            treinamento.protocolo,
+            descricao
+          );
+        })
+      );
+
+      return treinamentos;
+    });
+
+    const allTreinamentos = await Promise.all(treinamentosPromises);
+
+    return allTreinamentos;
   }
 
   gerarRelatorioMock() {
