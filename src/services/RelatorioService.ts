@@ -1,17 +1,19 @@
 class Relatorio {
   cabecario: Cabecario;
   profissional: Profissional;
-  aprendiz?: Aprendiz;
-  treinamentos?: Treinamento[];
+  aprendiz: Aprendiz;
+  treinamentos: Treinamento[];
 
   constructor(
     _cabecario: Cabecario,
     _profissional: Profissional,
-    _aprendiz?: Aprendiz
+    _aprendiz: Aprendiz,
+    _treinamentos: Treinamento[]
   ) {
     this.cabecario = _cabecario;
     this.profissional = _profissional;
     this.aprendiz = _aprendiz;
+    this.treinamentos = _treinamentos;
   }
 }
 
@@ -75,37 +77,38 @@ class AlvoColetado {
   pergunta: string;
   descricaoAlvo: string;
   resposta: string;
-  //anotacoes: Anotacao[];
+  anotacoes: Anotacao[];
 
   constructor(
-    dataColeta: string,
-    nomeAlvo: string,
-    tipoAprendizagem: string,
-    pergunta: string,
-    descricaoAlvo: string,
-    resposta: string
-    //anotacoes: Anotacao[]
+    _dataColeta: string,
+    _nomeAlvo: string,
+    _tipoAprendizagem: string,
+    _pergunta: string,
+    _descricaoAlvo: string,
+    _resposta: string | number,
+    _anotacoes: Anotacao[]
   ) {
-    this.dataColeta = dataColeta;
-    this.nomeAlvo = nomeAlvo;
-    this.tipoAprendizagem = tipoAprendizagem;
-    this.pergunta = pergunta;
-    this.descricaoAlvo = descricaoAlvo;
-    this.resposta = resposta;
-    //this.anotacoes = anotacoes;
+    this.dataColeta = _dataColeta;
+    this.nomeAlvo = _nomeAlvo;
+    this.tipoAprendizagem = _tipoAprendizagem;
+    this.pergunta = _pergunta;
+    this.descricaoAlvo = _descricaoAlvo;
+    this.resposta = _resposta;
+    this.anotacoes = _anotacoes;
   }
 }
 
-/* 
 class Anotacao {
+  uuidIdentificador: string;
   data: string;
   descricao: string;
 
-  constructor(data: string, descricao: string) {
-    this.data = data;
-    this.descricao = descricao;
+  constructor(_uuidIdenticador: string, _data: string, _descricao: string) {
+    this.uuidIdentificador = _uuidIdenticador;
+    this.data = _data;
+    this.descricao = _descricao;
   }
-} */
+}
 
 import { db } from 'src/db';
 
@@ -123,13 +126,17 @@ export class RelatorioService {
     const aprendiz = await this.getAprendiz(uuid);
 
     const treinamentos = await this.getTreinamentos(uuid).then((res) => {
-      console.log('res');
-      console.log(res);
+      return res;
     });
-    console.log(treinamentos);
 
-    const relatorio = new Relatorio(cabecario, profissional, aprendiz);
-    console.log(relatorio);
+    const relatorio = new Relatorio(
+      cabecario,
+      profissional,
+      aprendiz,
+      treinamentos
+    );
+
+    console.log(JSON.stringify(relatorio));
   }
 
   getAprendiz(uuidAprendiz: string) {
@@ -159,7 +166,6 @@ export class RelatorioService {
             .then((res) => {
               return res?.descricao;
             });
-          console.log(uuidAprendiz + ' descricao ' + treinamento.uuid);
 
           const alvosColetados = await db.coletas
             .where({
@@ -168,18 +174,43 @@ export class RelatorioService {
             })
             //.and((coleta) => coleta.foi_respondido === true) TODO depois dos testes descomentar para pegar somente o que é coletado.
             .toArray()
-            .then((res) => {
-              return res;
-            });
+            .then(async (res) => {
+              const anotacoes = await db.anotacoes
+                .where({ treinamento_uuid_fk: treinamento.uuid })
+                .toArray()
+                .then((res) => {
+                  return res.map((anotacao) => {
+                    return new Anotacao(
+                      anotacao.alvo_identidicador_fk,
+                      anotacao.data_anotacao,
+                      anotacao.anotacao
+                    );
+                  });
+                });
 
-          console.log(alvosColetados);
+              return res.map((coleta) => {
+                const anotacoesFiltradas = anotacoes.filter((anotacao) => {
+                  return anotacao.uuidIdentificador === coleta.uuid;
+                });
+
+                return new AlvoColetado(
+                  coleta.data_coleta,
+                  coleta.alvo.nome_alvo,
+                  coleta.alvo.tipo_aprendizagem,
+                  coleta.alvo.pergunta,
+                  coleta.alvo.descricao_alvo,
+                  coleta.resposta,
+                  anotacoesFiltradas
+                );
+              });
+            });
 
           return new Treinamento(
             treinamento.uuid,
             atendimento.data_inicio,
             treinamento.treinamento,
             treinamento.protocolo,
-            descricao,
+            descricao || 'Sem descrição',
             alvosColetados
           );
         })
