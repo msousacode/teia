@@ -325,10 +325,6 @@ async function gerarRelatorio() {
 }
 
 onMounted(() => {
-
-    const service = new RelatorioService();
-    service.gerarRelatorio('42033b77-b5cb-43c1-a628-9c169347a5ce');
-
     db.aprendizes.toArray().then((res) => {
         res.forEach((aprendiz) => {
             aprendizes.value.push({
