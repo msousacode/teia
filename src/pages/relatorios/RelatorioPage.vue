@@ -63,7 +63,7 @@
 
         <div class="row justify-center">
             <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl q-pa-sm"
-                @click="generatePdf" :disabled="!exibirRelatorioBtn" />
+                @click="gerarRelatorio" :disabled="!exibirRelatorioBtn" />
         </div>
 
         <Pie id="canvasPie" :data="dataPie" :options="dataPie.options" class="hidden-pie" />
@@ -151,11 +151,12 @@ function pesquisar() {
     exibirRelatorioBtn.value = true;
 }
 
-function generatePdf() {
+async function gerarRelatorio() {
 
     const service = new RelatorioService();
 
-    const data = service.gerarRelatorioMock();
+    const uuidAprendiz = toRaw(form.value.aprendiz.value);
+    const data = await service.gerarRelatorio(uuidAprendiz);
 
     //Cria uma nova instância do jsPDF
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -219,7 +220,7 @@ function generatePdf() {
 
             pdf.setFontSize(12);
 
-            pdf.text(`Treinamento: ${treinamento.nomeTreinamento}`, 13, yPos += 5);
+            pdf.text(`Treinamento: ${treinamento.titulo}`, 13, yPos += 5);
             pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
             tipoProtocolo = treinamento.protocolo;
 
