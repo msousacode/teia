@@ -45,30 +45,29 @@ class Aprendiz {
 
 class Treinamento {
   uuid: string;
-  dataInicio: string; //Informação vem do Atendimento.
-  nomeTreinamento: string;
+  data: string; //Informação vem do Atendimento.
+  titulo: string;
   protocolo: string;
   descricao: string;
-  //alvosColetados: AlvoColetado[];
+  alvosColetados: AlvoColetado[];
 
   constructor(
     _uuid: string,
-    _dataInicio: string,
+    _dataInicioEfinal: string,
     _nomeTreinamento: string,
     _protocolo: string,
-    _descricao: string
-    //alvosColetados: AlvoColetado[]
+    _descricao: string,
+    _alvosColetados: AlvoColetado[]
   ) {
     this.uuid = _uuid;
-    this.dataInicio = _dataInicio;
-    this.nomeTreinamento = _nomeTreinamento;
+    this.data = _dataInicioEfinal;
+    this.titulo = _nomeTreinamento;
     this.protocolo = _protocolo;
     this.descricao = _descricao;
-    //this.alvosColetados = alvosColetados;
+    this.alvosColetados = _alvosColetados;
   }
 }
 
-/* 
 class AlvoColetado {
   dataColeta: string;
   nomeAlvo: string;
@@ -76,7 +75,7 @@ class AlvoColetado {
   pergunta: string;
   descricaoAlvo: string;
   resposta: string;
-  anotacoes: Anotacao[];
+  //anotacoes: Anotacao[];
 
   constructor(
     dataColeta: string,
@@ -84,8 +83,8 @@ class AlvoColetado {
     tipoAprendizagem: string,
     pergunta: string,
     descricaoAlvo: string,
-    resposta: string,
-    anotacoes: Anotacao[]
+    resposta: string
+    //anotacoes: Anotacao[]
   ) {
     this.dataColeta = dataColeta;
     this.nomeAlvo = nomeAlvo;
@@ -93,10 +92,11 @@ class AlvoColetado {
     this.pergunta = pergunta;
     this.descricaoAlvo = descricaoAlvo;
     this.resposta = resposta;
-    this.anotacoes = anotacoes;
+    //this.anotacoes = anotacoes;
   }
 }
 
+/* 
 class Anotacao {
   data: string;
   descricao: string;
@@ -122,7 +122,7 @@ export class RelatorioService {
 
     const aprendiz = await this.getAprendiz(uuid);
 
-    const treinamentos = await this.getAtendimentos(uuid).then((res) => {
+    const treinamentos = await this.getTreinamentos(uuid).then((res) => {
       console.log('res');
       console.log(res);
     });
@@ -144,7 +144,7 @@ export class RelatorioService {
       });
   }
 
-  async getAtendimentos(uuidAprendiz: string) {
+  async getTreinamentos(uuidAprendiz: string) {
     const res = await db.atendimentos
       .where({ aprendiz_uuid_fk: uuidAprendiz })
       .toArray();
@@ -159,12 +159,28 @@ export class RelatorioService {
             .then((res) => {
               return res?.descricao;
             });
+          console.log(uuidAprendiz + ' descricao ' + treinamento.uuid);
+
+          const alvosColetados = await db.coletas
+            .where({
+              aprendiz_uuid_fk: uuidAprendiz,
+              treinamento_uuid_fk: treinamento.uuid,
+            })
+            //.and((coleta) => coleta.foi_respondido === true) TODO depois dos testes descomentar para pegar somente o que é coletado.
+            .toArray()
+            .then((res) => {
+              return res;
+            });
+
+          console.log(alvosColetados);
+
           return new Treinamento(
             treinamento.uuid,
             atendimento.data_inicio,
             treinamento.treinamento,
             treinamento.protocolo,
-            descricao
+            descricao,
+            alvosColetados
           );
         })
       );
