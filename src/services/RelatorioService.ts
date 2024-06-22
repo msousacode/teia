@@ -1,5 +1,148 @@
+class Relatorio {
+  cabecario: Cabecario;
+  profissional: Profissional;
+  aprendiz?: Aprendiz;
+  //treinamentos?: Treinamento[];
+
+  constructor(
+    _cabecario: Cabecario,
+    _profissional: Profissional,
+    _aprendiz?: Aprendiz
+  ) {
+    this.cabecario = _cabecario;
+    this.profissional = _profissional;
+    this.aprendiz = _aprendiz;
+  }
+}
+
+class Cabecario {
+  descricao: string;
+
+  constructor(descricao: string) {
+    this.descricao = descricao;
+  }
+}
+
+class Profissional {
+  nome: string;
+  documento: string;
+
+  constructor(nome: string, documento: string) {
+    this.nome = nome;
+    this.documento = documento;
+  }
+}
+
+class Aprendiz {
+  nome: string;
+  idade: string;
+
+  constructor(nome: string, idade: string) {
+    this.nome = nome;
+    this.idade = idade;
+  }
+}
+
+/* 
+class Treinamento {
+  titulo: string;
+  data: string;
+  nomeTreinamento: string;
+  protocolo: string;
+  descricao: string;
+  alvosColetados: AlvoColetado[];
+
+  constructor(
+    titulo: string,
+    data: string,
+    nomeTreinamento: string,
+    protocolo: string,
+    descricao: string,
+    alvosColetados: AlvoColetado[]
+  ) {
+    this.titulo = titulo;
+    this.data = data;
+    this.nomeTreinamento = nomeTreinamento;
+    this.protocolo = protocolo;
+    this.descricao = descricao;
+    this.alvosColetados = alvosColetados;
+  }
+}
+
+class AlvoColetado {
+  dataColeta: string;
+  nomeAlvo: string;
+  tipoAprendizagem: string;
+  pergunta: string;
+  descricaoAlvo: string;
+  resposta: string;
+  anotacoes: Anotacao[];
+
+  constructor(
+    dataColeta: string,
+    nomeAlvo: string,
+    tipoAprendizagem: string,
+    pergunta: string,
+    descricaoAlvo: string,
+    resposta: string,
+    anotacoes: Anotacao[]
+  ) {
+    this.dataColeta = dataColeta;
+    this.nomeAlvo = nomeAlvo;
+    this.tipoAprendizagem = tipoAprendizagem;
+    this.pergunta = pergunta;
+    this.descricaoAlvo = descricaoAlvo;
+    this.resposta = resposta;
+    this.anotacoes = anotacoes;
+  }
+}
+
+class Anotacao {
+  data: string;
+  descricao: string;
+
+  constructor(data: string, descricao: string) {
+    this.data = data;
+    this.descricao = descricao;
+  }
+} */
+
+import { db } from 'src/db';
+
 export class RelatorioService {
-  gerarRelatorio() {
+  async gerarRelatorio(uuid: string) {
+    db.treinamentos.get({ uuid: uuid }).then((treinamentos) => {
+      console.log(treinamentos);
+    });
+
+    const cabecario = new Cabecario(
+      `Relatório gerado em ${this.getDataAtual()}`
+    );
+
+    const profissional = new Profissional(
+      'Catarina Renata da Silva',
+      'CRO 5406'
+    ); //TODO esses dados do profissional tem que vir do usuário logado, como essa parte não esta implementada, fica em todo, quando a tela de login estiver pronta eu terei essa informação.
+
+    const aprendiz = await this.getAprendiz(uuid);
+
+    const relatorio = new Relatorio(cabecario, profissional, aprendiz);
+
+    console.log(relatorio);
+  }
+
+  getAprendiz(uuid: string) {
+    return db.aprendizes
+      .get(uuid)
+      .then((res) => {
+        return new Aprendiz(res?.nome_aprendiz, res?.nasc_aprendiz);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  gerarRelatorioMock() {
     const data = [
       {
         cabecario: {
@@ -177,5 +320,13 @@ export class RelatorioService {
     ];
 
     return data;
+  }
+
+  getDataAtual() {
+    const data = new Date();
+    const dia = data.getDate().toString().padStart(2, '0');
+    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+    const ano = data.getFullYear();
+    return `${dia}/${mes}/${ano}`;
   }
 }

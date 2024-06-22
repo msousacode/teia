@@ -112,7 +112,7 @@ const dataLine = ref({
     datasets: [
         {
             label: '2024',
-            backgroundColor: '#f87979',
+            backgroundColor: '#249be5',
             data: [0, 0, 1, 4, 6, 5, 6, 8, 10, 11, 15, 22]
         }
     ],
@@ -155,7 +155,7 @@ function generatePdf() {
 
     const service = new RelatorioService();
 
-    const data = service.gerarRelatorio();
+    const data = service.gerarRelatorioMock();
 
     //Cria uma nova instância do jsPDF
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -324,6 +324,10 @@ function generatePdf() {
 }
 
 onMounted(() => {
+
+    const service = new RelatorioService();
+    service.gerarRelatorio('044bd33e-f2d6-48ce-ad67-27b78b4dac69');
+
     db.aprendizes.toArray().then((res) => {
         res.forEach((aprendiz) => {
             aprendizes.value.push({
