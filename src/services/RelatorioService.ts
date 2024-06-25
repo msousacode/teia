@@ -1,3 +1,27 @@
+class ChartData {
+  labels: string[];
+  datasets: Dataset[];
+  options: { responsive: boolean };
+
+  constructor(_labels: string[], _datasets: Dataset[]) {
+    this.labels = _labels;
+    this.datasets = _datasets;
+    this.options = {
+      responsive: true,
+    };
+  }
+}
+
+class Dataset {
+  backgroundColor: string[];
+  data: number[];
+
+  constructor(_backgroundColor: string[], _data: number[]) {
+    this.backgroundColor = _backgroundColor;
+    this.data = _data;
+  }
+}
+
 class Relatorio {
   cabecario: Cabecario;
   profissional: Profissional;
@@ -52,6 +76,7 @@ class Treinamento {
   protocolo: string;
   descricao: string;
   alvosColetados: AlvoColetado[];
+  chartData: ChartData;
 
   constructor(
     _uuid: string,
@@ -59,7 +84,8 @@ class Treinamento {
     _nomeTreinamento: string,
     _protocolo: string,
     _descricao: string,
-    _alvosColetados: AlvoColetado[]
+    _alvosColetados: AlvoColetado[],
+    _chartData: ChartData
   ) {
     this.uuid = _uuid;
     this.data = _dataInicioEfinal;
@@ -67,6 +93,7 @@ class Treinamento {
     this.protocolo = _protocolo;
     this.descricao = _descricao;
     this.alvosColetados = _alvosColetados;
+    this.chartData = _chartData;
   }
 }
 
@@ -158,6 +185,19 @@ export class RelatorioService {
 
     if (!res) throw new Error('Atendimento não encontrado');
 
+    /* {
+  labels: ['NÃO FEZ 80%', 'COM AJUDA 18%', 'SEM AJUDA 2%'],
+  datasets: [
+      {
+          backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
+          data: [80, 18, 2]
+      }
+  ],
+  options: {
+      responsive: true,
+  }
+} */
+
     const treinamentosPromises = res.map(async (atendimento) => {
       const treinamentos = await Promise.all(
         atendimento.treinamentos.map(async (treinamento) => {
@@ -172,7 +212,7 @@ export class RelatorioService {
               aprendiz_uuid_fk: uuidAprendiz,
               treinamento_uuid_fk: treinamento.uuid,
             })
-            //.and((coleta) => coleta.foi_respondido === true) TODO depois dos testes descomentar para pegar somente o que é coletado.
+            .and((coleta) => coleta.foi_respondido === true)
             .toArray()
             .then(async (res) => {
               const anotacoes = await db.anotacoes
@@ -205,13 +245,20 @@ export class RelatorioService {
               });
             });
 
+          //Cria o gráfico das coletas.
+          const grafico = this.construirGrafico(
+            alvosColetados,
+            treinamento.protocolo
+          );
+
           return new Treinamento(
             treinamento.uuid,
             atendimento.data_inicio,
             treinamento.treinamento,
             treinamento.protocolo,
             descricao || 'Sem descrição',
-            alvosColetados
+            alvosColetados,
+            grafico
           );
         })
       );
@@ -230,5 +277,63 @@ export class RelatorioService {
     const mes = (data.getMonth() + 1).toString().padStart(2, '0');
     const ano = data.getFullYear();
     return `${dia}/${mes}/${ano}`;
+  }
+
+  construirGrafico(alvosColetados: AlvoColetado[], protocolo: string) {
+    alvosColetados.reduce(
+      (prev, curr) => {
+        return [...prev, curr.resposta];
+      },
+      [protocolo]
+    );
+
+    if (protocolo === 'Protocolo ABC') {
+      const semAjudaCount = alvosColetados.filter(
+        (alvo) => alvo.resposta === 'sem-ajuda'
+      );
+      const comAjudaCount = alvosColetados.filter(
+        (alvo) => alvo.resposta === 'com-ajuda'
+      );
+      const naoFezCount = alvosColetados.filter(
+        (alvo) => alvo.resposta === 'nao-fez'
+      );
+
+      const semAjudaPercentagem = this.calcularPercentagem(
+        semAjudaCount.length,
+        alvosColetados.length
+      );
+      const comAjudaPercentagem = this.calcularPercentagem(
+        comAjudaCount.length,
+        alvosColetados.length
+      );
+      const naoFezPercentagem = this.calcularPercentagem(
+        naoFezCount.length,
+        alvosColetados.length
+      );
+
+      console.log(semAjudaPercentagem, comAjudaPercentagem, naoFezPercentagem);
+
+      return new ChartData(
+        [
+          `NÃO FEZ ${naoFezPercentagem}%`,
+          `COM AJUDA ${comAjudaPercentagem}%`,
+          `SEM AJUDA ${semAjudaPercentagem}%`,
+        ],
+        [
+          {
+            backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
+            data: [
+              naoFezCount.length,
+              comAjudaCount.length,
+              semAjudaCount.length,
+            ],
+          },
+        ]
+      );
+    }
+  }
+
+  calcularPercentagem(count: number, total: number) {
+    return (count / total) * 100;
   }
 }

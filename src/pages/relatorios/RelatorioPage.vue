@@ -66,8 +66,8 @@
                 @click="gerarRelatorio" :disabled="!exibirRelatorioBtn" />
         </div>
 
-        <Pie id="canvasPie" :data="dataPie" :options="dataPie.options" class="hidden-pie" />
-        <Line id="canvasLine" :data="dataLine" :options="dataPie.options" class="hidden-pie" />
+        <Pie id="canvasPie" :data="dataPie" :options="chartOptions" class="hidden-pie" />
+        <Line id="canvasLine" :data="dataLine" :options="chartOptions" class="hidden-pie" />
 
     </q-page>
 </template>
@@ -76,6 +76,7 @@
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
+import { Pie } from 'vue-chartjs'
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
@@ -83,7 +84,6 @@ import {
     Title,
     LineElement,
 } from 'chart.js'
-import { Line, Pie } from 'vue-chartjs'
 import { RelatorioService } from 'src/services/RelatorioService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
@@ -94,31 +94,35 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Tooltip,
     Legend);
 
-const dataPie = ref({
-    labels: ['NÃO FEZ 80%', 'COM AJUDA 18%', 'SEM AJUDA 2%'],
-    datasets: [
-        {
-            backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
-            data: [80, 18, 2]
-        }
-    ],
-    options: {
-        responsive: true,
+let dataPie = ref(
+    {
+        labels: [],
+        datasets: [
+            {
+                label: '',
+                backgroundColor: [],
+                data: [],
+            },
+        ],
     }
-});
+);
 
-const dataLine = ref({
-    labels: ['1ª Sem', '2ª Sem', '3ª Sem', '4ª Sem', '5ª Sem', '6ª Sem', '7ª Sem', '8ª Sem', '9ª Sem', '10ª Sem', '11ª Sem', '12ª Sem'],
-    datasets: [
-        {
-            label: '2024',
-            backgroundColor: '#249be5',
-            data: [0, 0, 1, 4, 6, 5, 6, 8, 10, 11, 15, 22]
-        }
-    ],
-    options: {
-        responsive: true,
+let dataLine = ref(
+    {
+        labels: [],
+        datasets: [
+            {
+                label: '',
+                backgroundColor: '',
+                borderColor: '',
+                data: [],
+            },
+        ],
     }
+);
+
+const chartOptions = ref({
+    responsive: true,
 });
 
 const form = ref({
@@ -179,149 +183,162 @@ async function gerarRelatorio() {
 
     let nomeArquivo: string = '';
 
-    data.forEach((item) => {
+    await Promise.all([
+        data.forEach((item) => {
 
-        if (nomeArquivo === '') {
-            nomeArquivo = item.profissional.nome + ' - ' + item.aprendiz.nome + '-' + new Date().toLocaleDateString();
-        }
-        //Cabeçalho do Relatório
-        pdf.setFont(font, 'normal');
-        pdf.setFontSize(11);//Tamanho da fonte
-        pdf.text(item.cabecario.descricao, 13, 20);
+            if (nomeArquivo === '') {
+                nomeArquivo = item.profissional.nome + ' - ' + item.aprendiz.nome + '-' + new Date().toLocaleDateString();
+            }
 
-        pdf.setFontSize(14);//Tamanho da fonte
-
-        pdf.setFont(font, 'bold');
-        pdf.text('Profissional:', 13, 30);
-        pdf.setFont(font, 'normal');
-        pdf.text(item.profissional.nome, 40, 30);
-
-        pdf.setFont(font, 'bold');
-        pdf.text('Aprendiz:', 13, 40);
-        pdf.setFont(font, 'normal');
-        pdf.text(item.aprendiz.nome, 35, 40);
-        pdf.setFont(font, 'bold');
-        pdf.text('Idade:', 13, 47);
-        pdf.setFont(font, 'normal');
-        pdf.text(item.aprendiz.idade, 30, 47);
-
-        const pageHeight = pdf.internal.pageSize.getHeight() - 40;
-
-        item.treinamentos.forEach((treinamento) => {
-
-            let objetivoCount = 1;
-
-            pdf.setFontSize(17);
-            pdf.setFont(font, 'bold');
-            pdf.text('Treinamento:', 13, yPos += 5);
-            pdf.text(treinamento.data, 135, yPos);
+            //Cabeçalho do Relatório
             pdf.setFont(font, 'normal');
-            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+            pdf.setFontSize(11);//Tamanho da fonte
+            pdf.text(item.cabecario.descricao, 13, 20);
 
-            pdf.setFontSize(12);
-
-            pdf.text(`Treinamento: ${treinamento.titulo}`, 13, yPos += 5);
-            pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
-            tipoProtocolo = treinamento.protocolo;
+            pdf.setFontSize(14);//Tamanho da fonte
 
             pdf.setFont(font, 'bold');
-            pdf.text('Descrição:', 13, yPos += 10);
+            pdf.text('Profissional:', 13, 30);
             pdf.setFont(font, 'normal');
-            const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
-            pdf.text(lines, 13, yPos += 5);
+            pdf.text(item.profissional.nome, 40, 30);
 
-            yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+            pdf.setFont(font, 'bold');
+            pdf.text('Aprendiz:', 13, 40);
+            pdf.setFont(font, 'normal');
+            pdf.text(item.aprendiz.nome, 35, 40);
+            pdf.setFont(font, 'bold');
+            pdf.text('Idade:', 13, 47);
+            pdf.setFont(font, 'normal');
+            pdf.text(item.aprendiz.idade, 30, 47);
 
-            treinamento.alvosColetados.forEach((alvo) => {
+            const pageHeight = pdf.internal.pageSize.getHeight() - 40;
+
+            item.treinamentos.forEach((treinamento) => {
+
+                let objetivoCount = 1;
 
                 pdf.setFontSize(17);
                 pdf.setFont(font, 'bold');
-                pdf.text(`${objetivoCount++} - Objetivo aplicado:`, 13, yPos += 10);
-                pdf.setFontSize(12);
+                pdf.text('Treinamento:', 13, yPos += 5);
+                pdf.text(treinamento.data, 135, yPos);
+                pdf.setFont(font, 'normal');
                 pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
-                pdf.setFont(font, 'bold');
-                pdf.text(`Data da coleta: `, 13, yPos += 10);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.dataColeta, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Nome do objetivo:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.nomeAlvo, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.tipoAprendizagem, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Pergunta:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.pergunta, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Descritivo do objetivo:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.descricaoAlvo, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Resposta do objetivo:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.resposta, 60, yPos);
-
-                pdf.setFontSize(17);
-                pdf.setFont(font, 'bold');
-                pdf.text('Anotações feitas no objetivo:', 13, yPos += 15);
-                pdf.setFont(font, 'normal');
                 pdf.setFontSize(12);
-                pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
-                alvo.anotacoes.forEach((anotacao) => {
+                pdf.text(`Treinamento: ${treinamento.titulo}`, 13, yPos += 5);
+                pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
+                tipoProtocolo = treinamento.protocolo;
+
+                pdf.setFont(font, 'bold');
+                pdf.text('Descrição:', 13, yPos += 10);
+                pdf.setFont(font, 'normal');
+                const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
+                pdf.text(lines, 13, yPos += 5);
+
+                yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+
+                treinamento.alvosColetados.forEach((alvo) => {
+
+                    pdf.setFontSize(17);
+                    pdf.setFont(font, 'bold');
+                    pdf.text(`${objetivoCount++} - Objetivo aplicado:`, 13, yPos += 10);
+                    pdf.setFontSize(12);
+                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
                     pdf.setFont(font, 'bold');
-                    pdf.text('Data da anotação: ', 13, yPos += 10);
+                    pdf.text(`Data da coleta: `, 13, yPos += 10);
                     pdf.setFont(font, 'normal');
-                    pdf.text(anotacao.data, 47, yPos);
-                    const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
-                    pdf.text(lines, 13, yPos += 5);
+                    pdf.text(alvo.dataColeta, 60, yPos);
 
-                    yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Nome do objetivo:', 13, yPos += 5);
+                    pdf.setFont(font, 'normal');
+                    pdf.text(alvo.nomeAlvo, 60, yPos);
 
-                    if (yPos > pageHeight) {
-                        yPos = 10;
-                        pdf.addPage();
-                    }
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
+                    pdf.setFont(font, 'normal');
+                    pdf.text(alvo.tipoAprendizagem, 60, yPos);
+
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Pergunta:', 13, yPos += 5);
+                    pdf.setFont(font, 'normal');
+                    pdf.text(alvo.pergunta, 60, yPos);
+
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Descritivo do objetivo:', 13, yPos += 5);
+                    pdf.setFont(font, 'normal');
+                    pdf.text(alvo.descricaoAlvo, 60, yPos);
+
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Resposta do objetivo:', 13, yPos += 5);
+                    pdf.setFont(font, 'normal');
+                    pdf.text(alvo.resposta, 60, yPos);
+
+                    pdf.setFontSize(17);
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Anotações feitas no objetivo:', 13, yPos += 15);
+                    pdf.setFont(font, 'normal');
+                    pdf.setFontSize(12);
+                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+                    alvo.anotacoes.forEach((anotacao) => {
+
+                        pdf.setFont(font, 'bold');
+                        pdf.text('Data da anotação: ', 13, yPos += 10);
+                        pdf.setFont(font, 'normal');
+                        pdf.text(anotacao.data, 47, yPos);
+                        const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
+                        pdf.text(lines, 13, yPos += 5);
+
+                        yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+
+                        if (yPos > pageHeight) {
+                            yPos = 10;
+                            pdf.addPage();
+                        }
+                    });
+
                 });
 
+                pdf.setFontSize(17);
+                pdf.setFont(font, 'bold');
+                pdf.text('Represetação gráfica:', 13, yPos += 10);
+                pdf.setFont(font, 'normal');
+                pdf.setFontSize(12);
+                pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+
+                dataPie.value = { ...treinamento.chartData };
+
+                //TODO depois verificar se existe uma maneira melhor de fazer isso.
+                setTimeout(() => {
+                    if (tipoProtocolo == 'Protocolo ABC') {
+                        //Atualiza os dados do gráfico
+                        var imgData = document.getElementById("canvasPie").toDataURL('image/png');
+                        pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+                    }
+
+                    if (tipoProtocolo == 'Ocorrência de respostas') {
+                        //Atualiza os dados do gráfico
+                        var imgData = document.getElementById("canvasLine").toDataURL('image/png');
+                        pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
+                    }
+
+                    yPos = 10;
+                    pdf.addPage();
+                    pdf.setFont(font, 'normal');
+                }, 1000);
+
             });
+        })
 
-            pdf.setFontSize(17);
-            pdf.setFont(font, 'bold');
-            pdf.text('Represetação gráfica:', 13, yPos += 10);
-            pdf.setFont(font, 'normal');
-            pdf.setFontSize(12);
-            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+    ]);
 
-            console.log(tipoProtocolo)
-
-            if (tipoProtocolo == 'Protocolo ABC') {
-                var imgData = document.getElementById("canvasPie").toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
-            }
-
-            if (tipoProtocolo == 'Ocorrência de respostas') {
-                var imgData = document.getElementById("canvasLine").toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
-            }
-
-            yPos = 10;
-            pdf.addPage();
-            pdf.setFont(font, 'normal');
-        });
-    });
-
-    pdf.save(`${nomeArquivo}.pdf`);
+    //TODO depois verificar se existe uma maneira melhor de fazer isso.
+    setTimeout(() => {
+        pdf.save(`${nomeArquivo}.pdf`);
+    }, 3000);
 }
 
 onMounted(() => {
