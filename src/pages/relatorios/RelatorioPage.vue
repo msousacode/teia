@@ -66,8 +66,8 @@
                 @click="gerarRelatorio" :disabled="!exibirRelatorioBtn" />
         </div>
 
-        <Pie id="canvasPie" :data="dataPie" :options="chartOptions" />
-        <!-- <Line id="canvasLine" :data="dataLine" :options="chartOptions" /> -->
+        <Pie id="canvasPie" :data="dataPie" :options="chartOptions" class="hidden-pie" />
+        <Line id="canvasLine" :data="dataLine" :options="chartOptions" class="hidden-pie" />
 
     </q-page>
 </template>
@@ -94,37 +94,36 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Tooltip,
     Legend);
 
-let dataPie = ref({
-    labels: ['Fez sem ajuda', 'Fez com ajuda'],
-    datasets: [
-        {
-            label: '2024',
-            backgroundColor: ['#249be5', '#f44336'],
-            data: [70, 30]
-        }
-    ],
-    options: {
-        responsive: true,
+let dataPie = ref(
+    {
+        labels: [],
+        datasets: [
+            {
+                label: '',
+                backgroundColor: [],
+                data: [],
+            },
+        ],
     }
-});
+);
+
+let dataLine = ref(
+    {
+        labels: [],
+        datasets: [
+            {
+                label: '',
+                backgroundColor: '',
+                borderColor: '',
+                data: [],
+            },
+        ],
+    }
+);
 
 const chartOptions = ref({
     responsive: true,
-    //maintainAspectRatio: true
 });
-/* const dataLine = ref({
-    labels: ['1ª Sem', '2ª Sem', '3ª Sem', '4ª Sem', '5ª Sem', '6ª Sem', '7ª Sem', '8ª Sem', '9ª Sem', '10ª Sem', '11ª Sem', '12ª Sem'],
-    datasets: [
-        {
-            label: '2024',
-            backgroundColor: '#249be5',
-            data: [0, 0, 1, 4, 6, 5, 6, 8, 10, 11, 15, 22]
-        }
-    ],
-    options: {
-        responsive: true,
-    }
-}); */
 
 const form = ref({
     aprendiz: '',
@@ -190,6 +189,7 @@ async function gerarRelatorio() {
             if (nomeArquivo === '') {
                 nomeArquivo = item.profissional.nome + ' - ' + item.aprendiz.nome + '-' + new Date().toLocaleDateString();
             }
+
             //Cabeçalho do Relatório
             pdf.setFont(font, 'normal');
             pdf.setFontSize(11);//Tamanho da fonte
@@ -214,9 +214,6 @@ async function gerarRelatorio() {
             const pageHeight = pdf.internal.pageSize.getHeight() - 40;
 
             item.treinamentos.forEach((treinamento) => {
-
-                //Atualiza os dados do gráfico
-                dataPie.value = treinamento.chartData;
 
                 let objetivoCount = 1;
 
@@ -312,26 +309,36 @@ async function gerarRelatorio() {
                 pdf.setFontSize(12);
                 pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
-                if (tipoProtocolo == 'Protocolo ABC') {
-                    var imgData = document.getElementById("canvasPie").toDataURL('image/png');
-                    pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
-                }
+                dataPie.value = { ...treinamento.chartData };
 
-                if (tipoProtocolo == 'Ocorrência de respostas') {
-                    var imgData = document.getElementById("canvasLine").toDataURL('image/png');
-                    pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
-                }
+                //TODO depois verificar se existe uma maneira melhor de fazer isso.
+                setTimeout(() => {
+                    if (tipoProtocolo == 'Protocolo ABC') {
+                        //Atualiza os dados do gráfico
+                        var imgData = document.getElementById("canvasPie").toDataURL('image/png');
+                        pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+                    }
 
+                    if (tipoProtocolo == 'Ocorrência de respostas') {
+                        //Atualiza os dados do gráfico
+                        var imgData = document.getElementById("canvasLine").toDataURL('image/png');
+                        pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
+                    }
 
-                yPos = 10;
-                pdf.addPage();
-                pdf.setFont(font, 'normal');
+                    yPos = 10;
+                    pdf.addPage();
+                    pdf.setFont(font, 'normal');
+                }, 1000);
+
             });
         })
 
     ]);
 
-    pdf.save(`${nomeArquivo}.pdf`);
+    //TODO depois verificar se existe uma maneira melhor de fazer isso.
+    setTimeout(() => {
+        pdf.save(`${nomeArquivo}.pdf`);
+    }, 3000);
 }
 
 onMounted(() => {
