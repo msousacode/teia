@@ -85,6 +85,7 @@ import {
     LineElement,
 } from 'chart.js'
 import { RelatorioService } from 'src/services/RelatorioService';
+import { useQuasar } from 'quasar';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -93,6 +94,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Title,
     Tooltip,
     Legend);
+
+const $q = useQuasar();
 
 let dataPie = ref(
     {
@@ -157,6 +160,7 @@ function pesquisar() {
 
 async function gerarRelatorio() {
 
+    $q.loading.show();
     const service = new RelatorioService();
 
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
@@ -337,6 +341,7 @@ async function gerarRelatorio() {
 
     //TODO depois verificar se existe uma maneira melhor de fazer isso.
     setTimeout(() => {
+        $q.loading.hide();
         pdf.save(`${nomeArquivo}.pdf`);
     }, 3000);
 }
