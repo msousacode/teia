@@ -176,12 +176,13 @@ async function gerarRelatorio() {
 
     const font = 'Newsreader';
 
+    const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
     const marginLeft = 10;
     const marginRight = 10;
     const maxWidth = pageWidth - marginLeft - marginRight;
 
-    let yPos = 60;
+    let yPos = 0;
 
     let tipoProtocolo: string = '';
 
@@ -197,25 +198,25 @@ async function gerarRelatorio() {
             //Cabeçalho do Relatório
             pdf.setFont(font, 'normal');
             pdf.setFontSize(11);//Tamanho da fonte
-            pdf.text(item.cabecario.descricao, 13, 20);
+            pdf.text(item.cabecario.descricao, 13, 10);
 
-            pdf.setFontSize(14);//Tamanho da fonte
-
-            pdf.setFont(font, 'bold');
-            pdf.text('Profissional:', 13, 30);
-            pdf.setFont(font, 'normal');
-            pdf.text(item.profissional.nome, 40, 30);
+            pdf.setFontSize(12);//Tamanho da fonte
 
             pdf.setFont(font, 'bold');
-            pdf.text('Aprendiz:', 13, 40);
+            pdf.text('Profissional:', 13, 20);
             pdf.setFont(font, 'normal');
-            pdf.text(item.aprendiz.nome, 35, 40);
-            pdf.setFont(font, 'bold');
-            pdf.text('Idade:', 13, 47);
-            pdf.setFont(font, 'normal');
-            pdf.text(item.aprendiz.idade, 30, 47);
+            pdf.text(item.profissional.nome, 40, 20);
 
-            const pageHeight = pdf.internal.pageSize.getHeight() - 40;
+            pdf.setFont(font, 'bold');
+            pdf.text('Aprendiz:', 13, 30);
+            pdf.setFont(font, 'normal');
+            pdf.text(item.aprendiz.nome, 35, 30);
+            pdf.setFont(font, 'bold');
+            pdf.text('Idade:', 13, 35);
+            pdf.setFont(font, 'normal');
+            pdf.text(item.aprendiz.idade, 30, 37);
+
+            yPos = 40;
 
             item.treinamentos.forEach((treinamento) => {
 
@@ -234,13 +235,15 @@ async function gerarRelatorio() {
                 pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
                 tipoProtocolo = treinamento.protocolo;
 
-                pdf.setFont(font, 'bold');
-                pdf.text('Descrição:', 13, yPos += 10);
-                pdf.setFont(font, 'normal');
-                const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
-                pdf.text(lines, 13, yPos += 5);
+                if (treinamento.descricao.length > 0) {
+                    pdf.setFont(font, 'bold');
+                    pdf.text('Descrição:', 13, yPos += 10);
+                    pdf.setFont(font, 'normal');
+                    const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
+                    pdf.text(lines, 13, yPos += 5);
 
-                yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+                    yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+                }
 
                 treinamento.alvosColetados.forEach((alvo) => {
 
@@ -268,43 +271,54 @@ async function gerarRelatorio() {
                     pdf.setFont(font, 'bold');
                     pdf.text('Pergunta:', 13, yPos += 5);
                     pdf.setFont(font, 'normal');
-                    pdf.text(alvo.pergunta, 60, yPos);
+                    pdf.text(alvo.pergunta || 'N/D', 60, yPos);
 
                     pdf.setFont(font, 'bold');
                     pdf.text('Descritivo do objetivo:', 13, yPos += 5);
                     pdf.setFont(font, 'normal');
-                    pdf.text(alvo.descricaoAlvo, 60, yPos);
+                    const lines = pdf.splitTextToSize(alvo.descricaoAlvo || 'N/D', maxWidth);
+                    pdf.text(lines, 60, yPos);
 
                     pdf.setFont(font, 'bold');
                     pdf.text('Resposta do objetivo:', 13, yPos += 5);
                     pdf.setFont(font, 'normal');
                     pdf.text(alvo.resposta, 60, yPos);
 
-                    pdf.setFontSize(17);
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Anotações feitas no objetivo:', 13, yPos += 15);
-                    pdf.setFont(font, 'normal');
-                    pdf.setFontSize(12);
-                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
-                    alvo.anotacoes.forEach((anotacao) => {
-
+                    if (alvo.anotacoes.length > 0) {
+                        pdf.setFontSize(17);
                         pdf.setFont(font, 'bold');
-                        pdf.text('Data da anotação: ', 13, yPos += 10);
+                        pdf.text('Anotações feitas no objetivo:', 13, yPos += 15);
                         pdf.setFont(font, 'normal');
-                        pdf.text(anotacao.data, 47, yPos);
-                        const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
-                        pdf.text(lines, 13, yPos += 5);
+                        pdf.setFontSize(12);
+                        pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
 
-                        yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+                        alvo.anotacoes.forEach((anotacao) => {
 
-                        if (yPos > pageHeight) {
-                            yPos = 10;
-                            pdf.addPage();
-                        }
-                    });
+                            pdf.setFont(font, 'bold');
+                            pdf.text('Data da anotação: ', 13, yPos += 10);
+                            pdf.setFont(font, 'normal');
+                            pdf.text(anotacao.data, 47, yPos);
+                            const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
+                            pdf.text(lines, 13, yPos += 5);
 
+                            yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
+
+                            if (yPos > pageHeight) {
+                                yPos = 10;
+                                pdf.addPage();
+                            }
+                        });
+                    }
                 });
+
+                console.log('yPos', yPos);
+                console.log('pageHeight', parseFloat(pageHeight.toFixed()) - 50);
+                if (yPos > parseFloat(pageHeight.toFixed()) - 60) {
+                    yPos = 10;
+                    pdf.addPage();
+                    pdf.setFont(font, 'normal');
+                }
 
                 pdf.setFontSize(17);
                 pdf.setFont(font, 'bold');
@@ -328,12 +342,7 @@ async function gerarRelatorio() {
                         var imgData = document.getElementById("canvasLine").toDataURL('image/png');
                         pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
                     }
-
-                    yPos = 10;
-                    pdf.addPage();
-                    pdf.setFont(font, 'normal');
                 }, 1000);
-
             });
         })
 
