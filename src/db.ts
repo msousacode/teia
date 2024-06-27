@@ -65,6 +65,10 @@ export interface Anotacao {
   sync: boolean;
 }
 
+export interface Sincronizacao {
+  dataUltimaSincronizacao: Date;
+}
+
 export class DataBase extends Dexie {
   treinamentos!: Table<Treinamento>;
 
@@ -78,6 +82,8 @@ export class DataBase extends Dexie {
 
   anotacoes!: Table<Anotacao>;
 
+  sincronizacao!: Table<Sincronizacao>;
+
   constructor() {
     super('teiaDB');
     this.version(1).stores({
@@ -87,6 +93,7 @@ export class DataBase extends Dexie {
       atendimentos: 'uuid,aprendiz_uuid_fk',
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
       anotacoes: 'uuid,treinamento_uuid_fk',
+      sincronizacao: 'dataUltimaSincronizacao',
     });
   }
 }

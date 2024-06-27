@@ -1,5 +1,6 @@
 import { register } from 'register-service-worker';
 import { Notify } from 'quasar';
+import { SincronizarDbService } from '../src/services/SincronizarDbService';
 
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
@@ -7,6 +8,11 @@ import { Notify } from 'quasar';
 
 window.addEventListener('online', () => {
   // Requisitar atualização do service worker quando voltar a ficar online
+
+  const sincronizarDbService = new SincronizarDbService();
+
+  sincronizarDbService.inicia();
+
   console.log('Online');
 });
 
