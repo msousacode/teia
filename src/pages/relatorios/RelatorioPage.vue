@@ -66,8 +66,8 @@
                 @click="gerarRelatorio" :disabled="!exibirRelatorioBtn" />
         </div>
 
-        <Pie id="canvasPie" :data="dataPie" :options="chartOptions" class="hidden-pie" />
-        <Line id="canvasLine" :data="dataLine" :options="chartOptions" class="hidden-pie" />
+        <div ref="chartContainer"></div>
+
 
     </q-page>
 </template>
@@ -76,14 +76,14 @@
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
-import { Pie } from 'vue-chartjs'
+
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
     PointElement,
     Title,
     LineElement,
-} from 'chart.js'
+} from 'chart.js/auto'
 import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 
@@ -94,6 +94,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Title,
     Tooltip,
     Legend);
+
+const service = new RelatorioService();
 
 const $q = useQuasar();
 
@@ -110,23 +112,6 @@ let dataPie = ref(
     }
 );
 
-let dataLine = ref(
-    {
-        labels: [],
-        datasets: [
-            {
-                label: '',
-                backgroundColor: '',
-                borderColor: '',
-                data: [],
-            },
-        ],
-    }
-);
-
-const chartOptions = ref({
-    responsive: true,
-});
 
 const form = ref({
     aprendiz: '',
@@ -158,10 +143,40 @@ function pesquisar() {
     exibirRelatorioBtn.value = true;
 }
 
+const chartContainer = ref(null);
+
+async function renderizarGraficos() {
+
+    //const uuidAprendiz = toRaw(form.value.aprendiz.value);
+    const data = await service.gerarRelatorio("0466c382-b6f2-49a8-8d28-a347d661beb9");
+
+    const graficos = data.map(item => {
+        return item.treinamentos.map(tre => {
+            return { treinamentoUuid: tre.uuid, chart: tre.chartData }
+        });
+    })
+
+    graficos.forEach((graf) => {
+        graf.forEach((chart) => {
+            const canvas = document.createElement('canvas');
+            canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
+            canvas.className = "hidden-pie";
+            const ctx = canvas.getContext('2d');
+
+            new ChartJS(ctx || '', chart.chart);
+
+            // Anexa o canvas ao elemento div
+            if (chartContainer.value) {
+                chartContainer.value.appendChild(canvas);
+            }
+        })
+    })
+}
+
+
 async function gerarRelatorio() {
 
     $q.loading.show();
-    const service = new RelatorioService();
 
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
     const data = await service.gerarRelatorio(uuidAprendiz);
@@ -365,6 +380,8 @@ onMounted(() => {
             });
         });
     });
+
+    renderizarGraficos();
 })
 </script>
 

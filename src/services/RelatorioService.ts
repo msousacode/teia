@@ -103,7 +103,7 @@ class AlvoColetado {
   tipoAprendizagem: string;
   pergunta: string;
   descricaoAlvo: string;
-  resposta: string | number;
+  resposta: any;
   anotacoes: Anotacao[];
 
   constructor(
@@ -112,7 +112,7 @@ class AlvoColetado {
     _tipoAprendizagem: string,
     _pergunta: string,
     _descricaoAlvo: string,
-    _resposta: string | number,
+    _resposta: any,
     _anotacoes: Anotacao[]
   ) {
     this.dataColeta = _dataColeta;
@@ -184,19 +184,6 @@ export class RelatorioService {
       .toArray();
 
     if (!res) throw new Error('Atendimento não encontrado');
-
-    /* {
-  labels: ['NÃO FEZ 80%', 'COM AJUDA 18%', 'SEM AJUDA 2%'],
-  datasets: [
-      {
-          backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
-          data: [80, 18, 2]
-      }
-  ],
-  options: {
-      responsive: true,
-  }
-} */
 
     const treinamentosPromises = res.map(async (atendimento) => {
       const treinamentos = await Promise.all(
@@ -311,25 +298,73 @@ export class RelatorioService {
         alvosColetados.length
       );
 
-      console.log(semAjudaPercentagem, comAjudaPercentagem, naoFezPercentagem);
-
-      return new ChartData(
-        [
-          `NÃO FEZ ${naoFezPercentagem}%`,
-          `COM AJUDA ${comAjudaPercentagem}%`,
-          `SEM AJUDA ${semAjudaPercentagem}%`,
-        ],
-        [
-          {
-            backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
-            data: [
-              naoFezCount.length,
-              comAjudaCount.length,
-              semAjudaCount.length,
-            ],
+      const graficoPie = {
+        type: 'pie', // ou 'line', 'pie', etc.
+        data: {
+          labels: [
+            `NÃO FEZ ${naoFezPercentagem}%`,
+            `COM AJUDA ${comAjudaPercentagem}%`,
+            `SEM AJUDA ${semAjudaPercentagem}%`,
+          ],
+          datasets: [
+            {
+              label: '# of Votes',
+              data: [
+                naoFezCount.length,
+                comAjudaCount.length,
+                semAjudaCount.length,
+              ],
+              backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
           },
-        ]
-      );
+        },
+      };
+
+      return graficoPie;
+    }
+
+    if (protocolo === 'Protocolo Ocorrência de Resposta') {
+      const graficoLine = {
+        type: 'line', // ou 'line', 'pie', etc.
+        data: {
+          labels: ['1ª Resposta', '1ª Resposta', '1ª Resposta'],
+          datasets: [
+            {
+              label: '# of Votes',
+              data: [0, 1, 2],
+              backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      };
+
+      return graficoLine;
     }
   }
 
