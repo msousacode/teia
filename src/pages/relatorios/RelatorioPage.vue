@@ -68,7 +68,6 @@
 
         <div ref="chartContainer"></div>
 
-
     </q-page>
 </template>
 
@@ -146,7 +145,7 @@ async function renderizarGraficos() {
         graf.forEach((chart) => {
             const canvas = document.createElement('canvas');
             canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
-            canvas.className = "hidden-pie";
+            canvas.style.display = 'none';
             const ctx = canvas.getContext('2d');
 
             new ChartJS(ctx || '', chart.chart);
@@ -160,12 +159,11 @@ async function renderizarGraficos() {
 }
 
 function gerarGraficosTela() {
+    $q.loading.show();
     renderizarGraficos().then(() => setTimeout(imprimirPDF, 3000)).catch((err) => console.log(err));
 }
 
 async function imprimirPDF() {
-    $q.loading.show();
-
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
     const data = await service.gerarRelatorio(uuidAprendiz);
 
@@ -363,13 +361,3 @@ onMounted(() => {
     });
 })
 </script>
-
-<style scoped>
-.hidden-pie {
-    visibility: hidden;
-}
-
-.hidden-pie {
-    display: none;
-}
-</style>
