@@ -191,7 +191,6 @@ async function imprimirPDF() {
 
     let nomeArquivo: string = '';
 
-
     data.forEach((item) => {
 
         if (nomeArquivo === '') {
@@ -287,7 +286,6 @@ async function imprimirPDF() {
                 pdf.setFont(font, 'normal');
                 pdf.text(alvo.resposta.toString(), 60, yPos);
 
-
                 if (alvo.anotacoes.length > 0) {
                     pdf.setFontSize(17);
                     pdf.setFont(font, 'bold');
@@ -307,7 +305,7 @@ async function imprimirPDF() {
 
                         yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
 
-                        if (yPos > pageHeight) {
+                        if (yPos + 20 > pageHeight) {
                             yPos = 10;
                             pdf.addPage();
                         }
@@ -315,10 +313,9 @@ async function imprimirPDF() {
                 }
             });
 
-            if (yPos > parseFloat(pageHeight.toFixed()) - 60) {
+            if (yPos + 20 > pageHeight) {
                 yPos = 10;
                 pdf.addPage();
-                pdf.setFont(font, 'normal');
             }
 
             pdf.setFontSize(17);
@@ -331,11 +328,21 @@ async function imprimirPDF() {
             if (tipoProtocolo == 'Protocolo ABC') {
                 var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
                 pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+
+                if (yPos > 18) {
+                    yPos = 10;
+                    pdf.addPage();
+                }
             }
 
             if (tipoProtocolo == 'Protocolo Ocorrência de Resposta') {
                 var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
                 pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
+
+                if (yPos > 18) {
+                    yPos = 10;
+                    pdf.addPage();
+                }
             }
         })
     })

@@ -308,7 +308,7 @@ export class RelatorioService {
           ],
           datasets: [
             {
-              label: '# of Votes',
+              label: '',
               data: [
                 naoFezCount.length,
                 comAjudaCount.length,
@@ -337,14 +337,22 @@ export class RelatorioService {
     }
 
     if (protocolo === 'Protocolo Ocorrência de Resposta') {
+      const respostas = alvosColetados.map((alvo) => {
+        return alvo.resposta;
+      });
+
+      const periodoSemanas = alvosColetados.map((alvo, ind) => {
+        return `Semana ${ind + 1}`;
+      });
+
       const graficoLine = {
         type: 'line', // ou 'line', 'pie', etc.
         data: {
-          labels: ['1ª Resposta', '1ª Resposta', '1ª Resposta'],
+          labels: periodoSemanas,
           datasets: [
             {
-              label: '# of Votes',
-              data: [0, 1, 2],
+              label: 'Evolução',
+              data: respostas,
               backgroundColor: ['#ff6694', '#fee020', '#329f73', '#DD1B16'],
               borderColor: [
                 'rgba(255, 99, 132, 1)',
