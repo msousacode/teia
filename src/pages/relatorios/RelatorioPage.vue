@@ -50,9 +50,11 @@
                             <q-item-label>
                                 Progresso:
                             </q-item-label>
-                            <q-linear-progress size="25px" :value="progress1" color="green-5">
+
+                            <q-linear-progress size="25px" :value="item.progresso" color="green-5">
                                 <div class="absolute-full flex flex-center">
-                                    <q-badge color="white" text-color="accent" :label="progressLabel1" />
+                                    <q-badge color="white" text-color="accent"
+                                        :label="progressLabel1(item.progresso)" />
                                 </div>
                             </q-linear-progress>
                         </div>
@@ -72,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
 
@@ -108,11 +110,16 @@ const treinamentos = ref<any[]>([]);
 
 const atendimentos = ref<any[]>([]);
 
-const progress1 = ref(0.3)
-
 const exibirRelatorioBtn = ref(false);
+/* 
+const progress1 = ref(0)
 
 let progressLabel1 = computed(() => (progress1.value * 100).toFixed(2) + '%');
+ */
+
+function progressLabel1(progress: number) {
+    return (progress * 100).toFixed(2) + '%';
+}
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -121,11 +128,29 @@ function pesquisar() {
         atendimentos.value = toRaw(res);
 
         atendimentos.value.forEach((item) => {
+
+            item.treinamentos.forEach((treinamento: any) => {
+                calcularProgresso(treinamento.uuid, raw.aprendiz.value).then((progresso) => {
+                    treinamento.progresso = progresso;
+                });
+            });
+
             treinamentos.value = toRaw(item.treinamentos)
         });
-    })
+    });
 
     exibirRelatorioBtn.value = true;
+}
+
+async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
+    let valor = 0;
+    await db.coletas.where({ aprendiz_uuid_fk: aprendizUUid, treinamento_uuid_fk: treinamentoUUid }).toArray((res) => {
+        const total = res.length;
+        const feitos = res.filter((item) => item.foi_respondido === true).length;
+        valor = feitos / total;
+    })
+
+    return valor;
 }
 
 const chartContainer = ref(null);
