@@ -62,9 +62,11 @@ async function recuperar() {
   $q.loading.show();
   try {
     await auth.resetPassword(novaSenha.value.trim())
+    $q.loading.hide();
     success('Senha redefinida com sucesso');
     router.push({ name: 'login' })
   } catch (error) {
+    $q.loading.show();
     console.log(error);
   }
 }

@@ -1,10 +1,5 @@
 import useSupabase from 'src/boot/supabase';
-import { ref } from 'vue';
 import useNotify from './UseNotify';
-
-// o usuário é definido fora da função useAuthUser para que atue como um estado global
-// e sempre se refira a um único usuário
-const user = ref<any>(null);
 
 export default function authService() {
   const { supabase } = useSupabase();
@@ -15,7 +10,7 @@ export default function authService() {
         email,
         password,
       });
-      user.value = data.user;
+      localStorage.setItem('user', JSON.stringify(data.user)); //TODO manter aqui por enquanto depois verificar possíveis melhorias, seria bom adicionar um tempo de expiração.
       if (error) throw error;
       return data.user;
     } catch (error) {
@@ -40,7 +35,7 @@ export default function authService() {
    * Check if the user is logged in or not
    */
   const isLoggedIn = () => {
-    return !!user.value;
+    return !!localStorage.getItem('user');
   };
 
   const logout = async () => {
