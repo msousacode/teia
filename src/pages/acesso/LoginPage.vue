@@ -36,17 +36,19 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useQuasar } from 'quasar';
 
-const $q = useQuasar();
+import useLoginService from 'src/composables/useLoginService';
+
+const service = useLoginService()
 
 const email = ref('');
 
 const senha = ref('');
 
 async function entrar() {
-  $q.loading.show();
-
+  service.login(email.value, senha.value).then(() => {
+    console.log('logado');
+  });
 }
 
 onMounted(() => {

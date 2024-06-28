@@ -1,27 +1,38 @@
 import useSupabase from 'src/boot/supabase';
-//import { ref } from 'vue';
+import { ref } from 'vue';
+import useNotify from './UseNotify';
 
 // o usuário é definido fora da função useAuthUser para que atue como um estado global
 // e sempre se refira a um único usuário
-//const user = ref(null);
+const user = ref(null);
 
 export default function loginService() {
   const { supabase } = useSupabase();
 
-  const login = async (email: string) => {
-    //const { data, error } = await useSupabase()
-    /* .supabase.from('usuario')
-      .select('*')
-      .eq('email', email);
-    if (error) throw error; */
-    return email;
+  const login = async (email: any, password: any) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      return data.user;
+    } catch (error) {
+      useNotify().error('Erro ao logar usuário: SUPA_000');
+      throw error;
+    }
   };
 
   const register = async (email: any, password: any) => {
-    const { user, error } = await supabase.auth.signUp({ email, password });
-    console.log(user);
-    if (error) throw error;
-    return user;
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      user.value = data.user;
+      if (error) throw error;
+      return data.user;
+    } catch (error) {
+      useNotify().error('Erro ao registrar usuário: SUPA_001');
+      throw error;
+    }
   };
 
   return { login, register };
