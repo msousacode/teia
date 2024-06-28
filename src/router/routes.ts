@@ -20,6 +20,16 @@ const routes: RouteRecordRaw[] = [
         path: '/cadastrar',
         component: () => import('pages/acesso/CadastroPage.vue'),
       },
+      {
+        name: 'esqueci',
+        path: '/esqueci',
+        component: () => import('pages/acesso/EsqueciSenhaPage.vue'),
+      },
+      {
+        path: 'reset-password',
+        name: 'reset-password',
+        component: () => import('pages/acesso/NovaSenhaPage.vue'),
+      },
     ],
   },
   {

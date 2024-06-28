@@ -25,7 +25,7 @@
           </div>
 
           <div class="full-width">
-            <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
+            <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/esqueci"
               label="Esqueci a senha" no-caps />
           </div>
         </div>
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-import useLoginService from 'src/composables/useLoginService';
+import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 
@@ -45,7 +45,7 @@ const { error } = useNotify();
 
 const router = useRouter();
 
-const service = useLoginService()
+const service = useAuth()
 
 const email = ref('');
 

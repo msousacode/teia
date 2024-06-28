@@ -4,9 +4,9 @@ import useNotify from './UseNotify';
 
 // o usuário é definido fora da função useAuthUser para que atue como um estado global
 // e sempre se refira a um único usuário
-const user = ref(null);
+const user = ref<any>(null);
 
-export default function loginService() {
+export default function authService() {
   const { supabase } = useSupabase();
 
   const login = async (email: any, password: any) => {
@@ -27,7 +27,7 @@ export default function loginService() {
   const register = async (email: any, password: any) => {
     try {
       const { data, error } = await supabase.auth.signUp({ email, password });
-      user.value = data.user;
+      user.value = data.user || null;
       if (error) throw error;
       return data.user;
     } catch (error) {
@@ -48,5 +48,30 @@ export default function loginService() {
     if (error) throw error;
   };
 
-  return { login, register, logout, isLoggedIn };
+  /**
+   * Send user an email to reset their password
+   * (ie. support "Forgot Password?")
+   */
+  const sendPasswordRestEmail = async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) throw error;
+    return data;
+  };
+
+  const resetPassword = async (newPassword: string) => {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+    if (error) throw error;
+    return data.user;
+  };
+
+  return {
+    login,
+    register,
+    logout,
+    isLoggedIn,
+    sendPasswordRestEmail,
+    resetPassword,
+  };
 }

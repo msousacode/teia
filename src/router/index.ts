@@ -5,7 +5,7 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
-import useLoginService from 'src/composables/useLoginService';
+import useAuth from 'src/composables/useAuth';
 
 import routes from './routes';
 
@@ -36,7 +36,7 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach((to) => {
-    const { isLoggedIn } = useLoginService();
+    const { isLoggedIn } = useAuth();
 
     if (to.hash.includes('type=recovery') && to.name !== 'reset-password') {
       const accessToken = to.hash.split('&')[0];

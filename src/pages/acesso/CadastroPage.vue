@@ -37,12 +37,12 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import useNotify from 'src/composables/UseNotify';
-import useLoginService from 'src/composables/useLoginService';
+import useAuth from 'src/composables/useAuth';
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
 
-const { register } = useLoginService();
+const { register } = useAuth();
 
 const { success, error } = useNotify();
 

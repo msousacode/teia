@@ -43,11 +43,11 @@ import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
-import useLoginService from 'src/composables/useLoginService';
+import useAuth from 'src/composables/useAuth';
 
 const router = useRouter();
 
-const service = useLoginService();
+const service = useAuth();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
