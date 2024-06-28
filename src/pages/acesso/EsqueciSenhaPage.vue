@@ -48,7 +48,7 @@ const mostarMensagemSucesso = ref(false);
 async function recuperar() {
   $q.loading.show();
   try {
-    await auth.sendPasswordRestEmail(email.value);
+    await auth.sendPasswordRestEmail(email.value.trim());
     email.value = '';
     mostarMensagemSucesso.value = true;
     $q.loading.hide();

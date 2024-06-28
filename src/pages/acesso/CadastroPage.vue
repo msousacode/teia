@@ -55,12 +55,12 @@ const formCadastro = reactive({
 
 async function cadastrar() {
   $q.loading.show();
-  if (formCadastro.senha !== formCadastro.senhaConfirmada) {
+  if (formCadastro.senha.trim() !== formCadastro.senhaConfirmada.trim()) {
     error('Senhas não conferem');
     return;
   }
 
-  await register(formCadastro.email, formCadastro.senha).then(() => {
+  await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
     success('Usuário cadastrado com sucesso verifique seu e-mail para ativar sua conta');
     limparFormulario();
     $q.loading.hide();

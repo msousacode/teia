@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
@@ -52,14 +52,10 @@ const email = ref('');
 const senha = ref('');
 
 async function entrar() {
-  service.login(email.value, senha.value).then(() => {
+  service.login(email.value.trim(), senha.value.trim()).then(() => {
     router.push('/relatorios')
   }).catch(() => {
     error('Não foi possível logar. Verifique suas credenciais e tente novamente.');
   });
 }
-
-onMounted(() => {
-  console.log('mounted');
-});
 </script>

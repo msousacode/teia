@@ -50,10 +50,18 @@ const novaSenha = ref('');
 const confirmarSenha = ref('');
 
 async function recuperar() {
-  console.log(confirmarSenha.value)
+  if (novaSenha.value.trim() !== confirmarSenha.value.trim()) {
+    $q.notify({
+      color: 'red-5',
+      textColor: 'white',
+      icon: 'report_problem',
+      message: 'As senhas não coincidem',
+    });
+    return;
+  }
   $q.loading.show();
   try {
-    await auth.resetPassword(novaSenha.value)
+    await auth.resetPassword(novaSenha.value.trim())
     success('Senha redefinida com sucesso');
     router.push({ name: 'login' })
   } catch (error) {
