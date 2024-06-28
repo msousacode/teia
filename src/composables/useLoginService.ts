@@ -15,6 +15,7 @@ export default function loginService() {
         email,
         password,
       });
+      user.value = data.user;
       if (error) throw error;
       return data.user;
     } catch (error) {
@@ -35,5 +36,17 @@ export default function loginService() {
     }
   };
 
-  return { login, register };
+  /**
+   * Check if the user is logged in or not
+   */
+  const isLoggedIn = () => {
+    return !!user.value;
+  };
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  };
+
+  return { login, register, logout, isLoggedIn };
 }

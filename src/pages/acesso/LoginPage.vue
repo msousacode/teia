@@ -38,6 +38,12 @@
 import { onMounted, ref } from 'vue';
 
 import useLoginService from 'src/composables/useLoginService';
+import { useRouter } from 'vue-router';
+import useNotify from 'src/composables/UseNotify';
+
+const { error } = useNotify();
+
+const router = useRouter();
 
 const service = useLoginService()
 
@@ -47,7 +53,9 @@ const senha = ref('');
 
 async function entrar() {
   service.login(email.value, senha.value).then(() => {
-    console.log('logado');
+    router.push('/relatorios')
+  }).catch(() => {
+    error('Não foi possível logar. Verifique suas credenciais e tente novamente.');
   });
 }
 
