@@ -15,8 +15,7 @@
           <q-input outlined v-model="senha" label="Senha" stack-label type="password" />
 
           <div class="full-width q-gutter-y-xs">
-            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" size="22px" label="Entrar"
-              @click="entrar" />
+            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" label="Entrar" @click="entrar" />
           </div>
 
           <div class="full-width">

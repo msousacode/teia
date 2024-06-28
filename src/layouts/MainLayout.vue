@@ -13,7 +13,7 @@
                 <q-item-label>Lougout</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup :to="{ name: 'perfil' }">
               <q-item-section>
                 <q-item-label>Meu perfil</q-item-label>
               </q-item-section>

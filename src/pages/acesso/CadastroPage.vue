@@ -22,8 +22,7 @@
           </section>
 
           <div class="full-width q-mt-md">
-            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" size="22px" label="Cadastrar"
-              @click="cadastrar()" />
+            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" label="Cadastrar" @click="cadastrar()" />
 
             <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
               no-caps />
@@ -39,6 +38,9 @@ import { reactive } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import useAuth from 'src/composables/useAuth';
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const $q = useQuasar();
 
@@ -62,18 +64,11 @@ async function cadastrar() {
 
   await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
     success('Usuário cadastrado com sucesso verifique seu e-mail para ativar sua conta');
-    limparFormulario();
     $q.loading.hide();
+    router.push({ name: 'confirmado' });
   }).catch(() => {
-    error('Erro ao cadastrar usuário');
+    error('Erro ao cadastrar usuário x');
     $q.loading.hide();
   });
-
-  const limparFormulario = () => {
-    formCadastro.nome = '';
-    formCadastro.email = '';
-    formCadastro.senha = '';
-    formCadastro.senhaConfirmada = '';
-  };
 };
 </script>

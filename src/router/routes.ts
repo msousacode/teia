@@ -21,6 +21,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/acesso/CadastroPage.vue'),
       },
       {
+        name: 'confirmado',
+        path: '/confirmado',
+        component: () => import('pages/acesso/CadastroConfirmadoPage.vue'),
+      },
+      {
         name: 'esqueci',
         path: '/esqueci',
         component: () => import('pages/acesso/EsqueciSenhaPage.vue'),
@@ -82,6 +87,12 @@ const routes: RouteRecordRaw[] = [
         name: 'coletas',
         path: '/coletas/treinamento/:uuidTreinamento?/aprendiz/:uuidAprendiz?/diaColeta/:diaColeta?/tipoColeta/:tipoColeta?',
         component: () => import('pages/coletas/ColetaList.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'perfil',
+        path: '/perfil',
+        component: () => import('pages/perfil/PerfilPage.vue'),
         meta: { requiresAuth: true },
       },
     ],
