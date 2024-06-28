@@ -10,7 +10,7 @@
           <q-list>
             <q-item clickable v-close-popup @click="sair">
               <q-item-section>
-                <q-item-label>Lougout</q-item-label>
+                <q-item-label>Logout</q-item-label>
               </q-item-section>
             </q-item>
             <q-item clickable v-close-popup :to="{ name: 'perfil' }">
