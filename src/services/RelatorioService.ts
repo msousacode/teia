@@ -145,7 +145,7 @@ export class RelatorioService {
       `Relatório gerado em ${this.getDataAtual()}`
     );
 
-    const profissional = new Profissional('Nome Profisional', ''); //TODO esses dados do profissional tem que vir do usuário logado, como essa parte não esta implementada, fica em todo, quando a tela de login estiver pronta eu terei essa informação.
+    const profissional = new Profissional('Nome Profisional Atendimento', ''); //TODO esses dados do profissional tem que vir do usuário logado, como essa parte não esta implementada, fica em todo, quando a tela de login estiver pronta eu terei essa informação.
 
     const aprendiz = await this.getAprendiz(uuid);
 
