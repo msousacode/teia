@@ -66,13 +66,10 @@ module.exports = configure(function (ctx) {
       env: {
         API_URL: ctx.dev
           ? 'http://localhost:9200/'
-          : 'https://unirsi.netlify.app/',
-        SUPABASE_URL: 'https://ryptpepbhlfpkkcrsdnq.supabase.co',
+          : 'https://sysaba.netlify.app',
+        SUPABASE_URL: 'https://admyhroxjebmgrdakhza.supabase.co',
         SUPABASE_KEY:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5cHRwZXBiaGxmcGtrY3JzZG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc1OTE0MzUsImV4cCI6MjAyMzE2NzQzNX0.s-aW5104c8co5mqZlDFOJlbYqfMXG0-kos8qB9frY90',
-        ASSAS_KEY:
-          //'$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzY1MTI6OiRhYWNoX2EyNGMxYTllLTQyYjQtNDE3MS05MjIzLTUxODNhZWNiNDc4MA==',
-          '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0MDQ0MjQ6OiRhYWNoXzQ2MDJjYzY5LWZkYWUtNDVhYy1iMDdlLWQwNGNlNGVmZWZiYQ==',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkbXlocm94amVibWdyZGFraHphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk1NDI5NjksImV4cCI6MjAzNTExODk2OX0.zty5JEo6odbmNLL5yNf_6a4JxgBkLoyxOE3Ris9Kk9g',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

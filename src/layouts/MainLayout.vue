@@ -10,12 +10,12 @@
           <q-list>
             <q-item clickable v-close-popup @click="sair">
               <q-item-section>
-                <q-item-label>Sair</q-item-label>
+                <q-item-label>Lougout</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup :to="{ name: 'perfil' }">
               <q-item-section>
-                <q-item-label>Gerenciar</q-item-label>
+                <q-item-label>Meu perfil</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -43,8 +43,11 @@ import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
+import useAuth from 'src/composables/useAuth';
 
 const router = useRouter();
+
+const service = useAuth();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
@@ -83,9 +86,9 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
-const sair = () => {
-  //limpar a store e storage
+const sair = async () => {
   localStorage.clear();
-  router.replace({ path: '/entrar' });
+  await service.logout();
+  router.replace({ name: 'login' });
 };
 </script>
