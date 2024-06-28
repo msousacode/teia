@@ -60,7 +60,7 @@ async function cadastrar() {
     return;
   }
 
-  await register(formCadastro).then(() => {
+  await register(formCadastro.email, formCadastro.senha).then(() => {
     success('Usuário cadastrado com sucesso verifique seu e-mail para ativar sua conta');
     limparFormulario();
     $q.loading.hide();

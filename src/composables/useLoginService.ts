@@ -1,6 +1,13 @@
-//import useSupabase from 'src/boot/supabase';
+import useSupabase from 'src/boot/supabase';
+//import { ref } from 'vue';
+
+// o usuário é definido fora da função useAuthUser para que atue como um estado global
+// e sempre se refira a um único usuário
+//const user = ref(null);
 
 export default function loginService() {
+  const { supabase } = useSupabase();
+
   const login = async (email: string) => {
     //const { data, error } = await useSupabase()
     /* .supabase.from('usuario')
@@ -10,21 +17,11 @@ export default function loginService() {
     return email;
   };
 
-  const register = async (usuario: any) => {
-    // Esta linha pausa a execução até que cadastrarClientAsaas seja resolvido
-    /* const id = await this.service.cadastrarClientAsaas(usuario);
-    usuario.assas_customer_id = id;
-    // Esta linha só será executada após a resolução de cadastrarClientAsaas
-    const { data, error } = await useSupabase()
-      .supabase.from('usuario')
-      .insert([
-        {
-          ...usuario,
-        },
-      ]);
-    if (error) throw error; */
-
-    return usuario;
+  const register = async (email: any, password: any) => {
+    const { user, error } = await supabase.auth.signUp({ email, password });
+    console.log(user);
+    if (error) throw error;
+    return user;
   };
 
   return { login, register };
