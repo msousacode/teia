@@ -48,8 +48,7 @@ export default route(function (/* { store, ssrContext } */) {
       to.meta.requiresAuth &&
       !Object.keys(to.query).includes('fromEmail') //TODO adicionar uma lógica para permitir que o usuário acesse a área logada no modo offline.
     ) {
-      return { name: 'login' };
-    } else {
+      //return { name: 'login' };
       return { name: 'relatorios' };
     }
   });
