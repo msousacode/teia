@@ -1,8 +1,8 @@
 {
   "name": "sysaba",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "SysABA",
+  "productName": "SysABA",
   "author": "Michael Sousa <msousacode@gmail.com>",
   "private": true,
   "scripts": {
