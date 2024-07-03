@@ -22,7 +22,7 @@
           </section>
 
           <div class="full-width q-mt-md">
-            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" label="Cadastrar" @click="cadastrar()" />
+            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Cadastrar" @click="cadastrar()" />
 
             <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
               no-caps />
@@ -46,7 +46,7 @@ const $q = useQuasar();
 
 const { register } = useAuth();
 
-const { success, error } = useNotify();
+const { error } = useNotify();
 
 const formCadastro = reactive({
   nome: '',
@@ -63,11 +63,10 @@ async function cadastrar() {
   }
 
   await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
-    success('Usuário cadastrado com sucesso verifique seu e-mail para ativar sua conta');
     $q.loading.hide();
     router.push({ name: 'confirmado' });
   }).catch(() => {
-    error('Erro ao cadastrar usuário x');
+    error('Erro ao cadastrar usuário');
     $q.loading.hide();
   });
 };

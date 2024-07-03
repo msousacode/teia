@@ -15,7 +15,7 @@
           <q-input outlined v-model="senha" label="Senha" stack-label type="password" />
 
           <div class="full-width q-gutter-y-xs">
-            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" label="Entrar" @click="entrar" />
+            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Entrar" @click="entrar" />
           </div>
 
           <div class="full-width">
@@ -35,10 +35,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const { error } = useNotify();
 
@@ -51,9 +53,12 @@ const email = ref('');
 const senha = ref('');
 
 async function entrar() {
+  $q.loading.show();
   service.login(email.value.trim(), senha.value.trim()).then(() => {
     router.push('/relatorios')
+    $q.loading.hide();
   }).catch(() => {
+    $q.loading.hide();
     error('Não foi possível logar. Verifique suas credenciais e tente novamente.');
   });
 }

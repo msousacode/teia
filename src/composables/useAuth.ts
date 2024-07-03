@@ -21,10 +21,7 @@ export default function authService() {
 
   const register = async (email: any, password: any) => {
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      user.value = data.user || null;
-      if (error) throw error;
-      return data.user;
+      await supabase.auth.signUp({ email, password });
     } catch (error) {
       useNotify().error('Erro ao registrar usuário: SUPA_001');
       throw error;

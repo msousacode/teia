@@ -17,7 +17,7 @@
           <q-input outlined v-model="email" label="E-mail" stack-label />
 
           <div class="full-width">
-            <q-btn class="full-width bg-primary text-white" label="Recuperar senha" @click="recuperar" />
+            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Recuperar senha" @click="recuperar" />
           </div>
 
           <div class="full-width">
