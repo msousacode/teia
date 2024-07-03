@@ -10,7 +10,7 @@ export default function authService() {
         email,
         password,
       });
-      localStorage.setItem('user', JSON.stringify(data.user)); //TODO manter aqui por enquanto depois verificar possíveis melhorias, seria bom adicionar um tempo de expiração.
+      localStorage.setItem('user', JSON.stringify(data.user));
       if (error) throw error;
       return data.user;
     } catch (error) {
@@ -21,10 +21,7 @@ export default function authService() {
 
   const register = async (email: any, password: any) => {
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      user.value = data.user || null;
-      if (error) throw error;
-      return data.user;
+      await supabase.auth.signUp({ email, password });
     } catch (error) {
       useNotify().error('Erro ao registrar usuário: SUPA_001');
       throw error;

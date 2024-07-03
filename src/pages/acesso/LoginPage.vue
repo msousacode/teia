@@ -3,6 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <div class="text-h6">SysABA</div>
+        <div>v.1.0</div>
       </q-toolbar>
     </q-header>
 
@@ -15,7 +16,7 @@
           <q-input outlined v-model="senha" label="Senha" stack-label type="password" />
 
           <div class="full-width q-gutter-y-xs">
-            <q-btn class="q-px-xl q-py-xs full-width bg-primary text-white" label="Entrar" @click="entrar" />
+            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Entrar" @click="entrar" />
           </div>
 
           <div class="full-width">
@@ -34,11 +35,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
+import { onMounted, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const { error } = useNotify();
 
@@ -51,10 +54,38 @@ const email = ref('');
 const senha = ref('');
 
 async function entrar() {
+  $q.loading.show();
   service.login(email.value.trim(), senha.value.trim()).then(() => {
     router.push('/relatorios')
+    $q.loading.hide();
   }).catch(() => {
+    $q.loading.hide();
     error('Não foi possível logar. Verifique suas credenciais e tente novamente.');
   });
 }
+
+onMounted(() => {
+  const usuarioCache = localStorage.getItem('user');
+
+  if (usuarioCache) {
+    const usuarioAuth: User = JSON.parse(usuarioCache);
+
+    var diferencaEmMilissegundos = Math.abs(
+      new Date().getTime() - new Date(usuarioAuth.last_sign_in_at).getTime()
+    );
+
+    var diferencaEmDias = Math.ceil(
+      diferencaEmMilissegundos / (1000 * 60 * 60 * 24)
+    );
+
+    const duracaoDeLoginEmDias = 11; //O sistema mantém o usuário logado até 11 dias
+
+    if (diferencaEmDias > duracaoDeLoginEmDias) {
+      router.push({ name: '/' });
+      localStorage.clear();
+    } else {
+      router.push({ name: 'relatorios' });
+    }
+  }
+});
 </script>
