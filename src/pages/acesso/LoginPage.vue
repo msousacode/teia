@@ -85,8 +85,6 @@ onMounted(() => {
     } else {
       router.push({ name: 'relatorios' });
     }
-  } else {
-    router.push({ name: '/' });
   }
 });
 </script>
