@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
@@ -62,4 +62,31 @@ async function entrar() {
     error('Não foi possível logar. Verifique suas credenciais e tente novamente.');
   });
 }
+
+onMounted(() => {
+  const usuarioCache = localStorage.getItem('user');
+
+  if (usuarioCache) {
+    const usuarioAuth: User = JSON.parse(usuarioCache);
+
+    var diferencaEmMilissegundos = Math.abs(
+      new Date().getTime() - new Date(usuarioAuth.last_sign_in_at).getTime()
+    );
+
+    var diferencaEmDias = Math.ceil(
+      diferencaEmMilissegundos / (1000 * 60 * 60 * 24)
+    );
+
+    const duracaoDeLoginEmDias = 11; //O sistema mantém o usuário logado até 11 dias
+
+    if (diferencaEmDias > duracaoDeLoginEmDias) {
+      router.push({ name: '/' });
+      localStorage.clear();
+    } else {
+      router.push({ name: 'relatorios' });
+    }
+  } else {
+    router.push({ name: '/' });
+  }
+});
 </script>

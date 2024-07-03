@@ -10,7 +10,7 @@ export default function authService() {
         email,
         password,
       });
-      localStorage.setItem('user', JSON.stringify(data.user)); //TODO manter aqui por enquanto depois verificar possíveis melhorias, seria bom adicionar um tempo de expiração.
+      localStorage.setItem('user', JSON.stringify(data.user));
       if (error) throw error;
       return data.user;
     } catch (error) {
