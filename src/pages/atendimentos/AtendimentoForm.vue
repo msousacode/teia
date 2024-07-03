@@ -129,7 +129,7 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento"
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvar"
           :disable="!isSubmitted" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
@@ -217,39 +217,24 @@ const isSubmitted = computed(() => {
   return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0;
 });
 
-async function salvarAtendimento() {
+async function salvar() {
 
   if (form.value.data_inicio === '') {
     error('Data de início é obrigatória');
-    throw new Error('Data de início é obrigatória');
   }
 
   if (storeTreinamento.getTreinamentosSelecionados.length === 0) {
     error('Selecione ao menos um treinamento');
-    throw new Error('Selecione ao menos um treinamento');
   } else {
 
     storeTreinamento.getTreinamentosSelecionados.forEach((treinamento) => {
       if (treinamento.configuracoes === undefined) {
         error('Configure todos os treinamentos');
-        throw new Error('Configure todos os treinamentos');
       }
     });
   }
 
   if (storeTreinamento.treinamentoConfig.new) {
-    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados
-      .filter(treinamento => treinamento.uuid === storeTreinamento.$state.treinamentoConfig.uuid).map(
-        (_treinamento) => {
-          return {
-            uuid: _treinamento.uuid,
-            treinamento: _treinamento.treinamento,
-            protocolo: _treinamento.protocolo,
-            configuracoes: toRaw(_treinamento.configuracoes),
-          };
-        }
-      );
-  } else {
     form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
       (_treinamento) => {
         return {
@@ -279,11 +264,10 @@ async function salvarAtendimento() {
 
       if (raw === undefined) {
         error('Não foi possível atualizar os treinamentos do atendimento');
-        throw new Error('Não foi possível atualizar os treinamentos do atendimento');
       }
 
       db.atendimentos.put(raw).catch(() => {
-        throw Error('Ocorreu um erro ao tentar atualizar');
+        error('Ocorreu um erro ao tentar atualizar');
       });
     });
 
@@ -299,7 +283,7 @@ async function salvarAtendimento() {
 
   await gerarColetas(data).then(() => {
     reset();
-    success('Coletas geradas com sucesso!');
+    success("Salvo com sucesso!")
   }).catch(() => {
     throw Error('Ocorreu um erro ao tentar gerar as coletas');
   });
@@ -504,7 +488,7 @@ function reset() {
 }
 
 onMounted(() => {
-
+  reset();
   if (editMode) {
 
     const uuidAtendimento = routeLocation.params.uuidAtendimento;
