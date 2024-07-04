@@ -119,7 +119,7 @@
                         <q-item-section @click="abrirConfiguracoes(item)">Concluir</q-item-section>
                       </q-item>
                       <q-item clickable v-if="item.configuracoes">
-                        <q-item-section @click="abrirConfiguracoes(item)">Deletar</q-item-section>
+                        <q-item-section @click="abrirConfiguracoes(item)">Arquivar</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -134,6 +134,7 @@
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
           :to="{ name: 'atendimentos' }" />
+
       </q-form>
     </div>
   </q-page>
