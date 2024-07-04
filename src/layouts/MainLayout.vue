@@ -13,11 +13,6 @@
                 <q-item-label>Logout</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup :to="{ name: 'perfil' }">
-              <q-item-section>
-                <q-item-label>Meu perfil</q-item-label>
-              </q-item-section>
-            </q-item>
           </q-list>
         </q-btn-dropdown>
       </q-toolbar>
@@ -50,6 +45,13 @@ const router = useRouter();
 const service = useAuth();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
+  {
+    title: 'Meu perfil',
+    icon: 'mdi-chart-line',
+    routeName: 'perfil',
+    hide: true,
+    display: () => 'none',
+  },
   {
     title: 'Relatórios',
     icon: 'mdi-chart-line',

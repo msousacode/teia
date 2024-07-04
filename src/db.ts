@@ -6,6 +6,7 @@ export interface Treinamento {
   protocolo: string;
   descricao: string;
   sync: boolean;
+  ativo: boolean;
 }
 
 export interface Alvo {
@@ -17,6 +18,7 @@ export interface Alvo {
   treinamento_uuid_fk: string;
   sync: boolean;
   identificador: string;
+  ativo: boolean;
 }
 
 export interface Aprendiz {
@@ -28,6 +30,7 @@ export interface Aprendiz {
   nome_responsavel: string;
   observacao: string | '';
   sync: boolean;
+  ativo: boolean;
 }
 
 export interface Atendimento {
@@ -36,6 +39,7 @@ export interface Atendimento {
   data_inicio: string;
   sync: boolean;
   treinamentos: any[];
+  ativo: boolean;
 }
 
 export interface Coleta {
@@ -54,6 +58,7 @@ export interface Coleta {
   qui: boolean;
   sex: boolean;
   sab: boolean;
+  ativo: boolean;
 }
 
 export interface Anotacao {
@@ -63,6 +68,7 @@ export interface Anotacao {
   data_anotacao: string;
   anotacao: string;
   sync: boolean;
+  ativo: boolean;
 }
 
 export interface Sincronizacao {

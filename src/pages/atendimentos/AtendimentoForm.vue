@@ -61,10 +61,25 @@
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
           :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
           :readonly="editMode" />
-
-        <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Data de ínicio obrigatório' : true]"
-          :readonly="editMode" />
+        <q-input label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
+          :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="form.data_inicio" :locale="{
+    days: dias,
+    months: meses,
+    daysShort: diasAbreviados,
+    monthsShort: meses,
+  }" mask="DD/MM/YYYY">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
 
         <q-btn label="Selecionar Treinamentos" color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" />
@@ -119,7 +134,7 @@
                         <q-item-section @click="abrirConfiguracoes(item)">Concluir</q-item-section>
                       </q-item>
                       <q-item clickable v-if="item.configuracoes">
-                        <q-item-section @click="abrirConfiguracoes(item)">Deletar</q-item-section>
+                        <q-item-section @click="abrirConfiguracoes(item)">Arquivar</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -129,11 +144,12 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvarAtendimento"
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvar"
           :disable="!isSubmitted" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
           :to="{ name: 'atendimentos' }" />
+
       </q-form>
     </div>
   </q-page>
@@ -211,51 +227,38 @@ const coleta = {
   sex: false,
   sab: false,
   semana: 0,
+  ativo: true,
 }
 
 const isSubmitted = computed(() => {
   return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0;
 });
 
-async function salvarAtendimento() {
+async function salvar() {
 
   if (form.value.data_inicio === '') {
     error('Data de início é obrigatória');
-    throw new Error('Data de início é obrigatória');
   }
 
   if (storeTreinamento.getTreinamentosSelecionados.length === 0) {
     error('Selecione ao menos um treinamento');
-    throw new Error('Selecione ao menos um treinamento');
   } else {
 
     storeTreinamento.getTreinamentosSelecionados.forEach((treinamento) => {
       if (treinamento.configuracoes === undefined) {
         error('Configure todos os treinamentos');
-        throw new Error('Configure todos os treinamentos');
       }
     });
   }
 
   if (storeTreinamento.treinamentoConfig.new) {
-    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados
-      .filter(treinamento => treinamento.uuid === storeTreinamento.$state.treinamentoConfig.uuid).map(
-        (_treinamento) => {
-          return {
-            uuid: _treinamento.uuid,
-            treinamento: _treinamento.treinamento,
-            protocolo: _treinamento.protocolo,
-            configuracoes: toRaw(_treinamento.configuracoes),
-          };
-        }
-      );
-  } else {
     form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
       (_treinamento) => {
         return {
           uuid: _treinamento.uuid,
           treinamento: _treinamento.treinamento,
           protocolo: _treinamento.protocolo,
+          ativo: true,
           configuracoes: toRaw(_treinamento.configuracoes),
         };
       }
@@ -279,11 +282,10 @@ async function salvarAtendimento() {
 
       if (raw === undefined) {
         error('Não foi possível atualizar os treinamentos do atendimento');
-        throw new Error('Não foi possível atualizar os treinamentos do atendimento');
       }
 
       db.atendimentos.put(raw).catch(() => {
-        throw Error('Ocorreu um erro ao tentar atualizar');
+        error('Ocorreu um erro ao tentar atualizar');
       });
     });
 
@@ -299,7 +301,7 @@ async function salvarAtendimento() {
 
   await gerarColetas(data).then(() => {
     reset();
-    success('Coletas geradas com sucesso!');
+    success("Salvo com sucesso!")
   }).catch(() => {
     throw Error('Ocorreu um erro ao tentar gerar as coletas');
   });
@@ -356,38 +358,36 @@ async function gerarColetas(data: any) {
 
   if (numeroSemanas > 12) {
     error('O período de treinamento não pode ser superior há 3 meses.');
-    throw new Error('O período de treinamento não pode ser maior que 3 meses.');
+    return;
   }
 
   const aprendizUuuiFk = data.aprendiz.value;
-  const treinamentoUuidFk = data.treinamentos[0].uuid;
-  const quantidadeRepticao = data.treinamentos[0].configuracoes.repetir;
-  const seg = data.treinamentos[0].configuracoes.seg;
-  const ter = data.treinamentos[0].configuracoes.ter;
-  const qua = data.treinamentos[0].configuracoes.qua;
-  const qui = data.treinamentos[0].configuracoes.qui;
-  const sex = data.treinamentos[0].configuracoes.sex;
-  const sab = data.treinamentos[0].configuracoes.sab;
 
-  const diasDaSemana: any[] = [];
-  diasDaSemana[0] = { value: 'seg', selected: seg };
-  diasDaSemana[1] = { value: 'ter', selected: ter };
-  diasDaSemana[2] = { value: 'qua', selected: qua };
-  diasDaSemana[3] = { value: 'qui', selected: qui };
-  diasDaSemana[4] = { value: 'sex', selected: sex };
-  diasDaSemana[5] = { value: 'sab', selected: sab };
+  data.treinamentos.forEach((treino: any) => {
 
-  const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
+    const quantidadeRepticao = treino.configuracoes.repetir;
+    const seg = treino.configuracoes.seg;
+    const ter = treino.configuracoes.ter;
+    const qua = treino.configuracoes.qua;
+    const qui = treino.configuracoes.qui;
+    const sex = treino.configuracoes.sex;
+    const sab = treino.configuracoes.sab;
 
-  const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
+    const diasDaSemana: any[] = [];
+    diasDaSemana[0] = { value: 'seg', selected: seg };
+    diasDaSemana[1] = { value: 'ter', selected: ter };
+    diasDaSemana[2] = { value: 'qua', selected: qua };
+    diasDaSemana[3] = { value: 'qui', selected: qui };
+    diasDaSemana[4] = { value: 'sex', selected: sex };
+    diasDaSemana[5] = { value: 'sab', selected: sab };
 
-  data.treinamentos.forEach((t: any) => {
+    const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
 
-    db.alvos.where({ treinamento_uuid_fk: t.uuid }).toArray().then((data) => {
+    db.alvos.where({ treinamento_uuid_fk: treino.uuid }).toArray().then(async (data) => {
+
       const raw = toRaw(data)
 
-      raw.forEach((alvo) => {
-
+      await raw.forEach(async (alvo) => {
         let count = 0;
         let countSemana = 0;
 
@@ -395,12 +395,11 @@ async function gerarColetas(data: any) {
           count++;
           countSemana++;
 
-          diasDaSemanaComTreinamento.map((_dia) => {
-
+          await diasDaSemanaComTreinamento.map(async (_dia) => {
             coleta.uuid = uuid();
             coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-            coleta.treinamento_uuid_fk = treinamentoUuidFk;
-            coleta.data_final_coleta = dataFinalColeta;
+            coleta.treinamento_uuid_fk = treino.uuid;
+            coleta.data_final_coleta = treino.configuracoes.data_final;
             coleta.alvo = alvo;
 
             if (_dia.value === 'seg')
@@ -436,12 +435,11 @@ async function gerarColetas(data: any) {
             coleta.semana = countSemana;//contador para identificar a semana da coleta.
             coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
 
-            db.coletas
+            await db.coletas
               .add(coleta)
               .catch((_error) => {
                 error('Ocorreu um erro ao tentar salvar', _error);
               });
-
           });
 
           if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
@@ -457,7 +455,7 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 
-  const dataInicioDate = new Date(dataInicio);
+  const dataInicioDate = new Date(formatDataDB(dataInicio));
   const dataFinalDate = new Date(formatDataDB(dataFinal));
 
   const diffTime = Math.abs(dataFinalDate.getTime() - dataInicioDate.getTime());
@@ -504,7 +502,7 @@ function reset() {
 }
 
 onMounted(() => {
-
+  reset();
   if (editMode) {
 
     const uuidAtendimento = routeLocation.params.uuidAtendimento;

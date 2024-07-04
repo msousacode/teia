@@ -2,7 +2,7 @@
   <q-page class="q-pa-sm">
     <div class="row justify-center">
       <div class="col-12 text-center">
-        <p class="text-h6">Cadastro Aprendiz</p>
+        <p class="text-h6 text-teal">Cadastro Aprendiz</p>
       </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
         <q-input outlined label="Nome do Aprendiz" v-model="form.nome_aprendiz"
