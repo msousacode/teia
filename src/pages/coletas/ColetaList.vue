@@ -234,34 +234,29 @@ function salvarRespostas() {
     const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
 
     if (_tipoColeta === 'ocorrencia') {
-        counts.value.map((item) => {
+        counts.value.map(async (item) => {
 
             if (item.count === 0) {
                 return;
             }
 
-            db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
-                if (updated) {
-                    success("Respostas salvas com sucesso!");
-                } else
-                    error("Nada foi atualizado");
-            });
+            await db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) })
+                .catch((_error) => {
+                    error("Ocorreu um erro ao salvar as respostas: ", _error);
+                });
+            success("Respostas salvas com sucesso!");
+            setTimeout(() => router.go(0), 2000);//Esse código faz um redirect para a mesma página, atualizando os dados.
         });
-
-        router.go(0);
-        return;
     }
 
-    arr.map(i => {
-        db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) }).then(function (updated) {
-            if (updated) {
-                success("Respostas salvas com sucesso!");
-            } else
-                error("Nada foi atualizado");
-        });
+    arr.map(async i => {
+        await db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) })
+            .catch((_error) => {
+                error("Ocorreu um erro ao salvar as respostas: ", _error);
+            });
+        success("Respostas salvas com sucesso!");
+        setTimeout(() => router.go(0), 2000);//Esse código faz um redirect para a mesma página, atualizando os dados.
     });
-
-    router.go(0);//Esse código faz um redirect para a mesma página, atualizando os dados.
 }
 
 let value = 0;
@@ -355,7 +350,8 @@ function salvarAnotacao() {
             treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
             data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
             anotacao: anotacao.value,
-            sync: false
+            sync: false,
+            ativo: true
         }).then(() => {
             getAnotacoes();
             success("Anotação salva com sucesso");

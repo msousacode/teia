@@ -61,10 +61,25 @@
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
           :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
           :readonly="editMode" />
-
-        <q-input outlined label="Data Ínicio" type="date" v-model="form.data_inicio"
-          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Data de ínicio obrigatório' : true]"
-          :readonly="editMode" />
+        <q-input label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
+          :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="form.data_inicio" :locale="{
+    days: dias,
+    months: meses,
+    daysShort: diasAbreviados,
+    monthsShort: meses,
+  }" mask="DD/MM/YYYY">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
 
         <q-btn label="Selecionar Treinamentos" color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" />
@@ -212,6 +227,7 @@ const coleta = {
   sex: false,
   sab: false,
   semana: 0,
+  ativo: true,
 }
 
 const isSubmitted = computed(() => {
@@ -242,6 +258,7 @@ async function salvar() {
           uuid: _treinamento.uuid,
           treinamento: _treinamento.treinamento,
           protocolo: _treinamento.protocolo,
+          ativo: true,
           configuracoes: toRaw(_treinamento.configuracoes),
         };
       }
@@ -341,7 +358,7 @@ async function gerarColetas(data: any) {
 
   if (numeroSemanas > 12) {
     error('O período de treinamento não pode ser superior há 3 meses.');
-    throw new Error('O período de treinamento não pode ser maior que 3 meses.');
+    return;
   }
 
   const aprendizUuuiFk = data.aprendiz.value;
@@ -442,8 +459,8 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 
-  const dataInicioDate = new Date(dataInicio);
-  const dataFinalDate = new Date(formatDataDB(dataFinal));
+  const dataInicioDate = new Date(formatDataDB(dataInicio));//TODO depois tem que ajustar para o horário brasil esta pegando o dia anterior.
+  const dataFinalDate = new Date(formatDataDB(dataFinal));//TODO depois tem que ajustar para o horário brasil esta pegando o dia anterior.
 
   const diffTime = Math.abs(dataFinalDate.getTime() - dataInicioDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
