@@ -455,8 +455,8 @@ function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
 
   if (dataInicio === undefined || dataFinal === undefined) throw new Error('Não foi possível calcular o número de semanas');
 
-  const dataInicioDate = new Date(formatDataDB(dataInicio));//TODO depois tem que ajustar para o horário brasil esta pegando o dia anterior.
-  const dataFinalDate = new Date(formatDataDB(dataFinal));//TODO depois tem que ajustar para o horário brasil esta pegando o dia anterior.
+  const dataInicioDate = new Date(formatDataDB(dataInicio));
+  const dataFinalDate = new Date(formatDataDB(dataFinal));
 
   const diffTime = Math.abs(dataFinalDate.getTime() - dataInicioDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
