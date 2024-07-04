@@ -11,7 +11,7 @@
             <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="handleEdit(props.row)">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
-            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="handleRemoveCategory(props.row)">
+            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="deletar(props.row)">
               <q-tooltip> Delete </q-tooltip>
             </q-btn>
           </q-td>
@@ -33,12 +33,13 @@ import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const router = useRouter();
 
-const loading = ref(false);
+const $q = useQuasar();
 
 const store = useTreinamentoStore();
 
@@ -55,8 +56,29 @@ function handleEdit(treinamento: any) {
   router.push({ name: 'treinamento-novo', params: { action: 'edit' } });
 }
 
-function handleRemoveCategory(x: any) {
-  console.log(x);
+function deletar(treinamento: any) {
+
+  $q.dialog({
+    title: 'Confirma a exclusão da Anotação?',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+      $q.loading.show();
+      await db.treinamentos.delete(treinamento.uuid).then(() => {
+        treinamentos.value = treinamentos.value.filter((item) => item.uuid !== treinamento.uuid);
+        success('Deletado com sucesso!');
+      }).catch((_error) => {
+        error(_error);
+      });
+
+      await db.alvos.where({ treinamento_uuid_fk: treinamento.uuid }).delete()
+        .then(() => $q.loading.hide())
+        .catch((_error) => {
+          error(_error);
+        });
+    })
+    .onDismiss(() => { });
 }
 
 function handleSelectTreinamentos() {
@@ -67,16 +89,18 @@ function handleSelectTreinamentos() {
 }
 
 async function getTreinamentos() {
+  $q.loading.show();
   await db.treinamentos.toArray().then((res) => {
     treinamentos.value = res;
-    loading.value = false;
+    $q.loading.hide();
   }).catch((_error) => {
+    $q.loading.hide();
     error(_error);
   });
 }
 
 onMounted(async () => {
-  loading.value = true;
+  $q.loading.show();;
 
   await getTreinamentos();
 
