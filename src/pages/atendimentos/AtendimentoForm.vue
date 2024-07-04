@@ -362,34 +362,32 @@ async function gerarColetas(data: any) {
   }
 
   const aprendizUuuiFk = data.aprendiz.value;
-  const treinamentoUuidFk = data.treinamentos[0].uuid;
-  const quantidadeRepticao = data.treinamentos[0].configuracoes.repetir;
-  const seg = data.treinamentos[0].configuracoes.seg;
-  const ter = data.treinamentos[0].configuracoes.ter;
-  const qua = data.treinamentos[0].configuracoes.qua;
-  const qui = data.treinamentos[0].configuracoes.qui;
-  const sex = data.treinamentos[0].configuracoes.sex;
-  const sab = data.treinamentos[0].configuracoes.sab;
 
-  const diasDaSemana: any[] = [];
-  diasDaSemana[0] = { value: 'seg', selected: seg };
-  diasDaSemana[1] = { value: 'ter', selected: ter };
-  diasDaSemana[2] = { value: 'qua', selected: qua };
-  diasDaSemana[3] = { value: 'qui', selected: qui };
-  diasDaSemana[4] = { value: 'sex', selected: sex };
-  diasDaSemana[5] = { value: 'sab', selected: sab };
+  data.treinamentos.forEach((treino: any) => {
 
-  const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
+    const quantidadeRepticao = treino.configuracoes.repetir;
+    const seg = treino.configuracoes.seg;
+    const ter = treino.configuracoes.ter;
+    const qua = treino.configuracoes.qua;
+    const qui = treino.configuracoes.qui;
+    const sex = treino.configuracoes.sex;
+    const sab = treino.configuracoes.sab;
 
-  const dataFinalColeta = data.treinamentos[0].configuracoes.data_final;
+    const diasDaSemana: any[] = [];
+    diasDaSemana[0] = { value: 'seg', selected: seg };
+    diasDaSemana[1] = { value: 'ter', selected: ter };
+    diasDaSemana[2] = { value: 'qua', selected: qua };
+    diasDaSemana[3] = { value: 'qui', selected: qui };
+    diasDaSemana[4] = { value: 'sex', selected: sex };
+    diasDaSemana[5] = { value: 'sab', selected: sab };
 
-  data.treinamentos.forEach((t: any) => {
+    const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
 
-    db.alvos.where({ treinamento_uuid_fk: t.uuid }).toArray().then((data) => {
+    db.alvos.where({ treinamento_uuid_fk: treino.uuid }).toArray().then(async (data) => {
+
       const raw = toRaw(data)
 
-      raw.forEach((alvo) => {
-
+      await raw.forEach(async (alvo) => {
         let count = 0;
         let countSemana = 0;
 
@@ -397,12 +395,11 @@ async function gerarColetas(data: any) {
           count++;
           countSemana++;
 
-          diasDaSemanaComTreinamento.map((_dia) => {
-
+          await diasDaSemanaComTreinamento.map(async (_dia) => {
             coleta.uuid = uuid();
             coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-            coleta.treinamento_uuid_fk = treinamentoUuidFk;
-            coleta.data_final_coleta = dataFinalColeta;
+            coleta.treinamento_uuid_fk = treino.uuid;
+            coleta.data_final_coleta = treino.configuracoes.data_final;
             coleta.alvo = alvo;
 
             if (_dia.value === 'seg')
@@ -438,12 +435,11 @@ async function gerarColetas(data: any) {
             coleta.semana = countSemana;//contador para identificar a semana da coleta.
             coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
 
-            db.coletas
+            await db.coletas
               .add(coleta)
               .catch((_error) => {
                 error('Ocorreu um erro ao tentar salvar', _error);
               });
-
           });
 
           if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
