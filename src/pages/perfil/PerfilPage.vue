@@ -65,14 +65,14 @@ function reset() {
 }
 
 onMounted(() => {
-
     const storage = localStorage.getItem('user');
 
     if (storage) {
         const user = JSON.parse(storage);
         form.value.email = user.email;
         supabase.getByEmail('usuarios', form.value.email).then((response) => {
-            form.value = response
+            if (response !== undefined)
+                form.value = response
         })
     }
 });
