@@ -1,0 +1,39 @@
+import useSupabase from '../../src/boot/supabase';
+
+export default function useSupabaseApi() {
+  const supabase = useSupabase().supabase;
+
+  const getByEmail = async (table: string, email: string) => {
+    const { data, error } = await supabase
+      .from(table)
+      .select('*')
+      .eq('email', email.trim());
+    if (error) throw error;
+    return data[0];
+  };
+
+  const post = async (table: string, form: any) => {
+    const { data, error } = await supabase.from(table).insert([
+      {
+        ...form,
+      },
+    ]);
+    if (error) throw error;
+    return data;
+  };
+
+  const put = async (table: string, form: any) => {
+    const { data, error } = await supabase
+      .from(table)
+      .update({ ...form })
+      .match({ id: form.id });
+    if (error) throw error;
+    return data;
+  };
+
+  return {
+    post,
+    put,
+    getByEmail,
+  };
+}

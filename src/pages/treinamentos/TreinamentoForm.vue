@@ -57,6 +57,7 @@ const form = ref({
   protocolo: '',
   descricao: '',
   sync: false,
+  ativo: true,
 });
 
 function salvar() {
@@ -98,6 +99,7 @@ function reset() {
     protocolo: '',
     descricao: '',
     sync: false,
+    ativo: true,
   };
 
   store.$reset();

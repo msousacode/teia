@@ -8,9 +8,11 @@
                 <q-input outlined label="Nome Completo" v-model="form.nome_completo"
                     :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
-                <q-input outlined label="E-mail" v-model="form.email" class="q-mb-md" />
+                <q-input outlined label="E-mail" v-model="form.email"
+                    :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
+                    readonly />
 
-                <q-input outlined label="Documento:" v-model="form.documento" class="q-mb-md" />
+                <q-input outlined label="Documento:" v-model="form.documento" class="q-mb-md text-uppercase" />
 
                 <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
                     :disable="!isSubmitted" />
@@ -22,22 +24,56 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { computed, onMounted, ref } from 'vue';
+import useSupabaseApi from 'src/composables/UseSupabaseApi';
+import useNotify from 'src/composables/UseNotify';
 
-const isSubmitted = ref(false);
+const supabase = useSupabaseApi();
 
-const form = reactive({
+const { success, error } = useNotify();
+
+const $q = useQuasar();
+
+const isSubmitted = computed(() => {
+    return form.value.nome_completo !== '' && form.value.email !== '';
+});
+
+const form = ref({
     nome_completo: '',
     email: '',
     documento: '',
 })
 
 function submit() {
-    isSubmitted.value = true;
-    if (form.nome_completo && form.email && form.documento) {
-        console.log('Formulário válido', form);
-    } else {
-        console.log('Formulário inválido', form);
-    }
+    $q.loading.show();
+
+    supabase.post('usuarios', form.value).then(() => {
+        $q.loading.hide();
+        reset();
+        success('Perfil atualizado com sucesso!');
+    }).catch(() => {
+        $q.loading.hide();
+        error('Erro ao atualizar perfil!');
+    });
 }
+
+function reset() {
+    form.value.nome_completo = '';
+    form.value.email = '';
+    form.value.documento = '';
+}
+
+onMounted(() => {
+
+    const storage = localStorage.getItem('user');
+
+    if (storage) {
+        const user = JSON.parse(storage);
+        form.value.email = user.email;
+        supabase.getByEmail('usuarios', form.value.email).then((response) => {
+            form.value = response
+        })
+    }
+});
 </script>

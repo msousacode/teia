@@ -131,10 +131,7 @@
                         <q-item-section @click="abrirConfiguracoes(item)">Configurar</q-item-section>
                       </q-item>
                       <q-item clickable v-if="item.configuracoes">
-                        <q-item-section @click="abrirConfiguracoes(item)">Concluir</q-item-section>
-                      </q-item>
-                      <q-item clickable v-if="item.configuracoes">
-                        <q-item-section @click="abrirConfiguracoes(item)">Arquivar</q-item-section>
+                        <q-item-section @click="arquivar(item)">Arquivar</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -501,6 +498,40 @@ function reset() {
   storeTreinamento.$reset();
 }
 
+function arquivar(item: any) {
+  db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
+
+    let raw = toRaw(res);
+    //muda o status do treinamento para inativo.
+    const treinamentoUpdated = raw?.treinamentos.map((treinamento) => {
+      treinamento.ativo = false;
+      return treinamento;
+    });
+
+    //arquiva as coletas do treinamento.
+    db.atendimentos.update(uuidAtendimento, { treinamentos: treinamentoUpdated }).then(async () => {
+      await arquivarColetas(item);
+    }).catch(() => {
+      error('Ocorreu um erro ao tentar arquivar');
+    });
+  }).catch(() => {
+    error('Ocorreu um erro ao tentar arquivar');
+  });
+}
+
+function arquivarColetas(item: any) {
+  db.coletas.where({ aprendiz_uuid_fk: form.value.aprendiz.value, treinamento_uuid_fk: item.uuid }).toArray().then((res) => {
+    const raw = toRaw(res);
+    raw.forEach((coleta) => {
+      db.coletas.update(coleta.uuid, { ativo: false }).then(() => {
+        success('Arquivado com sucesso');
+      }).catch(() => {
+        error('Ocorreu um erro ao tentar arquivar');
+      });
+    });
+  });
+}
+
 onMounted(() => {
   reset();
   if (editMode) {
@@ -510,7 +541,7 @@ onMounted(() => {
     db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
       const raw = toRaw(res);
       form.value = raw;
-      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos;
+      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo === true);
 
     });
 
@@ -518,8 +549,7 @@ onMounted(() => {
     db.aprendizes.toArray().then((res) => {
       res.forEach((aprendiz) => {
         aprendizes.value.push({
-          label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
-            }`,
+          label: aprendiz.nome_aprendiz,
           value: aprendiz.uuid,
         });
       });
