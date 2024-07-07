@@ -549,8 +549,7 @@ onMounted(() => {
     db.aprendizes.toArray().then((res) => {
       res.forEach((aprendiz) => {
         aprendizes.value.push({
-          label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
-            }`,
+          label: aprendiz.nome_aprendiz,
           value: aprendiz.uuid,
         });
       });
