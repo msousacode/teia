@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <div class="row justify-center">
+        <div class="row">
             <div class="col-12 text-center">
                 <p class="text-h6 text-teal-7">Gerar Relatório</p>
             </div>
@@ -8,27 +8,17 @@
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
                     @update:model-value="pesquisar" />
             </q-form>
+            <p class="text-body1 text-teal-7 q-mt-md">Selecione o período:</p>
+            <div class="col-12">
+                <q-radio class="text-body2" v-model="periodo" :val=30 label="Último mês" color="teal" />
+            </div>
+            <div class="col-12">
+                <q-radio class="text-body2" v-model="periodo" :val=60 label="Últimos 2 meses" color="teal" />
+            </div>
+            <div class="col-12">
+                <q-radio class="text-body2" v-model="periodo" :val=90 label="Últimos 3 meses" color="teal" />
+            </div>
         </div>
-
-        <!--
-        TODO decidir se vai ser exibido ou não
-        <div class="q-mt-sm row items-start q-gutter-md justify-center">
-            <q-card class="my-card bg-green text-white" style="width: 45%;">
-                <q-card-section>
-                    <div class="text-subtitle1">FEZ SEM AJUDA
-                        <br /> INDEPENDÊNCIA
-                    </div>
-                    <div class="text-h6">70%</div>
-                </q-card-section>
-            </q-card>
-            <q-card class="my-card bg-red-5 text-white" style="width: 45%;">
-                <q-card-section>
-                    <div class=" text-subtitle1">FEZ COM AJUDA <br /> OU NÃO FEZ
-                    </div>
-                    <div class="text-h6">30%</div>
-                </q-card-section>
-            </q-card>
-        </div-->
 
         <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="exibirRelatorioBtn">Treinamentos em
             andamento:</div>
@@ -64,8 +54,8 @@
         </div>
 
         <div class="row justify-center">
-            <q-btn label="Gerar Relatório" color="info" class="col-md-7 col-xs-12 col-sm-12 q-mt-xl q-pa-sm"
-                @click="gerarGraficosTela" :disabled="!exibirRelatorioBtn" />
+            <q-btn label="Gerar Relatório" color="info" class="col-12 q-pa-sm" @click="gerarGraficosTela"
+                :disabled="!exibirRelatorioBtn" />
         </div>
 
         <div ref="chartContainer"></div>
@@ -96,6 +86,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Tooltip,
     Legend);
 
+const periodo = ref(30);
+
 const service = new RelatorioService();
 
 const $q = useQuasar();
@@ -111,11 +103,6 @@ const treinamentos = ref<any[]>([]);
 const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
-/* 
-const progress1 = ref(0)
-
-let progressLabel1 = computed(() => (progress1.value * 100).toFixed(2) + '%');
- */
 
 function progressLabel1(progress: number) {
     return (progress * 100).toFixed(2) + '%';
