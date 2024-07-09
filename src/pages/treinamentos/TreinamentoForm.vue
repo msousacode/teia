@@ -14,7 +14,7 @@
             :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']" />
 
           <q-select outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
-            :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" />
+            :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode" />
 
           <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md" />
 
@@ -60,8 +60,10 @@ const form = ref({
   ativo: true,
 });
 
+const editMode = routeLocation.params.action === 'edit';
+
 function salvar() {
-  if (routeLocation.params.action === 'edit') {
+  if (editMode) {
     handleUpdate();
     return;
   }
