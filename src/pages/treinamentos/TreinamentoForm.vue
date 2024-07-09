@@ -14,7 +14,7 @@
             :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']" />
 
           <q-select outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
-            :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" />
+            :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode" />
 
           <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md" />
 
@@ -60,8 +60,10 @@ const form = ref({
   ativo: true,
 });
 
+let editMode = ref(routeLocation.params.action === 'edit');
+
 function salvar() {
-  if (routeLocation.params.action === 'edit') {
+  if (editMode.value) {
     handleUpdate();
     return;
   }
@@ -74,6 +76,7 @@ function salvar() {
     .then((res) => {
       store.$state.treinamentoUuid = res;
       success();
+      editMode.value = true;
     })
     .catch((_error) => {
       error(_error);
@@ -84,7 +87,6 @@ function handleUpdate() {
   db.treinamentos
     .update(store.getTreinamentoUuid, toRaw(form.value))
     .then(() => {
-      reset();
       success();
     })
     .catch((_error) => {
@@ -105,6 +107,7 @@ function reset() {
   store.$reset();
 }
 onMounted(() => {
+
   if (routeLocation.params.action === 'edit') {
     db.treinamentos
       .get(store.getTreinamentoUuid)
@@ -120,6 +123,8 @@ onMounted(() => {
       .catch((_error) => {
         error('Erro ao tentar consultar os treinamentos', _error);
       });
+  } else {
+    reset();
   }
 });
 </script>
