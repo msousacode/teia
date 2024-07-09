@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <custom-title title="Cadastro Aprendiz" />
+        <title-custom title="Cadastro Aprendiz" />
         <div class="row">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
@@ -23,32 +23,12 @@
         <div v-for="(
               item, index
             ) in treinamentos" :key="index">
-            <q-card flat bordered class="my-card q-mb-sm" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
-                <q-card-section>
-                    <div class="row items-center no-wrap">
-                        <div class="col">
-
-                            <div class="text-body1"><span class="text-teal">Treinamento:</span> {{ item.treinamento
-                                }}</div>
-                            <div class="text-body1"><span class="text-teal">Protocolo: </span>{{
-                    item.protocolo }}
-                                <div class="text-caption">Início 01/06/24 até 30/06/24</div>
-                            </div>
-                            <div class="q-mb-md"></div>
-                            <q-item-label>
-                                Progresso:
-                            </q-item-label>
-
-                            <q-linear-progress size="25px" :value="item.progresso" color="green-5">
-                                <div class="absolute-full flex flex-center">
-                                    <q-badge color="white" text-color="accent"
-                                        :label="progressLabel1(item.progresso)" />
-                                </div>
-                            </q-linear-progress>
-                        </div>
-                    </div>
-                </q-card-section>
-            </q-card>
+            <card-custom :item="{
+                    nomeTreinamento: item.treinamento,
+                    nomeProtocolo: item.protocolo,
+                    periodoTreinamento: item.periodo,
+                    progresso: item.progresso
+                }" />
         </div>
 
         <div class="row justify-center">
@@ -65,7 +45,8 @@
 import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
-import CustomTitle from 'src/components/CustomTitle.vue';
+import TitleCustom from 'src/components/TitleCustom.vue';
+import CardCustom from 'src/components/CardCustom.vue';
 
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
@@ -102,10 +83,6 @@ const treinamentos = ref<any[]>([]);
 const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
-
-function progressLabel1(progress: number) {
-    return (progress * 100).toFixed(2) + '%';
-}
 
 function pesquisar() {
     const raw = toRaw(form.value);
