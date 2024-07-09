@@ -3,9 +3,8 @@
   <q-dialog v-model="visible">
     <q-card class="full-width">
       <q-card-section>
-        <div class="text-h6">Cadastro de Objetivo</div>
+        <custom-title title="Cadastro de Objetivo" />
       </q-card-section>
-
       <q-card-section class="q-pt-none">
         <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
           <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
@@ -75,6 +74,7 @@ import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
+import CustomTitle from 'src/components/CustomTitle.vue';
 
 const $q = useQuasar();
 

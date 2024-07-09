@@ -53,10 +53,8 @@
   </q-dialog>
 
   <q-page class="q-pa-sm">
+    <custom-title title="Cadastro Atendimento" />
     <div class="row justify-center">
-      <div class="col-12 text-center">
-        <p class="text-h6">Cadastro Atendimento</p>
-      </div>
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
           :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
@@ -161,6 +159,8 @@ import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import useNotify from 'src/composables/UseNotify';
 import useFormatUtil from 'src/composables/UseFormatUtil';
+import CustomTitle from 'src/components/CustomTitle.vue';
+
 import {
   dias,
   diasAbreviados,

@@ -1,9 +1,7 @@
 <template>
   <q-page class="q-pa-sm">
     <div class="row justify-center">
-      <div class="col-12 text-center">
-        <p class="text-h6 text-teal">Cadastro Aprendiz</p>
-      </div>
+      <custom-title title="Cadastro Aprendiz" />
       <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
         <q-input outlined label="Nome do Aprendiz" v-model="form.nome_aprendiz"
           :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
@@ -50,6 +48,8 @@ import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import useNotify from 'src/composables/UseNotify';
+import CustomTitle from 'src/components/CustomTitle.vue';
+
 import {
   dias,
   diasAbreviados,

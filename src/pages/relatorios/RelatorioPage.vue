@@ -1,9 +1,7 @@
 <template>
     <q-page class="q-pa-sm">
+        <custom-title title="Cadastro Aprendiz" />
         <div class="row">
-            <div class="col-12 text-center">
-                <p class="text-h6 text-teal-7">Gerar Relatório</p>
-            </div>
             <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
                     @update:model-value="pesquisar" />
@@ -67,6 +65,7 @@
 import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import { jsPDF } from 'jspdf';
+import CustomTitle from 'src/components/CustomTitle.vue';
 
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,

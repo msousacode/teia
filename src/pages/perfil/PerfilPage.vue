@@ -1,9 +1,7 @@
 <template>
     <q-page class="q-pa-sm">
+        <custom-title title="Cadastro Perfil" />
         <div class="row justify-center">
-            <div class="col-12 text-center">
-                <p class="text-h6 text-teal">Meu Perfil</p>
-            </div>
             <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
                 <q-input outlined label="Nome Completo" v-model="form.nome_completo"
                     :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
@@ -28,6 +26,7 @@ import { useQuasar } from 'quasar';
 import { computed, onMounted, ref } from 'vue';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import useNotify from 'src/composables/UseNotify';
+import CustomTitle from 'src/components/CustomTitle.vue';
 
 const supabase = useSupabaseApi();
 
