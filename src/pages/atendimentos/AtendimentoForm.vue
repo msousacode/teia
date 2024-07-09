@@ -249,13 +249,24 @@ async function salvar() {
   }
 
   if (storeTreinamento.treinamentoConfig.new) {
+    form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados
+      .filter(treinamento => treinamento.uuid === storeTreinamento.$state.treinamentoConfig.uuid).map(
+        (_treinamento) => {
+          return {
+            uuid: _treinamento.uuid,
+            treinamento: _treinamento.treinamento,
+            protocolo: _treinamento.protocolo,
+            configuracoes: toRaw(_treinamento.configuracoes),
+          };
+        }
+      );
+  } else {
     form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
       (_treinamento) => {
         return {
           uuid: _treinamento.uuid,
           treinamento: _treinamento.treinamento,
           protocolo: _treinamento.protocolo,
-          ativo: true,
           configuracoes: toRaw(_treinamento.configuracoes),
         };
       }
