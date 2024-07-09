@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <custom-title title="Cadastro Perfil" />
+        <title-custom title="Cadastro Perfil" />
         <div class="row justify-center">
             <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
                 <q-input outlined label="Nome Completo" v-model="form.nome_completo"
@@ -26,7 +26,7 @@ import { useQuasar } from 'quasar';
 import { computed, onMounted, ref } from 'vue';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import useNotify from 'src/composables/UseNotify';
-import CustomTitle from 'src/components/CustomTitle.vue';
+import TitleCustom from 'src/components/TitleCustom.vue';
 
 const supabase = useSupabaseApi();
 

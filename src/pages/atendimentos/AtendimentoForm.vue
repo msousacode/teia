@@ -53,7 +53,7 @@
   </q-dialog>
 
   <q-page class="q-pa-sm">
-    <custom-title title="Cadastro Atendimento" />
+    <title-custom title="Cadastro Atendimento" />
     <div class="row justify-center">
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
@@ -83,6 +83,7 @@
           @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
+
         <div class="q-mb-md">
           <q-list bordered separator v-for="(
               item, index
@@ -159,7 +160,7 @@ import { useAprendizStore } from 'src/stores/aprendiz';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import useNotify from 'src/composables/UseNotify';
 import useFormatUtil from 'src/composables/UseFormatUtil';
-import CustomTitle from 'src/components/CustomTitle.vue';
+import TitleCustom from 'src/components/TitleCustom.vue';
 
 import {
   dias,

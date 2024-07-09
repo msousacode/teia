@@ -3,7 +3,7 @@
         <q-card-section>
             <div class="row items-center no-wrap">
                 <div class="col">
-                    <div class="text-body2 q-mt-sm"><span class="text-teal-7">{{ treinamento }}</span>
+                    <div class="text-body2"><span class="text-teal-7">{{ treinamento }}</span>
                         <span class="text-body2">{{ item?.nomeTreinamento }}</span>
                     </div>
 
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 const treinamento = 'Treinamento: ';
 const protocolo = 'Protocolo: ';
-const periodo = 'Período';
+const periodo = 'Período: ';
 
 defineProps({
     item: Object

@@ -3,7 +3,7 @@
   <q-dialog v-model="visible">
     <q-card class="full-width">
       <q-card-section>
-        <custom-title title="Cadastro de Objetivo" />
+        <title-custom title="Cadastro de Objetivo" />
       </q-card-section>
       <q-card-section class="q-pt-none">
         <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
@@ -74,7 +74,7 @@ import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
-import CustomTitle from 'src/components/CustomTitle.vue';
+import TitleCustom from 'src/components/TitleCustom.vue';
 
 const $q = useQuasar();
 
