@@ -11,18 +11,23 @@
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-xs">
 
           <section>
-            <q-input class="q-mt-md" outlined v-model="formCadastro.nome" label="Nome Completo" stack-label />
+            <q-input class="q-mt-md" outlined v-model="formCadastro.nome" label="Nome Completo" stack-label
+              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
-            <q-input type="email" class="q-mt-md" outlined v-model="formCadastro.email" label="E-mail" stack-label />
+            <q-input type="email" class="q-mt-md" outlined v-model="formCadastro.email" label="E-mail" stack-label
+              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]" />
 
-            <q-input type="password" class="q-mt-md" outlined v-model="formCadastro.senha" label="Senha" stack-label />
+            <q-input type="password" class="q-mt-md" outlined v-model="formCadastro.senha" label="Senha" stack-label
+              :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
 
             <q-input type="password" class="q-mt-md" outlined v-model="formCadastro.senhaConfirmada"
-              label="Confirme a senha" stack-label />
+              label="Confirme a senha" stack-label
+              :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
           </section>
 
           <div class="full-width q-mt-md">
-            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Cadastrar" @click="cadastrar()" />
+            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Cadastrar" @click="cadastrar()"
+              :disable="!isSubmitted" />
 
             <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
               no-caps />
@@ -34,11 +39,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import useAuth from 'src/composables/useAuth';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
+import useSupabaseApi from 'src/composables/UseSupabaseApi';
+
+const supabase = useSupabaseApi();
 
 const router = useRouter();
 
@@ -55,6 +63,11 @@ const formCadastro = reactive({
   senhaConfirmada: ''
 });
 
+let isSubmitted = computed(() => {
+  return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senha !== null;
+});
+
+
 async function cadastrar() {
   $q.loading.show();
   if (formCadastro.senha.trim() !== formCadastro.senhaConfirmada.trim()) {
@@ -64,6 +77,11 @@ async function cadastrar() {
 
   await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
     $q.loading.hide();
+    supabase.post('usuarios', { nome_completo: formCadastro.nome, email: formCadastro.email }).then(() => {
+    }).catch(() => {
+      $q.loading.hide();
+      error('Erro ao cadastrar usuário');
+    });
     router.push({ name: 'confirmado' });
   }).catch(() => {
     error('Erro ao cadastrar usuário');

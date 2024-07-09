@@ -60,10 +60,10 @@ const form = ref({
   ativo: true,
 });
 
-const editMode = routeLocation.params.action === 'edit';
+let editMode = ref(routeLocation.params.action === 'edit');
 
 function salvar() {
-  if (editMode) {
+  if (editMode.value) {
     handleUpdate();
     return;
   }
@@ -76,6 +76,7 @@ function salvar() {
     .then((res) => {
       store.$state.treinamentoUuid = res;
       success();
+      editMode.value = true;
     })
     .catch((_error) => {
       error(_error);
@@ -86,7 +87,6 @@ function handleUpdate() {
   db.treinamentos
     .update(store.getTreinamentoUuid, toRaw(form.value))
     .then(() => {
-      reset();
       success();
     })
     .catch((_error) => {
@@ -107,6 +107,7 @@ function reset() {
   store.$reset();
 }
 onMounted(() => {
+
   if (routeLocation.params.action === 'edit') {
     db.treinamentos
       .get(store.getTreinamentoUuid)
@@ -122,6 +123,8 @@ onMounted(() => {
       .catch((_error) => {
         error('Erro ao tentar consultar os treinamentos', _error);
       });
+  } else {
+    reset();
   }
 });
 </script>

@@ -11,12 +11,15 @@
       <div class="row justify-center q-mt-lg">
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
           <div class="text-h6 text-teal">Faça o Login</div>
-          <q-input outlined v-model="email" label="E-mail" stack-label />
+          <q-input outlined v-model="email" label="E-mail" stack-label
+            :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
 
-          <q-input outlined v-model="senha" label="Senha" stack-label type="password" />
+          <q-input outlined v-model="senha" label="Senha" stack-label type="password"
+            :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
 
           <div class="full-width q-gutter-y-xs">
-            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Entrar" @click="entrar" />
+            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Entrar" @click="entrar"
+              :disable="!isSubmitted" />
           </div>
 
           <div class="full-width">
@@ -35,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
@@ -53,6 +56,10 @@ const email = ref('');
 
 const senha = ref('');
 
+let isSubmitted = computed(() => {
+  return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
+});
+
 async function entrar() {
   $q.loading.show();
   service.login(email.value.trim(), senha.value.trim()).then(() => {
@@ -67,7 +74,7 @@ async function entrar() {
 onMounted(() => {
   const usuarioCache = localStorage.getItem('user');
 
-  if (usuarioCache) {
+  if (usuarioCache === null || usuarioCache === undefined) {
     const usuarioAuth: User = JSON.parse(usuarioCache);
 
     var diferencaEmMilissegundos = Math.abs(

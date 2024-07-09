@@ -57,6 +57,7 @@ import {
 } from 'chart.js/auto'
 import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
+import useNotify from 'src/composables/UseNotify';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -71,6 +72,8 @@ const periodo = ref(30);
 const service = new RelatorioService();
 
 const $q = useQuasar();
+
+const { error } = useNotify();
 
 const form = ref({
     aprendiz: '',
@@ -153,7 +156,14 @@ function gerarGraficosTela() {
 
 async function imprimirPDF() {
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
-    const data = await service.gerarRelatorio(uuidAprendiz);
+
+    const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);
+
+    if (data[0].treinamentos.length === 0) {
+        $q.loading.hide();
+        error("Nenhum registro encontrado para o períoodo selecionado.");
+        return;
+    }
 
     //Cria uma nova instância do jsPDF
     const pdf = new jsPDF('p', 'mm', 'a4');

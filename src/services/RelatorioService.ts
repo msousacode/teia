@@ -140,7 +140,7 @@ class Anotacao {
 import { db } from 'src/db';
 
 export class RelatorioService {
-  async gerarRelatorio(uuid: string) {
+  async gerarRelatorio(uuid: string, periodoPesquisa: number) {
     const cabecario = new Cabecario(
       `Relatório gerado em ${this.getDataAtual()}`
     );
@@ -149,9 +149,11 @@ export class RelatorioService {
 
     const aprendiz = await this.getAprendiz(uuid);
 
-    const treinamentos = await this.getTreinamentos(uuid).then((res) => {
-      return res;
-    });
+    const treinamentos = await this.getTreinamentos(uuid, periodoPesquisa).then(
+      (res) => {
+        return res;
+      }
+    );
 
     const relatorio = new Relatorio(
       cabecario,
@@ -175,80 +177,111 @@ export class RelatorioService {
       });
   }
 
-  async getTreinamentos(uuidAprendiz: string) {
+  async getTreinamentos(uuidAprendiz: string, periodoPesquisa: number) {
     const res = await db.atendimentos
       .where({ aprendiz_uuid_fk: uuidAprendiz })
       .toArray();
 
-    if (!res) throw new Error('Atendimento não encontrado');
+    if (!res || res.length === 0) {
+      return [];
+    }
 
-    const treinamentosPromises = res.map(async (atendimento) => {
-      const treinamentos = await Promise.all(
-        atendimento.treinamentos.map(async (treinamento) => {
-          const descricao = await db.treinamentos
-            .get(treinamento.uuid)
-            .then((res) => {
-              return res?.descricao;
-            });
+    const inicioPesquisa = new Date().getTime();
+    const dataFinal = this.getDataFinalToRelatorio(periodoPesquisa);
 
-          const alvosColetados = await db.coletas
-            .where({
-              aprendiz_uuid_fk: uuidAprendiz,
-              treinamento_uuid_fk: treinamento.uuid,
-            })
-            .and((coleta) => coleta.foi_respondido === true)
-            .toArray()
-            .then(async (res) => {
-              const anotacoes = await db.anotacoes
-                .where({ treinamento_uuid_fk: treinamento.uuid })
-                .toArray()
-                .then((res) => {
-                  return res.map((anotacao) => {
-                    return new Anotacao(
-                      anotacao.alvo_identidicador_fk,
-                      anotacao.data_anotacao,
-                      anotacao.anotacao
-                    );
-                  });
-                });
+    /**
+     * Esse trecho de código realiza a filtragem dos atendimentos que estão dentro do período de pesquisa.
+     */
+    const dadosFiltradoPorPeriodo = res
+      .filter((res) => {
+        //converter a data formato dd/mm/yyy em um número.
+        let dataInicio: string | number = new Date(
+          res.data_inicio
+        ).toDateString();
+        dataInicio = new Date(dataInicio).getTime();
 
-              return res.map((coleta) => {
-                const anotacoesFiltradas = anotacoes.filter((anotacao) => {
-                  return anotacao.uuidIdentificador === coleta.uuid;
-                });
+        if (!(dataInicio <= inicioPesquisa)) {
+          return res;
+        }
+      })
+      .filter((res) => {
+        return res.treinamentos.map((t) => {
+          const dataFinalTreinamento = new Date(t.data_final).getTime();
+          if (dataFinalTreinamento >= dataFinal) {
+            return t;
+          }
+        });
+      });
 
-                return new AlvoColetado(
-                  coleta.data_coleta,
-                  coleta.alvo.nome_alvo,
-                  coleta.alvo.tipo_aprendizagem || 'Sem tipo',
-                  coleta.alvo.pergunta,
-                  coleta.alvo.descricao_alvo,
-                  coleta.resposta,
-                  anotacoesFiltradas
-                );
+    const treinamentosPromises = dadosFiltradoPorPeriodo.map(
+      async (atendimento) => {
+        const treinamentos = await Promise.all(
+          atendimento.treinamentos.map(async (treinamento) => {
+            const descricao = await db.treinamentos
+              .get(treinamento.uuid)
+              .then((res) => {
+                return res?.descricao;
               });
-            });
 
-          //Cria o gráfico das coletas.
-          const grafico = this.construirGrafico(
-            alvosColetados,
-            treinamento.protocolo
-          );
+            const alvosColetados = await db.coletas
+              .where({
+                aprendiz_uuid_fk: uuidAprendiz,
+                treinamento_uuid_fk: treinamento.uuid,
+              })
+              .and((coleta) => coleta.foi_respondido === true)
+              .toArray()
+              .then(async (res) => {
+                const anotacoes = await db.anotacoes
+                  .where({ treinamento_uuid_fk: treinamento.uuid })
+                  .toArray()
+                  .then((res) => {
+                    return res.map((anotacao) => {
+                      return new Anotacao(
+                        anotacao.alvo_identidicador_fk,
+                        anotacao.data_anotacao,
+                        anotacao.anotacao
+                      );
+                    });
+                  });
 
-          return new Treinamento(
-            treinamento.uuid,
-            atendimento.data_inicio,
-            treinamento.treinamento,
-            treinamento.protocolo,
-            descricao || 'Sem descrição',
-            alvosColetados,
-            grafico
-          );
-        })
-      );
+                return res.map((coleta) => {
+                  const anotacoesFiltradas = anotacoes.filter((anotacao) => {
+                    return anotacao.uuidIdentificador === coleta.uuid;
+                  });
 
-      return treinamentos;
-    });
+                  return new AlvoColetado(
+                    coleta.data_coleta,
+                    coleta.alvo.nome_alvo,
+                    coleta.alvo.tipo_aprendizagem || 'Sem tipo',
+                    coleta.alvo.pergunta,
+                    coleta.alvo.descricao_alvo,
+                    coleta.resposta,
+                    anotacoesFiltradas
+                  );
+                });
+              });
+
+            //Cria o gráfico das coletas.
+            const grafico = this.construirGrafico(
+              alvosColetados,
+              treinamento.protocolo
+            );
+
+            return new Treinamento(
+              treinamento.uuid,
+              atendimento.data_inicio,
+              treinamento.treinamento,
+              treinamento.protocolo,
+              descricao || 'Sem descrição',
+              alvosColetados,
+              grafico
+            );
+          })
+        );
+
+        return treinamentos;
+      }
+    );
 
     const allTreinamentos = await Promise.all(treinamentosPromises);
 
@@ -375,5 +408,11 @@ export class RelatorioService {
 
   calcularPercentagem(count: number, total: number) {
     return (count / total) * 100;
+  }
+
+  getDataFinalToRelatorio(qtdDias: number): number {
+    const date = new Date(new Date());
+    date.setDate(date.getDate() + qtdDias);
+    return date.getTime();
   }
 }
