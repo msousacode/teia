@@ -74,7 +74,7 @@ async function entrar() {
 onMounted(() => {
   const usuarioCache = localStorage.getItem('user');
 
-  if (usuarioCache === null || usuarioCache === undefined) {
+  if (usuarioCache !== null && usuarioCache !== undefined) {
     const usuarioAuth: User = JSON.parse(usuarioCache);
 
     var diferencaEmMilissegundos = Math.abs(
@@ -93,6 +93,8 @@ onMounted(() => {
     } else {
       router.push({ name: 'relatorios' });
     }
+  } else {
+    router.push({ name: '/' });
   }
 });
 </script>

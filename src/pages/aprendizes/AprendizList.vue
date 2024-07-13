@@ -11,7 +11,7 @@
             <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="handleEdit(props.row)">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
-            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="handleRemoveCategory(props.row)">
+            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="remover(props.row)">
               <q-tooltip> Delete </q-tooltip>
             </q-btn>
           </q-td>
@@ -31,8 +31,11 @@ import { useAprendizStore } from 'src/stores/aprendiz';
 import { useRouter } from 'vue-router';
 import { db } from 'src/db';
 import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
 
-const { error } = useNotify();
+const $q = useQuasar();
+
+const { success, error } = useNotify();
 
 const router = useRouter();
 
@@ -42,23 +45,41 @@ const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
-onMounted(() => {
+
+function carregarLista() {
   loading.value = true;
 
   db.aprendizes.toArray().then((res) => {
-    aprendizes.value = res;
+    aprendizes.value = res.filter((aprendiz) => aprendiz.ativo);
     loading.value = false;
   }).catch((_error) => {
     error(_error);
   })
-});
+}
 
 function handleEdit(aprendiz: any) {
   store.$state.aprendizUuid = aprendiz.uuid;
   router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
 }
 
-function handleRemoveCategory(x: any) {
-  console.log(x);
+function remover(aprendiz: any) {
+  $q.dialog({
+    title: 'Confirma a exclusão do Aprendiz?',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+      db.aprendizes.update(aprendiz.uuid, { ativo: false }).then(() => {
+        carregarLista();
+        success("Aprendiz excluído com sucesso");
+      }).catch(() => {
+        error("Ocorreu um erro ao excluir");
+      });
+    })
+    .onDismiss(() => { });
 }
+
+onMounted(() => {
+  carregarLista();
+});
 </script>

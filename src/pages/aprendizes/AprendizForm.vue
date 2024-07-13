@@ -76,6 +76,7 @@ const form = ref({
   nome_responsavel: '',
   observacao: '',
   sync: false,
+  ativo: true,
 });
 
 function submit() {
