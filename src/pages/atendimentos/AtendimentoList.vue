@@ -108,18 +108,25 @@ function editarAtendimento(atendimento: any) {
   router.push({ name: 'atendimento-novo', params: { action: 'edit', uuidAtendimento: raw.uuid } });
 }
 
+async function getAprendizesAtivos() {
+  return db.aprendizes.toArray().then(res => {
+    return res.filter((item) => item.ativo).map(item => item.uuid);
+  });
+}
 
-onMounted(() => {
+onMounted(async () => {
   loading.value = true;
+  const aprendizesUuids = await getAprendizesAtivos();
 
   db.atendimentos.toArray().then(res => {
-    atendimentos.value = toRaw(res);
+    const data = toRaw(res);
+    const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
+    atendimentos.value = array1;
 
-    atendimentos.value.forEach((item) => {
+    array1.forEach((item) => {
       treinamentos.value = toRaw(item.treinamentos)
     });
-
-    loading.value = false;
-  })
+  });
+  loading.value = false;
 });
 </script>

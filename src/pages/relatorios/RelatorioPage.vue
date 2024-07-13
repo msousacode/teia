@@ -32,7 +32,7 @@
         </div>
 
         <div class="row justify-center">
-            <q-btn label="Gerar Relatório" color="info" class="col-12 q-pa-sm" @click="gerarGraficosTela"
+            <q-btn label="Gerar Relatório" color="info" class="col-12 q-pa-sm" size="18px" @click="gerarGraficosTela"
                 :disabled="!exibirRelatorioBtn" />
         </div>
 
@@ -349,7 +349,7 @@ async function imprimirPDF() {
 
 onMounted(() => {
     db.aprendizes.toArray().then((res) => {
-        res.forEach((aprendiz) => {
+        res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({
                 label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
                     }`,

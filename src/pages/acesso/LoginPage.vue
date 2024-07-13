@@ -17,10 +17,8 @@
           <q-input outlined v-model="senha" label="Senha" stack-label type="password"
             :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
 
-          <div class="full-width q-gutter-y-xs">
-            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Entrar" @click="entrar"
-              :disable="!isSubmitted" />
-          </div>
+          <q-btn class="full-width bg-primary text-white q-pa-sm" size="18px" label="Entrar" @click="entrar"
+            :disable="!isSubmitted" />
 
           <div class="full-width">
             <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
@@ -88,13 +86,13 @@ onMounted(() => {
     const duracaoDeLoginEmDias = 11; //O sistema mantém o usuário logado até 11 dias
 
     if (diferencaEmDias > duracaoDeLoginEmDias) {
-      router.push({ name: '/' });
+      router.push({ name: 'login' });
       localStorage.clear();
     } else {
       router.push({ name: 'relatorios' });
     }
   } else {
-    router.push({ name: '/' });
+    router.push({ name: 'login' });
   }
 });
 </script>

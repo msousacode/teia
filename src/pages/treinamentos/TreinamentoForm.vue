@@ -18,7 +18,7 @@
 
           <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md" />
 
-          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" />
+          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit" />
 
           <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
             :to="{ name: 'treinamentos' }" />

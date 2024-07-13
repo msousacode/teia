@@ -12,7 +12,7 @@
 
                 <q-input outlined label="Documento:" v-model="form.documento" class="q-mb-md text-uppercase" />
 
-                <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
+                <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
                     :disable="!isSubmitted" />
 
                 <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat

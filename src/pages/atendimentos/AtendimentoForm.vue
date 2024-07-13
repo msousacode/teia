@@ -79,7 +79,7 @@
           </template>
         </q-input>
 
-        <q-btn label="Selecionar Treinamentos" color="info" class="full-width q-pa-sm q-mb-md"
+        <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" />
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
@@ -140,7 +140,7 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" type="submit" @click="salvar"
+        <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
           :disable="!isSubmitted" />
 
         <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
@@ -548,7 +548,7 @@ onMounted(() => {
 
   } else {
     db.aprendizes.toArray().then((res) => {
-      res.forEach((aprendiz) => {
+      res.filter(i => i.ativo === true).forEach((aprendiz) => {
         aprendizes.value.push({
           label: aprendiz.nome_aprendiz,
           value: aprendiz.uuid,
