@@ -548,7 +548,7 @@ onMounted(() => {
 
   } else {
     db.aprendizes.toArray().then((res) => {
-      res.forEach((aprendiz) => {
+      res.filter(i => i.ativo === true).forEach((aprendiz) => {
         aprendizes.value.push({
           label: aprendiz.nome_aprendiz,
           value: aprendiz.uuid,

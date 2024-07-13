@@ -349,7 +349,7 @@ async function imprimirPDF() {
 
 onMounted(() => {
     db.aprendizes.toArray().then((res) => {
-        res.forEach((aprendiz) => {
+        res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({
                 label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
                     }`,
