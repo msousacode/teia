@@ -17,7 +17,7 @@
           <q-input outlined v-model="senha" label="Senha" stack-label type="password"
             :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
 
-          <q-btn class="full-width bg-primary text-white q-pa-sm" size="22px" label="Entrar" @click="entrar"
+          <q-btn class="full-width bg-primary text-white q-pa-sm" size="18px" label="Entrar" @click="entrar"
             :disable="!isSubmitted" />
 
           <div class="full-width">

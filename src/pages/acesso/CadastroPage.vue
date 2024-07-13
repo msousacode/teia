@@ -25,13 +25,11 @@
               :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
           </section>
 
-          <div class="full-width q-mt-md">
-            <q-btn class="full-width bg-primary text-white q-pa-sm" label="Cadastrar" @click="cadastrar()"
-              :disable="!isSubmitted" />
+          <q-btn class="full-width bg-primary text-white q-pa-sm" size="18px" label="Cadastrar" @click="cadastrar()"
+            :disable="!isSubmitted" />
 
-            <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
-              no-caps />
-          </div>
+          <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
+            no-caps />
         </div>
       </div>
     </q-page-container>
