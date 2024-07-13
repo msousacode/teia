@@ -32,7 +32,7 @@
         </div>
 
         <div class="row justify-center">
-            <q-btn label="Gerar Relatório" color="info" class="col-12 q-pa-sm" @click="gerarGraficosTela"
+            <q-btn label="Gerar Relatório" color="info" class="col-12 q-pa-sm" size="18px" @click="gerarGraficosTela"
                 :disabled="!exibirRelatorioBtn" />
         </div>
 
