@@ -276,7 +276,13 @@ async function salvar() {
 
     await db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
       let raw = toRaw(res);
-      raw?.treinamentos.push(...data.treinamentos);
+
+      const treinamentoUuids = raw?.treinamentos.map((treinamento) => treinamento.uuid);
+
+      //Retira a duplicidade de treinamentos que acontece com os dados que vem do formulário.
+      const treinamentosSemDuplicacidade = data.treinamentos.filter(n => !treinamentoUuids?.includes(n.uuid));
+
+      raw?.treinamentos.push(...treinamentosSemDuplicacidade);
 
       if (raw === undefined) {
         error('Não foi possível atualizar os treinamentos do atendimento');
@@ -482,6 +488,7 @@ function reset() {
     data_inicio: '',
     sync: false,
     treinamentos: [{}],
+    aprendiz_uuid_fk: '',
   };
 
   formTreinamento.value = {
