@@ -55,11 +55,12 @@
   <q-page class="q-pa-sm">
     <title-custom title="Cadastro Atendimento" />
     <div class="row justify-center">
-      <q-form class="col-md-7 col-xs-12 col-sm-12">
+      <q-form class="col-md-7 col-xs-12 col-sm-12">{{ editMode }}
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
+          :rules="[(val) => isSubmitted && !editMode ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
           :readonly="editMode" />
         <q-input label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
+          :readonly="editMode"
           :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
