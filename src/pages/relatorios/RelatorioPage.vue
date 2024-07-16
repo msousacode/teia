@@ -58,6 +58,8 @@ import {
 import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
+import { RelatorioConcreteBuilder } from './builder/RelatorioContreteBuilder';
+import { Diretor } from './builder/diretor/Diretor';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -154,6 +156,29 @@ function gerarGraficosTela() {
     renderizarGraficos().then(() => setTimeout(imprimirPDF, 3000)).catch((err) => console.log(err));
 }
 
+/**
+ * A função cliente passa o objeto builder para o diretor que 
+ * inicia o processo de construção do objeto relatório.
+ * O resultado será retornado com o objeto construído. 
+ */
+function gerarRelatorioPDF() {
+
+    console.log('Gerando relatório PDF');
+
+    const diretor = new Diretor();
+    const builder = new RelatorioConcreteBuilder();
+
+    const pdf = builder.init();
+
+    diretor.setBuilder(builder, pdf);
+
+    diretor.buildDataHora();
+
+    pdf.save(`TESTe.pdf`); //Colocar esse método dentro de um build.
+
+    console.log('Finalizando relatório PDF');
+}
+
 async function imprimirPDF() {
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
 
@@ -166,7 +191,7 @@ async function imprimirPDF() {
     }
 
     //Cria uma nova instância do jsPDF
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdf = new jsPDF('p', 'cm', 'a4');
 
     // Set document properties
     pdf.setProperties({
@@ -177,8 +202,8 @@ async function imprimirPDF() {
 
     const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const marginLeft = 10;
-    const marginRight = 10;
+    const marginLeft = 0;
+    const marginRight = 0;
     const maxWidth = pageWidth - marginLeft - marginRight;
 
     let yPos = 0;
@@ -348,6 +373,9 @@ async function imprimirPDF() {
 }
 
 onMounted(() => {
+
+    gerarRelatorioPDF();
+
     db.aprendizes.toArray().then((res) => {
         res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({

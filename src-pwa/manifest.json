@@ -1,7 +1,7 @@
 {
   "id": "sysaba",
   "name": "SysABA",
-  "short_name": "sysaba",
+  "short_name": "SysABA",
   "description": "SysABA",
   "display": "standalone",
   "start_url": "/",
