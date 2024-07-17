@@ -8,6 +8,13 @@ export interface RelatorioBuilder {
 
   dataHora(pdf: jsPDF): jsPDF;
 
+  linhaDivisoria(
+    pdf: jsPDF,
+    marginLR: number,
+    yPos: number,
+    largura: number
+  ): jsPDF;
+
   logoClinica(): void;
 
   informacoesBasicas(): void;

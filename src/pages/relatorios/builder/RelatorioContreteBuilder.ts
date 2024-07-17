@@ -20,6 +20,16 @@ export class RelatorioConcreteBuilder implements RelatorioBuilder {
     return pdf;
   }
 
+  linhaDivisoria(
+    pdf: jsPDF,
+    marginLR: number,
+    yPos: number,
+    largura: number
+  ): jsPDF {
+    pdf.line(marginLR, yPos, largura, yPos);
+    return pdf;
+  }
+
   logoClinica(): void {
     throw new Error('Method not implemented.');
   }

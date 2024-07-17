@@ -26,7 +26,7 @@ export class Diretor {
     return this.builder.dataHora(this.pdf);
   }
 
-  public buildLinha(): void {
-    this.builder.logoClinica(); //Criar um build linha divisória.
+  public buildLinha(marginLR: number, yPos: number, largura: number): jsPDF {
+    return this.builder.linhaDivisoria(this.pdf, marginLR, yPos, largura);
   }
 }

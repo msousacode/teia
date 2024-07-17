@@ -173,6 +173,7 @@ function gerarRelatorioPDF() {
     diretor.setBuilder(builder, pdf);
 
     diretor.buildDataHora();
+    diretor.buildLinha(10, 25, 200);
 
     pdf.save(`TESTe.pdf`); //Colocar esse método dentro de um build.
 
