@@ -26,7 +26,15 @@ export class Diretor {
     return this.builder.dataHora(this.pdf);
   }
 
-  public buildLinha(marginLR: number, yPos: number, largura: number): jsPDF {
+  public buildLinhaDivisoria(
+    marginLR: number,
+    yPos: number,
+    largura: number
+  ): jsPDF {
     return this.builder.linhaDivisoria(this.pdf, marginLR, yPos, largura);
+  }
+
+  public buildTitulo(title: string, yPos: number): jsPDF {
+    return this.builder.gerarTitulo(this.pdf, title, yPos);
   }
 }

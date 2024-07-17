@@ -173,7 +173,9 @@ function gerarRelatorioPDF() {
     diretor.setBuilder(builder, pdf);
 
     diretor.buildDataHora();
-    diretor.buildLinha(10, 25, 200);
+    diretor.buildLinhaDivisoria(10, 25, 200);
+    diretor.buildTitulo('Relatório de evolução', 20);
+    diretor.buildTitulo('Treinamentos Aplicados:', 35);
 
     pdf.save(`TESTe.pdf`); //Colocar esse método dentro de um build.
 

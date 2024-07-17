@@ -34,6 +34,12 @@ export class RelatorioConcreteBuilder implements RelatorioBuilder {
     throw new Error('Method not implemented.');
   }
 
+  gerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF {
+    pdf.setFontSize(14);
+    pdf.text(title, 10, yPos);
+    return pdf;
+  }
+
   informacoesBasicas(): void {
     //Receberá um objeto que permitirá a construção do objeto
     throw new Error('Method not implemented.');

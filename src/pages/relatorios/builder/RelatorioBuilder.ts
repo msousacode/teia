@@ -17,6 +17,10 @@ export interface RelatorioBuilder {
 
   logoClinica(): void;
 
+  gerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF;
+
+  linhaTexto(pdf: jsPDF, texto: string, yPos: number): jsPDF;
+
   informacoesBasicas(): void;
 
   treinamento(): void;
