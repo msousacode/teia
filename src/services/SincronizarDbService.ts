@@ -1,14 +1,17 @@
 import { db } from 'src/db';
 import 'dexie-export-import';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
+import { useQuasar } from 'quasar';
 
 export class SincronizarDbService {
   supabase = useSupabaseApi();
 
   ultimaDataSincronismo: Date | string = '';
 
-  inicia = () => {
-    this.iniciarSincronizacao();
+  $q = useQuasar();
+
+  fazerBackup = () => {
+    this.iniciarBackup();
   };
 
   constructor() {
@@ -27,10 +30,18 @@ export class SincronizarDbService {
       : 'Nunca sincronizado';
   };
 
-  iniciarSincronizacao = async () => {
+  iniciarBackup = async () => {
     if (!this.isNuncaSincronizado()) {
-      const blob = await db.export();
-      console.log('blob', blob);
+      let blob = null;
+      try {
+        this.$q.loading.show();
+        blob = await db.export();
+        this.$q.loading.hide();
+      } catch (e) {
+        this.$q.loading.hide();
+        console.error(e);
+      }
+
       this.supabase.bucketUpload(blob).then(() => {
         this.atualizarDataSincronizacao();
       });

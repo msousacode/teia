@@ -71,7 +71,7 @@ function reset() {
 }
 
 function sincronizar() {
-    service.inicia();
+    service.fazerBackup();
 }
 
 onMounted(() => {

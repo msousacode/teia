@@ -11,7 +11,7 @@ window.addEventListener('online', () => {
 
   const sincronizarDbService = new SincronizarDbService();
 
-  sincronizarDbService.inicia();
+  sincronizarDbService.fazerBackup();
 
   console.log('Online');
 });
