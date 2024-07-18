@@ -1,7 +1,10 @@
 import { db } from 'src/db';
 import 'dexie-export-import';
+import useSupabaseApi from 'src/composables/UseSupabaseApi';
 
 export class SincronizarDbService {
+  supabase = useSupabaseApi();
+
   ultimaDataSincronismo: Date | string = '';
 
   inicia = () => {
@@ -9,13 +12,13 @@ export class SincronizarDbService {
   };
 
   constructor() {
-    this.consultaUltimaDataSincronismo().then((data) => {
+    this.consultaUltimaDataSincronizacao().then((data) => {
       this.ultimaDataSincronismo = new Date(data);
     });
   }
 
   //ter um controle para saber quando foi o último sincronismo.
-  consultaUltimaDataSincronismo = async () => {
+  consultaUltimaDataSincronizacao = async () => {
     const res = await db.sincronizacao.toArray().then((data) => {
       return data;
     });
@@ -25,15 +28,12 @@ export class SincronizarDbService {
   };
 
   iniciarSincronizacao = async () => {
-    if (this.isNuncaSincronizado()) {
+    if (!this.isNuncaSincronizado()) {
       const blob = await db.export();
       console.log('blob', blob);
-
-      //Enviar o blob para o servidor precisa enviar o tenant_id do usuario dono desse banco de dados enviar também a última data de atualização.
-
-      //após enviar os dados para o servidor, atualizar a data de sincronismo.
-      this.atualizaUltimaDataSinconismo();
-
+      this.supabase.bucketUpload(blob).then(() => {
+        this.atualizarDataSincronizacao();
+      });
       //this.readBlob(blob).then(console.log).catch(console.error); TODO fica comentado somente para ser usado em desenvolvimento ou testes.
     }
   };
@@ -58,7 +58,7 @@ export class SincronizarDbService {
     });
   }
 
-  atualizaUltimaDataSinconismo = async () => {
+  atualizarDataSincronizacao = async () => {
     const data = new Date();
     await db.sincronizacao.clear();
     await db.sincronizacao.add({ dataUltimaSincronizacao: data });
