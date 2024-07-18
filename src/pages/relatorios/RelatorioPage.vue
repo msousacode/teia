@@ -189,7 +189,7 @@ async function imprimirPDF() {
         //builder.buildDataHora(pdf, item.cabecario.descricao);
 
         autoTable(pdf, {
-            head: [['Profissional', 'Aprendiz', 'Número do Relatório']],
+            head: [['PROFISSIONAL', 'APRENDIZ', 'NÚMERO']],
             body: [
                 [item.profissional.nome.toUpperCase(), item.aprendiz.nome.toUpperCase(), 333],
             ],
@@ -199,31 +199,33 @@ async function imprimirPDF() {
         builder.buildLinhaDivisoria(pdf, 10, 30, 200);
 
         item.treinamentos.forEach(treinamento => {
+
             autoTable(pdf, {
-                head: [['Nome do Treinamento', 'Protocolo Utilizado', 'Descrição']],
+                head: [['NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
                 body: [
                     [treinamento.titulo, treinamento.protocolo, treinamento.descricao],
                 ],
-                theme: 'grid',
+                headStyles: { fillColor: '#f06c8a' }
             });
 
-
             autoTable(pdf, {
-                head: [['Data da Coleta', 'Objetivo', 'Tp. Aprendizagem', 'Resposta coletada']],
+                head: [['DATA', 'OBJETIVO', 'TP. APRENDIZAGEM', 'RESPOSTA COLETA']],
                 body:
                     treinamento.alvosColetados.map(alvo => {
                         return [alvo.dataColeta, alvo.nomeAlvo, alvo.tipoAprendizagem, alvo.resposta]
                     }),
+                headStyles: { fillColor: '#f8a0b1' }
             });
 
             autoTable(pdf, {
-                head: [['Data', 'Descrição']],
+                head: [['DATA', 'ANOTAÇÃO']],
                 body:
                     treinamento.alvosColetados.map(alvo => {
                         return alvo.anotacoes.map(anotacao => {
                             return anotacao.data, anotacao.descricao
                         })
                     }),
+                headStyles: { fillColor: '#f8a0b1' }
             });
 
             var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
