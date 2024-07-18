@@ -4,37 +4,32 @@ import jsPDF from 'jspdf';
  * Interface que define os métodos que devem ser implementados por um builder (classe concreta) de relatório.
  */
 export interface RelatorioBuilder {
-  nomeArquivo(): string;
+  buildNomeArquivo(item: any): string;
 
-  dataHora(pdf: jsPDF, dataHora: string): jsPDF;
+  buildDataHora(pdf: jsPDF, dataHora: string): jsPDF;
 
-  linhaDivisoria(
+  buildLinhaDivisoria(
     pdf: jsPDF,
     marginLR: number,
     yPos: number,
     largura: number
   ): jsPDF;
 
-  logoClinica(): void;
+  buildLogo(pdf: jsPDF): Promise<jsPDF>;
 
-  gerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF;
+  buildGerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF;
 
-  linhaTexto(pdf: jsPDF, texto: string, yPos: number): jsPDF;
+  buildLinhaTexto(
+    pdf: jsPDF,
+    texto: string,
+    yPos: number,
+    xPos?: number
+  ): jsPDF;
 
-  muitasLinhasTexto(
+  buildMuitasLinhasTexto(
     pdf: jsPDF,
     texto: string,
     larguraMax: number,
     yPos: number
   ): jsPDF;
-
-  informacoesBasicas(): void;
-
-  treinamento(): void;
-
-  objetivo(): void;
-
-  anotacoes(): void;
-
-  grafico(): void;
 }

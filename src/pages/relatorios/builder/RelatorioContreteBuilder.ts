@@ -6,20 +6,41 @@ import { RelatorioBuilder } from './RelatorioBuilder';
  * da construção do meu objeto.
  */
 export class RelatorioConcreteBuilder implements RelatorioBuilder {
-  nomeArquivo(): string {
-    throw new Error('Method not implemented.');
+  /**
+   * Função chave que inicializa o objeto que será construído.
+   * Neste caso é o objeto jsPDF que é o nosso relatório/PDF.
+   */
+  init(): jsPDF {
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    pdf.setFont('Helvetica');
+    pdf.setProperties({
+      title: 'relatorio_evolutivo',
+    });
+
+    return pdf;
+  }
+
+  buildNomeArquivo(item: any): string {
+    return (
+      item.profissional.nome +
+      ' - ' +
+      item.aprendiz.nome +
+      '-' +
+      new Date().toLocaleDateString()
+    );
   }
 
   /**
    * Método que retorna a data e hora atual.
    */
-  dataHora(pdf: jsPDF, dataHora: string): jsPDF {
+  buildDataHora(pdf: jsPDF, dataHora: string): jsPDF {
     pdf.setFontSize(10);
-    pdf.text(dataHora, 160, 20);
+    pdf.text(dataHora, 150, 20);
     return pdf;
   }
 
-  linhaDivisoria(
+  buildLinhaDivisoria(
     pdf: jsPDF,
     marginLR: number,
     yPos: number,
@@ -29,23 +50,33 @@ export class RelatorioConcreteBuilder implements RelatorioBuilder {
     return pdf;
   }
 
-  logoClinica(): void {
-    throw new Error('Method not implemented.');
+  async buildLogo(pdf: jsPDF): Promise<jsPDF> {
+    const imgData = await loadImageData('src/assets/integration-slim.png');
+    const imgDataWithoutPrefix = imgData.split(',')[1];
+    pdf.addImage(imgDataWithoutPrefix, 'png', 10, 100, 80, 80);
+    return pdf;
   }
 
-  gerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF {
+  buildGerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF {
     pdf.setFontSize(14);
+    pdf.setFont('bold');
     pdf.text(title, 10, yPos);
     return pdf;
   }
 
-  linhaTexto(pdf: jsPDF, texto: string, yPos: number): jsPDF {
+  buildLinhaTexto(
+    pdf: jsPDF,
+    texto: string,
+    yPos: number,
+    xPos?: number
+  ): jsPDF {
     pdf.setFontSize(12);
-    pdf.text(texto, 10, yPos);
+    pdf.setFont('normal');
+    pdf.text(texto, xPos ? xPos : 10, yPos);
     return pdf;
   }
 
-  muitasLinhasTexto(
+  buildMuitasLinhasTexto(
     pdf: jsPDF,
     texto: string,
     larguraMax: number,
@@ -55,36 +86,15 @@ export class RelatorioConcreteBuilder implements RelatorioBuilder {
     pdf.text(lines, 10, yPos);
     return pdf;
   }
+}
 
-  informacoesBasicas(): void {
-    //Receberá um objeto que permitirá a construção do objeto
-    throw new Error('Method not implemented.');
-  }
-
-  treinamento(): void {
-    throw new Error('Method not implemented.');
-  }
-
-  objetivo(): void {
-    throw new Error('Method not implemented.');
-  }
-
-  anotacoes(): void {
-    throw new Error('Method not implemented.');
-  }
-
-  grafico(): void {
-    throw new Error('Method not implemented.');
-  }
-
-  init(): jsPDF {
-    const pdf = new jsPDF('p', 'mm', 'a4');
-
-    pdf.setFont('Newsreader');
-    pdf.setProperties({
-      title: 'relatorio_evolutivo',
-    });
-
-    return pdf;
-  }
+async function loadImageData(url: string): Promise<string> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 }
