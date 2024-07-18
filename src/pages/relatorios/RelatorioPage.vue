@@ -44,7 +44,6 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
-import { jsPDF } from 'jspdf';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
 
@@ -60,6 +59,7 @@ import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { RelatorioConcreteBuilder } from './builder/RelatorioContreteBuilder';
 import { Diretor } from './builder/diretor/Diretor';
+import jsPDF from 'jspdf';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -161,28 +161,81 @@ function gerarGraficosTela() {
  * inicia o processo de construção do objeto relatório.
  * O resultado será retornado com o objeto construído. 
  */
-function gerarRelatorioPDF() {
+async function imprimirPDF() {
 
-    console.log('Gerando relatório PDF');
+    const uuidAprendiz = toRaw(form.value.aprendiz.value);
+
+    const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);
+
+    if (data[0].treinamentos.length === 0 || data === undefined) {
+        $q.loading.hide();
+        error("Nenhum registro encontrado para o períoodo selecionado.");
+        return;
+    }
 
     const diretor = new Diretor();
     const builder = new RelatorioConcreteBuilder();
-
     const pdf = builder.init();
 
     diretor.setBuilder(builder, pdf);
 
-    diretor.buildDataHora();
-    diretor.buildLinhaDivisoria(10, 25, 200);
-    diretor.buildTitulo('Relatório de evolução', 20);
-    diretor.buildTitulo('Treinamentos Aplicados:', 35);
+    let yPos = 40;
 
+    data.forEach((item) => {
+        diretor.buildDataHora(item.cabecario.descricao);
+        diretor.buildTitulo('Relatório de evolução', 20);
+        diretor.buildLinhaDivisoria(10, 25, 200);
+
+        diretor.buildTexto(`Profissional: ${item.profissional.nome}`, yPos);
+        yPos = incrementaYPos_10(yPos);
+        novaPagina(pdf, yPos)
+
+        diretor.buildTexto(`Aprendiz: ${item.aprendiz.nome}`, yPos);
+        yPos = incrementaYPos_10(yPos);
+        novaPagina(pdf, yPos)
+
+        item.treinamentos.forEach(treinamento => {
+            diretor.buildTexto(`Nome do treinamento: ${treinamento.titulo}`, yPos);
+            yPos = incrementaYPos_5(yPos);
+            novaPagina(pdf, yPos)
+
+            diretor.buildTexto(`Protocolo utilizado: ${treinamento.protocolo}`, yPos);
+            yPos = incrementaYPos_5(yPos);
+            novaPagina(pdf, yPos)
+
+            diretor.buildTextoMuitasLinhas(`Descrição do treinamento: ${treinamento.descricao}`, 200, yPos);
+            yPos = incrementaYPos_5(yPos);
+            novaPagina(pdf, yPos)
+        });
+    });
+
+    $q.loading.hide();
     pdf.save(`TESTe.pdf`); //Colocar esse método dentro de um build.
-
     console.log('Finalizando relatório PDF');
 }
 
-async function imprimirPDF() {
+//TODO depois jogar para dentro do build
+function novaPagina(pdf: jsPDF, yPos: number) {
+    const pageHeight = 297; // A4 page height in mm
+    const bottomMargin = 10; // bottom margin in mm    
+
+    if (yPos > pageHeight - bottomMargin) {
+        pdf.addPage();
+        yPos = 45;
+    }
+}
+
+function incrementaYPos_5(yPos: number) {
+    return yPos += 5;
+}
+
+function incrementaYPos_10(yPos: number) {
+    return yPos += 10;
+}
+
+
+
+/* async function imprimirPDF() {
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
 
     const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);
@@ -373,11 +426,11 @@ async function imprimirPDF() {
 
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
-}
+} */
 
 onMounted(() => {
 
-    gerarRelatorioPDF();
+    //gerarRelatorioPDF();
 
     db.aprendizes.toArray().then((res) => {
         res.filter(i => i.ativo === true).forEach((aprendiz) => {

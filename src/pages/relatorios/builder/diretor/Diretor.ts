@@ -22,8 +22,8 @@ export class Diretor {
   /**
    * O Diretor pode construir as várias partes que compõe o relatório.
    */
-  public buildDataHora(): any {
-    return this.builder.dataHora(this.pdf);
+  public buildDataHora(dataHora: string): any {
+    return this.builder.dataHora(this.pdf, dataHora);
   }
 
   public buildLinhaDivisoria(
@@ -36,5 +36,17 @@ export class Diretor {
 
   public buildTitulo(title: string, yPos: number): jsPDF {
     return this.builder.gerarTitulo(this.pdf, title, yPos);
+  }
+
+  public buildTexto(title: string, yPos: number): jsPDF {
+    return this.builder.linhaTexto(this.pdf, title, yPos);
+  }
+
+  public buildTextoMuitasLinhas(
+    texto: string,
+    larguraMax: number,
+    yPos: number
+  ): jsPDF {
+    return this.builder.muitasLinhasTexto(this.pdf, texto, larguraMax, yPos);
   }
 }

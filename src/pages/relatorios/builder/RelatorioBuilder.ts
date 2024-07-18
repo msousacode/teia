@@ -6,7 +6,7 @@ import jsPDF from 'jspdf';
 export interface RelatorioBuilder {
   nomeArquivo(): string;
 
-  dataHora(pdf: jsPDF): jsPDF;
+  dataHora(pdf: jsPDF, dataHora: string): jsPDF;
 
   linhaDivisoria(
     pdf: jsPDF,
@@ -20,6 +20,13 @@ export interface RelatorioBuilder {
   gerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF;
 
   linhaTexto(pdf: jsPDF, texto: string, yPos: number): jsPDF;
+
+  muitasLinhasTexto(
+    pdf: jsPDF,
+    texto: string,
+    larguraMax: number,
+    yPos: number
+  ): jsPDF;
 
   informacoesBasicas(): void;
 

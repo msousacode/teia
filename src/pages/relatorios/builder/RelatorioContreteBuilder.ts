@@ -13,10 +13,9 @@ export class RelatorioConcreteBuilder implements RelatorioBuilder {
   /**
    * Método que retorna a data e hora atual.
    */
-  dataHora(pdf: jsPDF): jsPDF {
+  dataHora(pdf: jsPDF, dataHora: string): jsPDF {
     pdf.setFontSize(10);
-    pdf.text('Gerado na data e hora:', 130, 20);
-    pdf.text(new Date().toLocaleString().replace(',', ''), 168, 20);
+    pdf.text(dataHora, 160, 20);
     return pdf;
   }
 
@@ -37,6 +36,23 @@ export class RelatorioConcreteBuilder implements RelatorioBuilder {
   gerarTitulo(pdf: jsPDF, title: string, yPos: number): jsPDF {
     pdf.setFontSize(14);
     pdf.text(title, 10, yPos);
+    return pdf;
+  }
+
+  linhaTexto(pdf: jsPDF, texto: string, yPos: number): jsPDF {
+    pdf.setFontSize(12);
+    pdf.text(texto, 10, yPos);
+    return pdf;
+  }
+
+  muitasLinhasTexto(
+    pdf: jsPDF,
+    texto: string,
+    larguraMax: number,
+    yPos: number
+  ): jsPDF {
+    const lines = pdf.splitTextToSize(texto, larguraMax);
+    pdf.text(lines, 10, yPos);
     return pdf;
   }
 
