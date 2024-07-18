@@ -187,63 +187,83 @@ async function imprimirPDF() {
         diretor.buildLinhaDivisoria(10, 25, 200);
 
         diretor.buildTexto(`Profissional: ${item.profissional.nome}`, yPos);
-        yPos = incrementaYPos_10(yPos);
+        yPos = incrementaYPos(yPos, 10);
         yPos = novaPagina(pdf, yPos)
 
         diretor.buildTexto(`Aprendiz: ${item.aprendiz.nome}`, yPos);
-        yPos = incrementaYPos_10(yPos);
+        yPos = incrementaYPos(yPos, 10);
         yPos = novaPagina(pdf, yPos)
 
         item.treinamentos.forEach(treinamento => {
 
             diretor.buildTitulo('Treinamento', yPos);
-            yPos = incrementaYPos_5(yPos);
+            yPos = incrementaYPos(yPos, 5);
 
             diretor.buildLinhaDivisoria(10, yPos, 200);
-            yPos = incrementaYPos_5(yPos);
+            yPos = incrementaYPos(yPos, 5);
             yPos = novaPagina(pdf, yPos);
 
             diretor.buildTexto(`Nome do treinamento: ${treinamento.titulo}`, yPos);
-            yPos = incrementaYPos_5(yPos);
+            yPos = incrementaYPos(yPos, 5);
             yPos = novaPagina(pdf, yPos);
 
             diretor.buildTexto(`Protocolo utilizado: ${treinamento.protocolo}`, yPos);
-            yPos = incrementaYPos_5(yPos);
+            yPos = incrementaYPos(yPos, 5);
             yPos = novaPagina(pdf, yPos);
 
             diretor.buildTextoMuitasLinhas(`Descrição do treinamento: ${treinamento.descricao}`, 200, yPos);
-            yPos = incrementaYPos_10(yPos);
+            yPos = incrementaYPos(yPos, 10);
             yPos = novaPagina(pdf, yPos);
 
             treinamento.alvosColetados.forEach(alvo => {
 
                 diretor.buildTitulo('Objetivos coletados', yPos);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
 
                 diretor.buildLinhaDivisoria(10, yPos, 200);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
 
                 diretor.buildTexto(`Data da coleta: ${alvo.dataColeta}`, yPos);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
 
                 diretor.buildTexto(`Objetivo: ${alvo.nomeAlvo}`, yPos);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
 
                 diretor.buildTexto(`Tipo de Aprendizagem: ${alvo.tipoAprendizagem}`, yPos);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
 
                 diretor.buildTextoMuitasLinhas(`Descrição do objetivo: ${alvo.descricaoAlvo}`, 200, yPos);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
 
                 diretor.buildTexto(`Resposta coletada: ${alvo.resposta}`, yPos);
-                yPos = incrementaYPos_5(yPos);
+                yPos = incrementaYPos(yPos, 5);
                 yPos = novaPagina(pdf, yPos);
+
+                if (alvo.anotacoes.length > 0) {
+                    diretor.buildTitulo('Anotações feitas no objetivo', yPos);
+                    yPos = incrementaYPos(yPos, 5);
+                    yPos = novaPagina(pdf, yPos);
+
+                    diretor.buildLinhaDivisoria(10, yPos, 200);
+                    yPos = incrementaYPos(yPos, 5);
+                    yPos = novaPagina(pdf, yPos);
+
+                    alvo.anotacoes.forEach(anotacao => {
+                        diretor.buildTexto(`Data da anotação: ${anotacao.data}`, yPos);
+                        yPos = incrementaYPos(yPos, 5);
+                        yPos = novaPagina(pdf, yPos);
+
+                        diretor.buildTextoMuitasLinhas(`Descrição da anotação: ${anotacao.descricao}`, 200, yPos);
+                        yPos = incrementaYPos(yPos, 5);
+                        yPos = novaPagina(pdf, yPos);
+                    });
+                }
 
             });
         });
@@ -267,15 +287,9 @@ function novaPagina(pdf: jsPDF, yPos: number) {
     return yPos;
 }
 
-function incrementaYPos_5(yPos: number) {
-    return yPos += 5;
+function incrementaYPos(yPos: number, incremento: number) {
+    return yPos += incremento;
 }
-
-function incrementaYPos_10(yPos: number) {
-    return yPos += 10;
-}
-
-
 
 /* async function imprimirPDF() {
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
