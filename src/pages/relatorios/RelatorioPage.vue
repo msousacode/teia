@@ -56,8 +56,8 @@ import {
 import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
-import { RelatorioConcreteBuilder } from './builder/RelatorioContreteBuilder';
 import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -154,11 +154,6 @@ function gerarGraficosTela() {
     renderizarGraficos().then(() => setTimeout(imprimirPDF, 3000)).catch((err) => console.log(err));
 }
 
-/**
- * A função cliente passa o objeto builder para o diretor que 
- * inicia o processo de construção do objeto relatório.
- * O resultado será retornado com o objeto construído. 
- */
 async function imprimirPDF() {
 
     let nomeArquivo: string = '';
@@ -173,20 +168,18 @@ async function imprimirPDF() {
         return;
     }
 
-    const builder = new RelatorioConcreteBuilder();
-    const pdf = builder.init();
+    const pdf = new jsPDF('p', 'mm', 'a4');
 
-    //let yPos = 100;
+    pdf.setFont('Helvetica');
+    pdf.setProperties({
+        title: 'relatorio_evolutivo',
+    });
 
     data.forEach((item) => {
 
         if (nomeArquivo === '') {
-            nomeArquivo = builder.buildNomeArquivo(item);
+            nomeArquivo = 'provisorio';
         }
-
-        builder.buildLogo(pdf);
-
-        //builder.buildDataHora(pdf, item.cabecario.descricao);
 
         autoTable(pdf, {
             head: [['PROFISSIONAL', 'APRENDIZ', 'NÚMERO']],
@@ -196,14 +189,14 @@ async function imprimirPDF() {
             theme: 'plain',
         });
 
-        builder.buildLinhaDivisoria(pdf, 10, 30, 200);
+        //builder.buildLinhaDivisoria(pdf, 10, 30, 200);
 
         item.treinamentos.forEach(treinamento => {
 
             autoTable(pdf, {
-                head: [['NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
+                head: [['DATA ÍNICIO', 'NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
                 body: [
-                    [treinamento.titulo, treinamento.protocolo, treinamento.descricao],
+                    [treinamento.data, treinamento.titulo, treinamento.protocolo, treinamento.descricao],
                 ],
                 headStyles: { fillColor: '#f06c8a' }
             });
