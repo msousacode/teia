@@ -188,24 +188,64 @@ async function imprimirPDF() {
 
         diretor.buildTexto(`Profissional: ${item.profissional.nome}`, yPos);
         yPos = incrementaYPos_10(yPos);
-        novaPagina(pdf, yPos)
+        yPos = novaPagina(pdf, yPos)
 
         diretor.buildTexto(`Aprendiz: ${item.aprendiz.nome}`, yPos);
         yPos = incrementaYPos_10(yPos);
-        novaPagina(pdf, yPos)
+        yPos = novaPagina(pdf, yPos)
 
         item.treinamentos.forEach(treinamento => {
+
+            diretor.buildTitulo('Treinamento', yPos);
+            yPos = incrementaYPos_5(yPos);
+
+            diretor.buildLinhaDivisoria(10, yPos, 200);
+            yPos = incrementaYPos_5(yPos);
+            yPos = novaPagina(pdf, yPos);
+
             diretor.buildTexto(`Nome do treinamento: ${treinamento.titulo}`, yPos);
             yPos = incrementaYPos_5(yPos);
-            novaPagina(pdf, yPos)
+            yPos = novaPagina(pdf, yPos);
 
             diretor.buildTexto(`Protocolo utilizado: ${treinamento.protocolo}`, yPos);
             yPos = incrementaYPos_5(yPos);
-            novaPagina(pdf, yPos)
+            yPos = novaPagina(pdf, yPos);
 
             diretor.buildTextoMuitasLinhas(`Descrição do treinamento: ${treinamento.descricao}`, 200, yPos);
-            yPos = incrementaYPos_5(yPos);
-            novaPagina(pdf, yPos)
+            yPos = incrementaYPos_10(yPos);
+            yPos = novaPagina(pdf, yPos);
+
+            treinamento.alvosColetados.forEach(alvo => {
+
+                diretor.buildTitulo('Objetivos coletados', yPos);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+                diretor.buildLinhaDivisoria(10, yPos, 200);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+                diretor.buildTexto(`Data da coleta: ${alvo.dataColeta}`, yPos);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+                diretor.buildTexto(`Objetivo: ${alvo.nomeAlvo}`, yPos);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+                diretor.buildTexto(`Tipo de Aprendizagem: ${alvo.tipoAprendizagem}`, yPos);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+                diretor.buildTextoMuitasLinhas(`Descrição do objetivo: ${alvo.descricaoAlvo}`, 200, yPos);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+                diretor.buildTexto(`Resposta coletada: ${alvo.resposta}`, yPos);
+                yPos = incrementaYPos_5(yPos);
+                yPos = novaPagina(pdf, yPos);
+
+            });
         });
     });
 
@@ -221,8 +261,10 @@ function novaPagina(pdf: jsPDF, yPos: number) {
 
     if (yPos > pageHeight - bottomMargin) {
         pdf.addPage();
-        yPos = 45;
+        return yPos = 20;
     }
+
+    return yPos;
 }
 
 function incrementaYPos_5(yPos: number) {
