@@ -44,10 +44,8 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
-import { jsPDF } from 'jspdf';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
-
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
@@ -58,6 +56,8 @@ import {
 import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -155,196 +155,117 @@ function gerarGraficosTela() {
 }
 
 async function imprimirPDF() {
+
+    let nomeArquivo: string = '';
+
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
 
     const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);
 
-    if (data[0].treinamentos.length === 0) {
+    if (data[0].treinamentos.length === 0 || data === undefined) {
         $q.loading.hide();
         error("Nenhum registro encontrado para o períoodo selecionado.");
         return;
     }
 
-    //Cria uma nova instância do jsPDF
     const pdf = new jsPDF('p', 'mm', 'a4');
 
-    // Set document properties
+    pdf.setFont('Helvetica');
     pdf.setProperties({
-        title: "Relatório geral de evolução",
+        title: 'relatorio_evolutivo',
     });
 
-    const font = 'Newsreader';
-
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const marginLeft = 10;
-    const marginRight = 10;
-    const maxWidth = pageWidth - marginLeft - marginRight;
-
-    let yPos = 0;
-
-    let tipoProtocolo: string = '';
-
-    let nomeArquivo: string = '';
+    const imgLogo = await loadImageData('src/assets/logo.png');
+    const imgDataWithoutPrefix = imgLogo.split(",")[1];
 
     data.forEach((item) => {
 
         if (nomeArquivo === '') {
-            nomeArquivo = item.profissional.nome + ' - ' + item.aprendiz.nome + '-' + new Date().toLocaleDateString();
+            nomeArquivo = 'provisorio';
         }
 
-        //Cabeçalho do Relatório
-        pdf.setFont(font, 'normal');
-        pdf.setFontSize(11);//Tamanho da fonte
-        pdf.text(item.cabecario.descricao, 13, 10);
-
-        pdf.setFontSize(12);//Tamanho da fonte
-
-        pdf.setFont(font, 'bold');
-        pdf.text('Profissional:', 13, 20);
-        pdf.setFont(font, 'normal');
-        pdf.text(item.profissional.nome, 40, 20);
-
-        pdf.setFont(font, 'bold');
-        pdf.text('Aprendiz:', 13, 30);
-        pdf.setFont(font, 'normal');
-        pdf.text(item.aprendiz.nome, 35, 30);
-        pdf.setFont(font, 'bold');
-        pdf.text('Idade:', 13, 35);
-        pdf.setFont(font, 'normal');
-        pdf.text(item.aprendiz.idade, 30, 37);
-
-        yPos = 40;
-
-        item.treinamentos.forEach((treinamento) => {
-
-            let objetivoCount = 1;
-
-            pdf.setFontSize(17);
-            pdf.setFont(font, 'bold');
-            pdf.text('Treinamento:', 13, yPos += 5);
-            pdf.text(treinamento.data, 135, yPos);
-            pdf.setFont(font, 'normal');
-            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-
-            pdf.setFontSize(12);
-
-            pdf.text(`Treinamento: ${treinamento.titulo}`, 13, yPos += 5);
-            pdf.text(`Protocolo: ${treinamento.protocolo}`, 13, yPos += 5);
-            tipoProtocolo = treinamento.protocolo;
-
-            if (treinamento.descricao.length > 0) {
-                pdf.setFont(font, 'bold');
-                pdf.text('Descrição:', 13, yPos += 10);
-                pdf.setFont(font, 'normal');
-                const lines = pdf.splitTextToSize(treinamento.descricao, maxWidth);
-                pdf.text(lines, 13, yPos += 5);
-
-                yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
-            }
-
-            treinamento.alvosColetados.forEach((alvo) => {
-
-                pdf.setFontSize(17);
-                pdf.setFont(font, 'bold');
-                pdf.text(`${objetivoCount++} - Objetivo aplicado:`, 13, yPos += 10);
-                pdf.setFontSize(12);
-                pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-
-                pdf.setFont(font, 'bold');
-                pdf.text(`Data da coleta: `, 13, yPos += 10);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.dataColeta, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Nome do objetivo:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.nomeAlvo, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Tipo de aprendizagem:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.tipoAprendizagem, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Pergunta:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.pergunta || 'N/D', 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Descritivo do objetivo:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                const lines = pdf.splitTextToSize(alvo.descricaoAlvo || 'N/D', maxWidth);
-                pdf.text(lines, 60, yPos);
-
-                pdf.setFont(font, 'bold');
-                pdf.text('Resposta do objetivo:', 13, yPos += 5);
-                pdf.setFont(font, 'normal');
-                pdf.text(alvo.resposta.toString(), 60, yPos);
-
-                if (alvo.anotacoes.length > 0) {
-                    pdf.setFontSize(17);
-                    pdf.setFont(font, 'bold');
-                    pdf.text('Anotações feitas no objetivo:', 13, yPos += 15);
-                    pdf.setFont(font, 'normal');
-                    pdf.setFontSize(12);
-                    pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
-
-                    alvo.anotacoes.forEach((anotacao) => {
-
-                        pdf.setFont(font, 'bold');
-                        pdf.text('Data da anotação: ', 13, yPos += 10);
-                        pdf.setFont(font, 'normal');
-                        pdf.text(anotacao.data, 47, yPos);
-                        const lines = pdf.splitTextToSize(anotacao.descricao, maxWidth);
-                        pdf.text(lines, 13, yPos += 5);
-
-                        yPos += lines.length * 4; //Aplica um espaçamento entre as linhas dinamicamente.
-
-                        if (yPos + 20 > pageHeight) {
-                            yPos = 10;
-                            pdf.addPage();
-                        }
-                    });
+        autoTable(pdf, {
+            head: [['']],
+            headStyles: {
+                cellWidth: 30, minCellHeight: 10,
+            },
+            didDrawCell: (data) => {
+                if (data.section === 'head' && data.column.index === 0) {
+                    pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
                 }
+            },
+            theme: 'plain',
+        });
+
+        autoTable(pdf, {
+            head: [['PROFISSIONAL', 'APRENDIZ', 'NÚMERO']],
+            body: [
+                [item.profissional.nome.toUpperCase(), item.aprendiz.nome.toUpperCase(), 333],
+            ],
+            theme: 'plain',
+        });
+
+        item.treinamentos.forEach(treinamento => {
+
+            autoTable(pdf, {
+                head: [['DATA ÍNICIO', 'NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
+                body: [
+                    [treinamento.data, treinamento.titulo, treinamento.protocolo, treinamento.descricao],
+                ],
+                headStyles: { fillColor: '#f06c8a' }
             });
 
-            if (yPos + 20 > pageHeight) {
-                yPos = 10;
-                pdf.addPage();
-            }
+            autoTable(pdf, {
+                head: [['DATA', 'OBJETIVO', 'TP. APRENDIZAGEM', 'RESPOSTA COLETA']],
+                body:
+                    treinamento.alvosColetados.map(alvo => {
+                        return [alvo.dataColeta, alvo.nomeAlvo, alvo.tipoAprendizagem, alvo.resposta]
+                    }),
+                headStyles: { fillColor: '#f8a0b1' }
+            });
 
-            pdf.setFontSize(17);
-            pdf.setFont(font, 'bold');
-            pdf.text('Represetação gráfica:', 13, yPos += 10);
-            pdf.setFont(font, 'normal');
-            pdf.setFontSize(12);
-            pdf.line(13, yPos += 2, 200, yPos);//Linha divisória
+            autoTable(pdf, {
+                head: [['DATA', 'ANOTAÇÃO']],
+                body:
+                    treinamento.alvosColetados.map(alvo => {
+                        return alvo.anotacoes.map(anotacao => {
+                            return anotacao.data, anotacao.descricao
+                        })
+                    }),
+                headStyles: { fillColor: '#f8a0b1' }
+            });
 
-            if (tipoProtocolo == 'Protocolo ABC') {
-                var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 13, yPos += 10, 100, 100);
+            var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
 
-                if (yPos > 18) {
-                    yPos = 10;
-                    pdf.addPage();
-                }
-            }
-
-            if (tipoProtocolo == 'Protocolo Ocorrência de Resposta') {
-                var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
-                pdf.addImage(imgData, 'PNG', 13, yPos += 10, 180, 80);
-
-                if (yPos > 18) {
-                    yPos = 10;
-                    pdf.addPage();
-                }
-            }
-        })
-    })
+            autoTable(pdf, {
+                head: [['REPRESENTAÇÃO GRÁFICA:']],
+                body: [['']],
+                columnStyles: {
+                    0: { cellWidth: 100, minCellHeight: treinamento.protocolo === 'Protocolo ABC' ? 100 : 50 }, // Definindo a largura da segunda coluna para 100 e a altura mínima para 200
+                },
+                didDrawCell: (data) => {
+                    if (data.section === 'body' && data.column.index === 0) {
+                        pdf.addImage(imgData, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+                    }
+                },
+                theme: 'plain',
+            });
+        });
+    });
 
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
+}
+
+async function loadImageData(url: string): Promise<string> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
 
 onMounted(() => {

@@ -46,7 +46,7 @@ const service = useAuth();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
-    title: 'Meu perfil',
+    title: 'Configurações',
     icon: 'mdi-chart-line',
     routeName: 'perfil',
     hide: true,

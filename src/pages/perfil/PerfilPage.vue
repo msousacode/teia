@@ -18,6 +18,10 @@
                 <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
                     :to="{ name: 'relatorios' }" />
             </q-form>
+
+            <q-separator />
+
+            <q-btn label="Sincronizar Dados" color="primary" class="full-width q-pa-sm q-mt-md" @click="sincronizar" />
         </div>
     </q-page>
 </template>
@@ -27,6 +31,9 @@ import { computed, onMounted, ref } from 'vue';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { SincronizarDbService } from 'src/services/SincronizarDbService';
+
+const service = new SincronizarDbService()
 
 const supabase = useSupabaseApi();
 
@@ -61,6 +68,10 @@ function reset() {
     form.value.nome_completo = '';
     form.value.email = '';
     form.value.documento = '';
+}
+
+function sincronizar() {
+    service.fazerBackup();
 }
 
 onMounted(() => {

@@ -31,9 +31,23 @@ export default function useSupabaseApi() {
     return data;
   };
 
+  const bucketUpload = async (file: any) => {
+    try {
+      const fileName = new Date().getTime().toString();
+      const { data, error } = await supabase.storage
+        .from('backups')
+        .upload(fileName, file);
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return {
     post,
     put,
     getByEmail,
+    bucketUpload,
   };
 }
