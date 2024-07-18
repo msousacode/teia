@@ -265,7 +265,27 @@ async function imprimirPDF() {
                     });
                 }
 
+
             });
+
+            diretor.buildTitulo('Representação gráfica:', yPos);
+            yPos = incrementaYPos(yPos, 5);
+            yPos = novaPagina(pdf, yPos);
+
+            if (treinamento.protocolo === 'Protocolo ABC') {
+                var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
+                pdf.addImage(imgData, 'png', 10, yPos += 10, 100, 90);
+                yPos = incrementaYPos(yPos, 50);
+                yPos = novaPagina(pdf, yPos);
+
+            }
+
+            if (treinamento.protocolo === 'Protocolo Ocorrência de Resposta') {
+                var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
+                pdf.addImage(imgData, 'png', 10, yPos += 10, 100, 50);
+                yPos = incrementaYPos(yPos, 50);
+                yPos = novaPagina(pdf, yPos);
+            }
         });
     });
 
