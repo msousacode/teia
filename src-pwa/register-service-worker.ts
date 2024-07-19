@@ -1,6 +1,6 @@
 import { register } from 'register-service-worker';
 import { Notify } from 'quasar';
-import { BackupService } from '../src/services/BackupService';
+//import { BackupService } from '../src/services/BackupService';
 
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
@@ -8,8 +8,8 @@ import { BackupService } from '../src/services/BackupService';
 
 window.addEventListener('online', () => {
   // Requisitar atualização do service worker quando voltar a ficar online
-  const backupService = new BackupService();
-  backupService.fazerBackup();
+  //const backupService = new BackupService();
+  //backupService.fazerBackup();
 });
 
 register(process.env.SERVICE_WORKER_FILE, {

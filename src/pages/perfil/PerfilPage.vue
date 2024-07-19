@@ -17,9 +17,10 @@
 
             </q-form>
 
-            <q-btn label="Sincronizar Dados" color="info" class="full-width q-pa-sm q-mt-md" @click="sincronizar" />
+            <q-btn label="Buckup" color="secondary" class="full-width q-pa-sm q-mt-xl" size="18px"
+                @click="sincronizar" />
 
-            <q-btn label="Restaurar Base de Dados" color="green" class="full-width q-pa-sm q-mt-md"
+            <q-btn label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md" size="18px"
                 @click="restaurar" />
 
             <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
@@ -73,11 +74,24 @@ function reset() {
 }
 
 function sincronizar() {
-    service.fazerBackup();
+    $q.loading.show();
+    service.iniciarBackup().then(() => {
+        $q.loading.hide();
+        success('Sincronização realizada com sucesso!');
+    }).catch(() => {
+        $q.loading.hide();
+        error('Erro ao sincronizar dados!');
+    });
 }
 
 function restaurar() {
-    service.restaurarBackup();
+    service.restaurarBackup().then(() => {
+        $q.loading.hide();
+        success('Restauração realizada com sucesso!');
+    }).catch(() => {
+        $q.loading.hide();
+        error('Erro ao restaurar dados!');
+    });
 }
 
 onMounted(() => {
