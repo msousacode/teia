@@ -18,12 +18,15 @@
 
           <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md" />
 
-          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit" />
+          <div class="fixed-bottom q-pa-md">
+            <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit" />
 
-          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
-            :to="{ name: 'treinamentos' }" />
+            <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
+              :to="{ name: 'treinamentos' }" />
+          </div>
         </q-form>
       </q-tab-panel>
+
 
       <q-tab-panel name="alvos">
         <AlvoForm />

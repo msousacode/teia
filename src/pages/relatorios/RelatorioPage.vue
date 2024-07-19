@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <title-custom title="Cadastro Aprendiz" />
+        <title-custom title="Relatório" />
         <div class="row">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
@@ -31,13 +31,12 @@
                 }" />
         </div>
 
-        <div class="row justify-center">
-            <q-btn label="Gerar Relatório" color="info" class="col-12 q-pa-sm" size="18px" @click="gerarGraficosTela"
-                :disabled="!exibirRelatorioBtn" />
-        </div>
-
         <div ref="chartContainer"></div>
 
+        <div class="fixed-bottom q-pa-md">
+            <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm" size="18px"
+                @click="gerarGraficosTela" :disabled="!exibirRelatorioBtn" />
+        </div>
     </q-page>
 </template>
 
