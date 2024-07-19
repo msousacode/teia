@@ -3,6 +3,9 @@ import 'dexie-export-import';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import { useQuasar } from 'quasar';
 
+//Fica comentado somente para ser usado em desenvolvimento ou testes.
+//this.readBlob(blob).then(console.log).catch(console.error);
+
 export class BackupService {
   supabase = useSupabaseApi();
 
@@ -31,20 +34,15 @@ export class BackupService {
   };
 
   iniciarBackup = async () => {
-    if (!this.isNuncaSincronizado()) {
-      let blob = null;
-      try {
-        blob = await db.export();
-        this.$q.loading.hide();
-      } catch (e) {
-        console.error(e);
-      }
-
-      this.supabase.bucketUpload(blob).then(() => {
-        this.atualizarDataSincronizacao();
-      });
-      //this.readBlob(blob).then(console.log).catch(console.error); TODO fica comentado somente para ser usado em desenvolvimento ou testes.
+    let blob = null;
+    try {
+      blob = await db.export();
+      this.$q.loading.hide();
+    } catch (e) {
+      console.error(e);
     }
+
+    this.supabase.bucketUpload(blob);
   };
 
   restaurarBackup = async () => {
@@ -54,13 +52,6 @@ export class BackupService {
     } catch (e) {
       console.error(e);
     }
-  };
-
-  isNuncaSincronizado = () => {
-    return (
-      this.ultimaDataSincronismo === 'Nunca sincronizado' ||
-      this.ultimaDataSincronismo === ''
-    );
   };
 
   readBlob(blob: Blob): Promise<string> {
@@ -75,10 +66,4 @@ export class BackupService {
       reader.readAsText(blob);
     });
   }
-
-  atualizarDataSincronizacao = async () => {
-    const data = new Date();
-    await db.sincronizacao.clear();
-    await db.sincronizacao.add({ dataUltimaSincronizacao: data });
-  };
 }

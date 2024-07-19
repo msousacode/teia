@@ -1,4 +1,13 @@
 import useSupabase from '../../src/boot/supabase';
+import { v4 as uuid } from 'uuid';
+
+type BackupLog = {
+  nome_arquivo: string;
+  user_uuid: string;
+};
+
+//Como verificar se o usuário esta autenticado?
+//console.log('form', supabase.auth.getUser());
 
 export default function useSupabaseApi() {
   const supabase = useSupabase().supabase;
@@ -33,11 +42,16 @@ export default function useSupabaseApi() {
 
   const bucketUpload = async (file: any) => {
     try {
-      const fileName = new Date().getTime().toString();
+      const fileName = uuid();
       const { data, error } = await supabase.storage
         .from('backups')
         .upload(fileName, file);
       if (error) throw error;
+
+      const userUuid = (await supabase.auth.getUser()).data.user?.id as string;
+
+      registrarBackupLog({ nome_arquivo: fileName, user_uuid: userUuid });
+
       return data;
     } catch (error) {
       console.log('error', error);
@@ -61,11 +75,16 @@ export default function useSupabaseApi() {
     }
   };
 
+  const registrarBackupLog = async (log: BackupLog) => {
+    post('backups_realizados_log', log);
+  };
+
   return {
     post,
     put,
     getByEmail,
     bucketUpload,
     getObjectBucket,
+    registrarBackupLog,
   };
 }

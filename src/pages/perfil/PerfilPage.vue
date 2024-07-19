@@ -73,11 +73,24 @@ function reset() {
 }
 
 function sincronizar() {
-    service.fazerBackup();
+    $q.loading.show();
+    service.iniciarBackup().then(() => {
+        $q.loading.hide();
+        success('Sincronização realizada com sucesso!');
+    }).catch(() => {
+        $q.loading.hide();
+        error('Erro ao sincronizar dados!');
+    });
 }
 
 function restaurar() {
-    service.restaurarBackup();
+    service.restaurarBackup().then(() => {
+        $q.loading.hide();
+        success('Restauração realizada com sucesso!');
+    }).catch(() => {
+        $q.loading.hide();
+        error('Erro ao restaurar dados!');
+    });
 }
 
 onMounted(() => {
