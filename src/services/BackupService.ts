@@ -46,11 +46,58 @@ export class BackupService {
   };
 
   restaurarBackup = async () => {
-    const data = await this.supabase.getObjectBucket('1721338442210');
-    try {
-      await db.import(data);
-    } catch (e) {
-      console.error(e);
+    if (navigator.onLine) {
+      const user = await this.supabase.getUserAuth();
+
+      const userUuid = user?.data.user?.id as string;
+
+      if (userUuid !== undefined) {
+        try {
+          const fileName = await this.supabase.getUltimoBackup(userUuid);
+
+          const data = await this.supabase.getObjectBucket(fileName);
+
+          await db
+            .import(data)
+            .then(() => {
+              this.$q.notify({
+                message: 'Restauração concluída com sucesso!',
+                color: 'positive',
+                position: 'bottom',
+                //icon: 'report_problem',
+                timeout: 2000,
+              });
+            })
+            .catch((e) => {
+              console.error(e);
+              this.$q.notify({
+                message: 'Ocorreu algum erro. Não foi possível restaurar.',
+                color: 'negative',
+                position: 'bottom',
+                icon: 'report_problem',
+                timeout: 2000,
+              });
+            });
+        } catch (e) {
+          console.error(e);
+          this.$q.notify({
+            message: 'Ocorreu algum erro. Não foi possível restaurar.',
+            color: 'negative',
+            position: 'bottom',
+            icon: 'report_problem',
+            timeout: 2000,
+          });
+        }
+      }
+    } else {
+      this.$q.notify({
+        message:
+          'Sem conexão com a internet. Ative a internet e tente novamente.',
+        color: 'negative',
+        position: 'bottom',
+        icon: 'report_problem',
+        timeout: 2000,
+      });
     }
   };
 
