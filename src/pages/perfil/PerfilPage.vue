@@ -33,9 +33,9 @@ import { computed, onMounted, ref } from 'vue';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { SincronizarDbService } from 'src/services/SincronizarDbService';
+import { BackupService } from 'src/services/BackupService';
 
-const service = new SincronizarDbService()
+const service = new BackupService()
 
 const supabase = useSupabaseApi();
 
