@@ -34,10 +34,12 @@
 
         <q-input outlined label="Observações" v-model="form.observacao" type="textarea" class="q-mb-md" />
 
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
-          :disable="!isSubmitted" />
+        <div class="fixed-bottom q-pa-md">
+          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
+            :disable="!isSubmitted" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat :to="{ name: 'aprendizes' }" />
+          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat :to="{ name: 'aprendizes' }" />
+        </div>
       </q-form>
     </div>
   </q-page>

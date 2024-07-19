@@ -80,9 +80,6 @@
           </template>
         </q-input>
 
-        <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
-          @click="visible = true" />
-
         <div class="text-body2 q-mb-sm">Treinamentos</div>
 
         <div class="q-mb-md">
@@ -141,11 +138,16 @@
           </q-list>
         </div>
 
-        <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
-          :disable="!isSubmitted" />
+        <div class="fixed-bottom q-pa-md">
+          <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
+            @click="visible = true" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
-          :to="{ name: 'atendimentos' }" />
+          <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
+            :disable="!isSubmitted" />
+
+          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
+            :to="{ name: 'atendimentos' }" />
+        </div>
 
       </q-form>
     </div>

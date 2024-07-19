@@ -12,19 +12,21 @@
 
                 <q-input outlined label="Documento:" v-model="form.documento" class="q-mb-md text-uppercase" />
 
+            </q-form>
+
+            <div class="fixed-bottom q-pa-md">
                 <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
                     :disable="!isSubmitted" />
 
-            </q-form>
+                <q-btn icon="cloud_upload" label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
+                    size="18px" @click="sincronizar" />
 
-            <q-btn label="Buckup" color="secondary" class="full-width q-pa-sm q-mt-xl" size="18px"
-                @click="sincronizar" />
+                <q-btn icon="cloud_download" label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md"
+                    size="18px" @click="restaurar" />
 
-            <q-btn label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md" size="18px"
-                @click="restaurar" />
-
-            <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
-                :to="{ name: 'relatorios' }" />
+                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
+                    :to="{ name: 'relatorios' }" />
+            </div>
         </div>
     </q-page>
 </template>

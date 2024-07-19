@@ -6,11 +6,11 @@ import { Notify } from 'quasar';
 // events passes a ServiceWorkerRegistration instance in their arguments.
 // ServiceWorkerRegistration: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration
 
-window.addEventListener('online', () => {
-  // Requisitar atualização do service worker quando voltar a ficar online
-  //const backupService = new BackupService();
-  //backupService.fazerBackup();
-});
+//window.addEventListener('online', () => {
+// Requisitar atualização do service worker quando voltar a ficar online
+//const backupService = new BackupService();
+//backupService.fazerBackup();
+//});
 
 register(process.env.SERVICE_WORKER_FILE, {
   // The registrationOptions object will be passed as the second argument
