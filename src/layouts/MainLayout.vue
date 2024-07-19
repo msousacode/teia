@@ -46,13 +46,6 @@ const service = useAuth();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
-    title: 'Configurações',
-    icon: 'mdi-chart-line',
-    routeName: 'perfil',
-    hide: true,
-    display: () => 'none',
-  },
-  {
     title: 'Relatórios',
     icon: 'mdi-chart-line',
     routeName: 'relatorios',
@@ -80,6 +73,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     hide: true,
     display: () => 'none',
   },
+  {
+    title: 'Configurações',
+    icon: 'mdi-chart-line',
+    routeName: 'perfil',
+    hide: true,
+    display: () => 'none',
+  }
 ]);
 
 const leftDrawerOpen = ref(false);

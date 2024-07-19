@@ -175,8 +175,8 @@ async function imprimirPDF() {
         title: 'relatorio_evolutivo',
     });
 
-    const imgLogo = await loadImageData('src/assets/logo.png');
-    const imgDataWithoutPrefix = imgLogo.split(",")[1];
+    /* const imgLogo = await loadImageData('src/assets/logo.png');
+    const imgDataWithoutPrefix = imgLogo.split(",")[1]; */
 
     data.forEach((item) => {
 
@@ -184,18 +184,18 @@ async function imprimirPDF() {
             nomeArquivo = 'provisorio';
         }
 
-        autoTable(pdf, {
-            head: [['']],
-            headStyles: {
-                cellWidth: 30, minCellHeight: 10,
-            },
-            didDrawCell: (data) => {
-                if (data.section === 'head' && data.column.index === 0) {
-                    pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-                }
-            },
-            theme: 'plain',
-        });
+        /*  autoTable(pdf, {
+             head: [['']],
+             headStyles: {
+                 cellWidth: 30, minCellHeight: 10,
+             },
+             didDrawCell: (data) => {
+                 if (data.section === 'head' && data.column.index === 0) {
+                     pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+                 }
+             },
+             theme: 'plain',
+         }); */
 
         autoTable(pdf, {
             head: [['PROFISSIONAL', 'APRENDIZ', 'NÚMERO']],
@@ -257,7 +257,7 @@ async function imprimirPDF() {
     pdf.save(`${nomeArquivo}.pdf`);
 }
 
-async function loadImageData(url: string): Promise<string> {
+/* async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
     const blob = await response.blob();
     return new Promise((resolve, reject) => {
@@ -266,7 +266,7 @@ async function loadImageData(url: string): Promise<string> {
         reader.onerror = reject;
         reader.readAsDataURL(blob);
     });
-}
+} */
 
 onMounted(() => {
     db.aprendizes.toArray().then((res) => {

@@ -44,10 +44,28 @@ export default function useSupabaseApi() {
     }
   };
 
+  const getObjectBucket = async (fileName: string) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('backups')
+        .createSignedUrl(fileName, 60);
+
+      if (error) throw error;
+
+      const response = await fetch(data.signedUrl);
+      const blob = await response.blob();
+
+      return blob;
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return {
     post,
     put,
     getByEmail,
     bucketUpload,
+    getObjectBucket,
   };
 }

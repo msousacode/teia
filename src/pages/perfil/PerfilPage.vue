@@ -15,13 +15,15 @@
                 <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
                     :disable="!isSubmitted" />
 
-                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
-                    :to="{ name: 'relatorios' }" />
             </q-form>
 
-            <q-separator />
+            <q-btn label="Sincronizar Dados" color="info" class="full-width q-pa-sm q-mt-md" @click="sincronizar" />
 
-            <q-btn label="Sincronizar Dados" color="primary" class="full-width q-pa-sm q-mt-md" @click="sincronizar" />
+            <q-btn label="Restaurar Base de Dados" color="green" class="full-width q-pa-sm q-mt-md"
+                @click="restaurar" />
+
+            <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
+                :to="{ name: 'relatorios' }" />
         </div>
     </q-page>
 </template>
@@ -72,6 +74,10 @@ function reset() {
 
 function sincronizar() {
     service.fazerBackup();
+}
+
+function restaurar() {
+    service.restaurarBackup();
 }
 
 onMounted(() => {

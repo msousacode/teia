@@ -3,7 +3,7 @@ import 'dexie-export-import';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import { useQuasar } from 'quasar';
 
-export class SincronizarDbService {
+export class BackupService {
   supabase = useSupabaseApi();
 
   ultimaDataSincronismo: Date | string = '';
@@ -34,11 +34,9 @@ export class SincronizarDbService {
     if (!this.isNuncaSincronizado()) {
       let blob = null;
       try {
-        this.$q.loading.show();
         blob = await db.export();
         this.$q.loading.hide();
       } catch (e) {
-        this.$q.loading.hide();
         console.error(e);
       }
 
@@ -46,6 +44,15 @@ export class SincronizarDbService {
         this.atualizarDataSincronizacao();
       });
       //this.readBlob(blob).then(console.log).catch(console.error); TODO fica comentado somente para ser usado em desenvolvimento ou testes.
+    }
+  };
+
+  restaurarBackup = async () => {
+    const data = await this.supabase.getObjectBucket('1721338442210');
+    try {
+      await db.import(data);
+    } catch (e) {
+      console.error(e);
     }
   };
 
