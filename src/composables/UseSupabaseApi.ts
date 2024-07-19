@@ -12,6 +12,10 @@ type BackupLog = {
 export default function useSupabaseApi() {
   const supabase = useSupabase().supabase;
 
+  const getUserAuth = async () => {
+    return supabase.auth.getUser();
+  };
+
   const getByEmail = async (table: string, email: string) => {
     const { data, error } = await supabase
       .from(table)
@@ -79,6 +83,19 @@ export default function useSupabaseApi() {
     post('backups_realizados_log', log);
   };
 
+  const getUltimoBackup = async (userUuid: string) => {
+    console.log(userUuid);
+    const { data, error } = await supabase
+      .from('backups_realizados_log')
+      .select('*')
+      .eq('user_uuid', userUuid.trim())
+      .order('created_at', { ascending: false }) // Ordena por data_criacao em ordem decrescente
+      .limit(1); // Limita os resultados a um
+    console.log('data', data);
+    if (error) throw error;
+    return data[0].nome_arquivo;
+  };
+
   return {
     post,
     put,
@@ -86,5 +103,7 @@ export default function useSupabaseApi() {
     bucketUpload,
     getObjectBucket,
     registrarBackupLog,
+    getUserAuth,
+    getUltimoBackup,
   };
 }

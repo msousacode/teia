@@ -19,7 +19,7 @@
                     :disable="!isSubmitted" />
 
                 <q-btn icon="cloud_upload" label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
-                    size="18px" @click="sincronizar" />
+                    size="18px" @click="backup" />
 
                 <q-btn icon="cloud_download" label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md"
                     size="18px" @click="restaurar" />
@@ -65,7 +65,7 @@ function submit() {
         success('Perfil atualizado com sucesso!');
     }).catch(() => {
         $q.loading.hide();
-        error('Erro ao atualizar perfil!');
+        error('Erro ao atualizar configurações!');
     });
 }
 
@@ -75,25 +75,40 @@ function reset() {
     form.value.documento = '';
 }
 
-function sincronizar() {
-    $q.loading.show();
-    service.iniciarBackup().then(() => {
-        $q.loading.hide();
-        success('Sincronização realizada com sucesso!');
-    }).catch(() => {
-        $q.loading.hide();
-        error('Erro ao sincronizar dados!');
-    });
+function backup() {
+
+    $q.dialog({
+        title: 'Confirma a realização do backup?',
+        ok: true,
+        cancel: true,
+    })
+        .onOk(async () => {
+            $q.loading.show();
+            service.iniciarBackup().then(() => {
+                $q.loading.hide();
+            }).catch(() => {
+                $q.loading.hide();
+            });
+        })
+        .onDismiss(() => { });
 }
 
 function restaurar() {
-    service.restaurarBackup().then(() => {
-        $q.loading.hide();
-        success('Restauração realizada com sucesso!');
-    }).catch(() => {
-        $q.loading.hide();
-        error('Erro ao restaurar dados!');
-    });
+
+    $q.dialog({
+        title: 'Confirma a restauração do banco de dados?',
+        ok: true,
+        cancel: true,
+    })
+        .onOk(async () => {
+            $q.loading.show();
+            service.restaurarBackup().then(() => {
+                $q.loading.hide();
+            }).catch(() => {
+                $q.loading.hide();
+            });
+        })
+        .onDismiss(() => { });
 }
 
 onMounted(() => {
