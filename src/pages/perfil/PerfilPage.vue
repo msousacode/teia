@@ -17,9 +17,10 @@
 
             </q-form>
 
-            <q-btn label="Sincronizar Dados" color="info" class="full-width q-pa-sm q-mt-md" @click="sincronizar" />
+            <q-btn label="Buckup" color="secondary" class="full-width q-pa-sm q-mt-xl" size="18px"
+                @click="sincronizar" />
 
-            <q-btn label="Restaurar Base de Dados" color="green" class="full-width q-pa-sm q-mt-md"
+            <q-btn label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md" size="18px"
                 @click="restaurar" />
 
             <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
