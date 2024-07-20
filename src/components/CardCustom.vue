@@ -17,7 +17,8 @@
 
                     <div v-if="item?.progress !== undefined || item?.progress !== null" class="q-mt-sm">
                         <q-item-label>
-                            Progresso:
+                            <div class="text-body2 q-mt-sm"><span class="text-teal-7">Progresso:</span>
+                            </div>
                         </q-item-label>
                         <q-linear-progress size="20px" :value="item?.progresso" color="green-5">
                             <div class="absolute-full flex flex-center">
@@ -27,7 +28,8 @@
                     </div>
 
                     <div class="flex flex-center">
-                        <q-btn class="q-mt-md" color="purple-5" size="10px" @click="enviaEmit(item?.id)">Visualizar
+                        <q-btn class="q-mt-md full-width" color="purple-5" size="10px"
+                            @click="enviaEmit(item?.id)">Visualizar
                             Gráfico</q-btn>
                     </div>
                 </div>
