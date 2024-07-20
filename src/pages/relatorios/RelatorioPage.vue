@@ -4,7 +4,8 @@
 
         <q-card class="my-card q-pa-md full-width">
             <div class="text-center text-body1 text-teal">Gráfico</div>
-            <div id="grafico-selecionado"></div>
+            <div id="grafico-selecionado">
+            </div>
         </q-card>
     </q-dialog>
 
@@ -148,7 +149,7 @@ async function renderizarGraficos() {
         graf.forEach((chart) => {
             const canvas = document.createElement('canvas');
             canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
-            canvas.style.display = 'block';
+            canvas.style.display = 'none';
             const ctx = canvas.getContext('2d');
 
             new ChartJS(ctx || '', chart.chart);
@@ -281,7 +282,7 @@ const adicionaSelecao = (evento: any) => {
         const graficoSelecionado = document.getElementById("grafico-selecionado");
         graficoSelecionado!.innerHTML = '';
         graficoSelecionado!.appendChild(clonedCanvas);
-    }, 1000);
+    }, 200);
 };
 
 /* async function loadImageData(url: string): Promise<string> {
