@@ -1,4 +1,14 @@
 <template>
+
+    <q-dialog v-model="showGrafico">
+
+        <q-card class="my-card q-pa-md full-width">
+            <div class="text-center text-body1 text-teal">Gráfico</div>
+            <div id="grafico-selecionado">
+            </div>
+        </q-card>
+    </q-dialog>
+
     <q-page class="q-pa-sm">
         <title-custom title="Relatório" />
         <div class="row">
@@ -24,18 +34,19 @@
               item, index
             ) in treinamentos" :key="index">
             <card-custom :item="{
-                    nomeTreinamento: item.treinamento,
-                    nomeProtocolo: item.protocolo,
-                    periodoTreinamento: item.periodo,
-                    progresso: item.progresso
-                }" />
+        id: item.uuid,
+        nomeTreinamento: item.treinamento,
+        nomeProtocolo: item.protocolo,
+        periodoTreinamento: item.periodo,
+        progresso: item.progresso
+    }" @selecao="adicionaSelecao" />
         </div>
 
         <div ref="chartContainer"></div>
 
         <div class="fixed-bottom q-pa-md">
-            <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm" size="18px"
-                @click="gerarGraficosTela" :disabled="!exibirRelatorioBtn" />
+            <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm" size="18px" @click="imprimirPDF"
+                :disabled="!exibirRelatorioBtn" />
         </div>
     </q-page>
 </template>
@@ -65,6 +76,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Title,
     Tooltip,
     Legend);
+
+const showGrafico = ref(false);
 
 const periodo = ref(30);
 
@@ -105,6 +118,7 @@ function pesquisar() {
     });
 
     exibirRelatorioBtn.value = true;
+    gerarGraficosTela();
 }
 
 async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
@@ -123,7 +137,7 @@ const chartContainer = ref(null);
 async function renderizarGraficos() {
 
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
-    const data = await service.gerarRelatorio(uuidAprendiz);
+    const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);//TODO estou chamando o serviço duas vezes verificar uma maneira de armazenar esse retorno na store do píniia paara evitar a segunda chamada.
 
     const graficos = data.map(item => {
         return item.treinamentos.map(tre => {
@@ -149,12 +163,11 @@ async function renderizarGraficos() {
 }
 
 function gerarGraficosTela() {
-    $q.loading.show();
-    renderizarGraficos().then(() => setTimeout(imprimirPDF, 3000)).catch((err) => console.log(err));
+    renderizarGraficos();
 }
 
 async function imprimirPDF() {
-
+    $q.loading.show();
     let nomeArquivo: string = '';
 
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
@@ -197,11 +210,18 @@ async function imprimirPDF() {
          }); */
 
         autoTable(pdf, {
-            head: [['PROFISSIONAL', 'APRENDIZ', 'NÚMERO']],
+            head: [['', 'PROFISSIONAL', 'CREDENCIAL', 'APRENDIZ', 'NÚMERO']],
             body: [
-                [item.profissional.nome.toUpperCase(), item.aprendiz.nome.toUpperCase(), 333],
+                ['', item.profissional.nome.toUpperCase(), 'CREFITO 3655.0', item.aprendiz.nome.toUpperCase(), 333],
             ],
             theme: 'plain',
+            columnStyles: {
+                0: { cellWidth: 40 },
+                1: { cellWidth: 40 },
+                2: { cellWidth: 40 },
+                3: { cellWidth: 40 },
+                4: { cellWidth: 40 }
+            },
         });
 
         item.treinamentos.forEach(treinamento => {
@@ -256,6 +276,22 @@ async function imprimirPDF() {
     pdf.save(`${nomeArquivo}.pdf`);
 }
 
+const adicionaSelecao = (evento: any) => {
+    showGrafico.value = true;
+    setTimeout(() => {
+        const canvas = document.getElementById(evento) as HTMLCanvasElement;
+        const clonedCanvas = document.createElement('canvas') as HTMLCanvasElement;
+        clonedCanvas.width = canvas.width;
+        clonedCanvas.height = canvas.height;
+        const context = clonedCanvas.getContext('2d');
+        context!.drawImage(canvas, 0, 0);
+        clonedCanvas.style.display = 'block';
+        const graficoSelecionado = document.getElementById("grafico-selecionado");
+        graficoSelecionado!.innerHTML = '';
+        graficoSelecionado!.appendChild(clonedCanvas);
+    }, 200);
+};
+
 /* async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -278,4 +314,5 @@ onMounted(() => {
         });
     });
 })
+
 </script>

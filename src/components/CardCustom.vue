@@ -17,7 +17,8 @@
 
                     <div v-if="item?.progress !== undefined || item?.progress !== null" class="q-mt-sm">
                         <q-item-label>
-                            Progresso:
+                            <div class="text-body2 q-mt-sm"><span class="text-teal-7">Progresso:</span>
+                            </div>
                         </q-item-label>
                         <q-linear-progress size="20px" :value="item?.progresso" color="green-5">
                             <div class="absolute-full flex flex-center">
@@ -25,15 +26,24 @@
                             </div>
                         </q-linear-progress>
                     </div>
+
+                    <div class="flex flex-center">
+                        <q-btn class="q-mt-md full-width" color="purple" size="10px"
+                            @click="enviaEmit(item?.id)">Visualizar
+                            Gráfico</q-btn>
+                    </div>
                 </div>
             </div>
         </q-card-section>
     </q-card>
 </template>
 <script setup lang="ts">
+
 const treinamento = 'Treinamento: ';
 const protocolo = 'Protocolo: ';
 const periodo = 'Período: ';
+
+const emit = defineEmits(["selecao"]);
 
 defineProps({
     item: Object
@@ -42,4 +52,8 @@ defineProps({
 function progressLabel1(progress: number) {
     return (progress * 100).toFixed(0) + '%';
 }
+
+const enviaEmit = (id: string) => {
+    emit("selecao", id);
+};
 </script>

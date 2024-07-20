@@ -3,7 +3,6 @@
     <q-header elevated>
       <q-toolbar>
         <div class="text-h6">SysABA</div>
-        <div>v.1.0</div>
       </q-toolbar>
     </q-header>
 

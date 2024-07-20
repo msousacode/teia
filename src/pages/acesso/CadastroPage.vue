@@ -62,7 +62,7 @@ const formCadastro = reactive({
 });
 
 let isSubmitted = computed(() => {
-  return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senha !== null;
+  return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senhaConfirmada.length > 5 && formCadastro.senhaConfirmada !== '';
 });
 
 
