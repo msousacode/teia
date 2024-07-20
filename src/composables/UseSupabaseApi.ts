@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 
 type BackupLog = {
   nome_arquivo: string;
-  user_uuid: string;
+  email: string;
 };
 
 //Como verificar se o usuário esta autenticado?
@@ -52,9 +52,12 @@ export default function useSupabaseApi() {
         .upload(fileName, file);
       if (error) throw error;
 
-      const userUuid = (await supabase.auth.getUser()).data.user?.id as string;
+      const email = (await supabase.auth.getUser()).data.user?.email as string;
 
-      registrarBackupLog({ nome_arquivo: fileName, user_uuid: userUuid });
+      registrarBackupLog({
+        nome_arquivo: fileName,
+        email: email.trim().toLowerCase(),
+      });
 
       return data;
     } catch (error) {
@@ -83,15 +86,13 @@ export default function useSupabaseApi() {
     post('backups_realizados_log', log);
   };
 
-  const getUltimoBackup = async (userUuid: string) => {
-    console.log(userUuid);
+  const getUltimoBackup = async (email: string) => {
     const { data, error } = await supabase
       .from('backups_realizados_log')
       .select('*')
-      .eq('user_uuid', userUuid.trim())
+      .eq('user_uuid', email.trim())
       .order('created_at', { ascending: false }) // Ordena por data_criacao em ordem decrescente
       .limit(1); // Limita os resultados a um
-    console.log('data', data);
     if (error) throw error;
     return data[0].nome_arquivo;
   };

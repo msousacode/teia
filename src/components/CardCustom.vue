@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="flex flex-center">
-                        <q-btn class="q-mt-md full-width" color="purple" size="10px"
+                        <q-btn class="q-mt-md full-width" color="purple" size="12px" flat dense
                             @click="enviaEmit(item?.id)">Visualizar
                             Gráfico</q-btn>
                     </div>
