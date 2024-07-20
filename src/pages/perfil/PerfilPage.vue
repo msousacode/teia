@@ -86,10 +86,8 @@ function backup() {
             $q.loading.show();
             service.iniciarBackup().then(() => {
                 $q.loading.hide();
-                success('Backup realizado com sucesso!');
             }).catch(() => {
                 $q.loading.hide();
-                error('Erro ao realizar backup!');
             });
         })
         .onDismiss(() => { });
@@ -98,18 +96,15 @@ function backup() {
 function restaurar() {
 
     $q.dialog({
-        title: 'Confirma a restauração do banco de dados?',
+        title: 'Deseja continuar coma a restauração do banco de dados?',
         ok: true,
         cancel: true,
     })
         .onOk(async () => {
-            $q.loading.show();
             service.restaurarBackup().then(() => {
                 $q.loading.hide();
-                success('Restauração feita com sucesso!');
             }).catch(() => {
                 $q.loading.hide();
-                error('Erro ao realizar restauração!');
             });
         })
         .onDismiss(() => { });
