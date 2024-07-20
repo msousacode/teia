@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="flex flex-center">
-                        <q-btn class="q-mt-md" color="teal" size="10px" @click="enviaEmit(item?.id)">Visualizar
+                        <q-btn class="q-mt-md" color="purple-5" size="10px" @click="enviaEmit(item?.id)">Visualizar
                             Gráfico</q-btn>
                     </div>
                 </div>
