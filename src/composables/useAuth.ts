@@ -1,21 +1,37 @@
 import useSupabase from 'src/boot/supabase';
 import useNotify from './UseNotify';
+import { Provider } from 'src/pages/acesso/LoginSocialPage.vue';
 
 export default function authService() {
   const { supabase } = useSupabase();
 
-  const login = async (email: any, password: any) => {
-    try {
+  const login = async (email: any, password: any, provider: Provider) => {
+    if (provider === 'google') {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+
+      if (error) throw error;
+      return data;
+    }
+
+    if (provider === 'facebook') {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+      });
+
+      console.log('data : ', data);
+      if (error) throw error;
+      return data;
+    }
+
+    if (provider === 'normal') {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      localStorage.setItem('user', JSON.stringify(data.user));
       if (error) throw error;
       return data.user;
-    } catch (error) {
-      useNotify().error('Erro ao logar usuário: SUPA_000');
-      throw error;
     }
   };
 
