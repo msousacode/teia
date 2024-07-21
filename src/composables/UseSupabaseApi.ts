@@ -90,7 +90,7 @@ export default function useSupabaseApi() {
     const { data, error } = await supabase
       .from('backups_realizados_log')
       .select('*')
-      .eq('user_uuid', email.trim())
+      .eq('email', email.trim())
       .order('created_at', { ascending: false }) // Ordena por data_criacao em ordem decrescente
       .limit(1); // Limita os resultados a um
     if (error) throw error;
