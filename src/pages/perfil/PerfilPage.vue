@@ -76,19 +76,13 @@ function reset() {
 }
 
 function backup() {
-
     $q.dialog({
         title: 'Confirma a realização do backup?',
         ok: true,
         cancel: true,
     })
         .onOk(async () => {
-            $q.loading.show();
-            service.iniciarBackup().then(() => {
-                $q.loading.hide();
-            }).catch(() => {
-                $q.loading.hide();
-            });
+            service.iniciarBackup();
         })
         .onDismiss(() => { });
 }
