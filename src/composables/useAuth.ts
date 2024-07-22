@@ -12,6 +12,10 @@ export default function authService() {
       });
 
       if (error) throw error;
+
+      if (data.url) {
+        console.log('data.url : ', data.url);
+      }
       return data;
     }
 

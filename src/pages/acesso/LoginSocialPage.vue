@@ -270,6 +270,7 @@ async function entrar(provider: Provider) {
   /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
   text-shadow: 0 -1px 0 #354C8C;
   text-align: center;
+  height: 40px;
 }
 
 .loginBtn--facebook:before {
