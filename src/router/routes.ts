@@ -8,13 +8,8 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'loginDefault',
         path: '',
-        component: () => import('pages/acesso/LoginPage.vue'),
+        component: () => import('pages/acesso/LoginSocialPage.vue'),
       },
-      /* {
-        name: 'login',
-        path: '/login',
-        component: () => import('pages/acesso/LoginPage.vue'),
-      }, */
       {
         name: 'login',
         path: '/login',
