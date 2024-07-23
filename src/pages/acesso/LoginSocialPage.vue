@@ -8,7 +8,7 @@
 
     <q-page-container>
 
-      <div class="row justify-center q-mt-lg">
+      <div class="row justify-center q-mt-xl">
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
           <div class="q-pa-md q-gutter-sm">
 
@@ -42,9 +42,7 @@
             </button>
 
             <div class="container">
-              <div class="line"></div>
-              <div class="text-center q-mt-md">ou entre com</div>
-              <div class="line"></div>
+              <div class="text-center q-mt-md text-teal">ou entre com</div>
             </div>
 
             <q-input outlined v-model="email" label="E-mail" stack-label
@@ -55,15 +53,11 @@
 
             <q-btn class="full-width bg-primary text-white q-pa-sm" size="18px" label="Entrar" @click="entrar('normal')"
               :disable="!isSubmitted" />
-            <div class="full-width">
-              <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
-                label="Cadastrar-se" no-caps />
-            </div>
 
-            <div class="full-width">
-              <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/esqueci"
-                label="Esqueci a senha" no-caps />
-            </div>
+            <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
+              label="Cadastrar-se" no-caps />
+            <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/esqueci"
+              label="Esqueci a senha" no-caps />
 
           </div>
         </div>
@@ -76,7 +70,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
-//import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 
@@ -84,7 +78,7 @@ export type Provider = 'google' | 'facebook' | 'normal';
 
 const service = useAuth();
 
-//const router = useRouter();
+const router = useRouter();
 
 const { error } = useNotify();
 
@@ -103,7 +97,7 @@ function entrar(provider: Provider) {
   service.login(email.value.trim(), senha.value.trim(), provider).then((data) => {
 
     localStorage.setItem('user', JSON.stringify(data));
-    //router.push('/relatorios')
+    router.push('/relatorios')
     $q.loading.hide();
   }).catch(() => {
     $q.loading.hide();
@@ -142,7 +136,7 @@ function entrar(provider: Provider) {
   cursor: pointer;
   font-family: 'Roboto', arial, sans-serif;
   font-size: 14px;
-  height: 40px;
+  height: 45px;
   letter-spacing: 0.25px;
   outline: none;
   overflow: hidden;
@@ -270,7 +264,7 @@ function entrar(provider: Provider) {
   /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
   text-shadow: 0 -1px 0 #354C8C;
   text-align: center;
-  height: 40px;
+  height: 45px;
 }
 
 .loginBtn--facebook:before {

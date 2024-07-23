@@ -32,7 +32,7 @@ export default function authService() {
       if (error) throw error;
       return data;
     }
-
+  */
     if (provider === 'normal') {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -40,7 +40,7 @@ export default function authService() {
       });
       if (error) throw error;
       return data.user;
-    }*/
+    }
   };
 
   const register = async (email: any, password: any) => {
