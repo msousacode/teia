@@ -19,6 +19,7 @@ export default function authService() {
       return data;
     }
 
+    /*
     if (provider === 'facebook') {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
@@ -36,7 +37,7 @@ export default function authService() {
       });
       if (error) throw error;
       return data.user;
-    }
+    }*/
   };
 
   const register = async (email: any, password: any) => {
