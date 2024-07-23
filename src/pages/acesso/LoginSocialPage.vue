@@ -56,12 +56,12 @@
             <q-btn class="full-width bg-primary text-white q-pa-sm" size="18px" label="Entrar" @click="entrar('normal')"
               :disable="!isSubmitted" />
             <div class="full-width">
-              <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
+              <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
                 label="Cadastrar-se" no-caps />
             </div>
 
             <div class="full-width">
-              <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/esqueci"
+              <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/esqueci"
                 label="Esqueci a senha" no-caps />
             </div>
 
@@ -98,9 +98,9 @@ let isSubmitted = computed(() => {
   return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
 });
 
-async function entrar(provider: Provider) {
+function entrar(provider: Provider) {
   $q.loading.show();
-  await service.login(email.value.trim(), senha.value.trim(), provider).then((data) => {
+  service.login(email.value.trim(), senha.value.trim(), provider).then((data) => {
 
     localStorage.setItem('user', JSON.stringify(data));
     //router.push('/relatorios')
