@@ -40,6 +40,21 @@ export default route(function (/* { store, ssrContext } */) {
       const token = accessToken.replace('#access_token=', '');
       return { name: 'reset-password', query: { token } };
     }
+
+    if (to.hash.includes('access_token')) {
+      const accessToken = to.hash.split('=')[1];
+      const token = accessToken.replace('#access_token=', '');
+      if (token.length > 0) {
+        return { name: 'relatorios' };
+      } else {
+        return { name: 'login' };
+      }
+    }
+
+    //TODO próximos passos:
+    // 1. Criar uma lógica para validar se o token é válido, se expirou, etc.
+    // 2. Se o token for inválido ou expirado, redirecionar para a tela de login.
+    // 3. Extrair as informações do token e salvar no supabase.
   });
 
   return Router;
