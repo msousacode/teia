@@ -70,19 +70,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
-import { useRouter } from 'vue-router';
-import useNotify from 'src/composables/UseNotify';
-import { useQuasar } from 'quasar';
 
 export type Provider = 'google' | 'facebook' | 'normal';
 
 const service = useAuth();
-
-const router = useRouter();
-
-const { error } = useNotify();
-
-const $q = useQuasar();
 
 const email = ref('');
 
@@ -93,16 +84,7 @@ let isSubmitted = computed(() => {
 });
 
 function entrar(provider: Provider) {
-  $q.loading.show();
-  service.login(email.value.trim(), senha.value.trim(), provider).then((data) => {
-
-    localStorage.setItem('user', JSON.stringify(data));
-    router.push('/relatorios')
-    $q.loading.hide();
-  }).catch(() => {
-    $q.loading.hide();
-    error('Não foi possível logar. Verifique suas credenciais e tente novamente.');
-  });
+  service.login(email.value.trim(), senha.value.trim(), provider);
 }
 
 </script>
