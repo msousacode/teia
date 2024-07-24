@@ -54,6 +54,7 @@ export default route(function (/* { store, ssrContext } */) {
     //TODO próximos passos:
     // 1. Criar uma lógica para validar se o token é válido, se expirou, etc.
     // 2. Se o token for inválido ou expirado, redirecionar para a tela de login.
+    // 3. Extrair as informações do token e salvar no supabase.
   });
 
   return Router;
