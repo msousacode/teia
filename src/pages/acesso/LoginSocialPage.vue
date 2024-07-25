@@ -68,21 +68,32 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
+import { useRouter } from 'vue-router';
+import useNotify from 'src/composables/UseNotify';
 
 export type Provider = 'google' | 'facebook' | 'normal';
 
 const service = useAuth();
 
+const { error } = useNotify();
+
 const email = ref('');
 
 const senha = ref('');
+
+const router = useRouter();
 
 let isSubmitted = computed(() => {
   return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
 });
 
 function entrar(provider: Provider) {
-  service.login(email.value.trim(), senha.value.trim(), provider);
+  service.login(email.value.trim(), senha.value.trim(), provider).then(() => {
+    router.push({ name: 'relatorios' })
+  }).catch((_error) => {
+    console.error(_error);
+    error('Erro ao logar. Verifique suas credenciais');
+  })
 }
 
 </script>
