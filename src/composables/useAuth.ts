@@ -36,7 +36,7 @@ export default function authService() {
         password,
       });
       if (error) throw error;
-      return data.user;
+      return data.session.access_token as string;
     }
   };
 
