@@ -110,7 +110,6 @@ function entrar(provider: Provider) {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   transition: all 300ms ease-in-out;
   display: flex;
-  justify-content: space-between;
 
   .google-icon-wrapper {
     margin: 1px;
@@ -129,8 +128,8 @@ function entrar(provider: Provider) {
     font-size: 16px;
     letter-spacing: 0.2px;
     font-family: "Roboto";
-    margin-left: 1em;
-    margin-right: 4em;
+    margin-left: 5%;
+
     align-items: center;
   }
 
