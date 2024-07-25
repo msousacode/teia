@@ -8,6 +8,8 @@ import {
 
 import routes from './routes';
 
+import { useManagerTokens } from 'src/composables/managerTokens';
+import useSupabaseApi, { UserSapabase } from 'src/composables/UseSupabaseApi';
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -34,7 +36,11 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  Router.beforeEach((to) => {
+  const { getTokenDecoded } = useManagerTokens();
+
+  const supabase = useSupabaseApi();
+
+  Router.beforeEach(async (to) => {
     if (to.hash.includes('type=recovery') && to.name !== 'reset-password') {
       const accessToken = to.hash.split('&')[0];
       const token = accessToken.replace('#access_token=', '');
@@ -43,11 +49,33 @@ export default route(function (/* { store, ssrContext } */) {
 
     if (to.hash.includes('access_token')) {
       const accessToken = to.hash.split('=')[1];
-      const token = accessToken.replace('#access_token=', '');
-      if (token.length > 0) {
-        return { name: 'relatorios' };
+
+      const encode = getTokenDecoded(accessToken);
+
+      if (encode.aud === 'authenticated') {
+        const user: UserSapabase = {
+          email: encode.user_metadata.email,
+          full_name: encode.user_metadata.full_name,
+          avatar_url: encode.user_metadata.picture,
+        };
+
+        const userSupabase = await supabase.getByEmail('usuarios', user.email);
+
+        if (userSupabase === undefined) {
+          supabase
+            .post('usuarios', user)
+            .then(() => {
+              Router.replace({ name: 'relatorios' });
+            })
+            .catch(() => {
+              Router.replace({ name: 'login' });
+              localStorage.clear();
+            });
+        } else {
+          Router.replace({ name: 'relatorios' });
+        }
       } else {
-        return { name: 'login' };
+        Router.replace({ name: 'login' });
       }
     }
 
