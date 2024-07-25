@@ -8,6 +8,8 @@ import {
 
 import routes from './routes';
 
+import { useManagerTokens } from 'src/composables/managerTokens';
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;

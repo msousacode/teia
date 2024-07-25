@@ -71,6 +71,7 @@ import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 
+
 export type Provider = 'google' | 'facebook' | 'normal';
 
 const service = useAuth();
