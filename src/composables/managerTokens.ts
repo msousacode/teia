@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode';
+
 type localStorageKey = 'sb-admyhroxjebmgrdakhza-auth-token';
 
 interface IdentityData {
@@ -112,10 +114,15 @@ export function useManagerTokens() {
     }
   };
 
+  const getTokenDecoded = (token: string) => {
+    return jwtDecode(token);
+  };
+
   return {
     getToken,
     getUserToken,
     getDadosBasicos,
     isTokenAuthenticaded,
+    getTokenDecoded,
   };
 }
