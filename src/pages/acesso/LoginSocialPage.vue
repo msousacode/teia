@@ -40,7 +40,7 @@
             </button>
 
             <div class="container">
-              <div class="text-center q-mt-md text-teal">ou entre com</div>
+              <div class="text-center q-mt-md text-body1">ou entre com</div>
             </div>
 
             <q-input outlined v-model="email" label="E-mail" stack-label
@@ -52,9 +52,9 @@
             <q-btn class="full-width bg-primary text-white q-pa-sm" size="18px" label="Entrar" @click="entrar('normal')"
               :disable="!isSubmitted" />
 
-            <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/cadastrar"
+            <q-btn class="full-width text-teal text-h6" color="white" text-color="blue" unelevated to="/cadastrar"
               label="Cadastrar-se" no-caps />
-            <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/esqueci"
+            <q-btn class="full-width text-teal text-body1" color="white" text-color="blue" unelevated to="/esqueci"
               label="Esqueci a senha" no-caps />
 
           </div>
