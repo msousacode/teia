@@ -78,8 +78,10 @@ function reset() {
 function backup() {
     $q.dialog({
         title: 'Confirma a realização do backup?',
+        message: 'Essa ação irá salvar uma cópia do banco de dados na nuvem. \nVerifique se a conexão com a internet está ativa.',
         ok: true,
         cancel: true,
+        persistent: true,
     })
         .onOk(async () => {
             service.iniciarBackup();
@@ -90,9 +92,11 @@ function backup() {
 function restaurar() {
 
     $q.dialog({
-        title: 'Deseja continuar coma a restauração do banco de dados?',
+        title: 'Deseja continuar com a restauração do banco de dados?',
+        message: 'Essa ação irá sobrescrever todos os dados atuais. \nCom essa ação você recupera a última versão do banco de dados salva disponível na nuvem.',
         ok: true,
         cancel: true,
+        persistent: true,
     })
         .onOk(async () => {
             service.restaurarBackup().then(() => {
