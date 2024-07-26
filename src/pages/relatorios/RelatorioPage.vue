@@ -150,6 +150,8 @@ async function renderizarGraficos() {
             const canvas = document.createElement('canvas');
             canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
             canvas.style.display = 'none';
+            canvas.width = 800; // Define a largura do canvas
+            canvas.height = 600; // Define a altura do canvas
             const ctx = canvas.getContext('2d');
 
             new ChartJS(ctx || '', chart.chart);
@@ -281,11 +283,20 @@ const adicionaSelecao = (evento: any) => {
     setTimeout(() => {
         const canvas = document.getElementById(evento) as HTMLCanvasElement;
         const clonedCanvas = document.createElement('canvas') as HTMLCanvasElement;
-        clonedCanvas.width = 500; // Define a largura do canvas
-        clonedCanvas.height = 250; // Define a altura do canvas
+
+        // Ajuste a escala para a densidade de pixels do dispositivo
+        const scale = window.devicePixelRatio;
+        clonedCanvas.width = canvas.width * scale;
+        clonedCanvas.height = canvas.height * scale;
+
         const context = clonedCanvas.getContext('2d');
-        context!.drawImage(canvas, 0, 0, clonedCanvas.width, clonedCanvas.height);
+
+        // Escala o contexto para que o desenho não pareça pixelado
+        context!.scale(scale, scale);
+
+        context!.drawImage(canvas, 0, 0, clonedCanvas.width / scale, clonedCanvas.height / scale);
         clonedCanvas.style.display = 'block';
+
         const graficoSelecionado = document.getElementById("grafico-selecionado");
         graficoSelecionado!.innerHTML = '';
         graficoSelecionado!.appendChild(clonedCanvas);

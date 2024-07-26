@@ -18,8 +18,8 @@
         </template>
       </q-table>
 
-      <q-btn label="Confirmar" color="primary" class="full-width q-mt-md q-pa-sm" @click="handleSelectTreinamentos"
-        v-show="props.selecionarTreinamento" v-close-popup />
+      <q-btn label="Confirmar" color="green" size="18px" class="full-width q-mt-md q-pa-sm"
+        @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
       <q-btn fab icon="mdi-plus" color="primary" :to="{ name: 'treinamento-novo' }" />

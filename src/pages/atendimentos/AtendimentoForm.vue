@@ -12,7 +12,7 @@
           <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
             semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
 
-        <q-form class="col-md-7 col-xs-12 col-sm-12">
+        <q-form class="col-sm-12">
           <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
             :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
             <template v-slot:append>
@@ -45,7 +45,8 @@
             <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="primary" :readonly="editMode" />
             <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="primary" :readonly="editMode" />
           </div>
-          <q-btn label="Confirmar" color="green" class="full-width q-pa-sm" @click="confirmarConfiguracaoTreinamento" />
+          <q-btn label="Confirmar" color="green" size="18px " class="full-width q-pa-sm"
+            @click="confirmarConfiguracaoTreinamento" />
         </q-form>
 
       </div>
