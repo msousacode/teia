@@ -291,6 +291,9 @@ const adicionaSelecao = (evento: any) => {
 
         const context = clonedCanvas.getContext('2d');
 
+        clonedCanvas.width = 400; // Define a largura do canvas
+        clonedCanvas.height = 400; // Define a altura do canvas
+
         // Escala o contexto para que o desenho não pareça pixelado
         context!.scale(scale, scale);
 
