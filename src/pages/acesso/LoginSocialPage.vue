@@ -66,11 +66,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
-
+import { useManagerTokens } from 'src/composables/managerTokens';
 
 export type Provider = 'google' | 'facebook' | 'normal';
 
@@ -84,6 +84,8 @@ const senha = ref('');
 
 const router = useRouter();
 
+const { getToken } = useManagerTokens();
+
 let isSubmitted = computed(() => {
   return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
 });
@@ -96,6 +98,12 @@ function entrar(provider: Provider) {
     error('Erro ao logar. Verifique suas credenciais');
   })
 }
+
+onBeforeMount(() => {
+  if (getToken() !== null) {
+    router.push({ name: 'relatorios' });
+  }
+});
 
 </script>
 <style scoped>

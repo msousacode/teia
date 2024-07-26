@@ -36,7 +36,7 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  const { getTokenDecoded } = useManagerTokens();
+  const { getTokenDecoded, getToken } = useManagerTokens();
 
   const supabase = useSupabaseApi();
 
@@ -45,9 +45,7 @@ export default route(function (/* { store, ssrContext } */) {
       const accessToken = to.hash.split('&')[0];
       const token = accessToken.replace('#access_token=', '');
       return { name: 'reset-password', query: { token } };
-    }
-
-    if (to.hash.includes('access_token')) {
+    } else if (to.hash.includes('access_token')) {
       const accessToken = to.hash.split('=')[1];
 
       const encode = getTokenDecoded(accessToken);
@@ -78,11 +76,11 @@ export default route(function (/* { store, ssrContext } */) {
         Router.replace({ name: 'login' });
       }
     }
-
-    //TODO próximos passos:
-    // 1. Criar uma lógica para validar se o token é válido, se expirou, etc.
-    // 2. Se o token for inválido ou expirado, redirecionar para a tela de login.
-    // 3. Extrair as informações do token e salvar no supabase.
+    if (to.meta.requiresAuth) {
+      if (getToken() === null) {
+        return { name: 'login' };
+      }
+    }
   });
 
   return Router;
