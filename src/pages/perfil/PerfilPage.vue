@@ -78,6 +78,7 @@ function reset() {
 function backup() {
     $q.dialog({
         title: 'Confirma a realização do backup?',
+        message: 'Essa ação irá salvar uma cópia do banco de dados na nuvem. \nVerifique se a conexão com a internet está ativa.',
         ok: true,
         cancel: true,
         persistent: true,
