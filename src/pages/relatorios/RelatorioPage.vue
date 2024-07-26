@@ -44,7 +44,7 @@
 
         <div ref="chartContainer"></div>
 
-        <div class="fixed-bottom q-pa-md">
+        <div class="q-pa-md">
             <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm" size="18px" @click="imprimirPDF"
                 :disabled="!exibirRelatorioBtn" />
         </div>
