@@ -281,15 +281,15 @@ const adicionaSelecao = (evento: any) => {
     setTimeout(() => {
         const canvas = document.getElementById(evento) as HTMLCanvasElement;
         const clonedCanvas = document.createElement('canvas') as HTMLCanvasElement;
-        clonedCanvas.width = canvas.width;
-        clonedCanvas.height = canvas.height;
+        clonedCanvas.width = 500; // Define a largura do canvas
+        clonedCanvas.height = 250; // Define a altura do canvas
         const context = clonedCanvas.getContext('2d');
-        context!.drawImage(canvas, 0, 0);
+        context!.drawImage(canvas, 0, 0, clonedCanvas.width, clonedCanvas.height);
         clonedCanvas.style.display = 'block';
         const graficoSelecionado = document.getElementById("grafico-selecionado");
         graficoSelecionado!.innerHTML = '';
         graficoSelecionado!.appendChild(clonedCanvas);
-    }, 200);
+    }, 300);
 };
 
 /* async function loadImageData(url: string): Promise<string> {

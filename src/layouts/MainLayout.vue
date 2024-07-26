@@ -93,4 +93,5 @@ const sair = async () => {
   await service.logout();
   router.replace({ name: 'login' });
 };
+
 </script>
