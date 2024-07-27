@@ -37,7 +37,7 @@
         id: item.uuid,
         nomeTreinamento: item.treinamento,
         nomeProtocolo: item.protocolo,
-        periodoTreinamento: item.periodo,
+        periodoTreinamento: item.configuracoes.data_final,
         progresso: item.progresso
     }" @selecao="adicionaSelecao" />
         </div>
@@ -150,7 +150,7 @@ async function renderizarGraficos() {
             const canvas = document.createElement('canvas');
             canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
             canvas.style.display = 'none';
-            canvas.width = 800; // Define a largura do canvas
+            canvas.width = 500; // Define a largura do canvas
             canvas.height = 600; // Define a altura do canvas
             const ctx = canvas.getContext('2d');
 
@@ -212,14 +212,14 @@ async function imprimirPDF() {
          }); */
 
         autoTable(pdf, {
-            head: [['', 'PROFISSIONAL', 'CREDENCIAL', 'APRENDIZ', 'NÚMERO']],
+            head: [['', 'PROFISSIONAL', 'CREDENCIAL', 'APRENDIZ', 'GERADO EM:']],
             body: [
-                ['', item.profissional.nome.toUpperCase(), 'CREFITO 3655.0', item.aprendiz.nome.toUpperCase(), 333],
+                ['', item.profissional.nome.toUpperCase(), 'CREFITO 3655', item.aprendiz.nome.toUpperCase(), new Date().toLocaleDateString()],
             ],
             theme: 'plain',
             columnStyles: {
-                0: { cellWidth: 40 },
-                1: { cellWidth: 40 },
+                0: { cellWidth: 20 },
+                1: { cellWidth: 60 },
                 2: { cellWidth: 40 },
                 3: { cellWidth: 40 },
                 4: { cellWidth: 40 }
@@ -248,9 +248,9 @@ async function imprimirPDF() {
             autoTable(pdf, {
                 head: [['DATA', 'ANOTAÇÃO']],
                 body:
-                    treinamento.alvosColetados.map(alvo => {
+                    treinamento.alvosColetados.flatMap(alvo => {
                         return alvo.anotacoes.map(anotacao => {
-                            return anotacao.data, anotacao.descricao
+                            return [anotacao.data, anotacao.descricao]
                         })
                     }),
                 headStyles: { fillColor: '#f8a0b1' }
@@ -291,8 +291,8 @@ const adicionaSelecao = (evento: any) => {
 
         const context = clonedCanvas.getContext('2d');
 
-        clonedCanvas.width = 400; // Define a largura do canvas
-        clonedCanvas.height = 400; // Define a altura do canvas
+        clonedCanvas.width = 320; // Define a largura do canvas
+        clonedCanvas.height = 320; // Define a altura do canvas
 
         // Escala o contexto para que o desenho não pareça pixelado
         context!.scale(scale, scale);
@@ -321,8 +321,7 @@ onMounted(() => {
     db.aprendizes.toArray().then((res) => {
         res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({
-                label: `${aprendiz.nome_aprendiz} - ${'Nasc: '} ${aprendiz.nasc_aprendiz
-                    }`,
+                label: aprendiz.nome_aprendiz,
                 value: aprendiz.uuid,
             });
         });
