@@ -32,12 +32,11 @@
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
+                                    <span class="text-subtitle2 text-teal">Alvo: </span>
+                                    <div class="text-subtitle1">{{ item.alvo.nome_alvo }}</div>
                                     <span class="text-subtitle2 text-teal"
                                         v-if="item.alvo.descricao_alvo.length > 0">Descrição do Alvo:</span>
                                     <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
-
-                                    <span class="text-subtitle2 text-teal">Alvo: </span>
-                                    <div class="text-subtitle1">{{ item.alvo.nome_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
                                     </span>
@@ -96,13 +95,13 @@
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
+                                    <span class="text-subtitle2 text-teal">Alvo: </span>
+                                    <div class="text-subtitle1">{{ item.alvo.nome_alvo }}</div>
+
                                     <span class="text-subtitle2 text-teal"
                                         v-if="item.alvo.descricao_alvo.length > 0">Descrição do
                                         Alvo:</span>
                                     <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
-
-                                    <span class="text-subtitle2 text-teal">Alvo: </span>
-                                    <div class="text-subtitle1">{{ item.alvo.nome_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
                                     </span>

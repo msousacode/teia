@@ -41,7 +41,7 @@
 
 const treinamento = 'Treinamento: ';
 const protocolo = 'Protocolo: ';
-const periodo = 'Período: ';
+const periodo = 'Termina em: ';
 
 const emit = defineEmits(["selecao"]);
 
