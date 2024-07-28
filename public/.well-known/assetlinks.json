@@ -1,8 +1,12 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "app.netlify.sysaba.twa",
-        "sha256_cert_fingerprints": ["4D:71:B0:0E:F6:08:04:F1:9F:89:73:A1:C1:ED:4E:C8:EA:57:19:C5:B1:AF:CD:24:E1:21:ED:22:73:08:1E:CA"]
-      }
-    }]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.netlify.sysaba.twa",
+      "sha256_cert_fingerprints": [
+        "5A:14:24:08:4C:A7:16:31:8A:75:C8:A2:00:B0:57:CE:EA:36:1F:4B:D4:20:52:BB:0A:0A:CE:B7:0F:E2:96:98"
+      ]
+    }
+  }
+]
