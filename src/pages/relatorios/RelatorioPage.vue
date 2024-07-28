@@ -150,8 +150,13 @@ async function renderizarGraficos() {
             const canvas = document.createElement('canvas');
             canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
             canvas.style.display = 'none';
-            canvas.width = 500; // Define a largura do canvas
-            canvas.height = 600; // Define a altura do canvas
+
+            // Define a largura e a altura do canvas para corresponder ao elemento pai
+            if (chartContainer.value) {
+                canvas.width = chartContainer.value;
+                canvas.height = chartContainer.value;
+            }
+
             const ctx = canvas.getContext('2d');
 
             new ChartJS(ctx || '', chart.chart);
@@ -231,7 +236,7 @@ async function imprimirPDF() {
             autoTable(pdf, {
                 head: [['DATA ÍNICIO', 'NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
                 body: [
-                    [treinamento.data, treinamento.titulo, treinamento.protocolo, treinamento.descricao],
+                    [treinamento.data, treinamento.titulo, treinamento.protocolo, 'A imitação é uma habilidade muito importante para o desenvolvimento e para a aprendizagem de novas habilidades. Quando não sabemos bem o fazer, observamos as outras pessoas e copiamos o modelo'],
                 ],
                 headStyles: { fillColor: '#f06c8a' }
             });
