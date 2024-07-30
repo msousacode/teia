@@ -178,11 +178,11 @@ export class RelatorioService {
   }
 
   async getTreinamentos(uuidAprendiz: string, periodoPesquisa: number) {
-    const res = await db.atendimentos
+    const atendimentos = await db.atendimentos
       .where({ aprendiz_uuid_fk: uuidAprendiz })
       .toArray();
 
-    if (!res || res.length === 0) {
+    if (!atendimentos || atendimentos.length === 0) {
       return [];
     }
 
@@ -192,20 +192,20 @@ export class RelatorioService {
     /**
      * Esse trecho de código realiza a filtragem dos atendimentos que estão dentro do período de pesquisa.
      */
-    const dadosFiltradoPorPeriodo = res
-      .filter((res) => {
+    const dadosFiltradoPorPeriodo = atendimentos
+      .filter((atendimentoPeriodo) => {
         //converter a data formato dd/mm/yyy em um número.
         let dataInicio: string | number = new Date(
-          res.data_inicio
-        ).toDateString();
+          atendimentoPeriodo.data_inicio
+        ).toLocaleDateString();
         dataInicio = new Date(dataInicio).getTime();
 
         if (!(dataInicio <= inicioPesquisa)) {
-          return res;
+          return atendimentoPeriodo;
         }
       })
-      .filter((res) => {
-        return res.treinamentos.map((t) => {
+      .filter((at) => {
+        return at.treinamentos.map((t) => {
           const dataFinalTreinamento = new Date(t.data_final).getTime();
           if (dataFinalTreinamento >= dataFinal) {
             return t;
