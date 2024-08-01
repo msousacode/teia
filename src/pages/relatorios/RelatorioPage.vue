@@ -1,7 +1,34 @@
 <template>
 
-    <q-dialog v-model="showGrafico">
+    <q-dialog v-model="showBoasVindas" persistent>
+        <q-card class="my-card q-pa-md full-width">
+            <q-card-section>
 
+                <div class="text-h6 text-primary text-center">Seja Bem-Vindo(a)!</div>
+                <br />
+
+                <div class="text-h6 text-teal-9 text-center">Obrigada por escolher a SysABA</div>
+                <br />
+                <div class="text-body1 text-center text-teal-9">Durante esse período de 7 dias você poderá testar todas
+                    as
+                    funcionalidades do
+                    sistema sem
+                    limitações.</div><br />
+                <div class="text-body1 text-center text-teal-9">Para melhorar a sua experiência, o sistema foi
+                    configurado
+                    com uma base de dados de demonstração.</div><br />
+                <div class="text-body1 text-center text-teal-9">Todos os dados são fictícios e não representam
+                    informações reais.
+                </div>
+
+                <q-btn label="Entendi" color="info" class="full-width q-mt-md" size="18px"
+                    @click="showBoasVindas = false" />
+
+            </q-card-section>
+        </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="showGrafico">
         <q-card class="my-card q-pa-md full-width">
             <div class="text-center text-body1 text-teal">Gráfico</div>
             <div id="grafico-selecionado">
@@ -104,6 +131,8 @@ const exibirRelatorioBtn = ref(false);
 const { getUserAuth, getByEmail, put } = useSupabaseApi();
 
 const backupService = new BackupService();
+
+const showBoasVindas = ref(false);
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -368,12 +397,7 @@ onMounted(async () => {
 
                 //Atualize as informações do usuário no supabase.
                 await put('usuarios', user).then(() => {
-                    //exibir pop-up informando que tem uma base de dados configurada.
-                    $q.dialog({
-                        title: 'Base de dados restaurada',
-                        message: 'Sua base de dados foi restaurada com sucesso.',
-                        ok: 'OK',
-                    });
+                    showBoasVindas.value = true;
                 }).catch((err) => {
                     error(err);
                 });
