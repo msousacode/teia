@@ -50,7 +50,8 @@ export class BackupService {
       });
   };
 
-  restaurarBackup = async () => {
+  restaurarBackup = async (fileName?: string) => {
+    console.log('restaurarBackup', fileName);
     if (navigator.onLine) {
       this.$q.loading.show();
       const user = await this.supabase.getUserAuth();

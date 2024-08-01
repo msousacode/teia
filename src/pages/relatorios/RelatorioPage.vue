@@ -1,7 +1,34 @@
 <template>
 
-    <q-dialog v-model="showGrafico">
+    <q-dialog v-model="showBoasVindas" persistent>
+        <q-card class="my-card q-pa-md full-width">
+            <q-card-section>
 
+                <div class="text-h6 text-primary text-center">Seja Bem-Vindo(a)!</div>
+                <br />
+
+                <div class="text-h6 text-teal-9 text-center">Obrigada por escolher a SysABA</div>
+                <br />
+                <div class="text-body1 text-center text-teal-9">Durante esse período de 7 dias você poderá testar todas
+                    as
+                    funcionalidades do
+                    sistema sem
+                    limitações.</div><br />
+                <div class="text-body1 text-center text-teal-9">Para melhorar a sua experiência, o sistema foi
+                    configurado
+                    com uma base de dados de demonstração.</div><br />
+                <div class="text-body1 text-center text-teal-9">Todos os dados são fictícios e não representam
+                    informações reais.
+                </div>
+
+                <q-btn label="Entendi" color="info" class="full-width q-mt-md" size="18px"
+                    @click="showBoasVindas = false" />
+
+            </q-card-section>
+        </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="showGrafico">
         <q-card class="my-card q-pa-md full-width">
             <div class="text-center text-body1 text-teal">Gráfico</div>
             <div id="grafico-selecionado">
@@ -68,6 +95,8 @@ import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import useSupabaseApi from 'src/composables/UseSupabaseApi';
+import { BackupService } from 'src/services/BackupService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -98,6 +127,12 @@ const treinamentos = ref<any[]>([]);
 const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
+
+const { getUserAuth, getByEmail, put } = useSupabaseApi();
+
+const backupService = new BackupService();
+
+const showBoasVindas = ref(false);
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -322,7 +357,15 @@ const adicionaSelecao = (evento: any) => {
     });
 } */
 
-onMounted(() => {
+async function getUserAuthSupbase() {
+    return getUserAuth().then((user) => {
+        return user.data.user;
+    }).catch((err) => {
+        console.error(err);
+    });
+}
+
+onMounted(async () => {
     db.aprendizes.toArray().then((res) => {
         res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({
@@ -331,6 +374,39 @@ onMounted(() => {
             });
         });
     });
-})
+
+    if (navigator.onLine) {
+
+        const userAuth = await getUserAuthSupbase() as any;
+
+        const user = await getByEmail('usuarios', userAuth.email).then((res) => {
+            return res;
+        }).catch((err) => {
+            error(err);
+        });
+
+        if (user) {
+            if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
+
+                //restaurar base de dados
+                await backupService.restaurarBackup(user.banco_demonstracao);
+
+                //atualizar informações do usuário no supabase.
+                user.demonstracao_restore = true;
+                user.primeiro_acesso_realizado = true;
+
+                //Atualize as informações do usuário no supabase.
+                await put('usuarios', user).then(() => {
+                    showBoasVindas.value = true;
+                }).catch((err) => {
+                    error(err);
+                });
+            }
+        } else {
+            error('Usuário não encontrado.');
+        }
+    }
+});
+
 
 </script>
