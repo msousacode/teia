@@ -58,7 +58,8 @@ const formCadastro = reactive({
   nome: '',
   email: '',
   senha: '',
-  senhaConfirmada: ''
+  senhaConfirmada: '',
+  banco_demonstracao: '35886cc1-aee8-4338-a5e8-2427efffa4dc'//Nome do banco que deve ser usado para demonstração.
 });
 
 let isSubmitted = computed(() => {

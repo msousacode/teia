@@ -68,6 +68,8 @@ import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import useSupabaseApi from 'src/composables/UseSupabaseApi';
+import { BackupService } from 'src/services/BackupService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -98,6 +100,10 @@ const treinamentos = ref<any[]>([]);
 const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
+
+const { getUserAuth, getByEmail, put } = useSupabaseApi();
+
+const backupService = new BackupService();
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -322,7 +328,15 @@ const adicionaSelecao = (evento: any) => {
     });
 } */
 
-onMounted(() => {
+async function getUserAuthSupbase() {
+    return getUserAuth().then((user) => {
+        return user.data.user;
+    }).catch((err) => {
+        console.error(err);
+    });
+}
+
+onMounted(async () => {
     db.aprendizes.toArray().then((res) => {
         res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({
@@ -331,6 +345,44 @@ onMounted(() => {
             });
         });
     });
-})
+
+    if (navigator.onLine) {
+
+        const userAuth = await getUserAuthSupbase() as any;
+
+        const user = await getByEmail('usuarios', userAuth.email).then((res) => {
+            return res;
+        }).catch((err) => {
+            error(err);
+        });
+
+        if (user) {
+            if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
+
+                //restaurar base de dados
+                await backupService.restaurarBackup(user.banco_demonstracao);
+
+                //atualizar informações do usuário no supabase.
+                user.demonstracao_restore = true;
+                user.primeiro_acesso_realizado = true;
+
+                //Atualize as informações do usuário no supabase.
+                await put('usuarios', user).then(() => {
+                    //exibir pop-up informando que tem uma base de dados configurada.
+                    $q.dialog({
+                        title: 'Base de dados restaurada',
+                        message: 'Sua base de dados foi restaurada com sucesso.',
+                        ok: 'OK',
+                    });
+                }).catch((err) => {
+                    error(err);
+                });
+            }
+        } else {
+            error('Usuário não encontrado.');
+        }
+    }
+});
+
 
 </script>

@@ -9,9 +9,6 @@ export default function authService() {
     if (provider === 'google') {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-          redirectTo: `https://sysaba.netlify.app/relatorios`,
-        },
       });
 
       if (error) throw error;

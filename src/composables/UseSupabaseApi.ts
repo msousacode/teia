@@ -10,6 +10,7 @@ export interface UserSapabase {
   email: string;
   full_name: string;
   avatar_url: string;
+  banco_demonstracao: string;
 }
 //Como verificar se o usuário esta autenticado?
 //console.log('form', supabase.auth.getUser());

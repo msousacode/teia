@@ -55,6 +55,7 @@ export default route(function (/* { store, ssrContext } */) {
           email: encode.user_metadata.email,
           full_name: encode.user_metadata.full_name,
           avatar_url: encode.user_metadata.picture,
+          banco_demonstracao: '35886cc1-aee8-4338-a5e8-2427efffa4dc', //Nome do banco que deve ser usado para demonstração.
         };
 
         const userSupabase = await supabase.getByEmail('usuarios', user.email);
