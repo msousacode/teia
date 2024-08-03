@@ -16,17 +16,17 @@ export default function authService() {
       return data;
     }
 
-    /*
     if (provider === 'facebook') {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
       });
 
       console.log('data : ', data);
+
       if (error) throw error;
       return data;
     }
-  */
+
     if (provider === 'normal') {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
