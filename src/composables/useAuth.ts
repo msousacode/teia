@@ -21,8 +21,6 @@ export default function authService() {
         provider: 'facebook',
       });
 
-      console.log('data : ', data);
-
       if (error) throw error;
       return data;
     }
