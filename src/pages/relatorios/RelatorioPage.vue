@@ -252,17 +252,16 @@ async function imprimirPDF() {
          }); */
 
         autoTable(pdf, {
-            head: [['', 'PROFISSIONAL', 'CREDENCIAL', 'APRENDIZ', 'GERADO EM:']],
+            head: [['PROFISSIONAL', 'CREDENCIAL', 'APRENDIZ', 'GERADO EM:']],
             body: [
-                ['', item.profissional.nome.toUpperCase(), 'CREFITO 3655', item.aprendiz.nome.toUpperCase(), new Date().toLocaleDateString()],
+                [item.profissional.nome.toUpperCase(), 'CREFITO 0000', item.aprendiz.nome.toUpperCase(), new Date().toLocaleDateString()],
             ],
             theme: 'plain',
             columnStyles: {
-                0: { cellWidth: 20 },
-                1: { cellWidth: 60 },
-                2: { cellWidth: 40 },
-                3: { cellWidth: 40 },
-                4: { cellWidth: 40 }
+                0: { cellWidth: 50 },
+                1: { cellWidth: 50 },
+                2: { cellWidth: 50 },
+                3: { cellWidth: 50 },
             },
         });
 
