@@ -17,7 +17,7 @@
             :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode" />
 
           <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md"
-            :rows="25" />
+            :rows="18" />
 
           <div class="fixed-bottom q-pa-md">
             <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit" />

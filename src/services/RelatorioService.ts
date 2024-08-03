@@ -200,7 +200,7 @@ export class RelatorioService {
         ).toLocaleDateString();
         dataInicio = new Date(dataInicio).getTime();
 
-        if (!(dataInicio <= inicioPesquisa)) {
+        if (dataInicio <= inicioPesquisa) {
           return atendimentoPeriodo;
         }
       })
@@ -399,7 +399,8 @@ export class RelatorioService {
   }
 
   calcularPercentagem(count: number, total: number) {
-    return (count / total) * 100;
+    const result = (count / total) * 100;
+    return result.toFixed(0);
   }
 
   getDataFinalToRelatorio(qtdDias: number): number {
