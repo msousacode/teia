@@ -194,10 +194,10 @@ export class RelatorioService {
      */
     const dadosFiltradoPorPeriodo = atendimentos
       .filter((atendimentoPeriodo) => {
-        //converter a data formato dd/mm/yyy em um número.
-        let dataInicio: string | number = new Date(
-          atendimentoPeriodo.data_inicio
-        ).toLocaleDateString();
+        const partesData = atendimentoPeriodo.data_inicio.split('/');
+        const dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
+
+        let dataInicio: string | number = new Date(dataFormatada).getTime();
         dataInicio = new Date(dataInicio).getTime();
 
         if (dataInicio <= inicioPesquisa) {

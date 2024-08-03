@@ -3,6 +3,7 @@ import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import { useQuasar } from 'quasar';
 import { db } from 'src/db';
 import Dexie from 'dexie';
+import { useRouter } from 'vue-router';
 
 //Fica comentado somente para ser usado em desenvolvimento ou testes.
 //this.readBlob(blob).then(console.log).catch(console.error);
@@ -13,6 +14,8 @@ export class BackupService {
   ultimaDataSincronismo: Date | string = '';
 
   $q = useQuasar();
+
+  router = useRouter();
 
   fazerBackup = () => {
     this.iniciarBackup();
@@ -50,8 +53,7 @@ export class BackupService {
       });
   };
 
-  restaurarBackup = async (fileName?: string) => {
-    console.log('restaurarBackup', fileName);
+  restaurarBackup = async (fileNameBancoDemonstracao?: string) => {
     if (navigator.onLine) {
       this.$q.loading.show();
       const user = await this.supabase.getUserAuth();
@@ -60,9 +62,15 @@ export class BackupService {
 
       if (email !== undefined) {
         try {
-          const fileName = await this.supabase.getUltimoBackup(
-            email.trim().toLocaleLowerCase()
-          );
+          let fileName;
+
+          if (!fileNameBancoDemonstracao) {
+            fileName = await this.supabase.getUltimoBackup(
+              email.trim().toLocaleLowerCase()
+            );
+          } else {
+            fileName = fileNameBancoDemonstracao;
+          }
 
           const data = await this.supabase.getObjectBucket(fileName);
 
@@ -71,12 +79,16 @@ export class BackupService {
               .import(data!)
               .then(() => {
                 this.$q.loading.hide();
-                this.$q.notify({
-                  message: 'Restauração concluída com sucesso!',
-                  color: 'positive',
-                  position: 'center',
-                  timeout: 2000,
-                });
+
+                if (!fileNameBancoDemonstracao) {
+                  this.$q.notify({
+                    message: 'Restauração concluída com sucesso!',
+                    color: 'positive',
+                    position: 'center',
+                    timeout: 2000,
+                  });
+                }
+                this.router.replace({ name: 'relatorios' });
               })
               .catch((e) => {
                 console.error(e);
