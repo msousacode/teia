@@ -5,7 +5,7 @@ export default function useNotify() {
 
   const success = (message?: string) => {
     $q.notify({
-      position: 'bottom',
+      position: 'center',
       type: 'positive',
       message: message || 'Sucesso!',
     });
@@ -14,7 +14,7 @@ export default function useNotify() {
   const error = (message?: string, ...err: any) => {
     console.error(err);
     $q.notify({
-      position: 'bottom',
+      position: 'center',
       type: 'negative',
       message: message || 'Ocorreu um erro!',
     });

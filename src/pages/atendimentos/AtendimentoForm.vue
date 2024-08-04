@@ -82,7 +82,8 @@
         </q-input>
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
-
+        <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
+          @click="visible = true" />
         <div class="q-mb-md">
           <q-list bordered separator v-for="(
               item, index
@@ -140,9 +141,6 @@
         </div>
 
         <div class="fixed-bottom q-pa-md">
-          <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
-            @click="visible = true" />
-
           <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
             :disable="!isSubmitted" />
 
@@ -155,7 +153,7 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref, toRaw } from 'vue';
+import { computed, onMounted, ref, toRaw, watch } from 'vue';
 import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
@@ -233,7 +231,15 @@ const coleta = {
 }
 
 const isSubmitted = computed(() => {
-  return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0;
+  return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0 && !isTodosTreinamentosConfigurados;
+});
+
+const isTodosTreinamentosConfigurados = watch(storeTreinamento, (newValue) => {
+  return newValue.getTreinamentosSelecionados.forEach((treinamento) => {
+    if (treinamento.configuracoes === undefined) {
+      return true;
+    }
+  });
 });
 
 async function salvar() {
