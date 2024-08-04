@@ -82,7 +82,8 @@
         </q-input>
 
         <div class="text-body2 q-mb-sm">Treinamentos</div>
-
+        <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
+          @click="visible = true" />
         <div class="q-mb-md">
           <q-list bordered separator v-for="(
               item, index
@@ -139,18 +140,14 @@
           </q-list>
         </div>
 
-        <div class="fixed-bottom q-pa-md">
-          <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
-            @click="visible = true" />
-
-          <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
-            :disable="!isSubmitted" />
-
-          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
-            :to="{ name: 'atendimentos' }" />
-        </div>
-
       </q-form>
+      <div class="fixed-bottom q-pa-md">
+        <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
+          :disable="!isSubmitted" />
+
+        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
+          :to="{ name: 'atendimentos' }" />
+      </div>
     </div>
   </q-page>
 </template>
@@ -233,7 +230,26 @@ const coleta = {
 }
 
 const isSubmitted = computed(() => {
-  return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0;
+  return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0 && isTodosTreinamentosConfigurados.value;
+});
+
+/* const isTodosTreinamentosConfigurados = watch(storeTreinamento, (newValue) => {
+  const is = newValue.getTreinamentosSelecionados.map((treinamento) => treinamento.configuracoes);
+
+  const hasUndefined = is.map((item) => {
+    if (item === undefined) {
+      return false;
+    }
+  });
+
+  if (hasUndefined.includes(false)) {
+    return false;
+  }
+}); */
+
+const isTodosTreinamentosConfigurados = computed(() => {
+  const treinamentos = storeTreinamento.getTreinamentosSelecionados;
+  return treinamentos.every(treinamento => treinamento.configuracoes !== undefined);
 });
 
 async function salvar() {
