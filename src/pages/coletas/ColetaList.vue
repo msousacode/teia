@@ -1,13 +1,17 @@
 <template>
     <q-page padding>
 
-        <q-dialog v-model="visibleAnotacao">
+        <q-dialog v-model="visibleAnotacao" persistent>
             <q-card class="my-card q-pa-md full-width">
                 <div class="text-center text-body1">Anotação</div>
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
                     :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
                 <q-btn label="Salvar" color="green" size="18px" class="full-width q-mb-md" type="submit"
                     @click="salvarAnotacao" />
+
+
+                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
+                    @click="visibleAnotacao = false" />
             </q-card>
         </q-dialog>
 

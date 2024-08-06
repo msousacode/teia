@@ -141,13 +141,15 @@
         </div>
 
       </q-form>
-      <div class="fixed-bottom q-pa-md">
-        <q-btn label="Salvar" color="primary" size="18px" class="full-width q-pa-sm" type="submit" @click="salvar"
-          :disable="!isSubmitted" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
-          :to="{ name: 'atendimentos' }" />
-      </div>
+      <q-page-sticky position="bottom-left" :offset="[18, 18]">
+        <q-btn fab icon="arrow_back" color="blue" :to="{ name: 'atendimentos' }" />
+      </q-page-sticky>
+
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="save" color="green" @click="salvar" :disable="!isSubmitted" />
+      </q-page-sticky>
+
     </div>
   </q-page>
 </template>
