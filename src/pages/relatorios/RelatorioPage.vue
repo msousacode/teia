@@ -235,7 +235,7 @@ async function imprimirPDF() {
     data.forEach((item) => {
 
         if (nomeArquivo === '') {
-            nomeArquivo = 'provisorio';
+            nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
         }
 
         /*  autoTable(pdf, {
