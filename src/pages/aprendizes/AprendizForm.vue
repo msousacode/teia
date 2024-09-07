@@ -86,7 +86,7 @@ function submit() {
   isSubmitted.value = true;
 
   if (routeLocation.params.action === 'edit') {
-    handleUpdate();
+    atualizar();
     return;
   }
 
@@ -104,10 +104,16 @@ function submit() {
     });
 }
 
-function handleUpdate() {
+function atualizar() {
   db.aprendizes
     .update(store.getAprendizUuid, toRaw(form.value))
     .then(() => {
+
+      const data = {
+        nome_aprendiz: form.value.nome_aprendiz,
+        uuid: store.getAprendizUuid,
+      };
+      atualizarNomeAprendizAtendimento(data);
       reset();
       success();
     })
@@ -127,6 +133,21 @@ function reset() {
   form.value.sync = false;
 
   store.$reset();
+}
+
+function atualizarNomeAprendizAtendimento(data: any) {
+  db.atendimentos.where({ aprendiz_uuid_fk: data.uuid })
+    .toArray()
+    .then((res) => {
+      res.forEach((item) => {
+        item.aprendiz.label = data.nome_aprendiz;
+        db.atendimentos.update(item.uuid, { aprendiz: item.aprendiz });
+      });
+      success();
+    })
+    .catch(() => {
+      error('Ocorreu um erro ao tentar atualizar o nome do aprendiz nos atendimentos');
+    });
 }
 
 onMounted(() => {

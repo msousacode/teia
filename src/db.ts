@@ -35,7 +35,7 @@ export interface Aprendiz {
 
 export interface Atendimento {
   uuid?: string;
-  aprendiz: string;
+  aprendiz: { label: string; value: string };
   data_inicio: string;
   sync: boolean;
   treinamentos: any[];
