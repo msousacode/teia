@@ -579,20 +579,20 @@ function arquivarColetas(item: any) {
   */
 }
 
-onMounted(() => {
-  reset();
+function carregarAtendimentosTreinamentos() {
   if (editMode) {
-
     const uuidAtendimento = routeLocation.params.uuidAtendimento;
 
     db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
       const raw = toRaw(res);
       form.value = raw;
-      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo === true);
-
+      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo == true);
     });
+  }
+}
 
-  } else {
+function carregarSelectAprendizes() {
+  if (!editMode) {
     db.aprendizes.toArray().then((res) => {
       res.filter(i => i.ativo === true).forEach((aprendiz) => {
         aprendizes.value.push({
@@ -602,5 +602,11 @@ onMounted(() => {
       });
     });
   }
+}
+
+onMounted(() => {
+  reset();
+  carregarAtendimentosTreinamentos()
+  carregarSelectAprendizes()
 });
 </script>
