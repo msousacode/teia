@@ -528,28 +528,44 @@ function reset() {
   storeTreinamento.$reset();
 }
 
-function arquivar(item: any) {
-  db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
-
-    let raw = toRaw(res);
-    //muda o status do treinamento para inativo.
-    const treinamentoUpdated = raw?.treinamentos.map((treinamento) => {
-      treinamento.ativo = false;
-      return treinamento;
-    });
-
-    //arquiva as coletas do treinamento.
-    db.atendimentos.update(uuidAtendimento, { treinamentos: treinamentoUpdated }).then(async () => {
-      await arquivarColetas(item);
-    }).catch(() => {
-      error('Ocorreu um erro ao tentar arquivar');
-    });
+function arquivar(treinamento: any) {
+  db.atendimentos.get({ uuid: uuidAtendimento }).then(async (res) => {
+    let atendimentoRaw = toRaw(res);
+    let treinamentoRaw = toRaw(treinamento);
+    const treinamentoInativo = await atualizaStatusTreinamentoParaInativo(atendimentoRaw, treinamentoRaw);
+    salvarAtendimentoTreinamento(atendimentoRaw, treinamentoInativo);
+    arquivarColetas(treinamento);
   }).catch(() => {
     error('Ocorreu um erro ao tentar arquivar');
   });
 }
 
+async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinamentoRaw: any) {
+  await atendimentoRaw?.treinamentos.forEach((data: any) => {
+    if (data.uuid == treinamentoRaw.uuid) {
+      treinamentoRaw.ativo = false;
+    }
+  });
+  return treinamentoRaw;
+}
+
+function salvarAtendimentoTreinamento(atendimentoRaw: any, treinamentoInativo: any) {
+
+  atendimentoRaw.treinamentos = atendimentoRaw.treinamentos.map((treinamento: any) => {
+    if (treinamento.uuid === treinamentoInativo.uuid) {
+      return treinamentoInativo;
+    }
+    return treinamento;
+  });
+
+  db.atendimentos.put(atendimentoRaw).catch(() => {
+    error('Ocorreu um erro ao tentar arquivar');
+  });
+}
+
 function arquivarColetas(item: any) {
+  console.log('Arquivar coletas', item);
+  /*
   db.coletas.where({ aprendiz_uuid_fk: form.value.aprendiz.value, treinamento_uuid_fk: item.uuid }).toArray().then((res) => {
     const raw = toRaw(res);
     raw.forEach((coleta) => {
@@ -560,6 +576,7 @@ function arquivarColetas(item: any) {
       });
     });
   });
+  */
 }
 
 onMounted(() => {
