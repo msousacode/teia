@@ -529,15 +529,19 @@ function reset() {
 }
 
 function arquivar(treinamento: any) {
-  db.atendimentos.get({ uuid: uuidAtendimento }).then(async (res) => {
-    let atendimentoRaw = toRaw(res);
-    let treinamentoRaw = toRaw(treinamento);
-    const treinamentoInativo = await atualizaStatusTreinamentoParaInativo(atendimentoRaw, treinamentoRaw);
-    salvarAtendimentoTreinamento(atendimentoRaw, treinamentoInativo);
-    arquivarColetas(treinamento);
-  }).catch(() => {
-    error('Ocorreu um erro ao tentar arquivar');
-  });
+  db.atendimentos.get({ uuid: uuidAtendimento })
+    .then(async (res) => {
+      let atendimentoRaw = toRaw(res);
+      let treinamentoRaw = toRaw(treinamento);
+      const treinamentoInativo = await atualizaStatusTreinamentoParaInativo(atendimentoRaw, treinamentoRaw);
+      salvarAtendimentoTreinamento(atendimentoRaw, treinamentoInativo);
+      arquivarColetas(treinamento);
+    }).then(() => {
+      carregarInicial();
+      success('Arquivado com sucesso');
+    }).catch(() => {
+      error('Ocorreu um erro ao tentar arquivar');
+    });
 }
 
 async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinamentoRaw: any) {
@@ -604,9 +608,13 @@ function carregarSelectAprendizes() {
   }
 }
 
-onMounted(() => {
-  reset();
+function carregarInicial() {
   carregarAtendimentosTreinamentos()
   carregarSelectAprendizes()
+}
+
+onMounted(() => {
+  reset();
+  carregarInicial()
 });
 </script>
