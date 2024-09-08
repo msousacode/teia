@@ -1,10 +1,10 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-sm">
     <div class="row">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns" row-key="uuid"
         class="col-12" :loading="loading" selection="multiple" v-model:selected="selected">
         <template v-slot:top>
-          <span class="text-h6"> Treinamentos </span>
+          <span class="text-h6 text-teal"> Treinamentos </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -22,7 +22,7 @@
         @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup />
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
-      <q-btn fab icon="mdi-plus" color="primary" :to="{ name: 'treinamento-novo' }" />
+      <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'treinamento-novo' }" />
     </q-page-sticky>
   </div>
 </template>
