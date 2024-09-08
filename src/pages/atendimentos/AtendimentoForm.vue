@@ -7,49 +7,50 @@
 
   <q-dialog v-model="visibleConfiguracao">
     <q-card class="my-card">
-      <div class="row q-pa-md">
+      <div class="q-pa-md">
         <q-banner class="bg-blue-1 text-blue-9 q-mb-md">
-          <span class="text-body1">Configure a quantidade de vezes que os alvos serão praticados na
-            semana e indique os dias da semana que o alvo será praticado.</span></q-banner>
+          <span class="text-body1">Informe a data final do treinamento. Indique a quantidade de vezes que o objetivo
+            a ser coletado se repetirá durante a sessão e informe os dias da semana que o treinamento será realizado.
+          </span></q-banner>
+      </div>
 
-        <q-form class="col-sm-12">
-          <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
-            :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
-            <template v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                  <q-date v-model="formTreinamento.data_final" :locale="{
+      <q-form class="col-sm-12 q-pa-md">
+        <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final" mask="##/##/####"
+          :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="formTreinamento.data_final" :locale="{
     days: dias,
     months: meses,
     daysShort: diasAbreviados,
     monthsShort: meses,
   }" mask="DD/MM/YYYY">
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
 
-          <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
-            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
-            :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
+        <q-select class="col-12 q-mb-md" outlined v-model="formTreinamento.repetir"
+          :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" label="Repetir"
+          :readonly="editMode && !storeTreinamento.treinamentoConfig.new" />
 
-          <div class="q-gutter-sm q-mb-md">
-            <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="primary" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="primary" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="primary" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="primary" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="primary" :readonly="editMode" />
-            <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="primary" :readonly="editMode" />
-          </div>
-          <q-btn label="Confirmar" color="green" size="18px " class="full-width q-pa-sm"
-            @click="confirmarConfiguracaoTreinamento" />
-        </q-form>
+        <div class="q-gutter-sm q-mb-md">
+          <q-checkbox dense v-model="formTreinamento.seg" label="SEG" color="primary" :readonly="editMode" />
+          <q-checkbox dense v-model="formTreinamento.ter" label="TER" color="primary" :readonly="editMode" />
+          <q-checkbox dense v-model="formTreinamento.qua" label="QUA" color="primary" :readonly="editMode" />
+          <q-checkbox dense v-model="formTreinamento.qui" label="QUI" color="primary" :readonly="editMode" />
+          <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="primary" :readonly="editMode" />
+          <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="primary" :readonly="editMode" />
+        </div>
+        <q-btn label="Confirmar" color="green" size="18px " class="full-width q-pa-sm"
+          @click="confirmarConfiguracaoTreinamento" />
+      </q-form>
 
-      </div>
     </q-card>
   </q-dialog>
 
@@ -81,7 +82,7 @@
           </template>
         </q-input>
 
-        <div class="text-body2 q-mb-sm">Treinamentos</div>
+        <title-custom title="Treinamentos do Aprendiz" />
         <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" />
         <div class="q-mb-md">
@@ -101,22 +102,22 @@
                   <q-item-label class="q-pa-sm">Termina em: {{ item.configuracoes.data_final }}</q-item-label>
                   <q-item-label>Repete: {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label>
-                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.seg">
+                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.ter">
+                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.qua">
+                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.qui">
+                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.sex">
+                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip color="primary" text-color="white" v-if="item.configuracoes.sab">
+                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>

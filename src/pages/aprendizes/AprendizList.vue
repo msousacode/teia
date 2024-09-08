@@ -1,10 +1,10 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-sm">
     <div class="row">
       <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12" :loading="loading"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
-          <span class="text-h6"> Aprendizes </span>
+          <div class="text-h6 text-teal">Aprendizes</div>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -19,7 +19,7 @@
       </q-table>
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn v-if="$q.platform.is.mobile || $q.platform.is.desktop" fab icon="mdi-plus" color="primary"
+      <q-btn v-if="$q.platform.is.mobile || $q.platform.is.desktop" fab icon="mdi-plus" color="blue"
         :to="{ name: 'aprendiz-novo' }" />
     </q-page-sticky>
   </div>

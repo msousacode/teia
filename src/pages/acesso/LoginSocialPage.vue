@@ -34,7 +34,7 @@
 
           <div class="row q-mt-md">
             <div>
-              <q-btn class="full-width google-btn" label="Facebook" icon="mdi-google" @click="entrar('google')" />
+              <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
             </div>
 
             <div class="q-mx-md"></div>
