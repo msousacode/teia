@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-sm">
     <q-dialog v-model="visible" header="Aprendizes" modal="true">
       <q-card class="my-card full-width">
         <div class="q-pa-md">
@@ -9,11 +9,11 @@
             ) in treinamentos" :key="index">
             <q-item clickable v-ripple>
               <q-item-section>
-                <q-item-label class="text-subtitle1 q-mb-sm">{{ item.treinamento }}</q-item-label>
-                <q-item-label class="text-subtitle1 q-mt-sm">{{ item.protocolo }}</q-item-label>
+                <q-item-label class="q-mb-sm"><b>Treinamento:</b> {{ item.treinamento }}</q-item-label>
+                <q-item-label class="q-mb-sm"><b>Protocolo:</b> {{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <q-item-label class="text-subtitle1 q-mt-sm">Repete: {{ item.configuracoes.repetir }}</q-item-label>
+                  <q-item-label><b>Repete:</b> {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label>
 
                     <q-radio class="text-body2" v-model="diaColeta" :val="'seg$' + item.uuid" label="SEG" color="teal"
@@ -38,7 +38,7 @@
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn dense label="Coletar" color="primary"
+                <q-btn sm label="Coletar" color="blue"
                   @click="redirecionaColetas(item.uuid, item.protocolo, aprendizUuidSelecionado)" />
               </q-item-section>
             </q-item>

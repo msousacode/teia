@@ -131,7 +131,7 @@
                         <q-item-section @click="abrirConfiguracoes(item)">Configurar</q-item-section>
                       </q-item>
                       <q-item clickable v-if="item.configuracoes">
-                        <q-item-section @click="arquivar(item)">Arquivar</q-item-section>
+                        <q-item-section @click="excluir(item)">Excluir</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -171,6 +171,7 @@ import {
   diasAbreviados,
   meses
 } from 'src/composables/utils';
+import { useQuasar } from 'quasar';
 
 const routeLocation = useRoute();
 
@@ -236,19 +237,7 @@ const isSubmitted = computed(() => {
   return form.value.data_inicio !== '' && toRaw(form.value.aprendiz) !== '' && storeTreinamento.getTreinamentosSelecionados.length > 0 && isTodosTreinamentosConfigurados.value;
 });
 
-/* const isTodosTreinamentosConfigurados = watch(storeTreinamento, (newValue) => {
-  const is = newValue.getTreinamentosSelecionados.map((treinamento) => treinamento.configuracoes);
-
-  const hasUndefined = is.map((item) => {
-    if (item === undefined) {
-      return false;
-    }
-  });
-
-  if (hasUndefined.includes(false)) {
-    return false;
-  }
-}); */
+const $q = useQuasar();
 
 const isTodosTreinamentosConfigurados = computed(() => {
   const treinamentos = storeTreinamento.getTreinamentosSelecionados;
@@ -529,20 +518,30 @@ function reset() {
   storeTreinamento.$reset();
 }
 
-function arquivar(treinamento: any) {
-  db.atendimentos.get({ uuid: uuidAtendimento })
-    .then(async (res) => {
-      let atendimentoRaw = toRaw(res);
-      let treinamentoRaw = toRaw(treinamento);
-      const treinamentoInativo = await atualizaStatusTreinamentoParaInativo(atendimentoRaw, treinamentoRaw);
-      salvarAtendimentoTreinamento(atendimentoRaw, treinamentoInativo);
-      arquivarColetas(treinamento);
-    }).then(() => {
-      carregarInicial();
-      success('Arquivado com sucesso');
-    }).catch(() => {
-      error('Ocorreu um erro ao tentar arquivar');
-    });
+function excluir(treinamento: any) {
+
+  $q.dialog({
+    title: 'Confirma a exclusão do Treinamento?',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+
+      db.atendimentos.get({ uuid: uuidAtendimento })
+        .then(async (res) => {
+          let atendimentoRaw = toRaw(res);
+          let treinamentoRaw = toRaw(treinamento);
+          const treinamentoInativo = await atualizaStatusTreinamentoParaInativo(atendimentoRaw, treinamentoRaw);
+          salvarAtendimentoTreinamento(atendimentoRaw, treinamentoInativo);
+          arquivarColetas(treinamento);
+        }).then(() => {
+          carregarInicial();
+          success('Arquivado com sucesso');
+        }).catch(() => {
+          error('Ocorreu um erro ao tentar arquivar');
+        });
+    })
+    .onDismiss(() => { });
 }
 
 async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinamentoRaw: any) {
@@ -569,8 +568,6 @@ function salvarAtendimentoTreinamento(atendimentoRaw: any, treinamentoInativo: a
 }
 
 function arquivarColetas(item: any) {
-  console.log('Arquivar coletas', item);
-  /*
   db.coletas.where({ aprendiz_uuid_fk: form.value.aprendiz.value, treinamento_uuid_fk: item.uuid }).toArray().then((res) => {
     const raw = toRaw(res);
     raw.forEach((coleta) => {
@@ -581,7 +578,6 @@ function arquivarColetas(item: any) {
       });
     });
   });
-  */
 }
 
 function carregarAtendimentosTreinamentos() {
