@@ -82,9 +82,9 @@
           </template>
         </q-input>
 
-        <title-custom title="Treinamentos do Aprendiz" />
+        <title-custom title="Treinamentos do Aprendiz" v-if="!editMode" />
         <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
-          @click="visible = true" />
+          @click="visible = true" v-if="!editMode" />
         <div class="q-mb-md">
           <q-list bordered separator v-for="(
               item, index
@@ -143,12 +143,8 @@
 
       </q-form>
 
-      <q-page-sticky position="bottom-left" :offset="[18, 18]">
-        <q-btn fab icon="arrow_back" color="blue" :to="{ name: 'atendimentos' }" />
-      </q-page-sticky>
-
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="save" color="green" @click="salvar" :disable="!isSubmitted" />
+        <q-btn fab icon="save" color="green" @click="salvar" :disable="!isSubmitted" v-if="!editMode" />
       </q-page-sticky>
 
     </div>
