@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <title-custom title="Cadastro Perfil" />
+        <title-custom title="Perfil" />
         <div class="row justify-center">
             <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
                 <q-input outlined label="Nome Completo" v-model="form.nome_completo"
@@ -12,19 +12,19 @@
 
                 <q-input outlined label="Documento:" v-model="form.documento" class="q-mb-md text-uppercase" />
 
+                <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
+                    :disable="!isSubmitted" />
             </q-form>
 
             <div class="fixed-bottom q-pa-md">
-                <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
-                    :disable="!isSubmitted" />
 
-                <q-btn icon="cloud_upload" label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
-                    size="18px" @click="backup" />
+                <q-btn icon="cloud_upload" no-caps label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
+                    @click="backup" />
 
-                <q-btn icon="cloud_download" label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md"
-                    size="18px" @click="restaurar" />
+                <q-btn icon="cloud_download" no-caps label="Restaurar" color="brown-5"
+                    class="full-width q-pa-sm q-mt-md" @click="restaurar" />
 
-                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
+                <q-btn no-caps label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
                     :to="{ name: 'relatorios' }" />
             </div>
         </div>

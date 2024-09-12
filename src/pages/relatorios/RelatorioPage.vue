@@ -21,7 +21,7 @@
                     informações reais.
                 </div>
 
-                <q-btn label="Entendi" color="info" class="full-width q-mt-md" size="18px"
+                <q-btn label="Entendi" color="info" class="full-width q-mt-md" no-caps
                     @click="showBoasVindas = false" />
 
             </q-card-section>
@@ -71,10 +71,9 @@
 
         <div ref="chartContainer"></div>
 
-        <div class="q-pa-md">
-            <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm" size="18px" @click="imprimirPDF"
-                :disabled="!exibirRelatorioBtn" />
-        </div>
+        <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps @click="imprimirPDF"
+            :disabled="!exibirRelatorioBtn" />
+
     </q-page>
 </template>
 

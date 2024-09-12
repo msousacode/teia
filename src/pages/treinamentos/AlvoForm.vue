@@ -18,7 +18,7 @@
           <q-input outlined label="Descrição do Objetivo" v-model="form.descricao_alvo" type="textarea"
             class="q-mt-md" />
 
-          <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" size="18px" color="primary" type="submit" />
+          <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" no-caps color="primary" type="submit" />
         </q-form>
       </q-card-section>
 

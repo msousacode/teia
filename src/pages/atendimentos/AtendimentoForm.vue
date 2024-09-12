@@ -47,7 +47,7 @@
           <q-checkbox dense v-model="formTreinamento.sex" label="SEX" color="primary" :readonly="editMode" />
           <q-checkbox dense v-model="formTreinamento.sab" label="SAB" color="primary" :readonly="editMode" />
         </div>
-        <q-btn label="Confirmar" color="green" size="18px " class="full-width q-pa-sm"
+        <q-btn label="Confirmar" color="green" no-caps class="full-width q-pa-sm"
           @click="confirmarConfiguracaoTreinamento" />
       </q-form>
 
@@ -55,7 +55,7 @@
   </q-dialog>
 
   <q-page class="q-pa-sm">
-    <title-custom title="Cadastro Atendimento" />
+    <title-custom title="Atendimento" />
     <div class="row justify-center">
       <q-form class="col-md-7 col-xs-12 col-sm-12">
         <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
@@ -83,7 +83,7 @@
         </q-input>
 
         <title-custom title="Treinamentos do Aprendiz" v-if="!editMode" />
-        <q-btn label="Selecionar Treinamentos" size="18px" color="info" class="full-width q-pa-sm q-mb-md"
+        <q-btn label="Selecionar Treinamentos" no-caps color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" v-if="!editMode" />
         <div class="q-mb-md">
           <q-list bordered separator v-for="(

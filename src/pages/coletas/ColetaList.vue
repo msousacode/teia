@@ -6,7 +6,7 @@
                 <div class="text-center text-body1">Anotação</div>
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
                     :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
-                <q-btn label="Salvar" color="green" size="18px" class="full-width q-mb-md" type="submit"
+                <q-btn label="Salvar" color="green" no-caps class="full-width q-mb-md" type="submit"
                     @click="salvarAnotacao" />
 
 

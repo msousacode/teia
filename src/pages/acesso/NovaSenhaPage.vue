@@ -20,7 +20,7 @@
           <q-input outlined v-model="confirmarSenha" label="Confirmar senha" stack-label
             :rules="[val => (val && val.length >= 6) || 'Confirmar senha é obrigatório']" />
 
-          <q-btn class="full-width bg-primary text-white" size="18px" label="Salvar nova senha" @click="recuperar" />
+          <q-btn class="full-width bg-primary text-white" no-caps label="Salvar nova senha" @click="recuperar" />
         </div>
       </div>
     </q-page-container>
