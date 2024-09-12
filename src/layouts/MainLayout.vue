@@ -75,8 +75,15 @@ const essentialLinks: EssentialLinkProps[] = reactive([
   },
   {
     title: 'Configurações',
-    icon: 'mdi-chart-line',
+    icon: 'mdi-cog',
     routeName: 'perfil',
+    hide: true,
+    display: () => 'none',
+  },
+  {
+    title: 'Minha Assinatura',
+    icon: 'mdi-currency-usd',
+    routeName: 'assinatura',
     hide: true,
     display: () => 'none',
   }

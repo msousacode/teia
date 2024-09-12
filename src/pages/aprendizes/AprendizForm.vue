@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-sm">
-    <title-custom title="Cadastro Aprendiz" />
+    <title-custom title="Aprendiz" />
     <q-form class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md" @submit.prevent="submit">
 
       <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
@@ -35,10 +35,11 @@
       <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
 
       <div class="fixed-bottom q-pa-md">
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" size="18px" type="submit"
+        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit"
           :disable="!isSubmitted" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat :to="{ name: 'aprendizes' }" />
+        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-sm" no-caps flat
+          :to="{ name: 'aprendizes' }" />
       </div>
     </q-form>
 
