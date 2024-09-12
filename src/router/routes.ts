@@ -95,6 +95,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/perfil/PerfilPage.vue'),
         meta: { requiresAuth: true },
       },
+      {
+        name: 'assinatura',
+        path: '/assinatura',
+        component: () => import('pages/assinatura/AssinaturaPage.vue'),
+        meta: { requiresAuth: true },
+      },
     ],
   },
 ];
