@@ -11,7 +11,7 @@
 
 
                 <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
-                    @click="visibleAnotacao = false" />
+                    @click="visibleAnotacao = false" no-caps />
             </q-card>
         </q-dialog>
 
