@@ -86,6 +86,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     routeName: 'assinatura',
     hide: true,
     display: () => 'none',
+  },
+  {
+    title: 'Suporte',
+    icon: 'mdi-help-circle',
+    routeName: 'suporte',
+    hide: true,
+    display: () => 'none',
   }
 ]);
 

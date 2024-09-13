@@ -9,8 +9,8 @@
     <q-card class="my-card">
       <div class="q-pa-md">
         <q-banner class="bg-blue-1 text-blue-9 q-mb-md">
-          <span class="text-body1">Informe a data final do treinamento. Indique a quantidade de vezes que o objetivo
-            a ser coletado se repetirá durante a sessão e informe os dias da semana que o treinamento será realizado.
+          <span class="text-body1">Informe a data final do treinamento, a quantidade de vezes que o objetivo
+            será praticado durante a sessão e informe os dias da semana que o treinamento se realizará.
           </span></q-banner>
       </div>
 
@@ -85,22 +85,24 @@
         <title-custom title="Treinamentos do Aprendiz" v-if="!editMode" />
         <q-btn label="Selecionar Treinamentos" no-caps color="info" class="full-width q-pa-sm q-mb-md"
           @click="visible = true" v-if="!editMode" />
-        <div class="q-mb-md">
+        <div class="q-gutter-y-md">
           <q-list bordered separator v-for="(
               item, index
             ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
 
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
               <q-item-section>
-                <q-item-label class="text-body1">Treinamento: {{
-    item.treinamento
-  }}</q-item-label>
+                <div><b class="text-teal">Treinamento:</b></div>
+                <q-item-label>{{ item.treinamento }}</q-item-label>
 
-                <q-item-label class="q-pa-sm">{{ item.protocolo }}</q-item-label>
+                <div><b class="text-teal">Protocolo:</b></div>
+                <q-item-label>{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <q-item-label class="q-pa-sm">Termina em: {{ item.configuracoes.data_final }}</q-item-label>
-                  <q-item-label>Repete: {{ item.configuracoes.repetir }}</q-item-label>
+                  <div><b class="text-teal">Data Final:</b></div>
+                  <q-item-label>{{ item.configuracoes.data_final }}</q-item-label>
+                  <div><b class="text-teal">Repetir:</b></div>
+                  <q-item-label>{{ item.configuracoes.repetir }} uma vez por sessão</q-item-label>
                   <q-item-label>
                     <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}

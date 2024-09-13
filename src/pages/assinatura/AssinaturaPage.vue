@@ -4,7 +4,7 @@
   <div class="text-body1 q-ma-sm"><b>Seu plano</b></div>
   <q-card flat bordered class="my-card q-ma-sm" :class="'bg-grey-2'">
     <q-card-section>
-      <q-badge color="green q-mb-md">
+      <q-badge color="green q-mb-md q-pa-sm">
         TESTE GRÁTIS
       </q-badge>
       <div class="row items-center no-wrap">
