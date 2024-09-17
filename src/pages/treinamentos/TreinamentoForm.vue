@@ -10,14 +10,14 @@
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="treinamento">
         <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvar">
-          <q-input outlined label="Nome do Treinamento" v-model="form.treinamento"
+          <q-input stack-label outlined label="Nome do Treinamento" v-model="form.treinamento"
             :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']" />
 
-          <q-select outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
+          <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
             :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode" />
 
-          <q-input outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea" class="q-mb-md"
-            :rows="18" />
+          <q-input stack-label outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
+            class="q-mb-md" :rows="18" />
 
           <div class="fixed-bottom q-pa-md">
             <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit" />
