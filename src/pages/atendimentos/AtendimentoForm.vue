@@ -15,8 +15,8 @@
       </div>
 
       <q-form class="col-sm-12 q-pa-md">
-        <q-input label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final" mask="##/##/####"
-          :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
+        <q-input stack-label label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
+          mask="##/##/####" :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -58,10 +58,10 @@
     <title-custom title="Atendimento" />
     <div class="row justify-center">
       <q-form class="col-md-7 col-xs-12 col-sm-12">
-        <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
+        <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
           :rules="[(val) => isSubmitted && !editMode ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
           :readonly="editMode" />
-        <q-input label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
+        <q-input stack-label label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
           :readonly="editMode"
           :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
           <template v-slot:append>

@@ -1,47 +1,49 @@
 <template>
   <q-page class="q-pa-sm">
     <title-custom title="Aprendiz" />
-    <q-form class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md" @submit.prevent="submit">
+    <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
+      <q-form @submit.prevent="submit">
 
-      <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
-        :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
+        <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
+          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
 
-      <q-input label="Data de Nasimento" outlined stack-label v-model="form.nasc_aprendiz" mask="##/##/####"
-        :rules="[val => isSubmitted ? (val && val.length > 0) || 'Data de nascimento é obrigatório' : true]">
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="form.nasc_aprendiz" :locale="{
-      days: dias,
-      months: meses,
-      daysShort: diasAbreviados,
-      monthsShort: meses,
-    }" mask="DD/MM/YYYY">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
+        <q-input label="Data de Nasimento" outlined stack-label v-model="form.nasc_aprendiz" mask="##/##/####"
+          :rules="[val => isSubmitted ? (val && val.length > 0) || 'Data de nascimento é obrigatório' : true]">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-date v-model="form.nasc_aprendiz" :locale="{
+        days: dias,
+        months: meses,
+        daysShort: diasAbreviados,
+        monthsShort: meses,
+      }" mask="DD/MM/YYYY">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
 
-      <q-input outlined stack-label label="Nome da Mãe" v-model="form.nome_mae" />
+        <q-input outlined stack-label label="Nome da Mãe" v-model="form.nome_mae" class="q-mb-md" />
 
-      <q-input outlined stack-label label="Nome do Pai" v-model="form.nome_pai" />
+        <q-input outlined stack-label label="Nome do Pai" v-model="form.nome_pai" class="q-mb-md" />
 
-      <q-input outlined stack-label label="Nome do Responsável" v-model="form.nome_responsavel" />
+        <q-input outlined stack-label label="Nome do Responsável" v-model="form.nome_responsavel" class="q-mb-md" />
 
-      <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
+        <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
 
-      <div class="fixed-bottom q-pa-md">
-        <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit"
-          :disable="!isSubmitted" />
+        <div class="fixed-bottom q-pa-md">
+          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit"
+            :disable="!isSubmitted" />
 
-        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-sm" no-caps flat
-          :to="{ name: 'aprendizes' }" />
-      </div>
-    </q-form>
+          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-sm" no-caps flat
+            :to="{ name: 'aprendizes' }" />
+        </div>
+      </q-form>
+    </div>
 
   </q-page>
 </template>
