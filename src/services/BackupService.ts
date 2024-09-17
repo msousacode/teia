@@ -64,7 +64,7 @@ export class BackupService {
         try {
           let fileName;
 
-          if (!fileNameBancoDemonstracao) {
+          if (fileNameBancoDemonstracao != null) {
             fileName = await this.supabase.getUltimoBackup(
               email.trim().toLocaleLowerCase()
             );
