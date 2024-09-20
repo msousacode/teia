@@ -64,12 +64,15 @@ export class BackupService {
         try {
           let fileName;
 
-          if (fileNameBancoDemonstracao != null) {
+          if (
+            fileNameBancoDemonstracao != null ||
+            fileNameBancoDemonstracao != undefined
+          ) {
+            fileName = fileNameBancoDemonstracao;
+          } else {
             fileName = await this.supabase.getUltimoBackup(
               email.trim().toLocaleLowerCase()
             );
-          } else {
-            fileName = fileNameBancoDemonstracao;
           }
 
           const data = await this.supabase.getObjectBucket(fileName);

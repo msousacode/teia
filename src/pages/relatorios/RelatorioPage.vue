@@ -21,8 +21,7 @@
                     informações reais.
                 </div>
 
-                <q-btn label="Entendi" color="info" class="full-width q-mt-md" no-caps
-                    @click="showBoasVindas = false" />
+                <q-btn label="Entendi" color="info" class="full-width q-mt-md" no-caps @click="entendi" />
 
             </q-card-section>
         </q-card>
@@ -363,7 +362,12 @@ async function getUserAuthSupbase() {
     });
 }
 
-onMounted(async () => {
+const entendi = () => {
+    showBoasVindas.value = false;
+    carregarSelectAprendiz();
+}
+
+const carregarSelectAprendiz = () => {
     db.aprendizes.toArray().then((res) => {
         res.filter(i => i.ativo === true).forEach((aprendiz) => {
             aprendizes.value.push({
@@ -372,6 +376,10 @@ onMounted(async () => {
             });
         });
     });
+}
+
+onMounted(async () => {
+    carregarSelectAprendiz();
 
     if (navigator.onLine) {
 
@@ -384,8 +392,8 @@ onMounted(async () => {
         });
 
         if (user) {
-            if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
 
+            if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
                 //restaurar base de dados
                 await backupService.restaurarBackup(user.banco_demonstracao);
 
