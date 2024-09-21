@@ -393,7 +393,7 @@ onMounted(async () => {
 
         if (user) {
 
-            if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
+            if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
                 //restaurar base de dados
                 await backupService.restaurarBackup(user.banco_demonstracao);
 

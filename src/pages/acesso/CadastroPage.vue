@@ -76,7 +76,7 @@ async function cadastrar() {
 
   await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
     $q.loading.hide();
-    supabase.post('usuarios', { full_name: formCadastro.nome, email: formCadastro.email }).then(() => {
+    supabase.post('usuarios', { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao }).then(() => {
     }).catch(() => {
       $q.loading.hide();
       error('Erro ao cadastrar usuário');

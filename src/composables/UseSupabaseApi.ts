@@ -99,8 +99,10 @@ export default function useSupabaseApi() {
       .eq('email', email.trim())
       .order('created_at', { ascending: false }) // Ordena por data_criacao em ordem decrescente
       .limit(1); // Limita os resultados a um
+
     if (error) throw error;
-    return data[0].nome_arquivo;
+
+    return data.length === 0 ? null : data[0].nome_arquivo;
   };
 
   return {
