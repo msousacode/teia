@@ -24,22 +24,21 @@ export class AssinaturaService {
 
   async validarAssinaturaPagante(): Promise<statusAssinatura> {
     const userId = this.store.id; //bucar do pínia
-    console.log('userId', userId);
-    /*
+
     const { data, error } = await this.supabase
       .from('assinaturas')
       .select('*')
-      .eq('userId', userId);
-    if (error) throw error;
+      .eq('user_id', userId);
 
-    if (data[0].tipoAssinatura == 'FREE' && data[0].motivoCancelamento == 3) {
+    if (error) throw error;
+    console.log('data', data[0]);
+    if (data[0].tipo_assinatura == 'FREE' && data[0].motivo_cancelamento == 3) {
       return 'EXPIRADO';
     }
 
-    return data[0].tipoAssinatura != 'CAN' && data[0].motivoCancelamento == null
+    return data[0].tipo_assinatura != 'CAN' &&
+      data[0].motivo_cancelamento == null
       ? 'AUTORIZADO'
       : 'NEGADO';
-      */
-    return 'AUTORIZADO';
   }
 }
