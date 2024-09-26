@@ -8,18 +8,22 @@
 
   <q-card flat bordered class="my-card q-ma-md" :class="'bg-grey-2'">
     <q-card-section>
-      <q-badge color="orange-9 q-mb-md q-pa-sm">
+      <q-badge color="green q-mb-md q-pa-sm">
         20% de DESCONTO
+      </q-badge>
+      <q-badge color="blue-9 q-mb-md q-pa-sm q-ml-sm">
+        MELHOR OPÇÃO
       </q-badge>
       <div class="row items-center no-wrap">
         <div class="col">
           <div class="text-body2">
-            <div class="text-body1">PLANO ANUAL</div>
+            <div class="text-body1 text-pink"><b>PLANO ANUAL</b></div>
             <span class="text-h6">R$ 449,00</span>
+            <div>Nesse plano será cobrado o valor de <b>R$ 37,41</b> a cada mês pelo período de 12 meses.</div>
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Anual" no-caps color="green" style="width: 150px;" />
+            <q-btn label="Assinar Anual" no-caps color="info" style="width: 150px;" />
           </div>
         </div>
       </div>
@@ -31,7 +35,7 @@
       <div class="row items-center no-wrap">
         <div class="col">
           <div class="text-body2">
-            <div class="text-body1">PLANO TRIMESTRAL</div>
+            <div class="text-body1 text-pink"><b>PLANO TRIMESTRAL</b></div>
             <span class="text-h6">R$ 134,00</span>
           </div>
 
@@ -48,7 +52,7 @@
       <div class="row items-center no-wrap">
         <div class="col">
           <div class="text-body2">
-            <div class="text-body1">PLANO MENSAL</div>
+            <div class="text-body1 text-pink"><b>PLANO MENSAL</b></div>
             <span class="text-h6">R$ 44,90</span>
           </div>
 

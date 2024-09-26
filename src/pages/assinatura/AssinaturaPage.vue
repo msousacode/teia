@@ -2,7 +2,7 @@
   <title-custom title="Minha Assinatura" />
 
   <div class="text-body1 q-ma-sm"><b>Seu plano atual</b></div>
-  <q-card flat bordered class="my-card q-ma-sm" :class="'bg-grey-2'">
+  <q-card flat bordered class="my-card q-ma-sm" :class="'bg-green-1'">
     <q-card-section>
       <q-badge color="green q-mb-md q-pa-sm">
         TESTE GRÁTIS

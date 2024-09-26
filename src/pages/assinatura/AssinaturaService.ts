@@ -1,20 +1,6 @@
 import useSupabase from 'src/boot/supabase';
 import { useUserStore } from 'src/stores/user';
 
-/* representação da tabela assinaturas do banco de dados
-interface Assinatura {
-  id: string;
-  created_at: string;
-  dataInicioAssinatura: string;
-  dataInicioFinal: string;
-  dataContratacao: string;
-  tipoAssinatura: string;
-  dataCancelamento: string;
-  motivoCancelamento: string;
-  userId: string;
-}
-*/
-
 type statusAssinatura = 'AUTORIZADO' | 'NEGADO' | 'EXPIRADO';
 
 export class AssinaturaService {
@@ -32,7 +18,7 @@ export class AssinaturaService {
 
     if (error) throw error;
     console.log('data', data[0]);
-    if (data[0].tipo_assinatura == 'FREE' && data[0].motivo_cancelamento == 3) {
+    if (data[0].tipo_assinatura == 'FREE' && data[0].motivo_cancelamento == 1) {
       return 'EXPIRADO';
     }
 

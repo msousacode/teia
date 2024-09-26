@@ -11,6 +11,8 @@
     </div>
 
     <AssinaturaOpcoesPage />
+
+    <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar" no-caps />
   </q-page>
 
 </template>
