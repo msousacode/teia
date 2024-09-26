@@ -95,6 +95,9 @@ import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import { BackupService } from 'src/services/BackupService';
+import { useUserStore } from 'src/stores/user';
+import { AssinaturaService } from '../assinatura/AssinaturaService';
+import { useRouter } from 'vue-router';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -131,6 +134,12 @@ const { getUserAuth, getByEmail, put } = useSupabaseApi();
 const backupService = new BackupService();
 
 const showBoasVindas = ref(false);
+
+const storeUser = useUserStore();
+
+const assinaturaService = new AssinaturaService();
+
+const router = useRouter();
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -386,12 +395,22 @@ onMounted(async () => {
         const userAuth = await getUserAuthSupbase() as any;
 
         const user = await getByEmail('usuarios', userAuth.email).then((res) => {
+            storeUser.setUser({
+                id: res.id,
+                nome: res.full_name,
+                email: res.email
+            });
             return res;
         }).catch((err) => {
             error(err);
         });
 
         if (user) {
+            assinaturaService.validarAssinaturaPagante().then((res) => {
+                if (res == 'EXPIRADO') {
+                    sair();
+                }
+            });
 
             if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
                 //restaurar base de dados
@@ -412,7 +431,11 @@ onMounted(async () => {
             error('Usuário não encontrado.');
         }
     }
-});
 
+    const sair = async () => {
+        localStorage.clear();
+        router.replace({ name: 'expirada' });
+    };
+});
 
 </script>

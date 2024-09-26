@@ -35,6 +35,11 @@ const routes: RouteRecordRaw[] = [
         name: 'reset-password',
         component: () => import('pages/acesso/NovaSenhaPage.vue'),
       },
+      {
+        path: 'expirada',
+        name: 'expirada',
+        component: () => import('pages/assinatura/AssinaturaExpiradaPage.vue'),
+      },
     ],
   },
   {
