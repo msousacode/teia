@@ -17,7 +17,9 @@ export class AssinaturaService {
       .eq('user_id', userId);
 
     if (error) throw error;
-    console.log('data', data[0]);
+
+    this.store.setAssinatura(data[0].tipo_assinatura);
+
     if (data[0].tipo_assinatura == 'FREE' && data[0].motivo_cancelamento == 1) {
       return 'EXPIRADO';
     }

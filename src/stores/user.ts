@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', {
     nome: '',
     avatar: '',
     email: '',
+    assinatura: '',
   }),
 
   getters: {
@@ -25,6 +26,10 @@ export const useUserStore = defineStore('user', {
       this.id = user.id;
       this.nome = user.nome;
       this.email = user.email;
+    },
+
+    setAssinatura(assinatura: string) {
+      this.assinatura = assinatura;
     },
   },
 });

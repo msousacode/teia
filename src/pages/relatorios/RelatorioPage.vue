@@ -36,6 +36,15 @@
     </q-dialog>
 
     <q-page class="q-pa-sm">
+
+        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+            v-if="storeUser.assinatura == 'FREE'">
+            <q-card-section>
+                <span class="text-body2 text-teal">O perído de testes terminará em 3 dias.</span>
+                <div class="q-mt-sm text-subtitle2 text-primary">Assinar SysABA</div>
+            </q-card-section>
+        </q-card>
+
         <title-custom title="Relatório" />
         <div class="row">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
