@@ -31,7 +31,10 @@ export class AssinaturaService {
       : 'NEGADO';
   }
 
-  buscarDiasRestantesAssinatura(): string {
-    return this.store.getFimAssinatura;
+  salvaDiasRestantesAssinatura() {
+    localStorage.setItem(
+      'periodoTeste',
+      this.store.getFimAssinatura.toString()
+    );
   }
 }

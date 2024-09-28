@@ -39,8 +39,7 @@
         <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
             v-if="storeUser.assinatura == 'FREE'">
             <q-card-section>
-                <span class="text-body2 text-teal">O perído de testes termina em {{
-        assinaturaService.buscarDiasRestantesAssinatura() }} dias.</span>
+                <span class="text-body2 text-teal">O período de testes termina em {{ diasRestantesTeste }} dias.</span>
                 <br />
                 <q-btn label="Assinar SysABA" color="primary" no-caps flat :to="{ name: 'assinatura' }" dense />
             </q-card-section>
@@ -150,6 +149,8 @@ const storeUser = useUserStore();
 const assinaturaService = new AssinaturaService();
 
 const router = useRouter();
+
+const diasRestantesTeste = localStorage.getItem("periodoTeste");
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -421,6 +422,7 @@ onMounted(async () => {
                     sair();
                 }
             });
+            assinaturaService.salvaDiasRestantesAssinatura();
 
             if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
                 //restaurar base de dados
