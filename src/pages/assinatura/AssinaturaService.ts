@@ -19,6 +19,7 @@ export class AssinaturaService {
     if (error) throw error;
 
     this.store.setAssinatura(data[0].tipo_assinatura);
+    this.store.setDataInicioAssinatura(data[0].data_inicio_assinatura);
 
     if (data[0].tipo_assinatura == 'FREE' && data[0].motivo_cancelamento == 1) {
       return 'EXPIRADO';
@@ -28,5 +29,9 @@ export class AssinaturaService {
       data[0].motivo_cancelamento == null
       ? 'AUTORIZADO'
       : 'NEGADO';
+  }
+
+  buscarDiasRestantesAssinatura(): string {
+    return this.store.getFimAssinatura;
   }
 }

@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia';
+import useUtils from 'src/utils/util';
+
+const util = useUtils();
 
 interface UserState {
   id: string;
@@ -13,11 +16,20 @@ export const useUserStore = defineStore('user', {
     avatar: '',
     email: '',
     assinatura: '',
+    dataAssinatura: '',
   }),
 
   getters: {
     getState(state) {
       return state;
+    },
+    getFimAssinatura(state) {
+      const dataInicioAssinatura = util.calculateDaysBetween(
+        state.dataAssinatura,
+        new Date().toDateString()
+      );
+      const periodoTesteFree = 7;
+      return periodoTesteFree - dataInicioAssinatura;
     },
   },
 
@@ -30,6 +42,10 @@ export const useUserStore = defineStore('user', {
 
     setAssinatura(assinatura: string) {
       this.assinatura = assinatura;
+    },
+
+    setDataInicioAssinatura(data: string) {
+      this.dataAssinatura = data;
     },
   },
 });

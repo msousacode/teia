@@ -36,12 +36,13 @@
     </q-dialog>
 
     <q-page class="q-pa-sm">
-
         <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
             v-if="storeUser.assinatura == 'FREE'">
             <q-card-section>
-                <span class="text-body2 text-teal">O perído de testes terminará em 3 dias.</span>
-                <div class="q-mt-sm text-subtitle2 text-primary">Assinar SysABA</div>
+                <span class="text-body2 text-teal">O perído de testes termina em {{
+        assinaturaService.buscarDiasRestantesAssinatura() }} dias.</span>
+                <br />
+                <q-btn label="Assinar SysABA" color="primary" no-caps flat :to="{ name: 'assinatura' }" dense />
             </q-card-section>
         </q-card>
 
@@ -415,7 +416,7 @@ onMounted(async () => {
         });
 
         if (user) {
-            assinaturaService.validarAssinaturaPagante().then((res) => {
+            await assinaturaService.validarAssinaturaPagante().then((res) => {
                 if (res == 'EXPIRADO') {
                     sair();
                 }
