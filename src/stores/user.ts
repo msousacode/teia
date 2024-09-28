@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
-import useUtils from 'src/utils/util';
-
-const util = useUtils();
+import useFormatUtil from 'src/composables/UseFormatUtil';
 
 interface UserState {
   id: string;
@@ -24,12 +22,11 @@ export const useUserStore = defineStore('user', {
       return state;
     },
     getFimAssinatura(state) {
-      const dataInicioAssinatura = util.calculateDaysBetween(
-        state.dataAssinatura,
-        new Date().toDateString()
+      const periodoTesteFree = 8;
+      const result = new Date(state.dataAssinatura);
+      return useFormatUtil().timestampToDate(
+        result.setDate(result.getDate() + periodoTesteFree)
       );
-      const periodoTesteFree = 7;
-      return periodoTesteFree - dataInicioAssinatura;
     },
   },
 
