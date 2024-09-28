@@ -39,7 +39,7 @@
         <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
             v-if="storeUser.assinatura == 'FREE'">
             <q-card-section>
-                <span class="text-body2 text-teal">O período de testes termina em {{ diasRestantesTeste }}</span>
+                <span class="text-body2">O período de testes termina em {{ diasRestantesTeste }}</span>
                 <br />
                 <q-btn label="Assinar SysABA" color="primary" no-caps flat :to="{ name: 'assinatura' }" dense />
             </q-card-section>

@@ -15,7 +15,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <div>Teste termina em em 19 setembro de 2024</div>
+            <span class="text-body2">O período de testes termina em {{ diasRestantesTeste }}</span>
 
             <!--todo quando tiver funcionando as assinaturas colocar um if para apresentar quando será a próxima cobrança-->
             <!--div>A próxima cobrança será em 19 setembro de 2024</div-->
@@ -25,12 +25,21 @@
     </q-card-section>
   </q-card>
 
-  <AssinaturaOpcoesPage />
+  <AssinaturaOpcoesPage v-if="isContaFree" />
 
+  <q-btn label="Cancelar Assinatura" no-caps v-if="!isContaFree" class="q-ma-smF" color="red-4" />
 
 </template>
 <script setup lang="ts">
 import TitleCustom from 'src/components/TitleCustom.vue';
 import AssinaturaOpcoesPage from './AssinaturaOpcoesPage.vue';
+import { useUserStore } from 'src/stores/user';
+import { ref } from 'vue';
+
+const diasRestantesTeste = localStorage.getItem("periodoTeste");
+
+const user = useUserStore();
+
+const isContaFree = ref(user.assinatura == 'FREE');
 
 </script>
