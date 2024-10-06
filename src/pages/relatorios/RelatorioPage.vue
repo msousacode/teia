@@ -411,6 +411,7 @@ onMounted(async () => {
                 nome: res.full_name,
                 email: res.email
             });
+            localStorage.setItem('user', JSON.stringify(res));
             return res;
         }).catch((err) => {
             error(err);
