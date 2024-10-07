@@ -22,7 +22,7 @@
           </div>
 
           <div class="full-width">
-            <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
+            <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
               no-caps />
           </div>
         </div>

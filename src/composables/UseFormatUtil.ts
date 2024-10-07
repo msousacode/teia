@@ -76,6 +76,19 @@ export default function useFormatUtil() {
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
   };
 
+  const timestampToDate = (timestamp: number) => {
+    // Converte o timestamp para um objeto Date
+    const date = new Date(timestamp);
+
+    // Extrai o dia, mês e ano
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Os meses são de 0 a 11, então adicionamos 1
+    const year = date.getFullYear();
+
+    // Retorna a data no formato dd/MM/yyyy
+    return `${day}/${month}/${year}`;
+  };
+
   return {
     formatCpf,
     formatCnpj,
@@ -84,5 +97,6 @@ export default function useFormatUtil() {
     formatMoedaDB,
     formatDataDB,
     formatDataViewList,
+    timestampToDate,
   };
 }

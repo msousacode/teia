@@ -36,6 +36,15 @@
     </q-dialog>
 
     <q-page class="q-pa-sm">
+        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+            v-if="storeUser.assinatura == 'FREE'">
+            <q-card-section>
+                <span class="text-body2">O período de testes termina em {{ diasRestantesTeste }}</span>
+                <br />
+                <q-btn label="Assinar SysABA" color="primary" no-caps flat :to="{ name: 'assinatura' }" dense />
+            </q-card-section>
+        </q-card>
+
         <title-custom title="Relatório" />
         <div class="row">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
@@ -95,6 +104,9 @@ import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import { BackupService } from 'src/services/BackupService';
+import { useUserStore } from 'src/stores/user';
+import { AssinaturaService } from '../assinatura/AssinaturaService';
+import { useRouter } from 'vue-router';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -131,6 +143,14 @@ const { getUserAuth, getByEmail, put } = useSupabaseApi();
 const backupService = new BackupService();
 
 const showBoasVindas = ref(false);
+
+const storeUser = useUserStore();
+
+const assinaturaService = new AssinaturaService();
+
+const router = useRouter();
+
+const diasRestantesTeste = localStorage.getItem("periodoTeste");
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -386,14 +406,25 @@ onMounted(async () => {
         const userAuth = await getUserAuthSupbase() as any;
 
         const user = await getByEmail('usuarios', userAuth.email).then((res) => {
+            storeUser.setUser({
+                id: res.id,
+                nome: res.full_name,
+                email: res.email
+            });
             return res;
         }).catch((err) => {
             error(err);
         });
 
         if (user) {
+            await assinaturaService.validarAssinaturaPagante().then((res) => {
+                if (res == 'EXPIRADO') {
+                    sair();
+                }
+            });
+            assinaturaService.salvaDiasRestantesAssinatura();
 
-            if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
+            if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
                 //restaurar base de dados
                 await backupService.restaurarBackup(user.banco_demonstracao);
 
@@ -412,7 +443,11 @@ onMounted(async () => {
             error('Usuário não encontrado.');
         }
     }
-});
 
+    const sair = async () => {
+        localStorage.clear();
+        router.replace({ name: 'expirada' });
+    };
+});
 
 </script>

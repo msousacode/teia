@@ -16,8 +16,7 @@
         </div>
       </div>
 
-      <q-btn class="full-width text-h6 text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar"
-        no-caps />
+      <q-btn class="full-width text-teal" color="white" text-color="blue" to="/" label="Voltar" />
     </q-page-container>
   </q-layout>
 </template>
