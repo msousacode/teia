@@ -1,9 +1,9 @@
 <template>
     <q-page class="q-pa-sm">
-        <title-custom title="Perfil" />
+        <title-custom title="Configurações" />
         <div class="row justify-center">
             <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
-                <q-input outlined label="Nome Completo" v-model="form.nome_completo"
+                <q-input outlined label="Nome Completo" v-model="form.full_name"
                     :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
                 <q-input outlined label="E-mail" v-model="form.email"
@@ -17,6 +17,10 @@
             </q-form>
 
             <div class="fixed-bottom q-pa-md">
+                <q-banner class="bg-blue-1 text-blue-9">
+                    <span class="text-body2">O seu último backup foi realizado em: <b>{{ ultimoBackup }}</b>
+                    </span>
+                </q-banner>
 
                 <q-btn icon="cloud_upload" no-caps label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
                     @click="backup" />
@@ -47,32 +51,37 @@ const { success, error } = useNotify();
 const $q = useQuasar();
 
 const isSubmitted = computed(() => {
-    return form.value.nome_completo !== '' && form.value.email !== '';
+    return form.value.full_name !== '' && form.value.email !== '';
 });
 
 const form = ref({
-    nome_completo: '',
+    full_name: '',
     email: '',
     documento: '',
 })
 
+const ultimoBackup = ref('');
+
 function submit() {
-    $q.loading.show();
 
-    supabase.post('usuarios', form.value).then(() => {
-        $q.loading.hide();
-        reset();
-        success('Perfil atualizado com sucesso!');
-    }).catch(() => {
-        $q.loading.hide();
-        error('Erro ao atualizar configurações!');
-    });
-}
+    if (navigator.onLine) {
+        $q.loading.show();
 
-function reset() {
-    form.value.nome_completo = '';
-    form.value.email = '';
-    form.value.documento = '';
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        supabase.put('usuarios', { id: user.id, full_name: form.value.full_name, documento: form.value.documento }).then(() => {
+            $q.loading.hide();
+            user.full_name = form.value.full_name;
+            user.documento = form.value.documento;
+            localStorage.setItem('user', user);
+            success('Perfil atualizado com sucesso!');
+        }).catch(() => {
+            $q.loading.hide();
+            error('Erro ao atualizar configurações!');
+        });
+    } else {
+        error('Sem conexão com a internet!');
+    }
 }
 
 function backup() {
@@ -84,7 +93,8 @@ function backup() {
         persistent: true,
     })
         .onOk(async () => {
-            service.iniciarBackup();
+            await service.iniciarBackup();
+            await atualizaInfoUltimoBackup();
         })
         .onDismiss(() => { });
 }
@@ -108,16 +118,24 @@ function restaurar() {
         .onDismiss(() => { });
 }
 
+async function atualizaInfoUltimoBackup() {
+    const dataUlimoBackup = localStorage.getItem('ultimo_backup') || '';
+
+    if (dataUlimoBackup) {
+        ultimoBackup.value = dataUlimoBackup;
+    }
+}
+
 onMounted(() => {
     const storage = localStorage.getItem('user');
 
+    atualizaInfoUltimoBackup();
+
     if (storage) {
         const user = JSON.parse(storage);
+        form.value.full_name = user.full_name;
         form.value.email = user.email;
-        supabase.getByEmail('usuarios', form.value.email).then((response) => {
-            if (response !== undefined)
-                form.value = response
-        })
+        form.value.documento = user.documento;
     }
 });
 </script>

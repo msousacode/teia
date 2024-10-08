@@ -54,6 +54,10 @@ module.exports = configure(function (ctx) {
         node: 'node16',
       },
 
+      targetSdkVersion: 34,
+      compileSdkVersion: 34,
+      minSdkVersion: 21,
+
       vueRouterMode: 'history', // available values: 'hash', 'history',
       // vueRouterBase,
       // vueDevtools,
