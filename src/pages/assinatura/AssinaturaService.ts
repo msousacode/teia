@@ -18,6 +18,10 @@ export class AssinaturaService {
 
     if (error) throw error;
 
+    if (data.length === 0) {
+      return 'NEGADO';
+    }
+
     this.store.setAssinatura(data[0].tipo_assinatura);
     this.store.setDataInicioAssinatura(data[0].data_inicio_assinatura);
 

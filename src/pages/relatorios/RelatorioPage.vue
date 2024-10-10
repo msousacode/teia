@@ -398,6 +398,11 @@ const carregarSelectAprendiz = () => {
     });
 }
 
+const sair = () => {
+    localStorage.clear();
+    router.replace({ name: 'expirada' });
+};
+
 onMounted(async () => {
     carregarSelectAprendiz();
 
@@ -419,13 +424,14 @@ onMounted(async () => {
 
         if (user) {
             await assinaturaService.validarAssinaturaPagante().then((res) => {
-                if (res == 'EXPIRADO') {
+                debugger
+                if (res == 'EXPIRADO' || res == 'NEGADO') {
                     sair();
                 }
             });
             assinaturaService.salvaDiasRestantesAssinatura();
 
-            if (user.demonstracao_restore === false && user.primeiro_acesso_realizado === false) {
+            if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
                 //restaurar base de dados
                 await backupService.restaurarBackup(user.banco_demonstracao);
 
@@ -444,11 +450,6 @@ onMounted(async () => {
             error('Usuário não encontrado.');
         }
     }
-
-    const sair = async () => {
-        localStorage.clear();
-        router.replace({ name: 'expirada' });
-    };
 });
 
 </script>
