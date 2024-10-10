@@ -54,10 +54,6 @@ module.exports = configure(function (ctx) {
         node: 'node16',
       },
 
-      targetSdkVersion: 34,
-      compileSdkVersion: 34,
-      minSdkVersion: 21,
-
       vueRouterMode: 'history', // available values: 'hash', 'history',
       // vueRouterBase,
       // vueDevtools,
@@ -172,6 +168,11 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
     capacitor: {
       hideSplashscreen: true,
+    },
+
+    bin: {
+      //informa o arquivo de execução do android studio para abrir o app no android studio
+      linuxAndroidStudio: '/home/michael/android-studio/bin/studio.sh',
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
