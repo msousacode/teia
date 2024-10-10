@@ -107,6 +107,7 @@ import { BackupService } from 'src/services/BackupService';
 import { useUserStore } from 'src/stores/user';
 import { AssinaturaService } from '../assinatura/AssinaturaService';
 import { useRouter } from 'vue-router';
+import useAuth from 'src/composables/useAuth';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -151,6 +152,8 @@ const assinaturaService = new AssinaturaService();
 const router = useRouter();
 
 const diasRestantesTeste = localStorage.getItem("periodoTeste");
+
+const auth = useAuth();
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -398,11 +401,6 @@ const carregarSelectAprendiz = () => {
     });
 }
 
-const sair = () => {
-    localStorage.clear();
-    router.replace({ name: 'expirada' });
-};
-
 onMounted(async () => {
     carregarSelectAprendiz();
 
@@ -423,28 +421,36 @@ onMounted(async () => {
         });
 
         if (user) {
+
+            let isAssinante = true;
+
             await assinaturaService.validarAssinaturaPagante().then((res) => {
-                debugger
                 if (res == 'EXPIRADO' || res == 'NEGADO') {
-                    sair();
+                    auth.logout();
+                    localStorage.clear();
+                    router.replace({ name: 'expirada' });
+                    isAssinante = false;
                 }
             });
-            assinaturaService.salvaDiasRestantesAssinatura();
 
-            if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
-                //restaurar base de dados
-                await backupService.restaurarBackup(user.banco_demonstracao);
+            if (isAssinante) {
+                assinaturaService.salvaDiasRestantesAssinatura();
 
-                //atualizar informações do usuário no supabase.
-                user.demonstracao_restore = true;
-                user.primeiro_acesso_realizado = true;
+                if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
+                    //restaurar base de dados
+                    await backupService.restaurarBackup(user.banco_demonstracao);
 
-                //Atualize as informações do usuário no supabase.
-                await put('usuarios', user).then(() => {
-                    showBoasVindas.value = true;
-                }).catch((err) => {
-                    error(err);
-                });
+                    //atualizar informações do usuário no supabase.
+                    user.demonstracao_restore = true;
+                    user.primeiro_acesso_realizado = true;
+
+                    //Atualize as informações do usuário no supabase.
+                    await put('usuarios', user).then(() => {
+                        showBoasVindas.value = true;
+                    }).catch((err) => {
+                        error(err);
+                    });
+                }
             }
         } else {
             error('Usuário não encontrado.');

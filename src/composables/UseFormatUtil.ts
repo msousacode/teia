@@ -86,7 +86,7 @@ export default function useFormatUtil() {
     const year = date.getFullYear();
 
     // Retorna a data no formato dd/MM/yyyy
-    return `${day}/${month}/${year} às ${date.getHours()}:${date.getMinutes()}`;
+    return `${day}/${month}/${year}`;
   };
 
   return {
