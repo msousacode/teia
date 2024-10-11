@@ -10,6 +10,7 @@ import routes from './routes';
 
 import { useManagerTokens } from 'src/composables/managerTokens';
 import useSupabaseApi, { UserSapabase } from 'src/composables/UseSupabaseApi';
+import { AssinaturaService } from 'src/pages/assinatura/AssinaturaService';
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -64,6 +65,7 @@ export default route(function (/* { store, ssrContext } */) {
           supabase
             .post('usuarios', user)
             .then(() => {
+              criarAssinatura();
               Router.replace({ name: 'relatorios' });
             })
             .catch(() => {
@@ -81,6 +83,11 @@ export default route(function (/* { store, ssrContext } */) {
       if (getToken() === null) {
         return { name: 'login' };
       }
+    }
+
+    function criarAssinatura() {
+      const assinaturaService = new AssinaturaService();
+      assinaturaService.criarAssinatura();
     }
   });
 

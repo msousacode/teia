@@ -1,8 +1,12 @@
 import useSupabase from 'src/boot/supabase';
+import useSupabaseApi from 'src/composables/UseSupabaseApi';
+import { useManagerTokens } from 'src/composables/managerTokens';
 import { useUserStore } from 'src/stores/user';
 import useUtils from 'src/utils/util';
 
 type statusAssinatura = 'AUTORIZADO' | 'NEGADO' | 'EXPIRADO';
+
+const { getByEmail } = useSupabaseApi();
 
 export class AssinaturaService {
   supabase = useSupabase().supabase;
@@ -10,6 +14,10 @@ export class AssinaturaService {
   store = useUserStore();
 
   utils = useUtils();
+
+  userToken = useManagerTokens();
+
+  supabaseApi = useSupabaseApi();
 
   async validarAssinaturaPagante(): Promise<statusAssinatura> {
     const userId = this.store.id; //bucar do pínia
@@ -37,11 +45,6 @@ export class AssinaturaService {
       return 'EXPIRADO';
     }
 
-    /* TODO acredito que essa dupla checagem não seja necessária, avaliar para manter somente o primeiro if diasRestantes.
-    if (data[0].tipo_assinatura == 'FREE' && data[0].motivo_cancelamento == 1) {
-      return 'EXPIRADO';
-    }*/
-
     return data[0].tipo_assinatura != 'CAN' &&
       data[0].motivo_cancelamento == null
       ? 'AUTORIZADO'
@@ -53,5 +56,24 @@ export class AssinaturaService {
       'periodoTeste',
       this.store.getFimAssinatura.toString()
     );
+  }
+
+  async criarAssinatura() {
+    const user = localStorage.getItem('sb-admyhroxjebmgrdakhza-auth-token');
+
+    if (!user) {
+      throw new Error('Não foi possível recuperar o token do usuário');
+    }
+
+    const userDadosBasicos = this.userToken.getDadosBasicos(user);
+
+    await getByEmail('usuarios', userDadosBasicos.email).then((res) => {
+      const assinatura = {
+        user_id: res.id,
+        tipo_assinatura: 'FREE',
+      };
+
+      this.supabaseApi.post('assinaturas', assinatura);
+    });
   }
 }
