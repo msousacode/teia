@@ -42,7 +42,8 @@ import useNotify from 'src/composables/UseNotify';
 import useAuth from 'src/composables/useAuth';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
-import useSupabaseApi from 'src/composables/UseSupabaseApi';
+import useSupabaseApi from 'src/composables/UseSupabaseApi'; import { AssinaturaService } from '../assinatura/AssinaturaService';
+;
 
 const supabase = useSupabaseApi();
 
@@ -77,6 +78,7 @@ async function cadastrar() {
   await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
     $q.loading.hide();
     supabase.post('usuarios', { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao }).then(() => {
+      criarAssinatura();
     }).catch(() => {
       $q.loading.hide();
       error('Erro ao cadastrar usuário');
@@ -87,4 +89,9 @@ async function cadastrar() {
     $q.loading.hide();
   });
 };
+
+function criarAssinatura() {
+  const assinaturaService = new AssinaturaService();
+  assinaturaService.criarAssinatura();
+}
 </script>
