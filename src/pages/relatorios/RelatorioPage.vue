@@ -151,7 +151,7 @@ const assinaturaService = new AssinaturaService();
 
 const router = useRouter();
 
-const diasRestantesTeste = localStorage.getItem("periodoTeste");
+const diasRestantesTeste = ref(localStorage.getItem("periodoTeste"));
 
 const auth = useAuth();
 
