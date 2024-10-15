@@ -1,8 +1,0 @@
-{
-  "appId": "org.capacitor.quasar.app",
-  "appName": "SysABA",
-  "webDir": "www",
-  "server": {
-    "androidScheme": "https"
-  }
-}
