@@ -151,7 +151,7 @@ const assinaturaService = new AssinaturaService();
 
 const router = useRouter();
 
-const diasRestantesTeste = ref(localStorage.getItem("periodoTeste"));
+const diasRestantesTeste = ref();
 
 const auth = useAuth();
 
@@ -435,7 +435,7 @@ onMounted(async () => {
 
             if (isAssinante) {
                 assinaturaService.salvaDiasRestantesAssinatura();
-
+                diasRestantesTeste.value = localStorage.getItem("periodoTeste")
                 if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
                     //restaurar base de dados
                     await backupService.restaurarBackup(user.banco_demonstracao);
@@ -457,5 +457,4 @@ onMounted(async () => {
         }
     }
 });
-
 </script>
