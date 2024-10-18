@@ -1,8 +1,0 @@
-{
-  "appId": "app.netlify.sysaba.twa",
-  "appName": "SysABA",
-  "webDir": "www",
-  "server": {
-    "androidScheme": "https"
-  }
-}
