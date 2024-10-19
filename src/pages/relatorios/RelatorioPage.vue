@@ -174,7 +174,7 @@ function pesquisar() {
     });
 
     exibirRelatorioBtn.value = true;
-    gerarGraficosTela();
+    //gerarGraficosTela();
 }
 
 async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
@@ -189,7 +189,7 @@ async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) 
 }
 
 const chartContainer = ref(null);
-
+/*
 async function renderizarGraficos() {
 
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
@@ -223,11 +223,11 @@ async function renderizarGraficos() {
             }
         })
     })
-}
+}*/
 
-function gerarGraficosTela() {
+/*function gerarGraficosTela() {
     renderizarGraficos();
-}
+}*/
 
 async function imprimirPDF() {
     $q.loading.show();
@@ -316,6 +316,7 @@ async function imprimirPDF() {
                 headStyles: { fillColor: '#f8a0b1' }
             });
 
+            /*TODO aqui precisa implementar a lógica para adicionar a imagem do gráfico no pdf
             var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
 
             autoTable(pdf, {
@@ -331,6 +332,7 @@ async function imprimirPDF() {
                 },
                 theme: 'plain',
             });
+            */
         });
     });
 
