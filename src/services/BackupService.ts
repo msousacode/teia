@@ -73,6 +73,10 @@ export class BackupService {
             fileName = await this.supabase.getUltimoBackup(
               email.trim().toLocaleLowerCase()
             );
+
+            if (fileName == undefined) {
+              fileName = '3e19d9a2-2587-4d65-b673-181989780416';
+            }
           }
 
           const data = await this.supabase.getObjectBucket(fileName);
