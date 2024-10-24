@@ -27,11 +27,11 @@
                         </q-linear-progress>
                     </div>
 
-                    <!--div class="flex flex-center">
+                    <div class="flex flex-center">
                         <q-btn class="q-mt-md full-width" color="purple" size="12px" flat dense
                             @click="enviaEmit(item?.id)">Visualizar
                             Gráfico</q-btn>
-                    </div-->
+                    </div>
                 </div>
             </div>
         </q-card-section>
@@ -43,7 +43,7 @@ const treinamento = 'Treinamento: ';
 const protocolo = 'Protocolo: ';
 const periodo = 'Termina em: ';
 
-//const emit = defineEmits(["selecao"]);
+const emit = defineEmits(["selecao"]);
 
 defineProps({
     item: Object
@@ -53,8 +53,7 @@ function progressLabel1(progress: number) {
     return (progress * 100).toFixed(0) + '%';
 }
 
-/*
 const enviaEmit = (id: string) => {
     emit("selecao", id);
-};*/
+};
 </script>

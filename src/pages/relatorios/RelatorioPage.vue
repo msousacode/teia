@@ -27,11 +27,11 @@
         </q-card>
     </q-dialog>
 
+
     <q-dialog v-model="showGrafico">
         <q-card class="my-card q-pa-md full-width">
             <div class="text-center text-body1 text-teal">Gráfico</div>
-            <div id="grafico-selecionado">
-            </div>
+            <canvas id="meuGrafico" width="400" height="400"></canvas>
         </q-card>
     </q-dialog>
 
@@ -74,7 +74,7 @@
         nomeProtocolo: item.protocolo,
         periodoTreinamento: item.configuracoes.data_final,
         progresso: item.progresso
-    }" @selecao="adicionaSelecao" />
+    }" @selecao="gerarGrafico(item.uuid)" />
         </div>
 
         <div ref="chartContainer"></div>
@@ -90,7 +90,7 @@ import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db'
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
-import {
+import Chart, {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
     PointElement,
@@ -174,7 +174,6 @@ function pesquisar() {
     });
 
     exibirRelatorioBtn.value = true;
-    //gerarGraficosTela();
 }
 
 async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
@@ -189,45 +188,56 @@ async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) 
 }
 
 const chartContainer = ref(null);
-/*
-async function renderizarGraficos() {
 
-    const uuidAprendiz = toRaw(form.value.aprendiz.value);
-    const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);//TODO estou chamando o serviço duas vezes verificar uma maneira de armazenar esse retorno na store do píniia paara evitar a segunda chamada.
+let myChart: Chart | null = null;
 
-    const graficos = data.map(item => {
-        return item.treinamentos.map(tre => {
-            return { treinamentoUuid: tre.uuid, chart: tre.chartData }
-        });
-    })
+async function gerarGrafico(itemId: string) {
 
-    graficos.forEach((graf) => {
-        graf.forEach((chart) => {
-            const canvas = document.createElement('canvas');
-            canvas.id = `${chart.treinamentoUuid}`; // Adiciona um ID único para cada canvas
-            canvas.style.display = 'none';
+    showGrafico.value = true;
 
-            // Define a largura e a altura do canvas para corresponder ao elemento pai
-            if (chartContainer.value) {
-                canvas.width = chartContainer.value;
-                canvas.height = chartContainer.value;
-            }
+    setTimeout(async () => {
+        const canvas = document.getElementById('meuGrafico') as HTMLCanvasElement;
 
+        if (canvas) {
             const ctx = canvas.getContext('2d');
 
-            new ChartJS(ctx || '', chart.chart);
+            if (ctx) {
+                const uuidAprendiz = toRaw(form.value.aprendiz.value);
 
-            // Anexa o canvas ao elemento div
-            if (chartContainer.value) {
-                chartContainer.value.appendChild(canvas);
+                const treinamentos = await service.buscarTreinamentos(uuidAprendiz, periodo.value);
+
+                const graficos = treinamentos
+                    .filter(item => item.uuid == itemId)
+                    .map(i => i.chartData)[0];
+
+                // Antes de criar um novo gráfico, destrua o existente se houver
+                if (myChart) {
+                    myChart.destroy(); // Destroi o gráfico anterior
+                }
+
+                // Certifique-se de que graficos possui a estrutura correta de configuração para Chart.js
+                const config = {
+                    type: graficos.type || 'line', // Certifique-se de que o tipo do gráfico está presente
+                    data: graficos.data, // Dados do gráfico (labels e datasets)
+                    options: graficos.options || { // Opções do gráfico
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+                // Cria o gráfico com as configurações apropriadas
+                myChart = new Chart(ctx, config);
+            } else {
+                console.error("Falha ao obter o contexto 2D do canvas.");
             }
-        })
-    })
-}*/
+        } else {
+            console.error("Canvas não encontrado.");
+        }
 
-/*function gerarGraficosTela() {
-    renderizarGraficos();
-}*/
+    }, 800);
+}
 
 async function imprimirPDF() {
     $q.loading.show();
@@ -340,6 +350,7 @@ async function imprimirPDF() {
     pdf.save(`${nomeArquivo}.pdf`);
 }
 
+/*
 const adicionaSelecao = (evento: any) => {
     showGrafico.value = true;
     setTimeout(() => {
@@ -367,7 +378,7 @@ const adicionaSelecao = (evento: any) => {
         graficoSelecionado!.appendChild(clonedCanvas);
     }, 300);
 };
-
+*/
 /* async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
     const blob = await response.blob();
