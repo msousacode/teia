@@ -63,7 +63,7 @@
   </div>
 
   <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn fab icon="mdi-plus" color="primary" @click="visible = true" />
+    <q-btn fab icon="mdi-plus" color="blue" @click="visible = true" />
   </q-page-sticky>
 </template>
 <script setup lang="ts">

@@ -149,11 +149,7 @@ export class RelatorioService {
 
     const aprendiz = await this.getAprendiz(uuid);
 
-    const treinamentos = await this.getTreinamentos(uuid, periodoPesquisa).then(
-      (res) => {
-        return res;
-      }
-    );
+    const treinamentos = await this.buscarTreinamentos(uuid, periodoPesquisa);
 
     const relatorio = new Relatorio(
       cabecario,
@@ -163,6 +159,14 @@ export class RelatorioService {
     );
 
     return [relatorio];
+  }
+
+  async buscarTreinamentos(uuidAprendiz: string, periodoPesquisa: number) {
+    return await this.getTreinamentos(uuidAprendiz, periodoPesquisa).then(
+      (res) => {
+        return res;
+      }
+    );
   }
 
   getAprendiz(uuidAprendiz: string) {
