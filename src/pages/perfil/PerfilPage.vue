@@ -10,7 +10,7 @@
                     :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
                     readonly />
 
-                <q-input outlined label="Documento:" v-model="form.documento" class="q-mb-md text-uppercase" />
+                <q-input outlined label="Registro Profissional:" v-model="form.documento" class="q-mb-md" />
 
                 <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
                     :disable="!isSubmitted" />
