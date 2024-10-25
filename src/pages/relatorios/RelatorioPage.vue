@@ -196,6 +196,7 @@ async function gerarGrafico(itemId: string) {
     showGrafico.value = true;
 
     setTimeout(async () => {
+
         const canvas = document.getElementById('meuGrafico') as HTMLCanvasElement;
 
         if (canvas) {
@@ -244,48 +245,30 @@ async function imprimirPDF() {
     let nomeArquivo: string = '';
 
     const uuidAprendiz = toRaw(form.value.aprendiz.value);
-
     const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);
 
     if (data[0].treinamentos.length === 0 || data === undefined) {
         $q.loading.hide();
-        error("Nenhum registro encontrado para o períoodo selecionado.");
+        error("Nenhum registro encontrado para o período selecionado.");
         return;
     }
 
     const pdf = new jsPDF('p', 'mm', 'a4');
-
     pdf.setFont('Helvetica');
     pdf.setProperties({
         title: 'relatorio_evolutivo',
     });
 
-    /* const imgLogo = await loadImageData('src/assets/logo.png');
-    const imgDataWithoutPrefix = imgLogo.split(",")[1]; */
-
-    data.forEach((item) => {
+    for (const item of data) {
 
         if (nomeArquivo === '') {
             nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
         }
 
-        /*  autoTable(pdf, {
-             head: [['']],
-             headStyles: {
-                 cellWidth: 30, minCellHeight: 10,
-             },
-             didDrawCell: (data) => {
-                 if (data.section === 'head' && data.column.index === 0) {
-                     pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-                 }
-             },
-             theme: 'plain',
-         }); */
-
         autoTable(pdf, {
-            head: [['PROFISSIONAL', 'CREDENCIAL', 'APRENDIZ', 'GERADO EM:']],
+            head: [['PROFISSIONAL', 'REGISTRO PROF.', 'APRENDIZ', 'GERADO EM:']],
             body: [
-                [item.profissional.nome.toUpperCase(), 'CREFITO 0000', item.aprendiz.nome.toUpperCase(), new Date().toLocaleDateString()],
+                [item.profissional.nome.toUpperCase(), item.profissional.documento, item.aprendiz.nome.toUpperCase(), new Date().toLocaleDateString()],
             ],
             theme: 'plain',
             columnStyles: {
@@ -296,99 +279,96 @@ async function imprimirPDF() {
             },
         });
 
-        item.treinamentos.forEach(treinamento => {
+        for (const treinamento of item.treinamentos) {
 
             autoTable(pdf, {
                 head: [['DATA ÍNICIO', 'NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
                 body: [
-                    [treinamento.data, treinamento.titulo, treinamento.protocolo, 'A imitação é uma habilidade muito importante para o desenvolvimento e para a aprendizagem de novas habilidades. Quando não sabemos bem o fazer, observamos as outras pessoas e copiamos o modelo'],
+                    [treinamento.data, treinamento.titulo, treinamento.protocolo, treinamento.descricao],
                 ],
                 headStyles: { fillColor: '#f06c8a' }
             });
 
             autoTable(pdf, {
                 head: [['DATA', 'OBJETIVO', 'TP. APRENDIZAGEM', 'RESPOSTA COLETA']],
-                body:
-                    treinamento.alvosColetados.map(alvo => {
-                        return [alvo.dataColeta, alvo.nomeAlvo, alvo.tipoAprendizagem, alvo.resposta]
-                    }),
+                body: treinamento.alvosColetados.map(alvo => {
+                    return [alvo.dataColeta, alvo.nomeAlvo, alvo.tipoAprendizagem, alvo.resposta];
+                }),
                 headStyles: { fillColor: '#f8a0b1' }
             });
 
             autoTable(pdf, {
                 head: [['DATA', 'ANOTAÇÃO']],
-                body:
-                    treinamento.alvosColetados.flatMap(alvo => {
-                        return alvo.anotacoes.map(anotacao => {
-                            return [anotacao.data, anotacao.descricao]
-                        })
-                    }),
+                body: treinamento.alvosColetados.flatMap(alvo => {
+                    return alvo.anotacoes.map(anotacao => {
+                        return [anotacao.data, anotacao.descricao];
+                    });
+                }),
                 headStyles: { fillColor: '#f8a0b1' }
             });
 
-            /*TODO aqui precisa implementar a lógica para adicionar a imagem do gráfico no pdf
-            var imgData = document.getElementById(treinamento.uuid).toDataURL('image/png');
+            // Gera o gráfico como imagem base64
+            /*
+            const graficos = treinamento.chartData;
+            const chartConfig = {
+                type: graficos.type || 'line',
+                data: graficos.data,
+                options: graficos.options || {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+            
+            const chartImage = await gerarGraficoComoImagem(chartConfig);
 
             autoTable(pdf, {
                 head: [['REPRESENTAÇÃO GRÁFICA:']],
                 body: [['']],
                 columnStyles: {
-                    0: { cellWidth: 100, minCellHeight: treinamento.protocolo === 'Protocolo ABC' ? 100 : 50 }, // Definindo a largura da segunda coluna para 100 e a altura mínima para 200
+                    0: { cellWidth: 100, minCellHeight: treinamento.protocolo === 'Protocolo ABC' ? 100 : 50 },
                 },
                 didDrawCell: (data) => {
                     if (data.section === 'body' && data.column.index === 0) {
-                        pdf.addImage(imgData, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+                        pdf.addImage(chartImage, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
                     }
                 },
                 theme: 'plain',
             });
             */
-        });
-    });
+        }
+    }
 
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
 }
 
-/*
-const adicionaSelecao = (evento: any) => {
-    showGrafico.value = true;
-    setTimeout(() => {
-        const canvas = document.getElementById(evento) as HTMLCanvasElement;
-        const clonedCanvas = document.createElement('canvas') as HTMLCanvasElement;
+// Função para gerar o gráfico em segundo plano e convertê-lo em imagem
+/*async function gerarGraficoComoImagem(chartConfig: any) {
+    // Crie um canvas virtual
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;;
+    canvas.width = 400;  // Defina uma largura adequada para a imagem
+    canvas.height = 400; // Defina uma altura adequada para a imagem
 
-        // Ajuste a escala para a densidade de pixels do dispositivo
-        const scale = window.devicePixelRatio;
-        clonedCanvas.width = canvas.width * scale;
-        clonedCanvas.height = canvas.height * scale;
+    // Obtenha o contexto 2D
+    const ctx = canvas.getContext('2d');
 
-        const context = clonedCanvas.getContext('2d');
+    if (ctx) {
+        // Crie o gráfico usando o canvas virtual
+        const chart = new Chart(ctx, chartConfig);
 
-        clonedCanvas.width = 320; // Define a largura do canvas
-        clonedCanvas.height = 320; // Define a altura do canvas
+        // Espere o gráfico ser renderizado e depois converta para imagem base64
+        await new Promise((resolve) => setTimeout(resolve, 10000)); // Aguarda para garantir que o gráfico foi renderizado
+        const chartImage = canvas.toDataURL('image/png');
 
-        // Escala o contexto para que o desenho não pareça pixelado
-        context!.scale(scale, scale);
+        // Destrua o gráfico para liberar memória
+        chart.destroy();
 
-        context!.drawImage(canvas, 0, 0, clonedCanvas.width / scale, clonedCanvas.height / scale);
-        clonedCanvas.style.display = 'block';
-
-        const graficoSelecionado = document.getElementById("grafico-selecionado");
-        graficoSelecionado!.innerHTML = '';
-        graficoSelecionado!.appendChild(clonedCanvas);
-    }, 300);
-};
-*/
-/* async function loadImageData(url: string): Promise<string> {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-} */
+        return chartImage; // Retorna a imagem base64
+    }
+}*/
 
 async function getUserAuthSupbase() {
     return getUserAuth().then((user) => {
