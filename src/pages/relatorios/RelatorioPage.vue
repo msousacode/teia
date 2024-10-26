@@ -27,11 +27,12 @@
         </q-card>
     </q-dialog>
 
+    <canvas id="graficoPDF" v-show="gerandoRelatorio" width="200" height="200"></canvas>
 
     <q-dialog v-model="showGrafico">
         <q-card class="my-card q-pa-md full-width">
+            <canvas id="meuGrafico" width="200" height="200"></canvas>
             <div class="text-center text-body1 text-teal">Gráfico</div>
-            <canvas id="meuGrafico" width="400" height="400"></canvas>
         </q-card>
     </q-dialog>
 
@@ -116,6 +117,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Title,
     Tooltip,
     Legend);
+
+const gerandoRelatorio = ref(false);
 
 const showGrafico = ref(false);
 
@@ -221,6 +224,7 @@ async function gerarGrafico(itemId: string) {
                     type: graficos.type || 'line', // Certifique-se de que o tipo do gráfico está presente
                     data: graficos.data, // Dados do gráfico (labels e datasets)
                     options: graficos.options || { // Opções do gráfico
+                        animation: false,
                         scales: {
                             y: {
                                 beginAtZero: true
@@ -307,22 +311,11 @@ async function imprimirPDF() {
                 headStyles: { fillColor: '#f8a0b1' }
             });
 
-            // Gera o gráfico como imagem base64
-            /*
-            const graficos = treinamento.chartData;
-            const chartConfig = {
-                type: graficos.type || 'line',
-                data: graficos.data,
-                options: graficos.options || {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
-            
-            const chartImage = await gerarGraficoComoImagem(chartConfig);
+            let chartBase64: string;
+            // Gera o gráfico como imagem base64            
+            await gerarGraficoPDF(treinamento.uuid).then(res => {
+                chartBase64 = res || '';
+            });
 
             autoTable(pdf, {
                 head: [['REPRESENTAÇÃO GRÁFICA:']],
@@ -332,43 +325,81 @@ async function imprimirPDF() {
                 },
                 didDrawCell: (data) => {
                     if (data.section === 'body' && data.column.index === 0) {
-                        pdf.addImage(chartImage, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+                        pdf.addImage(chartBase64, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
                     }
                 },
                 theme: 'plain',
             });
-            */
         }
     }
 
+    gerandoRelatorio.value = false;
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
 }
 
-// Função para gerar o gráfico em segundo plano e convertê-lo em imagem
-/*async function gerarGraficoComoImagem(chartConfig: any) {
-    // Crie um canvas virtual
-    const canvas = document.createElement('canvas') as HTMLCanvasElement;;
-    canvas.width = 400;  // Defina uma largura adequada para a imagem
-    canvas.height = 400; // Defina uma altura adequada para a imagem
+async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> {
 
-    // Obtenha o contexto 2D
-    const ctx = canvas.getContext('2d');
+    gerandoRelatorio.value = true;
+    return new Promise(async (resolve, reject) => {
+        const canvas = document.getElementById('graficoPDF') as HTMLCanvasElement;
 
-    if (ctx) {
-        // Crie o gráfico usando o canvas virtual
-        const chart = new Chart(ctx, chartConfig);
+        if (!canvas) {
+            console.error("Canvas não encontrado.");
+            reject(null);
+            return;
+        }
 
-        // Espere o gráfico ser renderizado e depois converta para imagem base64
-        await new Promise((resolve) => setTimeout(resolve, 10000)); // Aguarda para garantir que o gráfico foi renderizado
-        const chartImage = canvas.toDataURL('image/png');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            console.error("Falha ao obter o contexto 2D do canvas.");
+            reject(null);
+            return;
+        }
 
-        // Destrua o gráfico para liberar memória
-        chart.destroy();
+        const uuidAprendiz = toRaw(form.value.aprendiz.value);
+        const treinamentos = await service.buscarTreinamentos(uuidAprendiz, periodo.value);
 
-        return chartImage; // Retorna a imagem base64
-    }
-}*/
+        const graficos = treinamentos
+            .filter(item => item.uuid === treinamentoUUID)
+            .map(i => i.chartData)[0];
+
+        if (!graficos) {
+            console.error("Dados do gráfico não encontrados.");
+            reject(null);
+            return;
+        }
+
+        // Antes de criar um novo gráfico, destrua o existente se houver
+        if (myChart) {
+            myChart.destroy(); // Destroi o gráfico anterior
+        }
+
+        // Configuração do gráfico com `onComplete` para resolver após renderização
+        const config = {
+            type: graficos.type || 'line',
+            data: graficos.data,
+            options: {
+                ...graficos.options,
+                animation: {
+                    animation: false,
+                    onComplete: () => {
+                        // Converte o canvas para imagem base64 após a renderização
+                        const chartBase64 = canvas.toDataURL('image/png');
+                        resolve(chartBase64); // Retorna a imagem base64 após renderização completa
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        };
+
+        // Cria o gráfico com as configurações apropriadas
+        myChart = new Chart(ctx, config);
+    });
+}
+
 
 async function getUserAuthSupbase() {
     return getUserAuth().then((user) => {
