@@ -269,6 +269,22 @@ async function imprimirPDF() {
             nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
         }
 
+        const imgLogo = await loadImageData('src/assets/logo.png');
+        const imgDataWithoutPrefix = imgLogo.split(",")[1];
+
+        autoTable(pdf, {
+            head: [['']],
+            headStyles: {
+                cellWidth: 30, minCellHeight: 10,
+            },
+            didDrawCell: (data) => {
+                if (data.section === 'head' && data.column.index === 0) {
+                    pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+                }
+            },
+            theme: 'plain',
+        });
+
         autoTable(pdf, {
             head: [['PROFISSIONAL', 'REGISTRO PROF.', 'APRENDIZ', 'GERADO EM:']],
             body: [
@@ -280,6 +296,7 @@ async function imprimirPDF() {
                 1: { cellWidth: 50 },
                 2: { cellWidth: 50 },
                 3: { cellWidth: 50 },
+                //4: { cellWidth: 50 },
             },
         });
 
@@ -336,6 +353,17 @@ async function imprimirPDF() {
     gerandoRelatorio.value = false;
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
+}
+
+async function loadImageData(url: string): Promise<string> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
 
 async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> {
