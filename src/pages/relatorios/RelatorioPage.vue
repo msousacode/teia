@@ -269,7 +269,9 @@ async function imprimirPDF() {
             nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
         }
 
+        /*
         const imgLogo = await loadImageData('src/assets/logo.png');
+        
         const imgDataWithoutPrefix = imgLogo.split(",")[1];
 
         autoTable(pdf, {
@@ -283,7 +285,7 @@ async function imprimirPDF() {
                 }
             },
             theme: 'plain',
-        });
+        });*/
 
         autoTable(pdf, {
             head: [['PROFISSIONAL', 'REGISTRO PROF.', 'APRENDIZ', 'GERADO EM:']],
@@ -354,7 +356,7 @@ async function imprimirPDF() {
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
 }
-
+/*
 async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -364,7 +366,7 @@ async function loadImageData(url: string): Promise<string> {
         reader.onerror = reject;
         reader.readAsDataURL(blob);
     });
-}
+}*/
 
 async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> {
 
