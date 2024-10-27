@@ -21,8 +21,8 @@ export class BackupService {
     this.iniciarBackup();
   };
 
-  iniciarBackup = async () => {
-    this.$q.loading.show();
+  iniciarBackup = async (exibirLoading: boolean = true) => {
+    if (exibirLoading) this.$q.loading.show();
     let blob = null;
     try {
       blob = await db.export();
@@ -33,23 +33,28 @@ export class BackupService {
     this.supabase
       .bucketUpload(blob)
       .then(() => {
-        this.$q.loading.hide();
-        this.$q.notify({
-          message: 'Backup concluído com sucesso!',
-          color: 'positive',
-          position: 'center',
-          timeout: 2000,
-        });
+        if (exibirLoading) {
+          this.$q.notify({
+            message: 'Backup concluído com sucesso!',
+            color: 'positive',
+            position: 'center',
+            timeout: 2000,
+          });
+        }
       })
       .catch(() => {
-        this.$q.loading.hide();
-        this.$q.notify({
-          message: 'Ocorreu algum erro. Não foi possível fazer o backup.',
-          color: 'negative',
-          position: 'center',
-          icon: 'report_problem',
-          timeout: 2000,
-        });
+        //TODO desenvolver um insert na base de dados do supabase para registrar problemas de backup, talvez seja melhor
+        //criar uma tabela de logs_criticos e armazenar todos os logs criticos nessa tabela.
+        if (exibirLoading) {
+          this.$q.loading.hide();
+          this.$q.notify({
+            message: 'Ocorreu algum erro. Não foi possível fazer o backup.',
+            color: 'negative',
+            position: 'center',
+            icon: 'report_problem',
+            timeout: 2000,
+          });
+        }
       });
   };
 

@@ -109,6 +109,7 @@ import { useUserStore } from 'src/stores/user';
 import { AssinaturaService } from '../assinatura/AssinaturaService';
 import { useRouter } from 'vue-router';
 import useAuth from 'src/composables/useAuth';
+import useUtils from 'src/utils/util';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -157,6 +158,8 @@ const router = useRouter();
 const diasRestantesTeste = ref();
 
 const auth = useAuth();
+
+const utils = useUtils();
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -455,6 +458,30 @@ const carregarSelectAprendiz = () => {
     });
 }
 
+function backupSegundoPlano() {
+
+    if (navigator.onLine) {
+
+        if (localStorage.getItem('ultimo_backup') == null) {
+            localStorage.setItem('ultimo_backup', new Date().getTime().toString());
+        }
+
+        const dateUltimoBackup = localStorage.getItem('ultimo_backup') || '';
+
+        const diferencaHoras = utils.calculateHoursBetween(dateUltimoBackup);
+
+        if (isNaN(Number(diferencaHoras))) {
+            localStorage.setItem('ultimo_backup', new Date().getTime().toString());
+        }
+        //Se a diferença entre o último backup for igual ou superior a 4 horas faz o backup.
+        if (diferencaHoras >= 4) {
+            const backupService = new BackupService();
+            backupService.iniciarBackup(false);
+        }
+    }
+}
+
+
 onMounted(async () => {
     carregarSelectAprendiz();
 
@@ -509,6 +536,8 @@ onMounted(async () => {
         } else {
             error('Usuário não encontrado.');
         }
+
+        backupSegundoPlano();
     }
 });
 </script>
