@@ -1,8 +1,5 @@
 import useSupabase from '../../src/boot/supabase';
 import { v4 as uuid } from 'uuid';
-import useFormatUtil from './UseFormatUtil';
-
-const format = useFormatUtil();
 
 type BackupLog = {
   nome_arquivo: string;
@@ -70,6 +67,7 @@ export default function useSupabaseApi() {
 
       return data;
     } catch (error) {
+      //Capturar um log critico nesse ponto e gravar na base de dados.
       console.log('error', error);
     }
   };
@@ -93,11 +91,8 @@ export default function useSupabaseApi() {
 
   const registrarBackupLog = async (log: BackupLog) => {
     post('backups_realizados_log', log).then(() => {
-      const dataAtual = new Date();
-      localStorage.setItem(
-        'ultimo_backup',
-        format.timestampToDate(dataAtual.getTime())
-      );
+      const dataAtual = new Date().getTime().toString();
+      localStorage.setItem('ultimo_backup', dataAtual);
     });
   };
 
