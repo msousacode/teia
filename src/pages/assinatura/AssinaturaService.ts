@@ -36,13 +36,15 @@ export class AssinaturaService {
     this.store.setAssinatura(data[0].tipo_assinatura);
     this.store.setDataInicioAssinatura(data[0].data_inicio_assinatura);
 
-    const diasRestantes = this.utils.calculateDaysBetween(
-      new Date().toISOString(),
-      data[0].data_inicio_assinatura
-    );
+    if (data[0].tipo_assinatura == 'FREE') {
+      const diasRestantes = this.utils.calculateDaysBetween(
+        new Date().toISOString(),
+        data[0].data_inicio_assinatura
+      );
 
-    if (diasRestantes > 7) {
-      return 'EXPIRADO';
+      if (diasRestantes > 7) {
+        return 'EXPIRADO';
+      }
     }
 
     return data[0].tipo_assinatura != 'CAN' &&
