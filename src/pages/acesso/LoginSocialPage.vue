@@ -25,29 +25,19 @@
             <div class="text-right text-blue text-body1">
               <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
             </div>
-          </div>
-        </div>
-
-
-        <div class="col-md-12 q-mt-md">
-          <div class="text-center text-body2">Ou acesse com as redes sociais</div>
-
-          <div class="row q-mt-md">
-            <div>
-              <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
-            </div>
-
-            <div class="q-mx-md"></div>
-
-            <div>
-              <q-btn class="full-width facebook-btn" label="Facebook" icon="mdi-facebook" @click="entrar('facebook')" />
+            <div class="col-md-4">
+              <div class="text-center text-body2 q-mb-md">Ou acesse com as redes sociais</div>
+              <div class="row">
+                <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
+                <q-btn class="full-width facebook-btn q-mt-md" label="Facebook" icon="mdi-facebook"
+                  @click="entrar('facebook')" />
+              </div>
             </div>
           </div>
         </div>
-
       </div>
 
-      <q-btn class="full-width text-left text-blue text-body1 q-mt-xl" color="white" unelevated to="/cadastrar"
+      <q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
         label="Novo por aqui? Cadastrar-se" no-caps />
 
     </q-page-container>
