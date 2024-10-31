@@ -74,7 +74,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Configurações',
+    title: 'Meu Perfil',
     icon: 'mdi-cog',
     routeName: 'perfil',
     hide: true,

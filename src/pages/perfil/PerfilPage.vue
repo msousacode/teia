@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <title-custom title="Configurações" />
+        <title-custom title="Meu Perfil" />
         <div class="row justify-center">
             <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
                 <q-input outlined label="Nome Completo" v-model="form.full_name"
@@ -12,25 +12,12 @@
 
                 <q-input outlined label="Registro Profissional:" v-model="form.documento" class="q-mb-md" />
 
-                <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
-                    :disable="!isSubmitted" />
             </q-form>
+        </div>
 
-            <div class="fixed-bottom q-pa-md">
-                <q-banner class="bg-blue-1 text-blue-9">
-                    <span class="text-body2">O seu último backup foi realizado em: <b>{{ ultimoBackup }}</b>
-                    </span>
-                </q-banner>
-
-                <q-btn icon="cloud_upload" no-caps label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
-                    @click="backup" />
-
-                <q-btn icon="cloud_download" no-caps label="Restaurar" color="brown-5"
-                    class="full-width q-pa-sm q-mt-md" @click="restaurar" />
-
-                <q-btn no-caps label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
-                    :to="{ name: 'relatorios' }" />
-            </div>
+        <div class="fixed-bottom q-pa-md">
+            <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
+                :disable="!isSubmitted" />
         </div>
     </q-page>
 </template>
@@ -40,9 +27,6 @@ import { computed, onMounted, ref } from 'vue';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { BackupService } from 'src/services/BackupService';
-
-const service = new BackupService()
 
 const supabase = useSupabaseApi();
 
@@ -59,8 +43,6 @@ const form = ref({
     email: '',
     documento: '',
 })
-
-const ultimoBackup = ref('');
 
 function submit() {
 
@@ -84,52 +66,8 @@ function submit() {
     }
 }
 
-function backup() {
-    $q.dialog({
-        title: 'Confirma a realização do backup?',
-        message: 'Essa ação irá salvar uma cópia do banco de dados na nuvem. \nVerifique se a conexão com a internet está ativa.',
-        ok: true,
-        cancel: true,
-        persistent: true,
-    })
-        .onOk(async () => {
-            await service.iniciarBackup();
-            await atualizaInfoUltimoBackup();
-        })
-        .onDismiss(() => { });
-}
-
-function restaurar() {
-
-    $q.dialog({
-        title: 'Deseja continuar com a restauração do banco de dados?',
-        message: 'Essa ação irá sobrescrever todos os dados atuais. \nCom essa ação você recupera a última versão do banco de dados salva disponível na nuvem.',
-        ok: true,
-        cancel: true,
-        persistent: true,
-    })
-        .onOk(async () => {
-            service.restaurarBackup().then(() => {
-                $q.loading.hide();
-            }).catch(() => {
-                $q.loading.hide();
-            });
-        })
-        .onDismiss(() => { });
-}
-
-async function atualizaInfoUltimoBackup() {
-    const dataUlimoBackup = localStorage.getItem('ultimo_backup') || '';
-
-    if (dataUlimoBackup) {
-        ultimoBackup.value = dataUlimoBackup;
-    }
-}
-
 onMounted(() => {
     const storage = localStorage.getItem('user');
-
-    atualizaInfoUltimoBackup();
 
     if (storage) {
         const user = JSON.parse(storage);
