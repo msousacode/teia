@@ -40,6 +40,7 @@ export class BackupService {
             position: 'center',
             timeout: 2000,
           });
+          this.$q.loading.hide();
         }
       })
       .catch(() => {
@@ -54,6 +55,7 @@ export class BackupService {
             icon: 'report_problem',
             timeout: 2000,
           });
+          this.$q.loading.hide();
         }
       });
   };
