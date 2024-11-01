@@ -27,8 +27,8 @@
                     :rows-per-page-options="[10]" :rows-per-page="10">
                     <template v-slot:body-cell-actions="props">
                         <q-td :props="props" class="q-gutter-x-sm">
-                            <q-btn icon="mdi-pencil" color="teal">
-                            </q-btn>
+                            <q-btn icon="mdi-pencil" color="teal" :to="{ name: 'avaliacoes-info' }" />
+
                         </q-td>
                     </template>
                     <template v-slot:body-cell-actionsx="props">
@@ -66,7 +66,7 @@ const avaliacaoRows = ref<any[]>([]);
 
 const aprendizes = ref<any[]>([]);
 
-const selected = ref([])
+const selected = ref([]);
 
 const form = ref({
     uuid: '',
@@ -135,7 +135,7 @@ avaliacaoColumns.value = [
 avaliacaoRows.value = [
     {
         id: 1,
-        name: 'Avaliação 1',
+        name: 'Continuar Avaliação 1',
         align: 'left',
     },
     {
