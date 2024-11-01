@@ -22,6 +22,8 @@
 
                     <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-sm" no-caps flat
                         :to="{ name: 'avaliacoes' }" />
+
+                    <q-btn label="coletar provisório" color="green" no-caps :to="{ name: 'avaliacoes-coleta' }" />
                 </div>
             </q-form>
         </div>

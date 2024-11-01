@@ -21,6 +21,7 @@
             </q-table>
         </div>
 
+        <title-custom title="Protocolos:" />
         <q-list bordered>
             <q-expansion-item expand-separator label="VB-MAPP">
                 <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
@@ -39,7 +40,13 @@
                     </template>
                 </q-table>
             </q-expansion-item>
-
+            <q-expansion-item expand-separator label="ABLLS">
+                <q-card>
+                    <q-card-section>
+                        EM BREVE
+                    </q-card-section>
+                </q-card>
+            </q-expansion-item>
             <q-expansion-item expand-separator label="Protocolo Portage">
                 <q-card>
                     <q-card-section>

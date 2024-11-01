@@ -95,6 +95,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'avaliacoes-coleta',
+        path: '/avaliacoes-coleta',
+        component: () => import('pages/avaliacoes/AvaliacaoColeta.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'atendimento-novo',
         path: '/atendimento-novo/:action?/atendimento/:uuidAtendimento?',
         component: () => import('pages/atendimentos/AtendimentoForm.vue'),
