@@ -104,7 +104,10 @@ rows.value = [
 </script>
 
 <style lang="sass">
-.my-sticky-column-table    
+.my-sticky-column-table
+  /* specifying max-width so the example can
+    highlight the sticky column on any browser window */
+  
 
   thead tr:first-child th:first-child
     /* bg color is important for th; just specify one */
