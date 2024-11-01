@@ -1,7 +1,6 @@
 [
   {
     "nivel": 1,
-
     "avaliacoes": [
       {
         "titulo": "Imitação Motora",
@@ -217,6 +216,56 @@
             "descricao": "Espontaneamente segue colegas ou imita o comportamento motor deles por 2 vezes (ex. segue um colega numa casa de brincar) (OC: 30 min)"
           }
         ]
+      },
+
+      {
+        "titulo": "Vocal",
+        "tipo": 9,
+        "objetivos": [
+          {
+            "id": 1,
+            "descricao": "Emite espontaneamente uma média de 5 sons por hora"
+          },
+          {
+            "id": 2,
+            "descricao": "Emite espontaneamente 5 sons diferentes, uma média de 10 sons no total por hora"
+          },
+          {
+            "id": 3,
+            "descricao": "Emite espontaneamente 10 sons diferentes com entonações variadas, média de 25 sons no total por hora"
+          },
+          {
+            "id": 4,
+            "descricao": "Emite espontaneamente 5 aproximações diferentes de palavras inteiras"
+          },
+          {
+            "id": 5,
+            "descricao": "Vocaliza espontaneamente 15 palavras inteiras ou frases com entonação e ritmo apropriados"
+          }
+        ]
+      },
+
+      {
+        "titulo": "Resposta",
+        "tipo": 10,
+        "objetivos": []
+      },
+      {
+        "titulo": "Interverbal",
+        "tipo": 11,
+        "objetivos": []
+      },
+
+      {
+        "titulo": "Grupo",
+        "tipo": 12,
+        "objetivos": []
+      },
+
+      {
+        "titulo": "Linguístisca",
+        "tipo": 13,
+        "objetivos": []
       }
     ]
   }
