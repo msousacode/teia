@@ -1,7 +1,10 @@
 <template>
     <div class="q-pa-md">
 
-        <q-list bordered class="rounded-borders">
+        <div class="q-mb-md">
+            <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
+        </div>
+        <q-list bordered>
             <q-expansion-item expand-separator label="VB-MAPP">
                 <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                     :rows-per-page-options="[10]" :rows-per-page="10">
@@ -34,20 +37,48 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import { db } from 'src/db';
+import { onMounted } from 'vue';
 
 const columns = ref<any[]>([]);
 
 const rows = ref<any[]>([]);
 
-columns.value = [
-    {
-        label: 'Avaliação',
-        align: 'center',
-        field: 'name'
-    },
-    { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
-    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' }
-]
+const aprendizes = ref<any[]>([]);
+
+const form = ref({
+    uuid: '',
+    aprendiz: '',
+    data_inicio: '',
+    sync: false,
+    treinamentos: [{}],
+    aprendiz_uuid_fk: '',
+});
+
+function carregarSelectAprendizes() {
+    db.aprendizes.toArray().then((res) => {
+        res.filter(i => i.ativo === true).forEach((aprendiz) => {
+            aprendizes.value.push({
+                label: aprendiz.nome_aprendiz,
+                value: aprendiz.uuid,
+            });
+        });
+    });
+}
+
+onMounted(() => {
+    carregarSelectAprendizes()
+}),
+
+    columns.value = [
+        {
+            label: 'Avaliação',
+            align: 'center',
+            field: 'name'
+        },
+        { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
+        { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' }
+    ]
 
 rows.value = [
     {
@@ -73,10 +104,7 @@ rows.value = [
 </script>
 
 <style lang="sass">
-.my-sticky-column-table
-  /* specifying max-width so the example can
-    highlight the sticky column on any browser window */
-  max-width: 600px
+.my-sticky-column-table    
 
   thead tr:first-child th:first-child
     /* bg color is important for th; just specify one */
