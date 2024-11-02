@@ -18,14 +18,17 @@
                 <q-input outlined stack-label label="Metodologia utilizada" v-model="infoAvaliacaoForm.metodologia"
                     class="q-mb-md" />
 
-                <!--TODO depois lançar os botões em uma única linha um do lado do outro-->
                 <div class="fixed-bottom q-pa-md">
-                    <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps type="submit" />
-
-                    <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-sm" no-caps flat
-                        :to="{ name: 'avaliacoes' }" />
-
-                    <q-btn label="coletar provisório" color="green" no-caps :to="{ name: 'avaliacoes-coleta' }" />
+                    <div class="row">
+                        <div class="col">
+                            <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
+                                :to="{ name: 'avaliacoes' }" />
+                        </div>
+                        <div class="col">
+                            <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
+                                :disabled="isAvancarDisabled" />
+                        </div>
+                    </div>
                 </div>
             </q-form>
         </div>
@@ -49,13 +52,15 @@
 
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
-
 import { avaliacaoColumns, avaliacaoRows } from './table'
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const columns = ref<any[]>(avaliacaoColumns);
 
@@ -81,6 +86,8 @@ const infoAvaliacaoForm = ref({
 
 const store = useAvaliacaoStore();
 
+const isAvancarDisabled = computed(() => { return selected.value.length == 0 })
+
 function aprendizSelecionado() {
     selectedForm.value.aprendiz = toRaw(store.get.aprendizSelected);
 }
@@ -95,6 +102,12 @@ function submit() {
 
     //TODO persisir esses dados em uma tabela do indexdedDB.
     console.log(toRaw(infoAvaliacaoForm.value));
+}
+
+function avancar() {
+    submit();
+    const uuid = infoAvaliacaoForm.value.uuid_aprendiz;
+    router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid } });//TODO aqui deve-se passar o uuid do aprendiz para próxima tela.
 }
 
 onMounted(() => {
