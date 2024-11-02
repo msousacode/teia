@@ -23,7 +23,7 @@
 
         <title-custom title="Protocolos:" />
         <q-list bordered>
-            <q-expansion-item expand-separator label="VB-MAPP" :disable="!showOpcoes">
+            <q-expansion-item expand-separator label="VB-MAPP" :disable="!isHabilitaProtocolos">
                 <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                     :rows-per-page-options="[10]" :rows-per-page="10">
                     <template v-slot:body-cell-actions="props">
@@ -40,14 +40,14 @@
                     </template>
                 </q-table>
             </q-expansion-item>
-            <q-expansion-item expand-separator label="ABLLS" :disable="!showOpcoes">
+            <q-expansion-item expand-separator label="ABLLS" :disable="!isHabilitaProtocolos">
                 <q-card>
                     <q-card-section>
                         EM BREVE
                     </q-card-section>
                 </q-card>
             </q-expansion-item>
-            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!showOpcoes">
+            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!isHabilitaProtocolos">
                 <q-card>
                     <q-card-section>
                         EM BREVE
@@ -63,6 +63,7 @@ import { db } from 'src/db';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { watch } from 'vue';
+import { computed } from 'vue';
 
 const columns = ref<any[]>([]);
 
@@ -88,9 +89,12 @@ const form = ref({
 });
 
 watch(form.value, () => {
-    console.log('alterou...')
     showOpcoes.value = form.value.aprendiz != null;
 })
+
+const isHabilitaProtocolos = computed(() => {
+    return selected.value.length > 0 && showOpcoes;
+});
 
 function carregarSelectAprendizes() {
     db.aprendizes.toArray().then((res) => {
