@@ -5,7 +5,7 @@
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
 
-        <div class="q-mb-md">
+        <div class="q-mb-md" v-show="showOpcoes">
             <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name" class="my-sticky-column-table"
                 v-model:selected="selected" selection="single" :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
@@ -23,7 +23,7 @@
 
         <title-custom title="Protocolos:" />
         <q-list bordered>
-            <q-expansion-item expand-separator label="VB-MAPP">
+            <q-expansion-item expand-separator label="VB-MAPP" :disable="!showOpcoes">
                 <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                     :rows-per-page-options="[10]" :rows-per-page="10">
                     <template v-slot:body-cell-actions="props">
@@ -40,14 +40,14 @@
                     </template>
                 </q-table>
             </q-expansion-item>
-            <q-expansion-item expand-separator label="ABLLS">
+            <q-expansion-item expand-separator label="ABLLS" :disable="!showOpcoes">
                 <q-card>
                     <q-card-section>
                         EM BREVE
                     </q-card-section>
                 </q-card>
             </q-expansion-item>
-            <q-expansion-item expand-separator label="Protocolo Portage">
+            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!showOpcoes">
                 <q-card>
                     <q-card-section>
                         EM BREVE
@@ -62,6 +62,7 @@ import { ref } from 'vue';
 import { db } from 'src/db';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { watch } from 'vue';
 
 const columns = ref<any[]>([]);
 
@@ -75,6 +76,8 @@ const aprendizes = ref<any[]>([]);
 
 const selected = ref([]);
 
+const showOpcoes = ref<boolean>(false)
+
 const form = ref({
     uuid: '',
     aprendiz: '',
@@ -83,6 +86,11 @@ const form = ref({
     treinamentos: [{}],
     aprendiz_uuid_fk: '',
 });
+
+watch(form.value, () => {
+    console.log('alterou...')
+    showOpcoes.value = form.value.aprendiz != null;
+})
 
 function carregarSelectAprendizes() {
     db.aprendizes.toArray().then((res) => {
@@ -142,11 +150,6 @@ avaliacaoColumns.value = [
 avaliacaoRows.value = [
     {
         id: 1,
-        name: 'Continuar Avaliação 1',
-        align: 'left',
-    },
-    {
-        id: 2,
         name: 'Iniciar Nova Avaliação',
         align: 'left',
     },

@@ -67,9 +67,9 @@ const titulosNivelUm = ref<any[]>([]);
 
 const cardsNivelUm = ref();
 
-const titulosNivelDois = ref<any[]>([]);
+//const titulosNivelDois = ref<any[]>([]);
 
-const cardsNivelDois = ref();
+//const cardsNivelDois = ref();
 
 function getAvaliacoes(tipo: number) {
     cardsNivelUm.value = avaliacaoNivelUm.avaliacoes.filter(i => i.tipo == tipo).find(i => i)?.objetivos;
