@@ -4,18 +4,20 @@ export const useAvaliacaoStore = defineStore('avaliacao', {
   state: () => ({
     aprendizSelected: {},
     avaliacao: {},
+    tipoAvaliacao: '',
   }),
 
   getters: {
-    getAprendizUuid(state) {
+    get(state) {
       return state;
     },
   },
 
   actions: {
-    setAprendizUuid(aprendizSelected: any, avaliacao: any) {
+    set(aprendizSelected: any, avaliacao: any, tipoAvaliacao: string) {
       this.aprendizSelected = aprendizSelected;
       this.avaliacao = avaliacao;
+      this.tipoAvaliacao = tipoAvaliacao;
     },
   },
 });

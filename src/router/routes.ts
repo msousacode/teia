@@ -90,7 +90,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'avaliacoes-info',
-        path: '/avaliacoes-info',
+        path: '/avaliacoes-info/:tipoAvaliacao?',
         component: () => import('pages/avaliacoes/AvaliacaoInfo.vue'),
         meta: { requiresAuth: true },
       },

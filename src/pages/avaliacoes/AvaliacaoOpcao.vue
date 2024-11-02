@@ -28,8 +28,7 @@
                     :rows-per-page-options="[10]" :rows-per-page="10">
                     <template v-slot:body-cell-actions="props">
                         <q-td :props="props" class="q-gutter-x-sm">
-                            <q-btn icon="mdi-pencil" color="teal" @click="ir()" />
-
+                            <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row.name)" />
                         </q-td>
                     </template>
                     <template v-slot:body-cell-actionsx="props">
@@ -122,10 +121,15 @@ function carregarSelectAprendizes() {
     });
 }
 
-function ir() {
+function ir(tipoAvaliacao: string) {
+
+    if (tipoAvaliacao == '')
+        throw new Error("precisa ser informada o tipo de avaliação.")
+
     const obj = toRaw(selected.value[0])
+
     if (obj.id == 1) {// 1 - significa que é uma nova avaliação.
-        router.push({ name: 'avaliacoes-info' })
+        router.push({ name: "avaliacoes-info", params: { tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase() } })
     }
     //todo aqui se for uma avaliação existente buscar no db e abri na tela de avaliação coleta.
 }
