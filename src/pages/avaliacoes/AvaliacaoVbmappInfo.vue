@@ -3,17 +3,20 @@
         <title-custom title="Configurações Iniciais da Nova Avaliação (VB-MAPP)" />
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
             <div class="q-mb-md">
-                <q-select stack-label outlined v-model="form.aprendiz" label="Selecione o Aprendiz" :readonly="true" />
+                <q-select stack-label outlined v-model="selectedForm.aprendiz" label="Selecione o Aprendiz"
+                    :readonly="true" />
             </div>
 
             <q-form @submit.prevent="submit">
 
-                <q-input outlined stack-label label="Queixa Inicial do Tratamento (CID)" v-model="formX.nome_aprendiz"
+                <q-input outlined stack-label label="Queixa Inicial do Tratamento (CID)"
+                    v-model="infoAvaliacaoForm.queixa" class="q-mb-md" />
+
+                <q-input outlined stack-label label="Objetivo do Documento"
+                    v-model="infoAvaliacaoForm.objetivo_documento" class="q-mb-md" />
+
+                <q-input outlined stack-label label="Metodologia utilizada" v-model="infoAvaliacaoForm.metodologia"
                     class="q-mb-md" />
-
-                <q-input outlined stack-label label="Objetivo do Documento" v-model="formX.nome_mae" class="q-mb-md" />
-
-                <q-input outlined stack-label label="Metodologia utilizada" v-model="formX.nome_pai" class="q-mb-md" />
 
                 <!--TODO depois lançar os botões em uma única linha um do lado do outro-->
                 <div class="fixed-bottom q-pa-md">
@@ -28,7 +31,7 @@
         </div>
 
         <div class="q-mb-md">
-            <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name" class="my-sticky-column-table"
+            <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                 v-model:selected="selected" selection="multiple" :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
@@ -52,29 +55,26 @@ import TitleCustom from 'src/components/TitleCustom.vue';
 import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
 
-const avaliacaoColumns = ref<any[]>([]);
+import { avaliacaoColumns, avaliacaoRows } from './table'
 
-const avaliacaoRows = ref<any[]>([]);
+const columns = ref<any[]>(avaliacaoColumns);
 
-const selected = ref([])
+const rows = ref<any[]>(avaliacaoRows);
 
-const form = ref({
+const selected = ref<any[]>([])
+
+const selectedForm = ref({
     uuid: '',
-    aprendiz: '',
-    data_inicio: '',
-    sync: false,
-    treinamentos: [{}],
-    aprendiz_uuid_fk: '',
+    aprendiz: {}
 });
 
-const formX = ref({
-    uuid: '',
+const infoAvaliacaoForm = ref({
+    uuid_aprendiz: '',
     nome_aprendiz: '',
-    nasc_aprendiz: '',
-    nome_mae: '',
-    nome_pai: '',
-    nome_responsavel: '',
-    observacao: '',
+    queixa: '',
+    objetivo_documento: '',
+    metodologia: '',
+    niveis_coleta: [],
     sync: false,
     ativo: true,
 });
@@ -82,42 +82,23 @@ const formX = ref({
 const store = useAvaliacaoStore();
 
 function aprendizSelecionado() {
-    form.value.aprendiz = toRaw(store.get.aprendizSelected);
+    selectedForm.value.aprendiz = toRaw(store.get.aprendizSelected);
 }
 
 function submit() {
 
+    const avaliacoes = selected.value.map(i => i.id);
+
+    infoAvaliacaoForm.value.uuid_aprendiz = selectedForm.value.aprendiz.value;
+    infoAvaliacaoForm.value.nome_aprendiz = selectedForm.value.aprendiz.label;
+    infoAvaliacaoForm.value.niveis_coleta = avaliacoes;
+
+    //TODO persisir esses dados em uma tabela do indexdedDB.
+    console.log(toRaw(infoAvaliacaoForm.value));
 }
 
 onMounted(() => {
-    aprendizSelecionado()
+    aprendizSelecionado();
 });
-
-avaliacaoColumns.value = [
-    {
-        label: 'Nível que será avaliado',
-        align: 'left',
-        field: 'name'
-    },
-
-]
-
-avaliacaoRows.value = [
-    {
-        id: 1,
-        name: 'Nível 1 (0-18 meses)',
-        align: 'left',
-    },
-    {
-        id: 2,
-        name: 'Nível 2 (18-30 meses)',
-        align: 'left',
-    },
-    {
-        id: 2,
-        name: 'Nível 3 (30-48 meses)',
-        align: 'left',
-    },
-]
 
 </script>
