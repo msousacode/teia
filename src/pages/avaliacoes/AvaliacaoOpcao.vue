@@ -5,7 +5,7 @@
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
 
-        <div class="q-mb-md">
+        <div class="q-mb-md" v-show="showOpcoes">
             <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name" class="my-sticky-column-table"
                 v-model:selected="selected" selection="single" :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
@@ -23,13 +23,12 @@
 
         <title-custom title="Protocolos:" />
         <q-list bordered>
-            <q-expansion-item expand-separator label="VB-MAPP">
+            <q-expansion-item expand-separator label="VB-MAPP" :disable="!isHabilitaProtocolos">
                 <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                     :rows-per-page-options="[10]" :rows-per-page="10">
                     <template v-slot:body-cell-actions="props">
                         <q-td :props="props" class="q-gutter-x-sm">
-                            <q-btn icon="mdi-pencil" color="teal" :to="{ name: 'avaliacoes-info' }" />
-
+                            <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row.name)" />
                         </q-td>
                     </template>
                     <template v-slot:body-cell-actionsx="props">
@@ -40,14 +39,14 @@
                     </template>
                 </q-table>
             </q-expansion-item>
-            <q-expansion-item expand-separator label="ABLLS">
+            <q-expansion-item expand-separator label="ABLLS" :disable="!isHabilitaProtocolos">
                 <q-card>
                     <q-card-section>
                         EM BREVE
                     </q-card-section>
                 </q-card>
             </q-expansion-item>
-            <q-expansion-item expand-separator label="Protocolo Portage">
+            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!isHabilitaProtocolos">
                 <q-card>
                     <q-card-section>
                         EM BREVE
@@ -62,6 +61,13 @@ import { ref } from 'vue';
 import { db } from 'src/db';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { watch } from 'vue';
+import { computed } from 'vue';
+import { useAvaliacaoStore } from 'src/stores/avaliacao';
+import { toRaw } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const columns = ref<any[]>([]);
 
@@ -75,6 +81,10 @@ const aprendizes = ref<any[]>([]);
 
 const selected = ref([]);
 
+const showOpcoes = ref<boolean>(false)
+
+const store = useAvaliacaoStore();
+
 const form = ref({
     uuid: '',
     aprendiz: '',
@@ -83,6 +93,22 @@ const form = ref({
     treinamentos: [{}],
     aprendiz_uuid_fk: '',
 });
+
+const isHabilitaProtocolos = computed(() => {
+    return selected.value.length > 0 && showOpcoes;
+});
+
+watch(form.value, () => {
+    showOpcoes.value = form.value.aprendiz != null;
+
+    if (form.value != null)
+        store.aprendizSelected = form.value.aprendiz;
+});
+
+watch(selected, () => {
+    store.avaliacao = selected.value
+});
+
 
 function carregarSelectAprendizes() {
     db.aprendizes.toArray().then((res) => {
@@ -93,6 +119,19 @@ function carregarSelectAprendizes() {
             });
         });
     });
+}
+
+function ir(tipoAvaliacao: string) {
+
+    if (tipoAvaliacao == '')
+        throw new Error("precisa ser informada o tipo de avaliação.")
+
+    const obj = toRaw(selected.value[0])
+
+    if (obj.id == 1) {// 1 - significa que é uma nova avaliação.
+        router.push({ name: "avaliacoes-info", params: { tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase() } })
+    }
+    //todo aqui se for uma avaliação existente buscar no db e abri na tela de avaliação coleta.
 }
 
 onMounted(() => {
@@ -142,11 +181,6 @@ avaliacaoColumns.value = [
 avaliacaoRows.value = [
     {
         id: 1,
-        name: 'Continuar Avaliação 1',
-        align: 'left',
-    },
-    {
-        id: 2,
         name: 'Iniciar Nova Avaliação',
         align: 'left',
     },
