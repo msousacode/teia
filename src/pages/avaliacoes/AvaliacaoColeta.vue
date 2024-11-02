@@ -2,9 +2,9 @@
     <q-page padding>
         <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
-            <q-tab name="nivel1" label="Nível 1" />
-            <q-tab name="nivel2" label="Nível 2" />
-            <q-tab name="nivel3" label="Nível 3" />
+            <q-tab name="1" label="Nível 1" :v-model="1" v-if="showAba('1')" />
+            <q-tab name="2" label="Nível 2" :v-model="2" v-if="showAba('2')" />
+            <q-tab name="3" label="Nível 3" :v-model="3" v-if="showAba('3')" />
         </q-tabs>
         <div class="q-mt-sm"></div>
         <q-tabs v-model="tab2" class="text-teal" name="avaliacoes">
@@ -58,6 +58,12 @@
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { avaliacaoNivelUm } from './data/vbmappNivelUm'
+import { db } from 'src/db';
+import { useRoute } from 'vue-router';
+
+const routeLocation = useRoute();
+
+const showNiveis = ref<string[]>([])
 
 const tab = ref('nivel1');
 
@@ -71,6 +77,10 @@ const cardsNivelUm = ref();
 
 //const cardsNivelDois = ref();
 
+const showAba = (aba: string) => {
+    return showNiveis.value.includes(aba)
+};
+
 function getAvaliacoes(tipo: number) {
     cardsNivelUm.value = avaliacaoNivelUm.avaliacoes.filter(i => i.tipo == tipo).find(i => i)?.objetivos;
 }
@@ -79,13 +89,24 @@ function salvar() {
 
 }
 
-onMounted(() => {
+async function configTela() {
 
+    const uuidAprendiz = routeLocation.params.aprendizUuid;
 
+    db.vbmapp
+        .get({ aprendiz_uuid_fk: uuidAprendiz })
+        .then((res) => {
+            showNiveis.value = res?.niveis_coleta.split(',') || [];
+        })
+        .catch((_error) => {
+            console.error('Erro ao tentar consultar os treinamentos', _error);
+        });
+}
+
+onMounted(async () => {
+    await configTela();
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
-
     getAvaliacoes(tab2.value);
-
 });
 
 </script>

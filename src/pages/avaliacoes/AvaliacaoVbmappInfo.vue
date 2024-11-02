@@ -77,7 +77,7 @@ const selectedForm = ref({
 
 const infoAvaliacaoForm = ref({
     uuid: '',
-    uuid_aprendiz: '',
+    aprendiz_uuid_fk: '',
     nome_aprendiz: '',
     queixa: '',
     objetivo_documento: '',
@@ -100,18 +100,17 @@ async function submit() {
     const avaliacoes = selected.value.map(i => i.id);
 
     infoAvaliacaoForm.value.uuid = uuid();
-    infoAvaliacaoForm.value.uuid_aprendiz = selectedForm.value.aprendiz.value;
+    infoAvaliacaoForm.value.aprendiz_uuid_fk = selectedForm.value.aprendiz.value;
     infoAvaliacaoForm.value.nome_aprendiz = selectedForm.value.aprendiz.label;
     infoAvaliacaoForm.value.niveis_coleta = avaliacoes.toString();
 
     const data = toRaw(infoAvaliacaoForm.value);
-
     db.vbmapp.add(data);
 }
 
 async function avancar() {
     await submit().then(() => {
-        const uuid = infoAvaliacaoForm.value.uuid_aprendiz;
+        const uuid = infoAvaliacaoForm.value.aprendiz_uuid_fk;
         router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid } });
     }).catch(() => {
         console.error("erro ao salvar vbmapp");//TODO depois colocar uma mensagem bonitinha com notify.

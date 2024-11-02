@@ -73,7 +73,7 @@ export interface Anotacao {
 
 export interface AvaliacaoVbmapp {
   uuid: string;
-  uuid_aprendiz: '';
+  aprendiz_uuid_fk: '';
   nome_aprendiz: '';
   queixa: '';
   objetivo_documento: '';
@@ -107,7 +107,7 @@ export class DataBase extends Dexie {
       atendimentos: 'uuid,aprendiz_uuid_fk',
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
       anotacoes: 'uuid,treinamento_uuid_fk',
-      vbmapp: 'uuid,aprendiz_uuid_fk',
+      vbmapp: 'uuid, aprendiz_uuid_fk',
     });
   }
 }
