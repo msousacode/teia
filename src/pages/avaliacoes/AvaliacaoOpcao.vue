@@ -28,7 +28,7 @@
                     :rows-per-page-options="[10]" :rows-per-page="10">
                     <template v-slot:body-cell-actions="props">
                         <q-td :props="props" class="q-gutter-x-sm">
-                            <q-btn icon="mdi-pencil" color="teal" :to="{ name: 'avaliacoes-info' }" />
+                            <q-btn icon="mdi-pencil" color="teal" @click="ir()" />
 
                         </q-td>
                     </template>
@@ -64,6 +64,11 @@ import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { watch } from 'vue';
 import { computed } from 'vue';
+import { useAvaliacaoStore } from 'src/stores/avaliacao';
+import { toRaw } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const columns = ref<any[]>([]);
 
@@ -79,6 +84,8 @@ const selected = ref([]);
 
 const showOpcoes = ref<boolean>(false)
 
+const store = useAvaliacaoStore();
+
 const form = ref({
     uuid: '',
     aprendiz: '',
@@ -88,13 +95,21 @@ const form = ref({
     aprendiz_uuid_fk: '',
 });
 
-watch(form.value, () => {
-    showOpcoes.value = form.value.aprendiz != null;
-})
-
 const isHabilitaProtocolos = computed(() => {
     return selected.value.length > 0 && showOpcoes;
 });
+
+watch(form.value, () => {
+    showOpcoes.value = form.value.aprendiz != null;
+
+    if (form.value != null)
+        store.aprendizSelected = form.value.aprendiz;
+});
+
+watch(selected, () => {
+    store.avaliacao = selected.value
+});
+
 
 function carregarSelectAprendizes() {
     db.aprendizes.toArray().then((res) => {
@@ -105,6 +120,14 @@ function carregarSelectAprendizes() {
             });
         });
     });
+}
+
+function ir() {
+    const obj = toRaw(selected.value[0])
+    if (obj.id == 1) {// 1 - significa que é uma nova avaliação.
+        router.push({ name: 'avaliacoes-info' })
+    }
+    //todo aqui se for uma avaliação existente buscar no db e abri na tela de avaliação coleta.
 }
 
 onMounted(() => {
