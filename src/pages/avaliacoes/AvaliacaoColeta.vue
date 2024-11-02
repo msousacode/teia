@@ -35,6 +35,7 @@
                             </q-btn-group>
                         </div>
                     </q-card>
+
                     <div class="q-mt-sm"></div>
                 </div>
             </q-tab-panel>
@@ -66,6 +67,10 @@ const titulosNivelUm = ref<any[]>([]);
 
 const cardsNivelUm = ref();
 
+const titulosNivelDois = ref<any[]>([]);
+
+const cardsNivelDois = ref();
+
 function getAvaliacoes(tipo: number) {
     cardsNivelUm.value = avaliacaoNivelUm.avaliacoes.filter(i => i.tipo == tipo).find(i => i)?.objetivos;
 }
@@ -75,8 +80,12 @@ function salvar() {
 }
 
 onMounted(() => {
+
+
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
+
     getAvaliacoes(tab2.value);
+
 });
 
 </script>
