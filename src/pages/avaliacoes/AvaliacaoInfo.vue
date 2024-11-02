@@ -3,8 +3,7 @@
         <title-custom title="Configurações Iniciais da Nova Avaliação (VB-MAPP)" />
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
             <div class="q-mb-md">
-                <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes"
-                    label="Selecione o Aprendiz" />
+                <q-select stack-label outlined v-model="form.aprendiz" label="Selecione o Aprendiz" :readonly="true" />
             </div>
 
             <q-form @submit.prevent="submit">
@@ -48,15 +47,14 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { db } from 'src/db';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { useAvaliacaoStore } from 'src/stores/avaliacao';
+import { toRaw } from 'vue';
 
 const avaliacaoColumns = ref<any[]>([]);
 
 const avaliacaoRows = ref<any[]>([]);
-
-const aprendizes = ref<any[]>([]);
 
 const selected = ref([])
 
@@ -81,15 +79,10 @@ const formX = ref({
     ativo: true,
 });
 
-function carregarSelectAprendizes() {
-    db.aprendizes.toArray().then((res) => {
-        res.filter(i => i.ativo === true).forEach((aprendiz) => {
-            aprendizes.value.push({
-                label: aprendiz.nome_aprendiz,
-                value: aprendiz.uuid,
-            });
-        });
-    });
+const store = useAvaliacaoStore();
+
+function aprendizSelecionado() {
+    form.value.aprendiz = toRaw(store.get.aprendizSelected);
 }
 
 function submit() {
@@ -97,7 +90,7 @@ function submit() {
 }
 
 onMounted(() => {
-    carregarSelectAprendizes()
+    aprendizSelecionado()
 });
 
 avaliacaoColumns.value = [
