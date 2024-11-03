@@ -66,10 +66,19 @@
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { avaliacaoNivelUm } from './data/vbmappNivelUm'
-import { db } from 'src/db';
+import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
+import { v4 as uuid } from 'uuid';
+import { toRaw } from 'vue';
+import useNotify from 'src/composables/UseNotify';
+
+const { success, error } = useNotify();
 
 const routeLocation = useRoute();
+
+const uuidAprendiz = routeLocation.params.aprendizUuid;
+
+const uuidVbmapp = ref();
 
 const showNiveis = ref<string[]>([])
 
@@ -116,16 +125,30 @@ function selectOption(item: any, value: any) {
 
 function salvar() {
 
+    let data: AvaliacaoVbmappColetas = {
+        uuid: uuid(),
+        nivel_coleta: 1,
+        tipo: 1,
+        coletas: toRaw(coletados.value),
+        aprendiz_uuid_fk: uuidAprendiz.toString(),
+        vbmapp_uuid_fk: uuidVbmapp.value,
+        sync: false,
+        ativo: true,
+    };
+
+    db.vbmappColetas.add(data).then(() => {
+        success('Coletas salvas com sucesso!')
+    }).catch(() => {
+        error('Ocorreu um erro ao salvar as coletas.')
+    });
 }
 
 async function configTela() {
-
-    const uuidAprendiz = routeLocation.params.aprendizUuid;
-
     db.vbmapp
         .get({ aprendiz_uuid_fk: uuidAprendiz })
         .then((res) => {
             showNiveis.value = res?.niveis_coleta.split(',') || [];
+            uuidVbmapp.value = res?.uuid;
         })
         .catch((_error) => {
             console.error('Erro ao tentar consultar os treinamentos', _error);
@@ -133,35 +156,8 @@ async function configTela() {
 }
 
 function coletar(item: any, pontuacao: number) {
-    //Qual o grupo que esta sendo coletado:
-    const data = { id: item.id, pontuacao: pontuacao }
-    console.log(data)
-
+    const data = { id: item.id, pontuacao: pontuacao, data_coleta: Date.now() }
     coletados.value.push(data)
-
-
-    /** Quando eu salvar vai montar esse json
-     {
-        "uuid": "aaaa",
-        "cadrs_coleta_tipo": 1,
-        "coletados": [
-            {
-                "id": 1,
-                "pontuacao": 1
-            },
-            {
-                "id": 2,
-                "pontuacao": 0,5
-            },
-            {
-                "id": 3,
-                "pontuacao": 0
-            },
-        ],
-        "aprendiz_uuid_fk": "asdf",
-        "data_coleta": "",
-     }
-     */
 }
 
 onMounted(async () => {
