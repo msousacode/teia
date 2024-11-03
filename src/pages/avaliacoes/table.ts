@@ -18,7 +18,7 @@ const avaliacaoRows = [
     align: 'left',
   },
   {
-    id: 2,
+    id: 3,
     name: 'Nível 3 (30-48 meses)',
     align: 'left',
   },

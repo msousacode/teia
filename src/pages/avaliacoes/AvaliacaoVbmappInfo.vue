@@ -59,6 +59,8 @@ import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
 import { avaliacaoColumns, avaliacaoRows } from './table'
 import { useRouter } from 'vue-router';
+import { db } from 'src/db';
+import { v4 as uuid } from 'uuid';
 
 const router = useRouter()
 
@@ -74,12 +76,13 @@ const selectedForm = ref({
 });
 
 const infoAvaliacaoForm = ref({
-    uuid_aprendiz: '',
+    uuid: '',
+    aprendiz_uuid_fk: '',
     nome_aprendiz: '',
     queixa: '',
     objetivo_documento: '',
     metodologia: '',
-    niveis_coleta: [],
+    niveis_coleta: '',
     sync: false,
     ativo: true,
 });
@@ -92,22 +95,26 @@ function aprendizSelecionado() {
     selectedForm.value.aprendiz = toRaw(store.get.aprendizSelected);
 }
 
-function submit() {
+async function submit() {
 
     const avaliacoes = selected.value.map(i => i.id);
 
-    infoAvaliacaoForm.value.uuid_aprendiz = selectedForm.value.aprendiz.value;
+    infoAvaliacaoForm.value.uuid = uuid();
+    infoAvaliacaoForm.value.aprendiz_uuid_fk = selectedForm.value.aprendiz.value;
     infoAvaliacaoForm.value.nome_aprendiz = selectedForm.value.aprendiz.label;
-    infoAvaliacaoForm.value.niveis_coleta = avaliacoes;
+    infoAvaliacaoForm.value.niveis_coleta = avaliacoes.toString();
 
-    //TODO persisir esses dados em uma tabela do indexdedDB.
-    console.log(toRaw(infoAvaliacaoForm.value));
+    const data = toRaw(infoAvaliacaoForm.value);
+    db.vbmapp.add(data);
 }
 
-function avancar() {
-    submit();
-    const uuid = infoAvaliacaoForm.value.uuid_aprendiz;
-    router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid } });//TODO aqui deve-se passar o uuid do aprendiz para próxima tela.
+async function avancar() {
+    await submit().then(() => {
+        const uuid = infoAvaliacaoForm.value.aprendiz_uuid_fk;
+        router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid } });
+    }).catch(() => {
+        console.error("erro ao salvar vbmapp");//TODO depois colocar uma mensagem bonitinha com notify.
+    });
 }
 
 onMounted(() => {

@@ -474,7 +474,7 @@ function backupSegundoPlano() {
             localStorage.setItem('ultimo_backup', new Date().getTime().toString());
         }
         //Se a diferença entre o último backup for igual ou superior a 4 horas faz o backup.
-        if (diferencaHoras >= 4) {
+        if (diferencaHoras >= 24) {
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }
