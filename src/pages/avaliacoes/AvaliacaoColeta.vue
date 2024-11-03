@@ -138,7 +138,6 @@ function coletar(item: any, pontuacao: number) {
     console.log(data)
 
     coletados.value.push(data)
-    console.log(coletados.value)
 
 
     /** Quando eu salvar vai montar esse json
