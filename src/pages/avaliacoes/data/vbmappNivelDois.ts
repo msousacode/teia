@@ -387,4 +387,4 @@ const avaliacaoNivelDois = {
   ],
 };
 
-export { avaliacaoNivelDois as avaliacaoNivelUm };
+export { avaliacaoNivelDois };
