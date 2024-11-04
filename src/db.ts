@@ -83,6 +83,23 @@ export interface AvaliacaoVbmapp {
   ativo: true;
 }
 
+export interface AvaliacaoVbmappColetas {
+  uuid: string;
+  nivel_coleta: number;
+  tipo: number;
+  coletas: dadosColeta[];
+  aprendiz_uuid_fk: string;
+  vbmapp_uuid_fk: string;
+  sync: false;
+  ativo: true;
+}
+
+interface dadosColeta {
+  id: number;
+  pontuacao: number;
+  data_coleta: number;
+}
+
 export class DataBase extends Dexie {
   treinamentos!: Table<Treinamento>;
 
@@ -98,6 +115,8 @@ export class DataBase extends Dexie {
 
   vbmapp!: Table<AvaliacaoVbmapp>;
 
+  vbmappColetas!: Table<AvaliacaoVbmappColetas>;
+
   constructor() {
     super('sysabaDB');
     this.version(1).stores({
@@ -108,6 +127,7 @@ export class DataBase extends Dexie {
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
       anotacoes: 'uuid,treinamento_uuid_fk',
       vbmapp: 'uuid, aprendiz_uuid_fk',
+      vbmappColetas: 'uuid, vbmapp_uuid_fk',
     });
   }
 }

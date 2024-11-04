@@ -96,7 +96,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'avaliacoes-coleta/vbmapp',
-        path: '/avaliacoes-coleta/vbmapp/:aprendizUuid',
+        path: '/avaliacoes-coleta/vbmapp/aprendiz/:aprendizUuid/tipoAvaliacao/:tipoAvaliacao?/avaliacao/:vbmappUuid?',
         component: () => import('pages/avaliacoes/AvaliacaoColeta.vue'),
         meta: { requiresAuth: true },
       },

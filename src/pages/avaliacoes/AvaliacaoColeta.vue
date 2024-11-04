@@ -1,22 +1,22 @@
 <template>
     <q-page padding>
-        <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
+        <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
-            <q-tab name="1" label="Nível 1" v-if="showAba('1')" />
-            <q-tab name="2" label="Nível 2" v-if="showAba('2')" />
-            <q-tab name="3" label="Nível 3" v-if="showAba('3')" />
+            <q-tab name="1" label="Nível 1" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
+            <q-tab name="2" label="Nível 2" v-if="showAba('2')" @click="getTitulosAvaliacoes(1, '2')" />
+            <q-tab name="3" label="Nível 3" v-if="showAba('3')" @click="getTitulosAvaliacoes(1, '3')" />
         </q-tabs>
         <div class="q-mt-sm"></div>
         <q-tabs v-model="tab2" class="text-teal" name="avaliacoes">
             <div v-for="(item, index) in titulosNivelUm" :key="index">
-                <q-tab :name=item.tipo :label=item.titulo @click="getAvaliacoes(item.tipo)" />
+                <q-tab :name=item.tipo :label=item.titulo @click="getTitulosAvaliacoes(item.tipo)" />
             </div>
         </q-tabs>
-
-        <q-tab-panels v-model="tab">
+        <q-tab-panels v-model="tab3">
             <q-tab-panel name="objetivos">
-                <div v-for="(item, index) in cardsNivelUm" :key="index">
-                    <q-card flat bordered class="my-card" :class="'bg-orange-1'">
+                <div v-for="(item, index) in cards" :key="index">
+                    <q-card flat bordered class="my-card"
+                        :class="nivelSelecionado == '1' ? 'bg-orange-1' : 'bg-green-1'">
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -65,48 +65,74 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ref } from 'vue';
-import { avaliacaoNivelUm } from './data/vbmappNivelUm'
-import { db } from 'src/db';
+import { avaliacaoNivelUm } from './data/vbmappNivelUm';
+import { avaliacaoNivelDois } from './data/vbmappNivelDois';
+import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
+import { v4 as uuid } from 'uuid';
+import { toRaw } from 'vue';
+import useNotify from 'src/composables/UseNotify';
+import { nextTick } from 'vue';
+
+const { success, error } = useNotify();
 
 const routeLocation = useRoute();
 
+const uuidAprendiz = routeLocation.params.aprendizUuid;
+
+const uuidVbmapp = ref();
+
 const showNiveis = ref<string[]>([])
 
-const tab = ref('objetivos');
+const tab1 = ref(1);
 
 const tab2 = ref(1);
 
+const tab3 = ref('objetivos');
+
 const titulosNivelUm = ref<any[]>([]);
 
-const cardsNivelUm = ref();
+const cards = ref<any[]>([]);
 
 const cardsColetaAtual = ref();
 
 const coletados = ref<any[]>([]);
 
-//const titulosNivelDois = ref<any[]>([]);
-
-//const cardsNivelDois = ref();
+const nivelSelecionado = ref();
 
 const showAba = (aba: string) => {
     return showNiveis.value.includes(aba)
 };
 
-function getAvaliacoes(tipo: number) {
+async function getTitulosAvaliacoes(tipo: number, aba?: string) {
+
+    nivelSelecionado.value = aba;
 
     if (Array.isArray(avaliacaoNivelUm.avaliacoes)) {
-        const objetivos = avaliacaoNivelUm.avaliacoes
-            .filter(i => i.tipo == tipo)
-            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        let objetivos;
+
+        if (aba == '1') {
+            objetivos = avaliacaoNivelUm.avaliacoes
+                .filter(i => i.tipo == tipo)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        } else if (aba == '2') {
+            objetivos = avaliacaoNivelDois.avaliacoes
+                .filter(i => i.tipo == tipo)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        } else {
+            objetivos = avaliacaoNivelDois.avaliacoes
+                .filter(i => i.tipo == tipo)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        }
 
         // Mapeia os objetivos para adicionar a propriedade 'selected'  
-        cardsNivelUm.value = objetivos.map(objetivo => ({
+        cards.value = objetivos.map(objetivo => ({
             ...objetivo,  // Mantém as propriedades existentes  
             selected: null // Adiciona a propriedade selected inicializada como null  
         }));
     }
     cardsColetaAtual.value = tipo;
+    await nextTick();
 }
 
 function selectOption(item: any, value: any) {
@@ -116,16 +142,30 @@ function selectOption(item: any, value: any) {
 
 function salvar() {
 
+    let data: AvaliacaoVbmappColetas = {
+        uuid: uuid(),
+        nivel_coleta: 1,
+        tipo: 1,
+        coletas: toRaw(coletados.value),
+        aprendiz_uuid_fk: uuidAprendiz.toString(),
+        vbmapp_uuid_fk: uuidVbmapp.value,
+        sync: false,
+        ativo: true,
+    };
+
+    db.vbmappColetas.add(data).then(() => {
+        success('Coletas salvas com sucesso!')
+    }).catch(() => {
+        error('Ocorreu um erro ao salvar as coletas.')
+    });
 }
 
 async function configTela() {
-
-    const uuidAprendiz = routeLocation.params.aprendizUuid;
-
     db.vbmapp
         .get({ aprendiz_uuid_fk: uuidAprendiz })
         .then((res) => {
             showNiveis.value = res?.niveis_coleta.split(',') || [];
+            uuidVbmapp.value = res?.uuid;
         })
         .catch((_error) => {
             console.error('Erro ao tentar consultar os treinamentos', _error);
@@ -133,41 +173,14 @@ async function configTela() {
 }
 
 function coletar(item: any, pontuacao: number) {
-    //Qual o grupo que esta sendo coletado:
-    const data = { id: item.id, pontuacao: pontuacao }
-    console.log(data)
-
+    const data = { id: item.id, pontuacao: pontuacao, data_coleta: Date.now() }
     coletados.value.push(data)
-
-
-    /** Quando eu salvar vai montar esse json
-     {
-        "uuid": "aaaa",
-        "cadrs_coleta_tipo": 1,
-        "coletados": [
-            {
-                "id": 1,
-                "pontuacao": 1
-            },
-            {
-                "id": 2,
-                "pontuacao": 0,5
-            },
-            {
-                "id": 3,
-                "pontuacao": 0
-            },
-        ],
-        "aprendiz_uuid_fk": "asdf",
-        "data_coleta": "",
-     }
-     */
 }
 
 onMounted(async () => {
     await configTela();
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
-    getAvaliacoes(tab2.value);
+    getTitulosAvaliacoes(tab2.value);
 });
 
 </script>

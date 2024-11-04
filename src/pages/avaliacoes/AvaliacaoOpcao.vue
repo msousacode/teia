@@ -103,6 +103,17 @@ watch(form.value, () => {
 
     if (form.value != null)
         store.aprendizSelected = form.value.aprendiz;
+
+    db.vbmapp.where({ aprendiz_uuid_fk: form.value.aprendiz.value }).toArray((res) => {
+
+        const newData = {
+            id: res[0].uuid,
+            name: 'Avaliação 1',//TODO manter provisóriamente assim depois pensar uma maneira de distinguir, talvez pela data de criação.
+            align: 'left',
+        }
+
+        avaliacaoRows.value.push(newData);
+    });
 });
 
 watch(selected, () => {
@@ -128,10 +139,11 @@ function ir(tipoAvaliacao: string) {
 
     const obj = toRaw(selected.value[0])
 
-    if (obj.id == 1) {// 1 - significa que é uma nova avaliação.
-        router.push({ name: "avaliacoes-info/vbmapp", params: { tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase() } })
+    if (obj.id == '1') {// 1 - significa que é uma nova avaliação.
+        router.push({ name: "avaliacoes-info/vbmapp", params: { tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase() } });
+    } else {
+        router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
     }
-    //todo aqui se for uma avaliação existente buscar no db e abri na tela de avaliação coleta.
 }
 
 onMounted(() => {
@@ -180,7 +192,7 @@ avaliacaoColumns.value = [
 
 avaliacaoRows.value = [
     {
-        id: 1,
+        id: '1',
         name: 'Iniciar Nova Avaliação',
         align: 'left',
     },
