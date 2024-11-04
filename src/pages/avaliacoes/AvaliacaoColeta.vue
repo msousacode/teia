@@ -84,7 +84,7 @@ const uuidVbmapp = ref();
 
 const showNiveis = ref<string[]>([])
 
-const tab1 = ref(1);
+const tab1 = ref('1');
 
 const tab2 = ref(1);
 
@@ -106,16 +106,16 @@ const showAba = (aba: string) => {
 
 async function getTitulosAvaliacoes(tipo: number, aba?: string) {
 
-    nivelSelecionado.value = aba;
+    nivelSelecionado.value = aba ?? nivelSelecionado.value;
 
     if (Array.isArray(avaliacaoNivelUm.avaliacoes)) {
         let objetivos;
 
-        if (aba == '1') {
+        if (nivelSelecionado.value == '1') {
             objetivos = avaliacaoNivelUm.avaliacoes
                 .filter(i => i.tipo == tipo)
                 .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        } else if (aba == '2') {
+        } else if (nivelSelecionado.value == '2') {
             objetivos = avaliacaoNivelDois.avaliacoes
                 .filter(i => i.tipo == tipo)
                 .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
@@ -180,7 +180,7 @@ function coletar(item: any, pontuacao: number) {
 onMounted(async () => {
     await configTela();
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
-    getTitulosAvaliacoes(tab2.value);
+    getTitulosAvaliacoes(tab2.value, '1');
 });
 
 </script>
