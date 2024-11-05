@@ -30,9 +30,9 @@
           </div>
         </div>
       </q-card-section>
-
-      <AssinaturaOpcoesPage v-if="isContaFree" />
     </q-card>
+
+    <AssinaturaOpcoesPage v-if="isContaFree" />
 
     <q-btn label="Cancelar Assinatura" no-caps v-if="!isContaFree" class="q-ma-sm" color="red-4" />
   </q-page>
