@@ -26,7 +26,7 @@ export class AsaasService {
 
     this.$q.loading.show();
     api
-      .post('/api/v3/paymentLinks/', data, this.config)
+      .post('/api/v3/paymentLinks', data, this.config)
       .then((res) => {
         window.location.href = res.data.url;
         this.$q.loading.hide();

@@ -5,7 +5,8 @@
 
     <div class="text-body1 q-ma-sm" v-if="isContaFree"><b>Seu plano atual</b></div>
 
-    <p class="q-pa-sm">Você pode cancelar sua assinatura por aqui. Caso precise de assistência ou tenha alguma dúvida,
+    <p class="q-pa-sm" v-if="!isContaFree">Você pode cancelar sua assinatura por aqui. Caso precise de assistência ou
+      tenha alguma dúvida,
       nossa equipe está
       à disposição para ajudar!</p>
 
@@ -31,7 +32,6 @@
         </div>
       </q-card-section>
     </q-card>
-
     <AssinaturaOpcoesPage v-if="isContaFree" />
 
     <q-btn label="Cancelar Assinatura" no-caps v-if="!isContaFree" class="q-ma-sm" color="red-4" />
@@ -47,6 +47,6 @@ const diasRestantesTeste = localStorage.getItem("periodoTeste");
 
 const user = useUserStore();
 
-const isContaFree = ref(user.assinatura == 'FREE');
+const isContaFree = ref(user.getState.assinatura == 'FREE');
 
 </script>
