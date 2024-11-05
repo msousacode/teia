@@ -70,6 +70,9 @@ module.exports = configure(function (ctx) {
         SUPABASE_URL: 'https://admyhroxjebmgrdakhza.supabase.co',
         SUPABASE_KEY:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkbXlocm94amVibWdyZGFraHphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk1NDI5NjksImV4cCI6MjAzNTExODk2OX0.zty5JEo6odbmNLL5yNf_6a4JxgBkLoyxOE3Ris9Kk9g',
+        ASAAS_URL: ctx.dev
+          ? 'http://localhost:9200/api/v3/'
+          : 'https://sysaba.netlify.app/api/v3/',
         ASSAS_KEY:
           '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0MDQ0MjQ6OiRhYWNoX2NjY2JmMGYxLTc4YjEtNDFiZS1hYjgxLTAxOGVlN2M4YzY4ZQ==',
       },
