@@ -23,7 +23,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Anual" no-caps color="info" style="width: 150px;" />
+            <q-btn label="Assinar Anual" no-caps color="info" style="width: 150px;" @click="assinarAnual()" />
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Trimestral" no-caps color="info" style="width: 150px;" />
+            <q-btn label="Assinar Trimestral" no-caps color="info" style="width: 150px;" @click="assinarTrimestral()" />
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Mensal" no-caps color="info" style="width: 150px;" />
+            <q-btn label="Assinar Mensal" no-caps color="info" style="width: 150px;" @click="assinarMensal()" />
           </div>
         </div>
       </div>
@@ -66,5 +66,21 @@
 
 </template>
 <script setup lang="ts">
+import { AsaasService } from 'src/services/AsaasService';
+
+
+const asaasService = new AsaasService();
+
+function assinarMensal() {
+  asaasService.criarLinkPagamento('MONTHLY', 44.90);
+}
+
+function assinarTrimestral() {
+  asaasService.criarLinkPagamento('QUARTERLY', 134.00)
+}
+
+function assinarAnual() {
+  asaasService.criarLinkPagamento('YEARLY', 449.00);
+}
 
 </script>

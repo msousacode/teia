@@ -9,7 +9,7 @@
       nossa equipe está
       à disposição para ajudar!</p>
 
-    <q-card flat bordered class="my-card q-ma-sm" :class="'bg-green-1'" v-if="isContaFree">
+    <q-card flat bordered class="my-card q-ma-sm" :class="'bg-green-1'">
       <q-card-section>
         <q-badge color="green q-mb-md q-pa-sm">
           TESTE GRÁTIS
@@ -31,7 +31,7 @@
         </div>
       </q-card-section>
 
-      <AssinaturaOpcoesPage v-if="isContaFree" />
+      <AssinaturaOpcoesPage v-if="!isContaFree" />
     </q-card>
 
     <q-btn label="Cancelar Assinatura" no-caps v-if="!isContaFree" class="q-ma-sm" color="red-4" />
