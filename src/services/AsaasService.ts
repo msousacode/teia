@@ -27,12 +27,15 @@ export class AsaasService {
     this.$q.loading.show();
     api
       .post('/api/v3/paymentLinks', data, this.config)
-      .then((res) => {
-        window.location.href = res.data.url;
+      .then(() => {
+        window.location.href = 'www.google.com';
+
         this.$q.loading.hide();
+        this.$q.notify('sucesso');
       })
       .catch(() => {
         this.$q.loading.hide();
+        this.$q.notify('erro');
       });
   };
 }
