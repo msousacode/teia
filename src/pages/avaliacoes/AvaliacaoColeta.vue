@@ -58,7 +58,7 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="save" color="green" @click="salvar" />
+            <q-btn fab icon="save" color="green" @click="salvar" :disable="true" />
         </q-page-sticky>
     </q-page>
 </template>

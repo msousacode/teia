@@ -11,7 +11,7 @@
       <q-badge color="green q-mb-md q-pa-sm">
         20% de DESCONTO
       </q-badge>
-      <q-badge color="blue-9 q-mb-md q-pa-sm q-ml-sm">
+      <q-badge color="orange-9 q-mb-md q-pa-sm q-ml-sm">
         MELHOR OPÇÃO
       </q-badge>
       <div class="row items-center no-wrap">
@@ -23,7 +23,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Anual" no-caps color="info" style="width: 150px;" @click="assinarAnual()" />
+            <q-btn label="Assinar Anual" no-caps color="info" style="width: 150px;" @click="assinarAnual" />
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Trimestral" no-caps color="info" style="width: 150px;" @click="assinarTrimestral()" />
+            <q-btn label="Assinar Trimestral" no-caps color="info" style="width: 150px;" @click="assinarTrimestral" />
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
           </div>
 
           <div class="text-body2 q-mt-sm">
-            <q-btn label="Assinar Mensal" no-caps color="info" style="width: 150px;" @click="assinarMensal()" />
+            <q-btn label="Assinar Mensal" no-caps color="info" style="width: 150px;" @click="assinarMensal" />
           </div>
         </div>
       </div>
@@ -67,7 +67,6 @@
 </template>
 <script setup lang="ts">
 import { AsaasService } from 'src/services/AsaasService';
-
 
 const asaasService = new AsaasService();
 
