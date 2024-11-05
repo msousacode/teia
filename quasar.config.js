@@ -102,16 +102,6 @@ module.exports = configure(function (ctx) {
           secure: false,
         },
       },
-      proxy: {
-        '/api/v3/paymentLinks': {
-          target: 'https://asaas.com',
-          changeOrigin: true,
-          pathRewrite: {
-            '^/api/v3/paymentLinks': '/api/v3/paymentLinks',
-          },
-          secure: false,
-        },
-      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
