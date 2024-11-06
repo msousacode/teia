@@ -93,7 +93,7 @@ module.exports = configure(function (ctx) {
       // https: true
       open: true, // opens browser window automatically
       proxy: {
-        '/api/*': {
+        '/api': {
           target: 'https://asaas.com',
           changeOrigin: true,
           pathRewrite: {
