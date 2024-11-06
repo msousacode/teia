@@ -1,5 +1,5 @@
 import { useQuasar } from 'quasar';
-import { api } from 'src/boot/axiosAsaas';
+import { api } from 'src/boot/axios';
 import { useRouter } from 'vue-router';
 
 export class AsaasService {
@@ -33,10 +33,7 @@ export class AsaasService {
         return response.data.url;
       })
       .catch((err) => {
-        console.error(err);
-        debugger;
         this.$q.notify('erro' + err);
-        return null;
       });
   };
 }
