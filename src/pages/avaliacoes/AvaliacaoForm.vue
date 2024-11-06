@@ -28,7 +28,7 @@
                         </div>
                         <div class="col">
                             <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                                :disabled="isAvancarDisabled" />
+                                :disabled="!isAvancarDisabled" />
                         </div>
                     </div>
                 </div>
