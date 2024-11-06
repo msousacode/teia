@@ -33,9 +33,9 @@ export class AsaasService {
         this.$q.loading.hide();
         this.$q.notify('sucesso');
       })
-      .catch(() => {
+      .catch((err) => {
         this.$q.loading.hide();
-        this.$q.notify('erro');
+        this.$q.notify('erro' + err);
       });
   };
 }

@@ -1,21 +1,23 @@
 <template>
     <div class="q-pa-md">
-        <title-custom title="Configurações Iniciais da Nova Avaliação (VB-MAPP)" />
+        <title-custom title="Criar Nova Avaliação" />
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
-            <div class="q-mb-md">
-                <q-select stack-label outlined v-model="selectedForm.aprendiz" label="Selecione o Aprendiz"
-                    :readonly="true" />
-            </div>
+            <q-form>
+                <div class="q-mb-md">
+                    <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes"
+                        label="Selecione o Aprendiz" />
+                </div>
+                <div class="q-mb-md">
+                    <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Protocolos" />
+                </div>
 
-            <q-form @submit.prevent="submit">
+                <q-input outlined stack-label label="Queixa Inicial do Tratamento (CID)" v-model="form.queixa"
+                    class="q-mb-md" />
 
-                <q-input outlined stack-label label="Queixa Inicial do Tratamento (CID)"
-                    v-model="infoAvaliacaoForm.queixa" class="q-mb-md" />
+                <q-input outlined stack-label label="Objetivo do Documento" v-model="form.objetivo_documento"
+                    class="q-mb-md" />
 
-                <q-input outlined stack-label label="Objetivo do Documento"
-                    v-model="infoAvaliacaoForm.objetivo_documento" class="q-mb-md" />
-
-                <q-input outlined stack-label label="Metodologia utilizada" v-model="infoAvaliacaoForm.metodologia"
+                <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia"
                     class="q-mb-md" />
 
                 <div class="fixed-bottom q-pa-md">
@@ -26,16 +28,17 @@
                         </div>
                         <div class="col">
                             <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                                :disabled="isAvancarDisabled" />
+                                :disabled="!isAvancarDisabled" />
                         </div>
                     </div>
                 </div>
             </q-form>
         </div>
 
-        <div class="q-mb-md">
+        <div class="q-mb-md" v-show="isVbmapp">
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                v-model:selected="selected" selection="multiple" :rows-per-page-options="[10]" :rows-per-page="10">
+                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]"
+                :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
@@ -52,14 +55,14 @@
 
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
 import { avaliacaoColumns, avaliacaoRows } from './table'
 import { useRouter } from 'vue-router';
 import { db } from 'src/db';
+import { computed } from 'vue';
 import { v4 as uuid } from 'uuid';
 
 const router = useRouter()
@@ -68,17 +71,14 @@ const columns = ref<any[]>(avaliacaoColumns);
 
 const rows = ref<any[]>(avaliacaoRows);
 
-const selected = ref<any[]>([])
+const niveisSelcionados = ref();
 
-const selectedForm = ref({
-    uuid: '',
-    aprendiz: {}
-});
-
-const infoAvaliacaoForm = ref({
+const form = ref({
     uuid: '',
     aprendiz_uuid_fk: '',
     nome_aprendiz: '',
+    protocolo: '',
+    aprendiz: '',
     queixa: '',
     objetivo_documento: '',
     metodologia: '',
@@ -87,38 +87,54 @@ const infoAvaliacaoForm = ref({
     ativo: true,
 });
 
-const store = useAvaliacaoStore();
+const aprendizes = ref<any[]>([]);
 
-const isAvancarDisabled = computed(() => { return selected.value.length == 0 })
+const protocolos = ref([
+    { label: 'VB-MAPP', value: '1' },
+    { label: 'ABLLS', value: '2' },
+    { label: 'PORTAGE', value: '3' },
+    { label: 'SOCIALLY SAVVY', value: '4' }
+]);
 
-function aprendizSelecionado() {
-    selectedForm.value.aprendiz = toRaw(store.get.aprendizSelected);
-}
+const isVbmapp = computed(() => form.value.protocolo.label === 'VB-MAPP');
+
+const isAvancarDisabled = false;//computed(() => { return selected.value.length == 0 })
 
 async function submit() {
 
-    const avaliacoes = selected.value.map(i => i.id);
+    const avaliacoes = niveisSelcionados.value.map(i => i.id);
 
-    infoAvaliacaoForm.value.uuid = uuid();
-    infoAvaliacaoForm.value.aprendiz_uuid_fk = selectedForm.value.aprendiz.value;
-    infoAvaliacaoForm.value.nome_aprendiz = selectedForm.value.aprendiz.label;
-    infoAvaliacaoForm.value.niveis_coleta = avaliacoes.toString();
+    form.value.uuid = uuid();
+    form.value.aprendiz_uuid_fk = form.value.aprendiz.value;
+    form.value.nome_aprendiz = form.value.aprendiz.label;
+    form.value.niveis_coleta = avaliacoes.toString();
 
-    const data = toRaw(infoAvaliacaoForm.value);
+    const data = toRaw(form.value);
     db.vbmapp.add(data);
 }
 
 async function avancar() {
     await submit().then(() => {
-        const uuid = infoAvaliacaoForm.value.aprendiz_uuid_fk;
+        const uuid = form.value.aprendiz_uuid_fk;
         router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid } });
     }).catch(() => {
         console.error("erro ao salvar vbmapp");//TODO depois colocar uma mensagem bonitinha com notify.
     });
 }
 
+function carregarSelectAprendizes() {
+    db.aprendizes.toArray().then((res) => {
+        res.filter(i => i.ativo === true).forEach((aprendiz) => {
+            aprendizes.value.push({
+                label: aprendiz.nome_aprendiz,
+                value: aprendiz.uuid,
+            });
+        });
+    });
+}
+
 onMounted(() => {
-    aprendizSelecionado();
+    carregarSelectAprendizes();
 });
 
 </script>

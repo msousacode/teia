@@ -75,9 +75,7 @@ function assinarMensal() {
 }
 
 async function assinarTrimestral() {
-  await asaasService.criarLinkPagamento('QUARTERLY', 134.00).then(res => {
-    console.log(res)
-  })
+  await asaasService.criarLinkPagamento('QUARTERLY', 134.00);
 }
 
 function assinarAnual() {

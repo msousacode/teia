@@ -89,9 +89,9 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
-        name: 'avaliacoes-info/vbmapp',
-        path: '/avaliacoes-info/vbmapp/:tipoAvaliacao?',
-        component: () => import('pages/avaliacoes/AvaliacaoVbmappInfo.vue'),
+        name: 'avaliacoes-novo',
+        path: '/avaliacoes-novo',
+        component: () => import('pages/avaliacoes/AvaliacaoForm.vue'),
         meta: { requiresAuth: true },
       },
       {
