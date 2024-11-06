@@ -71,15 +71,21 @@ import { AsaasService } from 'src/services/AsaasService';
 const asaasService = new AsaasService();
 
 function assinarMensal() {
-  asaasService.criarLinkPagamento('MONTHLY', 44.90);
+  asaasService.criarLinkPagamento('MONTHLY', 44.90).then(res => {
+    window.location.href = res;
+  });
 }
 
 async function assinarTrimestral() {
-  await asaasService.criarLinkPagamento('QUARTERLY', 134.00);
+  await asaasService.criarLinkPagamento('QUARTERLY', 134.00).then(res => {
+    window.location.href = res;
+  });
 }
 
 function assinarAnual() {
-  asaasService.criarLinkPagamento('YEARLY', 449.00);
+  asaasService.criarLinkPagamento('YEARLY', 449.00).then(res => {
+    window.location.href = res;
+  });
 }
 
 </script>
