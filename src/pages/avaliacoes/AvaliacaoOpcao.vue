@@ -22,6 +22,7 @@
         </div>
 
         <title-custom title="Protocolos:" />
+
         <q-list bordered>
             <q-expansion-item expand-separator label="VB-MAPP" :disable="!isHabilitaProtocolos">
                 <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
@@ -54,6 +55,10 @@
                 </q-card>
             </q-expansion-item>
         </q-list>
+
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
+        </q-page-sticky>
     </div>
 </template>
 <script setup lang="ts">
@@ -105,14 +110,17 @@ watch(form.value, () => {
         store.aprendizSelected = form.value.aprendiz;
 
     db.vbmapp.where({ aprendiz_uuid_fk: form.value.aprendiz.value }).toArray((res) => {
-
-        const newData = {
-            id: res[0].uuid,
-            name: 'Avaliação 1',//TODO manter provisóriamente assim depois pensar uma maneira de distinguir, talvez pela data de criação.
-            align: 'left',
-        }
-
-        avaliacaoRows.value.push(newData);
+        console.log(res)
+        const response = res.map((i, idx) => {
+            return {
+                id: i.uuid,
+                name: `Avaliação - ${idx++}`,
+                protocolo: i.protocolo.label,
+                align: 'left',
+            }
+        })
+        console.log(response)
+        avaliacaoRows.value = response;
     });
 });
 
@@ -138,12 +146,7 @@ function ir(tipoAvaliacao: string) {
         throw new Error("precisa ser informada o tipo de avaliação.")
 
     const obj = toRaw(selected.value[0])
-
-    if (obj.id == '1') {// 1 - significa que é uma nova avaliação.
-        router.push({ name: "avaliacoes-info/vbmapp", params: { tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase() } });
-    } else {
-        router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
-    }
+    router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
 }
 
 onMounted(() => {
@@ -187,14 +190,10 @@ avaliacaoColumns.value = [
         align: 'left',
         field: 'name'
     },
-
-]
-
-avaliacaoRows.value = [
     {
-        id: '1',
-        name: 'Iniciar Nova Avaliação',
+        label: 'Protocolo',
         align: 'left',
+        field: 'protocolo'
     },
 ]
 
