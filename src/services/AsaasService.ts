@@ -35,7 +35,6 @@ export class AsaasService {
       .catch((err) => {
         console.error(err);
         useNotify().error('Erro ao cadastrar cliente no integrador');
-        debugger;
         return null;
       });
   };
