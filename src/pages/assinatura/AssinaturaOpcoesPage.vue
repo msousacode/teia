@@ -9,7 +9,7 @@
   <q-card flat bordered class="my-card q-ma-md" :class="'bg-grey-2'">
     <q-card-section>
       <q-badge color="green q-mb-md q-pa-sm">
-        20% de DESCONTO
+        ECONOMIA DE 20%
       </q-badge>
       <q-badge color="orange-9 q-mb-md q-pa-sm q-ml-sm">
         MELHOR OPÇÃO
@@ -19,7 +19,6 @@
           <div class="text-body2">
             <div class="text-body2 text-pink"><b>PLANO ANUAL</b></div>
             <span class="text-h6">R$ 449,00</span>
-            <div>No Plano Anual o valor mensal é de <b>R$ 37,41</b> pelo período de 12 meses.</div>
           </div>
 
           <div class="text-body2 q-mt-sm">
