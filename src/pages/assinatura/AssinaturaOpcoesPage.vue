@@ -65,25 +65,40 @@
 
 </template>
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { AsaasService } from 'src/services/AsaasService';
+
+const $q = useQuasar();
 
 const asaasService = new AsaasService();
 
 function assinarMensal() {
   asaasService.criarLinkPagamento('MONTHLY', 44.90).then(res => {
+    $q.loading.show();
     window.location.href = res;
+    $q.loading.hide();
+  }).catch(() => {
+    $q.loading.hide();
   });
 }
 
 async function assinarTrimestral() {
   await asaasService.criarLinkPagamento('QUARTERLY', 134.00).then(res => {
+    $q.loading.show();
     window.location.href = res;
+    $q.loading.hide();
+  }).catch(() => {
+    $q.loading.hide();
   });
 }
 
 function assinarAnual() {
   asaasService.criarLinkPagamento('YEARLY', 449.00).then(res => {
+    $q.loading.show();
     window.location.href = res;
+    $q.loading.hide();
+  }).catch(() => {
+    $q.loading.hide();
   });
 }
 
