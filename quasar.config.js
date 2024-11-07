@@ -54,7 +54,7 @@ module.exports = configure(function (ctx) {
         node: 'node16',
       },
 
-      vueRouterMode: 'history', // available values: 'hash', 'history',
+      vueRouterMode: 'hash', // available values: 'hash', 'history',
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -94,7 +94,7 @@ module.exports = configure(function (ctx) {
       open: true, // opens browser window automatically
       proxy: {
         '/api': {
-          target: 'https://asaas.com',
+          target: 'https://sandbox.asaas.com',
           changeOrigin: true,
           pathRewrite: {
             '^/api': '/api/v3',
