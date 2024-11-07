@@ -19,7 +19,7 @@
           <div class="text-body2">
             <div class="text-body2 text-pink"><b>PLANO ANUAL</b></div>
             <span class="text-h6">R$ 449,00</span>
-            <div>Nesse plano será cobrado o valor de <b>R$ 37,41</b> a cada mês pelo período de 12 meses.</div>
+            <div>No Plano Anual o valor mensal é de <b>R$ 37,41</b> pelo período de 12 meses.</div>
           </div>
 
           <div class="text-body2 q-mt-sm">
