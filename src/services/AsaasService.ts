@@ -1,6 +1,7 @@
 import { useQuasar } from 'quasar';
 import { api } from 'src/boot/axios';
 import { useRouter } from 'vue-router';
+import useNotify from 'src/composables/UseNotify';
 
 export class AsaasService {
   config = {
@@ -24,16 +25,18 @@ export class AsaasService {
       value: value,
     };
 
-    this.$q.loading.show();
-
+    //Esse return faz com que a promisse retorne o id do cliente cadastrado para a função register que chamou essa função
     return api
       .post('/api/v3/paymentLinks', data, this.config)
       .then((response) => {
         //Esse return faz com que a promisse retorne o id do cliente cadastrado
-        return response.data.url;
+        useNotify().success(response.data.url);
       })
       .catch((err) => {
-        this.$q.notify('erro' + err);
+        console.error(err);
+        useNotify().error('Erro ao cadastrar cliente no integrador');
+        debugger;
+        return null;
       });
   };
 }
