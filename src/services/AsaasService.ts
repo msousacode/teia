@@ -33,7 +33,7 @@ export class AsaasService {
       })
       .catch((err) => {
         console.error(err);
-        this.$q.notify('Erro ao cadastrar cliente no integrador');
+        this.$q.notify('Erro ao cadastrar cliente no integrador: ' + err);
       });
   };
 }
