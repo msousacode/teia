@@ -18,6 +18,7 @@ export class AsaasService {
 
   criarLinkPagamento = (billingType: string, value: number) => {
     const data = {
+      name: 'Nova Assinatura',
       billingType: 'CREDIT_CARD',
       chargeType: 'RECURRENT',
       subscriptionCycle: billingType,
