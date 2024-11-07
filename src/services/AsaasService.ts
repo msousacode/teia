@@ -30,7 +30,7 @@ export class AsaasService {
       .post('/api/v3/paymentLinks', data, this.config)
       .then((response) => {
         //Esse return faz com que a promisse retorne o id do cliente cadastrado
-        this.$q.notify(response.data.url);
+        window.location.href = response.data.url;
       })
       .catch((err) => {
         console.error(err);
