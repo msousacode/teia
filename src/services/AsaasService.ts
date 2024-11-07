@@ -26,11 +26,11 @@ export class AsaasService {
     };
 
     //Esse return faz com que a promisse retorne o id do cliente cadastrado para a função register que chamou essa função
-    api
+    return api
       .post('/api/v3/paymentLinks', data, this.config)
       .then((response) => {
         //Esse return faz com que a promisse retorne o id do cliente cadastrado
-        window.location.href = response.data.url;
+        return response.data.url;
       })
       .catch((err) => {
         console.error(err);
