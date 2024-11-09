@@ -15,7 +15,13 @@
         <q-tab-panels v-model="tab3">
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card" :class="nivelSelecionado == '1' ? 'bg-orange-1' : 'bg-green-1'">
+                    <q-card flat bordered class="my-card" :class="nivelSelecionado === '1'
+                        ? 'bg-orange-1'
+                        : nivelSelecionado === '2'
+                            ? 'bg-green-1'
+                            : nivelSelecionado === '3'
+                                ? 'bg-blue-1'
+                                : ''">
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -66,6 +72,7 @@ import { onMounted } from 'vue';
 import { ref, reactive } from 'vue';
 import { avaliacaoNivelUm } from './data/vbmappNivelUm';
 import { avaliacaoNivelDois } from './data/vbmappNivelDois';
+import { avaliacaoNivelTres } from './data/vbmappNivelTres';
 import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
 import { v4 as uuid } from 'uuid';
@@ -136,7 +143,7 @@ function carregarAvaliacao() {
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
     } else if (nivelSelecionado.value == '3') {
-        objetivos = avaliacaoNivelDois.avaliacoes
+        objetivos = avaliacaoNivelTres.avaliacoes
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
     } else {

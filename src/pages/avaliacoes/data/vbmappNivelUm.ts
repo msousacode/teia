@@ -48,33 +48,9 @@ const avaliacaoNivelUm = {
       tipo: 2,
       objetivos: [
         {
-          id: 105,
-          cod: 1,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 106,
-          cod: 2,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 107,
-          cod: 3,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 108,
-          cod: 4,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 109,
-          cod: 5,
-          descricao: 'precisa fazer',
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
           selected: null,
         },
       ],
@@ -376,24 +352,78 @@ const avaliacaoNivelUm = {
     {
       titulo: 'Resposta',
       tipo: 10,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
     {
       titulo: 'Interverbal',
       tipo: 11,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
 
     {
       titulo: 'Grupo',
       tipo: 12,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
 
     {
       titulo: 'Linguístisca',
       tipo: 13,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
+    },
+
+    {
+      titulo: 'Leitura',
+      tipo: 14,
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
+    },
+
+    {
+      titulo: 'Matemática',
+      tipo: 15,
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
   ],
 };
