@@ -335,7 +335,14 @@ const avaliacaoNivelDois = {
     {
       titulo: 'Vocal',
       tipo: 9,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
 
     {

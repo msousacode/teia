@@ -376,24 +376,78 @@ const avaliacaoNivelUm = {
     {
       titulo: 'Resposta',
       tipo: 10,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
     {
       titulo: 'Interverbal',
       tipo: 11,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
 
     {
       titulo: 'Grupo',
       tipo: 12,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
 
     {
       titulo: 'Linguístisca',
       tipo: 13,
-      objetivos: [],
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
+    },
+
+    {
+      titulo: 'Leitura',
+      tipo: 14,
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
+    },
+
+    {
+      titulo: 'Matemática',
+      tipo: 15,
+      objetivos: [
+        {
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
+          selected: null,
+        },
+      ],
     },
   ],
 };
