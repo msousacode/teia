@@ -18,19 +18,6 @@
                     class="q-mb-md" />
 
                 <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia" class="q-mb-md" />
-
-                <div class="fixed-bottom q-pa-md">
-                    <div class="row">
-                        <div class="col">
-                            <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
-                                :to="{ name: 'avaliacoes' }" />
-                        </div>
-                        <div class="col">
-                            <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                                :disabled="isAvancarDisabled" />
-                        </div>
-                    </div>
-                </div>
             </q-form>
         </div>
 
@@ -48,6 +35,18 @@
                     </q-td>
                 </template>
             </q-table>
+        </div>
+    </div>
+    <div class="fixed-bottom q-pa-md">
+        <div class="row">
+            <div class="col">
+                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
+                    :to="{ name: 'avaliacoes' }" />
+            </div>
+            <div class="col">
+                <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
+                    :disabled="isAvancarDisabled" />
+            </div>
         </div>
     </div>
 </template>
