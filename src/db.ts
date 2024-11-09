@@ -85,17 +85,11 @@ export interface AvaliacaoVbmapp {
 
 export interface AvaliacaoVbmappColetas {
   uuid: string;
-  nivel_coleta: number;
-  tipo: number;
-  coletas: dadosColeta[];
   aprendiz_uuid_fk: string;
   vbmapp_uuid_fk: string;
-  sync: false;
-  ativo: true;
-}
-
-interface dadosColeta {
-  id: number;
+  coleta_id: number;
+  nivel_coleta: number;
+  tipo: number;
   pontuacao: number;
   data_coleta: number;
 }

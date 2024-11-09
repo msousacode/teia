@@ -15,8 +15,7 @@
         <q-tab-panels v-model="tab3">
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card"
-                        :class="nivelSelecionado == '1' ? 'bg-orange-1' : 'bg-green-1'">
+                    <q-card flat bordered class="my-card" :class="nivelSelecionado == '1' ? 'bg-orange-1' : 'bg-green-1'">
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -30,16 +29,16 @@
                             <q-btn-group style="border: 1px solid;">
                                 <q-btn label="Sim"
                                     :class="item.selected === 1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="selectOption(item, 1)" />
+                                    @click="coletar(item, 1)" />
                                 <q-btn label="Às vezes"
                                     :class="item.selected === 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="selectOption(item, 0.5)" />
+                                    @click="coletar(item, 0.5)" />
                                 <q-btn label="Não"
                                     :class="item.selected === 0 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="selectOption(item, 0)" />
+                                    @click="coletar(item, 0)" />
                                 <q-btn label="NA"
                                     :class="item.selected === -1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="selectOption(item, -1)" />
+                                    @click="coletar(item, -1)" />
                             </q-btn-group>
                         </div>
                     </q-card>
@@ -58,13 +57,13 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="save" color="green" @click="salvar" :disable="true" />
+            <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
         </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { avaliacaoNivelUm } from './data/vbmappNivelUm';
 import { avaliacaoNivelDois } from './data/vbmappNivelDois';
 import { AvaliacaoVbmappColetas, db } from 'src/db';
@@ -74,11 +73,13 @@ import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { nextTick } from 'vue';
 
-const { success, error } = useNotify();
+const { success } = useNotify();
 
 const routeLocation = useRoute();
 
 const uuidAprendiz = routeLocation.params.aprendizUuid;
+
+const vbmappUuidParam = routeLocation.params.vbmappUuid;
 
 const uuidVbmapp = ref();
 
@@ -96,15 +97,21 @@ const cards = ref<any[]>([]);
 
 const cardsColetaAtual = ref();
 
-const coletados = ref<any[]>([]);
-
 const nivelSelecionado = ref();
 
 const showAba = (aba: string) => {
     return showNiveis.value.includes(aba)
 };
 
+const tituloSelecionado = ref()
+
+const state = reactive({
+    cache: new Map()
+});
+
 async function getTitulosAvaliacoes(tipo: number, aba?: string) {
+    refresh()
+    tituloSelecionado.value = toRaw(tipo);
 
     nivelSelecionado.value = aba ?? nivelSelecionado.value;
 
@@ -135,28 +142,52 @@ async function getTitulosAvaliacoes(tipo: number, aba?: string) {
     await nextTick();
 }
 
-function selectOption(item: any, value: any) {
-    item.selected = value; // Atualiza a seleção do cartão  
-    coletar(item, value); // Chama a função coletar com o valor  
+async function salvar() {
+
+    const coletas = toRaw(state.cache);
+
+    const itens = coletas.get("coletasRealizadas");
+
+    await db.vbmappColetas.bulkAdd(itens).then(() => {
+        success('Coletas salvas com sucesso!');
+        refresh();
+    });
 }
 
-function salvar() {
+function refresh() {
+    //TODO adaptar para todos os níveis
+    let objetivos = avaliacaoNivelUm.avaliacoes
+        .filter(i => i.tipo === tituloSelecionado.value)
+        .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio;
 
-    let data: AvaliacaoVbmappColetas = {
-        uuid: uuid(),
-        nivel_coleta: 1,
-        tipo: 1,
-        coletas: toRaw(coletados.value),
-        aprendiz_uuid_fk: uuidAprendiz.toString(),
-        vbmapp_uuid_fk: uuidVbmapp.value,
-        sync: false,
-        ativo: true,
-    };
+    cards.value = objetivos.map(objetivo => ({
+        ...objetivo,  // Mantém as propriedades existentes  
+        selected: null // Adiciona a propriedade selected inicializada como null  
+    }));
 
-    db.vbmappColetas.add(data).then(() => {
-        success('Coletas salvas com sucesso!')
-    }).catch(() => {
-        error('Ocorreu um erro ao salvar as coletas.')
+    let cardsTela = toRaw(cards.value);
+
+    db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam }).toArray((resultDB) => {
+
+        resultDB.forEach(row => {
+            // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
+            const card = cardsTela.find(card => card.id === row.coleta_id);
+
+            // Verificar se o card foi encontrado  
+            if (card) {
+                // Atualizar a propriedade selected do card  
+                card.selected = row.pontuacao;
+                // Adicionar o card ao array cardsRespondidos  
+
+                // Usando map para substituir o objeto com o id específico  
+                const cardsAtualizados = cardsTela.map(item =>
+                    item.id === card.id ? card : item
+                );
+
+                //cards atualizados para exibir na tela.
+                cards.value = cardsAtualizados;
+            }
+        });
     });
 }
 
@@ -173,14 +204,40 @@ async function configTela() {
 }
 
 function coletar(item: any, pontuacao: number) {
-    const data = { id: item.id, pontuacao: pontuacao, data_coleta: Date.now() }
-    coletados.value.push(data)
+
+    item.selected = pontuacao; // Atualiza a seleção do cartão  
+
+    const novaColeta: AvaliacaoVbmappColetas = {
+        uuid: uuid(),
+        vbmapp_uuid_fk: uuidVbmapp.value,
+        aprendiz_uuid_fk: uuidAprendiz.toString(),
+        coleta_id: item.id,
+        nivel_coleta: 1,
+        tipo: tituloSelecionado.value,
+        pontuacao: pontuacao,
+        data_coleta: Date.now()
+    };
+
+    const stateCache = toRaw(state.cache);
+    //adiciona a nova coleta no cache
+    stateCache.get("coletasRealizadas").push(novaColeta);
+}
+
+async function getData(key: string) {
+    if (state.cache.has(key)) {
+        return state.cache.get(key);
+    }
+
+
+    state.cache.set(key, []);
 }
 
 onMounted(async () => {
     await configTela();
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
     getTitulosAvaliacoes(tab2.value, '1');
+    getData('coletasRealizadas');
+    refresh()
 });
 
 </script>
