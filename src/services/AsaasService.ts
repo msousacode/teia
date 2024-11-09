@@ -1,5 +1,5 @@
 import { useQuasar } from 'quasar';
-import { api } from 'src/boot/axios';
+//import { api } from 'src/boot/axios';
 import { useRouter } from 'vue-router';
 
 export class AsaasService {
@@ -24,8 +24,9 @@ export class AsaasService {
       subscriptionCycle: billingType,
       value: value,
     };
-
+    console.log(data);
     //Esse return faz com que a promisse retorne o id do cliente cadastrado para a função register que chamou essa função
+    /*
     return api
       .post('/api/v3/paymentLinks', data, this.config)
       .then((response) => {
@@ -36,5 +37,6 @@ export class AsaasService {
         console.error(err);
         this.$q.notify('Erro ao cadastrar cliente no integrador: ' + err);
       });
+      */
   };
 }
