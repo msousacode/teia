@@ -19,7 +19,7 @@
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
-                                    <div class="text-subtitle1"><b>({{ item.id }})&nbsp;&nbsp;</b>{{ item.descricao }}
+                                    <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao }}
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +71,6 @@ import { useRoute } from 'vue-router';
 import { v4 as uuid } from 'uuid';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
-import { nextTick } from 'vue';
 
 const { success } = useNotify();
 
@@ -109,37 +108,37 @@ const state = reactive({
     cache: new Map()
 });
 
-async function getTitulosAvaliacoes(tipo: number, aba?: string) {
-    refresh()
-    tituloSelecionado.value = toRaw(tipo);
+async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
 
-    nivelSelecionado.value = aba ?? nivelSelecionado.value;
+    tituloSelecionado.value = toRaw(tipoColeta);
 
-    if (Array.isArray(avaliacaoNivelUm.avaliacoes)) {
-        let objetivos;
+    nivelSelecionado.value = abaSelecionada ?? nivelSelecionado.value;
 
-        if (nivelSelecionado.value == '1') {
-            objetivos = avaliacaoNivelUm.avaliacoes
-                .filter(i => i.tipo == tipo)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        } else if (nivelSelecionado.value == '2') {
-            objetivos = avaliacaoNivelDois.avaliacoes
-                .filter(i => i.tipo == tipo)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        } else {
-            objetivos = avaliacaoNivelDois.avaliacoes
-                .filter(i => i.tipo == tipo)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        }
+    let objetivos;
 
-        // Mapeia os objetivos para adicionar a propriedade 'selected'  
-        cards.value = objetivos.map(objetivo => ({
-            ...objetivo,  // Mantém as propriedades existentes  
-            selected: null // Adiciona a propriedade selected inicializada como null  
-        }));
+    if (nivelSelecionado.value == '1') {
+        objetivos = avaliacaoNivelUm.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+    } else if (nivelSelecionado.value == '2') {
+        objetivos = avaliacaoNivelDois.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+    } else if (nivelSelecionado.value == '3') {
+        objetivos = avaliacaoNivelDois.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+    } else {
+        objetivos = [{}];
     }
-    cardsColetaAtual.value = tipo;
-    await nextTick();
+
+    // Mapeia os objetivos para adicionar a propriedade 'selected'  
+    cards.value = objetivos.map(objetivo => ({
+        ...objetivo,  // Mantém as propriedades existentes              
+    }));
+
+    cardsColetaAtual.value = tipoColeta;
+    refresh();
 }
 
 async function salvar() {
