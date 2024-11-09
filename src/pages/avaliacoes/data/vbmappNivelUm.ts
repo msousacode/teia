@@ -48,33 +48,9 @@ const avaliacaoNivelUm = {
       tipo: 2,
       objetivos: [
         {
-          id: 105,
-          cod: 1,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 106,
-          cod: 2,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 107,
-          cod: 3,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 108,
-          cod: 4,
-          descricao: 'precisa fazer',
-          selected: null,
-        },
-        {
-          id: 109,
-          cod: 5,
-          descricao: 'precisa fazer',
+          id: 0,
+          cod: -1,
+          descricao: 'Sem objetivos',
           selected: null,
         },
       ],
