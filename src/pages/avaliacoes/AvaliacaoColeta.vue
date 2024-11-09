@@ -110,9 +110,20 @@ const state = reactive({
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
 
+    nivelSelecionado.value = abaSelecionada ?? nivelSelecionado.value;
+
     tituloSelecionado.value = toRaw(tipoColeta);
 
-    nivelSelecionado.value = abaSelecionada ?? nivelSelecionado.value;
+    cards.value = carregarAvaliacao();
+
+    refresh();
+}
+
+function carregarAvaliacao() {
+
+    const tipoColeta = tituloSelecionado.value
+
+    cardsColetaAtual.value = tipoColeta;//tipo da coleta e o conjunto dos objetivos.
 
     let objetivos;
 
@@ -132,13 +143,7 @@ async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string)
         objetivos = [{}];
     }
 
-    // Mapeia os objetivos para adicionar a propriedade 'selected'  
-    cards.value = objetivos.map(objetivo => ({
-        ...objetivo,  // Mantém as propriedades existentes              
-    }));
-
-    cardsColetaAtual.value = tipoColeta;
-    refresh();
+    return objetivos;
 }
 
 async function salvar() {
@@ -153,20 +158,15 @@ async function salvar() {
     });
 }
 
-function refresh() {
+async function refresh() {
     //TODO adaptar para todos os níveis
-    let objetivos = avaliacaoNivelUm.avaliacoes
-        .filter(i => i.tipo === tituloSelecionado.value)
-        .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio;
+    let objetivos = carregarAvaliacao()
 
-    cards.value = objetivos.map(objetivo => ({
-        ...objetivo,  // Mantém as propriedades existentes  
-        selected: null // Adiciona a propriedade selected inicializada como null  
-    }));
+    cards.value = objetivos;
 
     let cardsTela = toRaw(cards.value);
 
-    db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam }).toArray((resultDB) => {
+    await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam }).toArray((resultDB) => {
 
         resultDB.forEach(row => {
             // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
@@ -218,25 +218,35 @@ function coletar(item: any, pontuacao: number) {
     };
 
     const stateCache = toRaw(state.cache);
-    //adiciona a nova coleta no cache
-    stateCache.get("coletasRealizadas").push(novaColeta);
+
+    // Obtendo a lista de coletas realizadas  
+    const coletasRealizadas = stateCache.get("coletasRealizadas");
+
+    // Verifica se a nova coleta já existe no cache  
+    const coletaExistente = coletasRealizadas.find(cache => cache.coleta_id === novaColeta.coleta_id);
+
+    if (coletaExistente) {
+        // Se a coleta já existe, atualiza a pontuação  
+        coletaExistente.selected = novaColeta.pontuacao;
+    } else {
+        // Se a coleta não existe, adiciona a nova coleta  
+        coletasRealizadas.push(novaColeta);
+    }
 }
 
 async function getData(key: string) {
     if (state.cache.has(key)) {
         return state.cache.get(key);
     }
-
-
     state.cache.set(key, []);
 }
 
 onMounted(async () => {
     await configTela();
-    titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
-    getTitulosAvaliacoes(tab2.value, '1');
+    titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.
+    getTitulosAvaliacoes(1, '1');
     getData('coletasRealizadas');
-    refresh()
+    await refresh();
 });
 
 </script>
