@@ -88,9 +88,9 @@ const aprendizes = ref<any[]>([]);
 
 const protocolos = ref([
     { label: 'VB-MAPP', value: '1' },
-    { label: 'ABLLS', value: '2' },
-    { label: 'PORTAGE', value: '3' },
-    { label: 'SOCIALLY SAVVY', value: '4' }
+    //{ label: 'ABLLS', value: '2' },
+    //{ label: 'PORTAGE', value: '3' },
+    //{ label: 'SOCIALLY SAVVY', value: '4' }
 ]);
 
 const isVbmapp = computed(() => form.value.protocolo.label === 'VB-MAPP');

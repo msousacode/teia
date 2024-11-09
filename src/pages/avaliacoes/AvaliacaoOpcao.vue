@@ -39,12 +39,12 @@
                         </q-td>
                     </template>
                 </q-table>
-            </q-expansion-item>            
+            </q-expansion-item>
         </q-list>
-        
+
         <div class="q-pa-sm"></div>
 
-        <q-list bordered>
+        <q-list bordered v-show="false">
             <q-expansion-item expand-separator label="ABLLS" :disable="!isHabilitaProtocolos">
                 <q-card>
                     <q-card-section>
@@ -55,8 +55,8 @@
         </q-list>
 
         <div class="q-pa-sm"></div>
-        
-        <q-list bordered>
+
+        <q-list bordered v-show="false">
             <q-expansion-item expand-separator label="Protocolo Portage" :disable="!isHabilitaProtocolos">
                 <q-card>
                     <q-card-section>
