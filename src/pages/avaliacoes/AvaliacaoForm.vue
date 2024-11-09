@@ -17,8 +17,7 @@
                 <q-input outlined stack-label label="Objetivo do Documento" v-model="form.objetivo_documento"
                     class="q-mb-md" />
 
-                <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia"
-                    class="q-mb-md" />
+                <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia" class="q-mb-md" />
 
                 <div class="fixed-bottom q-pa-md">
                     <div class="row">
@@ -28,7 +27,7 @@
                         </div>
                         <div class="col">
                             <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                                :disabled="!isAvancarDisabled" />
+                                :disabled="isAvancarDisabled" />
                         </div>
                     </div>
                 </div>
@@ -37,8 +36,7 @@
 
         <div class="q-mb-md" v-show="isVbmapp">
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]"
-                :rows-per-page="10">
+                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
@@ -52,7 +50,6 @@
             </q-table>
         </div>
     </div>
-
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -91,16 +88,16 @@ const aprendizes = ref<any[]>([]);
 
 const protocolos = ref([
     { label: 'VB-MAPP', value: '1' },
-    { label: 'ABLLS', value: '2' },
-    { label: 'PORTAGE', value: '3' },
-    { label: 'SOCIALLY SAVVY', value: '4' }
+    //{ label: 'ABLLS', value: '2' },
+    //{ label: 'PORTAGE', value: '3' },
+    //{ label: 'SOCIALLY SAVVY', value: '4' }
 ]);
 
 const isVbmapp = computed(() => form.value.protocolo.label === 'VB-MAPP');
 
 const isAvancarDisabled = false;//computed(() => { return selected.value.length == 0 })
 
-async function submit() {
+async function avancar() {
 
     const avaliacoes = niveisSelcionados.value.map(i => i.id);
 
@@ -110,15 +107,10 @@ async function submit() {
     form.value.niveis_coleta = avaliacoes.toString();
 
     const data = toRaw(form.value);
-    db.vbmapp.add(data);
-}
 
-async function avancar() {
-    await submit().then(() => {
+    await db.vbmapp.add(data).then(result => {
         const uuid = form.value.aprendiz_uuid_fk;
-        router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid } });
-    }).catch(() => {
-        console.error("erro ao salvar vbmapp");//TODO depois colocar uma mensagem bonitinha com notify.
+        router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid, vbmappUuid: result } });
     });
 }
 
