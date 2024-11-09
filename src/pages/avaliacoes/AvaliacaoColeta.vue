@@ -152,10 +152,10 @@ async function salvar() {
 
     const itens = coletas.get("coletasRealizadas");
 
-    await db.vbmappColetas.bulkAdd(itens).then(() => {
+    await db.vbmappColetas.bulkAdd(itens).finally(() => {
         success('Coletas salvas com sucesso!');
         refresh();
-    });
+    })
 }
 
 async function refresh() {
