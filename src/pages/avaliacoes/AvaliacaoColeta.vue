@@ -32,7 +32,7 @@
                         </q-card-section>
 
                         <div class="q-pa-md q-gutter-y-md flex justify-center">
-                            <q-btn-group style="border: 1px solid;">
+                            <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
                                 <q-btn label="Sim"
                                     :class="item.selected === 1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 1)" />
@@ -116,6 +116,9 @@ const state = reactive({
 });
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
+
+    if (abaSelecionada)
+        tab2.value = 1
 
     nivelSelecionado.value = abaSelecionada ?? nivelSelecionado.value;
 
