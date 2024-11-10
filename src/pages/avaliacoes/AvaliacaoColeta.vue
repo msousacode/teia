@@ -199,7 +199,7 @@ async function refresh() {
 
 async function configTela() {
     db.vbmapp
-        .get({ aprendiz_uuid_fk: uuidAprendiz })
+        .get({ uuid: vbmappUuidParam })
         .then((res) => {
             showNiveis.value = res?.niveis_coleta.split(',') || [];
             uuidVbmapp.value = res?.uuid;
@@ -241,14 +241,19 @@ function coletar(item: any, pontuacao: number) {
     }
 }
 
-async function getData(key: string) {
+function getData(key: string) {
     if (state.cache.has(key)) {
         return state.cache.get(key);
     }
     state.cache.set(key, []);
 }
 
+function clearCache() {
+    state.cache.clear();
+}
+
 onMounted(async () => {
+    clearCache();
     await configTela();
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.
     getTitulosAvaliacoes(1, '1');
