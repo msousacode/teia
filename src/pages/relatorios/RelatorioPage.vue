@@ -1,5 +1,4 @@
 <template>
-
     <q-dialog v-model="showBoasVindas" persistent>
         <q-card class="my-card q-pa-md full-width">
             <q-card-section>
@@ -70,12 +69,12 @@
               item, index
             ) in treinamentos" :key="index">
             <card-custom :item="{
-        id: item.uuid,
-        nomeTreinamento: item.treinamento,
-        nomeProtocolo: item.protocolo,
-        periodoTreinamento: item.configuracoes.data_final,
-        progresso: item.progresso
-    }" @selecao="gerarGrafico(item.uuid)" />
+                id: item.uuid,
+                nomeTreinamento: item.treinamento,
+                nomeProtocolo: item.protocolo,
+                periodoTreinamento: item.configuracoes.data_final,
+                progresso: item.progresso
+            }" @selecao="gerarGrafico(item.uuid)" />
         </div>
 
         <div ref="chartContainer"></div>
@@ -473,8 +472,8 @@ function backupSegundoPlano() {
         if (isNaN(Number(diferencaHoras))) {
             localStorage.setItem('ultimo_backup', new Date().getTime().toString());
         }
-        //Se a diferença entre o último backup for igual ou superior a 4 horas faz o backup.
-        if (diferencaHoras >= 24) {
+        //Se a diferença entre o último backup for igual ou superior a 12 horas faz o backup.
+        if (diferencaHoras >= 12) {
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }

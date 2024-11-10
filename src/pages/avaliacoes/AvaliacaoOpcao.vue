@@ -21,27 +21,26 @@
             </q-table>
         </div>
 
-        <title-custom title="Protocolos:" />
 
-        <q-list bordered>
-            <q-expansion-item expand-separator label="VB-MAPP" :disable="!isHabilitaProtocolos">
-                <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                    :rows-per-page-options="[10]" :rows-per-page="10">
-                    <template v-slot:body-cell-actions="props">
-                        <q-td :props="props" class="q-gutter-x-sm">
-                            <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row.name)" />
-                        </q-td>
-                    </template>
-                    <template v-slot:body-cell-actionsx="props">
-                        <q-td :props="props" class="q-gutter-x-sm">
-                            <q-btn icon="mdi-chart-line" color="blue-3">
-                            </q-btn>
-                        </q-td>
-                    </template>
-                </q-table>
-            </q-expansion-item>
-        </q-list>
+        <div v-if="isHabilitaProtocolos">
+            <div class="text-teal text-h6">VB-MAPP</div>
+            <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
+                :rows-per-page-options="[10]" :rows-per-page="10">
+                <template v-slot:body-cell-actions="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row.name)" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsx="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-chart-line" color="blue-3">
+                        </q-btn>
+                    </q-td>
+                </template>
+            </q-table>
+        </div>
 
+        <!--
         <div class="q-pa-sm"></div>
 
         <q-list bordered v-show="false">
@@ -65,8 +64,8 @@
                 </q-card>
             </q-expansion-item>
         </q-list>
-
-        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+-->
+        <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
     </div>
@@ -129,7 +128,6 @@ watch(form.value, () => {
                 align: 'left',
             }
         })
-        console.log(response)
         avaliacaoRows.value = response;
     });
 });
