@@ -75,6 +75,7 @@ import { avaliacaoNivelUm } from './data/vbmappNivelUm';
 import { avaliacaoNivelDois } from './data/vbmappNivelDois';
 import { avaliacaoNivelTres } from './data/vbmappNivelTres';
 import { avaliacaoNivelUmTarefas } from './data/vbmappNivelUmTarefas';
+import { avaliacaoNivelDoisTarefas } from './data/vbmappNivelDoisTarefas';
 import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
 import { v4 as uuid } from 'uuid';
@@ -157,13 +158,28 @@ function carregarAvaliacao() {
         }
 
     } else if (nivelSelecionado.value == '2') {
-        objetivos = avaliacaoNivelDois.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+
+        if (tipoAvaliacao.value == 'tarefas') {
+            objetivos = avaliacaoNivelDoisTarefas.avaliacoes
+                .filter(i => i.tipo == tipoColeta)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        } else {
+            objetivos = avaliacaoNivelDois.avaliacoes
+                .filter(i => i.tipo == tipoColeta)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        }
+
     } else if (nivelSelecionado.value == '3') {
-        objetivos = avaliacaoNivelTres.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+
+        if (tipoAvaliacao.value == 'tarefas') {
+            objetivos = avaliacaoNivelDoisTarefas.avaliacoes
+                .filter(i => i.tipo == tipoColeta)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        } else {
+            objetivos = avaliacaoNivelTres.avaliacoes
+                .filter(i => i.tipo == tipoColeta)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        }
     }
 
     const newObjetivos = objetivos.map(obj => ({
