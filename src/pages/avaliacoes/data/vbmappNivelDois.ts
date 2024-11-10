@@ -2,7 +2,7 @@ const avaliacaoNivelDois = {
   nivel: 2,
   avaliacoes: [
     {
-      titulo: 'Imitação Motora',
+      titulo: 'Imitação',
       tipo: 1,
       objetivos: [
         {
