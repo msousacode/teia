@@ -1,5 +1,6 @@
 <template>
     <q-page padding>
+        <div class="text-teal">{{ descritivoTitulo }}</div>
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="1" label="Nível 1" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
@@ -73,11 +74,13 @@ import { ref, reactive } from 'vue';
 import { avaliacaoNivelUm } from './data/vbmappNivelUm';
 import { avaliacaoNivelDois } from './data/vbmappNivelDois';
 import { avaliacaoNivelTres } from './data/vbmappNivelTres';
+import { avaliacaoNivelUmTarefas } from './data/vbmappNivelUmTarefas';
 import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
 import { v4 as uuid } from 'uuid';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
+import { computed } from 'vue';
 
 const { success } = useNotify();
 
@@ -86,6 +89,8 @@ const routeLocation = useRoute();
 const uuidAprendiz = ref();
 
 const vbmappUuidParam = ref(routeLocation.params.vbmappUuid);
+
+const tipoAvaliacao = ref(routeLocation.params.tipoAvaliacao)
 
 const uuidVbmapp = ref();
 
@@ -104,6 +109,8 @@ const cards = ref<any[]>([]);
 const cardsColetaAtual = ref();
 
 const nivelSelecionado = ref();
+
+const descritivoTitulo = computed(() => tipoAvaliacao.value == 'milestones' ? 'VB-MAPP - Milestones' : 'VB-MAPP - Tarefas');
 
 const showAba = (aba: string) => {
     return showNiveis.value.includes(aba)
@@ -138,9 +145,17 @@ function carregarAvaliacao() {
     let objetivos;
 
     if (nivelSelecionado.value == '1') {
-        objetivos = avaliacaoNivelUm.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+
+        if (tipoAvaliacao.value == 'tarefas') {
+            objetivos = avaliacaoNivelUmTarefas.avaliacoes
+                .filter(i => i.tipo == tipoColeta)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        } else {
+            objetivos = avaliacaoNivelUm.avaliacoes
+                .filter(i => i.tipo == tipoColeta)
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+        }
+
     } else if (nivelSelecionado.value == '2') {
         objetivos = avaliacaoNivelDois.avaliacoes
             .filter(i => i.tipo == tipoColeta)
@@ -259,6 +274,8 @@ onMounted(async () => {
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, '1');
     getData('coletasRealizadas');
+
+    console.log(tipoAvaliacao.value)
 });
 
 </script>

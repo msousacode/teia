@@ -175,13 +175,13 @@ rows.value = [
     {
         name: 'MILESTONES',
     },
-    {
+    /*{
         name: 'SUBTESTE ECOICO',
-    },
+    },*/
     {
         name: 'TAREFAS',
     },
-    {
+    /*{
         name: 'BARREIRAS',
     },
     {
@@ -189,7 +189,7 @@ rows.value = [
     },
     {
         name: 'PEI',
-    },
+    },*/
 ]
 
 avaliacaoColumns.value = [
