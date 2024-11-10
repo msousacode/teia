@@ -35,17 +35,18 @@
                     </q-td>
                 </template>
             </q-table>
-        </div>
-    </div>
-    <div class="fixed-bottom q-pa-md">
-        <div class="row">
-            <div class="col">
-                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
-                    :to="{ name: 'avaliacoes' }" />
-            </div>
-            <div class="col">
-                <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                    :disabled="isAvancarDisabled" />
+
+            <div class="fixed-bottom q-pa-md">
+                <div class="row">
+                    <div class="col">
+                        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
+                            :to="{ name: 'avaliacoes' }" />
+                    </div>
+                    <div class="col">
+                        <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
+                            :disabled="isAvancarDisabled" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

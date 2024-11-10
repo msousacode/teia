@@ -83,9 +83,9 @@ const { success } = useNotify();
 
 const routeLocation = useRoute();
 
-const uuidAprendiz = routeLocation.params.aprendizUuid;
+const uuidAprendiz = ref();
 
-const vbmappUuidParam = routeLocation.params.vbmappUuid;
+const vbmappUuidParam = ref(routeLocation.params.vbmappUuid);
 
 const uuidVbmapp = ref();
 
@@ -124,7 +124,7 @@ async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string)
 
     tituloSelecionado.value = toRaw(tipoColeta);
 
-    cards.value = carregarAvaliacao();
+    //cards.value = carregarAvaliacao();
 
     refresh();
 }
@@ -149,11 +149,14 @@ function carregarAvaliacao() {
         objetivos = avaliacaoNivelTres.avaliacoes
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-    } else {
-        objetivos = [{}];
     }
 
-    return objetivos;
+    const newObjetivos = objetivos.map(obj => ({
+        ...obj, // Mantém as outras propriedades  
+        selected: null // Altera a propriedade 'selected' para null  
+    }));
+
+    return newObjetivos;
 }
 
 async function salvar() {
@@ -169,14 +172,12 @@ async function salvar() {
 }
 
 async function refresh() {
-    //TODO adaptar para todos os níveis
-    let objetivos = carregarAvaliacao()
 
-    cards.value = objetivos;
+    cards.value = carregarAvaliacao();
 
     let cardsTela = toRaw(cards.value);
 
-    await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam }).toArray((resultDB) => {
+    await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam.value }).toArray((resultDB) => {
 
         resultDB.forEach(row => {
             // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
@@ -202,7 +203,7 @@ async function refresh() {
 
 async function configTela() {
     db.vbmapp
-        .get({ uuid: vbmappUuidParam })
+        .get({ uuid: vbmappUuidParam.value })
         .then((res) => {
             showNiveis.value = res?.niveis_coleta.split(',') || [];
             uuidVbmapp.value = res?.uuid;
@@ -219,7 +220,7 @@ function coletar(item: any, pontuacao: number) {
     const novaColeta: AvaliacaoVbmappColetas = {
         uuid: uuid(),
         vbmapp_uuid_fk: uuidVbmapp.value,
-        aprendiz_uuid_fk: uuidAprendiz.toString(),
+        aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
         nivel_coleta: 1,
         tipo: tituloSelecionado.value,
@@ -251,17 +252,13 @@ function getData(key: string) {
     state.cache.set(key, []);
 }
 
-function clearCache() {
-    state.cache.clear();
-}
-
 onMounted(async () => {
-    clearCache();
+    uuidAprendiz.value = routeLocation.params.aprendizUuid
+    vbmappUuidParam.value = routeLocation.params.vbmappUuid;
     await configTela();
-    titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.
+    titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, '1');
     getData('coletasRealizadas');
-    await refresh();
 });
 
 </script>

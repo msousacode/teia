@@ -119,7 +119,7 @@ watch(form.value, () => {
         store.aprendizSelected = form.value.aprendiz;
 
     db.vbmapp.where({ aprendiz_uuid_fk: form.value.aprendiz.value }).toArray((res) => {
-        console.log(res)
+
         const response = res.map((i, idx) => {
             return {
                 id: i.uuid,
