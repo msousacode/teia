@@ -35,18 +35,16 @@
                     </q-td>
                 </template>
             </q-table>
+        </div>
 
-            <div class="fixed-bottom q-pa-md">
-                <div class="row">
-                    <div class="col">
-                        <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
-                            :to="{ name: 'avaliacoes' }" />
-                    </div>
-                    <div class="col">
-                        <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                            :disabled="isAvancarDisabled" />
-                    </div>
-                </div>
+        <div class="row q-pa-md">
+            <div class="col">
+                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
+                    :to="{ name: 'avaliacoes' }" />
+            </div>
+            <div class="col">
+                <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
+                    :disabled="isAvancarDisabled" />
             </div>
         </div>
     </div>
@@ -68,7 +66,7 @@ const columns = ref<any[]>(avaliacaoColumns);
 
 const rows = ref<any[]>(avaliacaoRows);
 
-const niveisSelcionados = ref();
+const niveisSelcionados = ref([]);
 
 const form = ref({
     uuid: '',
@@ -95,7 +93,7 @@ const protocolos = ref([
 
 const isVbmapp = computed(() => form.value.protocolo.label === 'VB-MAPP');
 
-const isAvancarDisabled = false;//computed(() => { return selected.value.length == 0 })
+const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || !(niveisSelcionados.value.length > 0));
 
 async function avancar() {
 
