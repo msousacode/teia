@@ -1,124 +1,200 @@
 const avaliacaoNivelDoisTarefas = {
-  nivel: 1,
+  nivel: 2,
   avaliacoes: [
     {
       titulo: 'Imitação',
       tipo: 1,
       objetivos: [
         {
-          id: 500,
-          cod: '1-a',
+          id: 600,
+          cod: '10-a',
           descricao:
-            'Imita movimentos com a boca três vezes (ex. franzir os lábios, abrir a boca) (O)',
+            'Imita construção de itens ou a construção de um jogo de brinquedo (ex. Legos, conjunto de trem, Lincoln Logs) (O/T)',
           selected: null,
         },
         {
-          id: 501,
-          cod: '1-b',
+          id: 601,
+          cod: '10-b',
           descricao:
-            'Imita 1 movimento de outra pessoa quando solicitado (ex. vai imitar quando solicitada) (T)',
+            'Imita 5 sequências de multi-etapas funcionais de habilidades de auto cuidado (ex. escovar os dentes, lavar o rosto, calçar os sapatos) (O/T)',
           selected: null,
         },
         {
-          id: 502,
-          cod: '2-a',
+          id: 602,
+          cod: '10-c',
           descricao:
-            'Imita 2 ações com objetos (ex. bater com um martelo de brinquedo e rolar uma bola) (T)',
+            'Imita 5 atividades funcionais de habilidades de vida diária (ex. sentar a mesa, varrer o chão) (O/T)',
           selected: null,
         },
         {
-          id: 503,
-          cod: '2-b',
+          id: 603,
+          cod: '10-d',
           descricao:
-            'Espontaneamente imita 2 diferentes atividades divertidas (ex. peek-aboo, pattycake) (O)',
+            'Demonstra diariamente imitação de comportamentos de um adulto na brincadeira de simulação (ex. dirigindo um carro, datilografando) (O)',
           selected: null,
         },
         {
-          id: 504,
-          cod: '2-c',
-          descricao: 'Faz contato visual enquanto imita 3 vezes (TO: 30 min)',
-          selected: null,
-        },
-        {
-          id: 505,
-          cod: '3-a',
+          id: 604,
+          cod: '10-e',
           descricao:
-            'Imita 2 movimentos motores finos (ex. estala dedos, abre e fecha o punho) (T)',
+            'Imita 50 diferentes comportamentos motores em comando (O/T)',
           selected: null,
         },
         {
-          id: 506,
-          cod: '3-b',
+          id: 605,
+          cod: '6-a',
+          descricao: 'Imita assopro 2 vezes (ex. bolhas, velas, balões) (T)',
+          selected: null,
+        },
+        {
+          id: 606,
+          cod: '6-b',
           descricao:
-            'Espontaneamente imita 2 movimentos motores grossos de outra pessoa (ex. braço para o alto) (O)',
+            'Imita 5 gestos comuns (ex. encolhendo os ombros, indicando positivo (com o polegar), dedo para boca fechada) (O/T)',
           selected: null,
         },
         {
-          id: 507,
-          cod: '3-c',
+          id: 607,
+          cod: '6-c',
+          descricao: 'Imita virar a página de um livro (T)',
+          selected: null,
+        },
+        {
+          id: 608,
+          cod: '6-d',
           descricao:
-            'Imita o balançar do corpo quando está lado a lado com outra pessoa (T)',
+            'Imita 5 ações com um objeto específico selecionado de um conjunto de 2 (ex. imita abraçando um cachorrinho de um conjunto de uma boneca e um cachorro) (T)',
           selected: null,
         },
         {
-          id: 508,
-          cod: '3-d',
+          id: 609,
+          cod: '6-e',
           descricao:
-            'Generaliza respostas de imitação conhecidas para 2 outras pessoas (ex. bate palmas para 2 novos adultos) (T)',
+            'Imita puxando 5 diferentes itens separados (ex. Duplos, Kid K’Nex, tampas em containers) (T)',
           selected: null,
         },
         {
-          id: 509,
-          cod: '4-a',
-          descricao: 'Imita apontando para pessoas ou objetos (T)',
-          selected: null,
-        },
-        {
-          id: 510,
-          cod: '4-b',
-          descricao: 'Imita transferindo objetos de uma mão para outra (T)',
-          selected: null,
-        },
-        {
-          id: 511,
-          cod: '4-c',
+          id: 610,
+          cod: '7-a',
           descricao:
-            'Imita 5 ações que produzem um efeito (ex. apertar botões em um brinquedo sonoro) (T)',
+            'Imita 3 comportamentos de brincadeira em ambiente natural (ex. Empurrar um carro sobre uma rampa) (T)',
           selected: null,
         },
         {
-          id: 512,
-          cod: '4-d',
+          id: 610,
+          cod: '7-b',
           descricao:
-            'Imita 2 movimentos com a cabeça (ex. faz “sim” ou “não”) (T)',
+            'Imita 5 comportamentos de duas sequências (ex. toca a orelha e toca o ombro) (O/T)',
           selected: null,
         },
         {
-          id: 513,
-          cod: '5-a',
+          id: 611,
+          cod: '7-c',
           descricao:
-            'Imita 5 movimentos motores finos (ex. cutuca argila com o dedo indicador, faz movimento de pinça) (T)',
+            'Espontaneamente imita um comportamento observado na TV ou vídeo (ex. dançando, saltando) (O)',
           selected: null,
         },
         {
-          id: 514,
-          cod: '5-b',
+          id: 612,
+          cod: '7-d',
           descricao:
-            'Imita o comportamento motor grosso de outras crianças 2 vezes com dica (ex. correr) (T)',
+            'Imita 5 expressões faciais (ex. beijando, abrindo a boca, fechando os olhos, amassando o nariz) (T)',
           selected: null,
         },
         {
-          id: 515,
-          cod: '5-c',
+          id: 613,
+          cod: '7-e',
           descricao:
-            'Espontaneamente imita o comportamento de outros em 2 ocasiões (ex. encher recipientes) (T)',
+            'Mantem um comportamento imitativo adquirido recentemente depois de 24 horas sem treino (T)',
           selected: null,
         },
         {
-          id: 516,
-          cod: '5-d',
+          id: 614,
+          cod: '7-f',
           descricao:
-            'Demonstra generalização de 10 respostas de imitação para 3 pessoas novas (T)',
+            'Imita um novo comportamento corretamente na primeira tentativa (O/T)',
+          selected: null,
+        },
+        {
+          id: 615,
+          cod: '7-g',
+          descricao:
+            'Imita 5 exemplos de jogo de dedo (ex. finge caminhar sobre dois dedos, dançando com os dedos) (T)',
+          selected: null,
+        },
+        {
+          id: 616,
+          cod: '8-a',
+          descricao: 'Imita 5 ações em 10 segundos com fluência no teste (T)',
+          selected: null,
+        },
+        {
+          id: 617,
+          cod: '8-b',
+          descricao: 'Imita desenhando um círculo em 2 ocasiões (T)',
+          selected: null,
+        },
+        {
+          id: 618,
+          cod: '8-c',
+          descricao:
+            'Imita fingindo 5 atividades lúdicas (ex. um monstro, servindo chá, atirando teia de aranha) (T)',
+          selected: null,
+        },
+        {
+          id: 619,
+          cod: '8-d',
+          descricao:
+            'Espontaneamente imita 5 movimentos motores finos de arte e atividades de artesanato (ex. recortando, colando, desenhando) (O)',
+          selected: null,
+        },
+        {
+          id: 620,
+          cod: '8-e',
+          descricao:
+            'Adquire 5 novas habilidades de ouvinte através da transferência de controle de imitação de ouvinte (ex. A criança aprende lançar uma vara de pesca de brinquedo sendo mostrado primeiro como é e dito como é) (T)',
+          selected: null,
+        },
+        {
+          id: 621,
+          cod: '8-f',
+          descricao:
+            'Imita outra criança durante atividades diárias em 2 ocasiões (ex. Entrando na fila, puxando um caminhão) (O)',
+          selected: null,
+        },
+        {
+          id: 622,
+          cod: '8-g',
+          descricao:
+            'Repete um comportamento divertido previamente observado (imitação atrasada) (ex. esguichar água) (T)',
+          selected: null,
+        },
+        {
+          id: 623,
+          cod: '9-a',
+          descricao:
+            'Imita uma atividade lúdica socio-dramática modelada por colegas em 2 ocasiões (T)',
+          selected: null,
+        },
+        {
+          id: 624,
+          cod: '9-b',
+          descricao:
+            'Espontaneamente imita 5 comportamentos em uma atividade de grupo (ex. sentar quando outra criança senta) (O)',
+          selected: null,
+        },
+        {
+          id: 625,
+          cod: '9-c',
+          descricao:
+            'Imita 10 ações de dois componentes (ex. finge servir e beber) (O/T)',
+          selected: null,
+        },
+        {
+          id: 626,
+          cod: '9-d',
+          descricao:
+            'Imita o mesmo comportamento indo rápido e devagar para 5 comportamentos (ex. braços para cima rápido depois devagar) (T)',
           selected: null,
         },
       ],
@@ -142,133 +218,150 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 3,
       objetivos: [
         {
-          id: 517,
-          cod: '1-a',
+          id: 627,
+          cod: '10-a',
           descricao:
-            'Vira a cabeça para localizar a origem de um som (ex. campainha, brinquedo estridente, toque do telefone) (O)',
+            'Realiza 2 ações consecutivas para 10 conjuntos de ações (verbo-verbo) (ex. Pule e bata palma) (T)',
           selected: null,
         },
         {
-          id: 518,
-          cod: '2-a',
-          descricao: 'Sorri ao som da voz do cuidador 2 vezes (O)',
-          selected: null,
-        },
-        {
-          id: 519,
-          cod: '3-a',
-          descricao: 'Interrompe a brincadeira quando seu nome é chamado (T/O)',
-          selected: null,
-        },
-        {
-          id: 520,
-          cod: '3-b',
+          id: 628,
+          cod: '10-b',
           descricao:
-            'Responde ao não, quente, pare, ou outros comandos em um contexto apropriado (O)',
+            'Discrimina entre 2 duas cores em um conjunto de 4 objetos coloridos (T)',
           selected: null,
         },
         {
-          id: 521,
-          cod: '3-c',
+          id: 629,
+          cod: '10-c',
           descricao:
-            'Atenta para um objeto ou figura quando nomeados (sem discriminação) 5 vezes (O)',
+            'Discrimina entre 2 formas em um conjunto de 4 formas diferentes (T)',
           selected: null,
         },
         {
-          id: 522,
-          cod: '3-d',
+          id: 630,
+          cod: '10-d',
           descricao:
-            'Responde a 2 instruções verbais simples (1 comando) em um contexto (ex. “sente”, quando diante de uma cadeira) (T/O)',
+            'Generaliza a habilidade de ouvinte substantivo-verbo com novos objetos para 5 ações diferentes (ex. Depois de receber um treino de girar e rolar uma caneta, a criança gira e rola corretamente um canudo na primeira tentativa) (T)',
           selected: null,
         },
         {
-          id: 523,
-          cod: '3-e',
+          id: 631,
+          cod: '10-e',
           descricao:
-            'Discrimina 2 membros familiares ou animais quando nomeados (ex. Onde está o papai?) (T/O)',
+            'Generaliza a habilidade de ouvinte substantivo-verbo com uma nova ação para 5 objetos (ex. Ela pode girar qualquer item) (T)',
           selected: null,
         },
         {
-          id: 524,
-          cod: '3-f',
+          id: 632,
+          cod: '6-a',
           descricao:
-            'Discrimina 2 objetos quando apresentados no nível dos olhos da criança (ex. olha, toca ou aponta para uma bola quando são mostrados uma bola e um sapato e perguntado para tocar a bola) (T)',
+            'Seleciona o item correto a partir de um conjunto não organizado de 5 itens, por 25 diferentes itens (ex. livro, carro, cachorro, sapato) (T)',
           selected: null,
         },
         {
-          id: 525,
-          cod: '4-a',
+          id: 633,
+          cod: '6-b',
           descricao:
-            'Seleciona o item correto em um conjunto de 2 por 10 objetos ou figuras diferentes (T)',
+            'Adquire uma nova habilidade de ouvinte em menos de 25 tentativas de treino (T)',
           selected: null,
         },
         {
-          id: 526,
-          cod: '4-b',
-          descricao: 'Mantém contato visual com o falante por 2 segundos (O)',
-          selected: null,
-        },
-        {
-          id: 527,
-          cod: '4-c',
+          id: 634,
+          cod: '6-c',
           descricao:
-            'Toca 2 partes do corpo (ex. Toque seu nariz. Onde estão suas orelhas?) (T)',
+            'Discrimina em 6 pessoas, animais, ou personagens diferentes pelo nome (ex. Encontre Oscar) (T)',
           selected: null,
         },
         {
-          id: 528,
-          cod: '4-d',
+          id: 635,
+          cod: '6-d',
           descricao:
-            'Desempenha 2 ações motoras (ex. Bata palmas. Você pode girar?) (T)',
+            'Generaliza em uma tarefa de ouvinte entre 3 exemplos de 25 itens diferentes (T)',
           selected: null,
         },
         {
-          id: 529,
-          cod: '4-e',
+          id: 636,
+          cod: '7-a',
           descricao:
-            'Seleciona o item correto em um conjunto de 3 quando nomeado, por 10 itens diferentes (ex. cachorro, chapéu, livro) (T)',
+            'Vai até 3 pessoas específicas sob comando (ex. Vá até Debbie) (T)',
           selected: null,
         },
         {
-          id: 530,
-          cod: '4-f',
+          id: 637,
+          cod: '7-b',
           descricao:
-            'Generaliza em uma tarefa de discriminação de ouvinte entre 2 exemplares de 5 itens diferentes (ex. pode identificar 2 cachorros diferentes, 2 copos diferentes, 2 bolas diferentes) (T)',
+            'Aponta para um item nomeado em um livro em 5 itens (ex. Onde está o caminhão de bombeiros?) (T)',
           selected: null,
         },
         {
-          id: 531,
-          cod: '5-a',
+          id: 638,
+          cod: '7-c',
           descricao:
-            'Identifica 5 itens como discriminação de ouvinte em um período de 10 segundos (teste de fluência) (T)',
+            'Seleciona 5 itens do ambiente natural sob comando (ex. pegue uma colher, enquanto estiverem na mesa) (T/O)',
           selected: null,
         },
         {
-          id: 532,
-          cod: '5-b',
+          id: 639,
+          cod: '7-d',
           descricao:
-            'Demonstra 6 diferentes ações motoras sob o comando sem dica visual (T)',
+            'Demonstra espontaneamente (sem dica para responder) 5 habilidades de ouvinte em um ambiente natural (ex. quando alguém na sala menciona um cavalo de pau, a criança espontaneamente vai até o cavalo) (O)',
           selected: null,
         },
         {
-          id: 533,
-          cod: '5-c',
+          id: 640,
+          cod: '8-a',
           descricao:
-            'Mantém uma habilidade de ouvinte adquirida depois de 24 horas sem treino (T)',
+            'Vai até 3 locais diferentes sob comando (ex. Vá até a cozinha. Me mostre seu quarto.) (T)',
           selected: null,
         },
         {
-          id: 534,
-          cod: '5-d',
+          id: 641,
+          cod: '8-b',
           descricao:
-            'Emite espontaneamente (sem dicas diretas para responder) uma resposta de ouvinte 2 vezes (O)',
+            'Seleciona o item correto de um conjunto de 8, contendo 2 estímulos similares (ex. mesma cor), por 20 itens (T)',
           selected: null,
         },
         {
-          id: 535,
-          cod: '5-e',
+          id: 642,
+          cod: '8-c',
           descricao:
-            'Generaliza tarefas de ouvinte conhecidas entre 3 pessoas diferentes, 3 ambientes e 3 vezes no dia (T)',
+            'Seleciona um item quando apresentado o som referente àquele item com 5 itens (Latido: cachorro; Sirene: carro de bombeiro) (T)',
+          selected: null,
+        },
+        {
+          id: 643,
+          cod: '8-d',
+          descricao:
+            'Seleciona 2 itens de um conjunto de 8 por 5 pares de itens (substantivo-substantivo) (ex. Onde está o bebê e a garrafa?) (T)',
+          selected: null,
+        },
+        {
+          id: 644,
+          cod: '9-a',
+          descricao:
+            'Adquire 2 novas respostas de ouvinte sem treino formal (ex. Alguém pede para outra pessoa ligar a luz e a criança vai até a luz, e ninguém sabia que ela conhecia a palavra luz) (O)',
+          selected: null,
+        },
+        {
+          id: 645,
+          cod: '9-b',
+          descricao:
+            'Responde apropriadamente a 5 gestos diferentes (ex. Dedo nos lábios para silêncio, palma da mão para pare) (T/O)',
+          selected: null,
+        },
+        {
+          id: 646,
+          cod: '9-c',
+          descricao:
+            'Demonstra 3 ações específicas para 3 pessoas diferentes (ex. Abraça a avó, faz hi-5 com a Laura) (T)',
+          selected: null,
+        },
+        {
+          id: 647,
+          cod: '9-d',
+          descricao:
+            'Seleciona 2 itens alvo de uma cena, livro ou ambiente natural em 10 conjuntos de itens (nome-nome) (ex. Onde está o elefante e a girafa?) (T)',
           selected: null,
         },
       ],
@@ -279,94 +372,204 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 4,
       objetivos: [
         {
-          id: 536,
-          cod: '1-a',
-          descricao: 'Atenta visualmente para faces e pessoas 5 vezes (O)',
-          selected: null,
-        },
-        {
-          id: 537,
-          cod: '1-b',
-          descricao: 'Atenta visualmente para objetos reforçadores 5 vezes (O)',
-          selected: null,
-        },
-        {
-          id: 538,
-          cod: '2-a',
-          descricao: 'Alcança e agarra objetos com sucesso 5 vezes (T/O)',
-          selected: null,
-        },
-        {
-          id: 539,
-          cod: '2-b',
+          id: 648,
+          cod: '10-a',
           descricao:
-            'Usa o dedo indicador para cutucar coisas ou para outros usos 5 vezes (O)',
+            'Monta, junta, ou agrupa 5 brinquedos diferentes, personagens ou itens que vão juntos (ex. Um jogo de chá) (T)',
           selected: null,
         },
         {
-          id: 540,
-          cod: '2-c',
+          id: 649,
+          cod: '10-b',
           descricao:
-            'Manipula brinquedos e objetos de uma maneira variada por 10 segundos, 5 vezes (O)',
+            'Pareia figuras de partes do corpo com o seu próprio corpo para 5 partes do corpo (T/O)',
           selected: null,
         },
         {
-          id: 541,
-          cod: '3-a',
-          descricao: 'Transfere objetos de uma mão para outra 5 vezes (O)',
-          selected: null,
-        },
-        {
-          id: 542,
-          cod: '3-b',
-          descricao: 'Procura por um objeto que caiu fora da vista 5 vezes (O)',
-          selected: null,
-        },
-        {
-          id: 543,
-          cod: '4-a',
+          id: 650,
+          cod: '10-c',
           descricao:
-            'Despeja coisas para fora de recipientes ou puxa coisas para fora dos armários 5 vezes (O)',
+            'Pareia a figura de uma ação com uma figura não idêntica da mesma ação para 10 ações (ex. Pareia a figura de uma menina nadando com a figura de um menino nadando em piscinas diferentes) (T)',
           selected: null,
         },
         {
-          id: 544,
-          cod: '4-b',
-          descricao: 'Empurra ou puxa objetos 5 vezes (O)',
-          selected: null,
-        },
-        {
-          id: 545,
-          cod: '5-a',
+          id: 651,
+          cod: '10-d',
           descricao:
-            'Atenta visualmente para brinquedos ou livros por 1 minuto, 2 vezes (O)',
+            'Pinta figuras em um livro de colorir embora não fique sempre na linha (T)',
           selected: null,
         },
         {
-          id: 546,
-          cod: '5-b',
+          id: 652,
+          cod: '10-e',
           descricao:
-            'Usa com sucesso uma colher 5 vezes durante uma refeição (O)',
+            'Pareia 10 itens diferentes que são associados entre si (ex. Sapato e meia) (T)',
           selected: null,
         },
         {
-          id: 547,
-          cod: '5-c',
+          id: 653,
+          cod: '6-a',
           descricao:
-            'Completa um quebra-cabeça de 3 peças sem dicas físicas (T/O)',
+            'Conecta 2 itens ou objetos juntos (ex. Duplos, Legos) (O)',
           selected: null,
         },
         {
-          id: 548,
-          cod: '5-d',
-          descricao: 'Tenta rabiscar com qualquer objeto de escrita (O)',
-          selected: null,
-        },
-        {
-          id: 549,
-          cod: '5-e',
+          id: 654,
+          cod: '6-b',
           descricao:
-            'Coloca 2 itens similares juntos 2 vezes (ex. pega brinquedos de pareamento) (O)',
+            'Encaixa objetos idênticos em uma pilha 2 vezes (ex. Tigelas, copos, pratos) (O)',
+          selected: null,
+        },
+        {
+          id: 655,
+          cod: '6-c',
+          descricao: 'Vira 2 páginas em um livro (T/O)',
+          selected: null,
+        },
+        {
+          id: 656,
+          cod: '6-d',
+          descricao:
+            'Completa 3 quebra-cabeças diferentes contendo 3-4 peças, sem dica (T/O)',
+          selected: null,
+        },
+        {
+          id: 657,
+          cod: '6-e',
+          descricao: 'Empilha 4 blocos sem ajuda (O)',
+          selected: null,
+        },
+        {
+          id: 658,
+          cod: '6-f',
+          descricao:
+            'Pareia objetos idênticos ou figuras em um conjunto arrumado de 3, para 10 itens (ex. Pareia chapéu com chapéu) (T)',
+          selected: null,
+        },
+        {
+          id: 659,
+          cod: '6-g',
+          descricao:
+            'Pareia objetos idênticos ou figuras que são de tamanhos diferentes em um conjunto não organizado de 6, para 10 itens (ex. Pareia uma bola vermelha grande com uma bola vermelha pequena) (T)',
+          selected: null,
+        },
+        {
+          id: 660,
+          cod: '6-h',
+          descricao:
+            'Coloca 5 itens no lugar correto de acordo com o contexto (ex. Coloca um copo na pia) (T/O)',
+          selected: null,
+        },
+        {
+          id: 661,
+          cod: '7-a',
+          descricao:
+            'Completa 5 quebra-cabeças diferentes contendo 6 ou mais peças sem dica (T/O)',
+          selected: null,
+        },
+        {
+          id: 662,
+          cod: '7-b',
+          descricao:
+            'Pareia objetos ou figuras idênticos em um conjunto não organizado de 8, para 25 objetos (T)',
+          selected: null,
+        },
+        {
+          id: 663,
+          cod: '7-c',
+          descricao:
+            'Pareia figuras idênticas que possuem fundos diferentes em um conjunto não organizado de 8, para 25 figuras (T)',
+          selected: null,
+        },
+        {
+          id: 664,
+          cod: '7-d',
+          descricao:
+            'Pareia figuras idênticas (2D) com objetos (3D) e vice-versa, em um conjunto não organizado de 8, para 10 pares (ex. Pareia a figura do Thomas o Trem com o brinquedo do Thomas o Trem) (T)',
+          selected: null,
+        },
+        {
+          id: 665,
+          cod: '7-e',
+          descricao:
+            'Pareia espontaneamente 2 itens juntos em uma brincadeira ou outras situações (ex. Pega a figurinha do Hulk e seleciona Pareando o Hulk de uma caixa de figurinhas) (O)',
+          selected: null,
+        },
+        {
+          id: 666,
+          cod: '7-f',
+          descricao:
+            'Completa um pareamento idêntico em um conjunto de 8, para 10 pareamentos em menos de 20 segundos (fluência) (T)',
+          selected: null,
+        },
+        {
+          id: 667,
+          cod: '8-a',
+          descricao:
+            'Generaliza para 5 novas habilidades de pareamento idênticas sem treino formal (T/O)',
+          selected: null,
+        },
+        {
+          id: 668,
+          cod: '8-b',
+          descricao:
+            'Pareia objetos idênticos ou figuras com o item correspondente em um livro para 25 itens (T)',
+          selected: null,
+        },
+        {
+          id: 669,
+          cod: '8-c',
+          descricao:
+            'Pareia objetos idênticos ou figuras com o item correspondente em um ambiente natural para 25 itens (T)',
+          selected: null,
+        },
+        {
+          id: 670,
+          cod: '8-d',
+          descricao:
+            'Seleciona 3 objetos não idênticos, mas associados, de uma caixa para 3 atividades de jogos (ex. Pega vários animais da fazenda de uma caixa contendo outros brinquedos) (T)',
+          selected: null,
+        },
+        {
+          id: 671,
+          cod: '8-e',
+          descricao:
+            'Monta sucessivamente 5 partes de 5 brinquedos de montar (ex. Duplos, trens, Sr. Cabeça de Batata) (T)',
+          selected: null,
+        },
+        {
+          id: 672,
+          cod: '9-a',
+          descricao:
+            'Pareia objetos ou figuras idênticas, porém de cores diferentes em um conjunto não organizado de 8 para 25 itens (ex. Ford Mustang vermelho e um Ford Mustang azul) (T)',
+          selected: null,
+        },
+        {
+          id: 673,
+          cod: '9-b',
+          descricao:
+            'Pareia objetos não idênticos ou figuras em um conjunto não organizado de 8 contendo 2 estímulos similares, para 25 itens (T)',
+          selected: null,
+        },
+        {
+          id: 674,
+          cod: '9-c',
+          descricao:
+            'Pareia objetos ou figuras não idênticas ao item correspondente em um livro para 25 itens (T)',
+          selected: null,
+        },
+        {
+          id: 675,
+          cod: '9-d',
+          descricao:
+            'Pareia objetos ou figuras não idênticas ao item correspondente no ambiente natural para 25 itens (T)',
+          selected: null,
+        },
+        {
+          id: 676,
+          cod: '9-e',
+          descricao:
+            'Demonstra pareamento espontâneo funcional no ambiente natural 2 vezes (ex. Encontra o par do sapato) (T)',
           selected: null,
         },
       ],
@@ -377,244 +580,212 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 5,
       objetivos: [
         {
-          id: 550,
-          cod: '1-a',
+          id: 677,
+          cod: '10-a',
           descricao:
-            'Faz contato visual (olhar em movimento) como forma de mando por atenção ou outros reforçadores por 2 vezes (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 551,
-          cod: '1-b',
-          descricao:
-            'Aproxima-se de um item reforçador para indicar a presença de uma operação motivadora por 2 vezes (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 552,
-          cod: '1-c',
-          descricao:
-            'Puxa um adulto para acessar um item reforçador por 2 vezes (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 553,
-          cod: '1-d',
-          descricao:
-            'Aponta ou gesticula em direção a um reforçador para obtê-lo por 2 vezes (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 554,
-          cod: '2-a',
-          descricao:
-            'Aponta para 2 reforçadores visando obtê-los por 2 vezes (T/O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 555,
-          cod: '2-b',
-          descricao:
-            "Acena com a cabeça ou diz 'Sim' ou 'Não' quando um reforçador é oferecido por 2 vezes (exceto um alvo inicial) (T/O)",
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 556,
-          cod: '2-c',
-          descricao:
-            'Emite 2 mandos diferentes sem dica ecoica – pode ser com dica verbal ou do objeto (T/O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 557,
-          cod: '2-d',
-          descricao:
-            'Espontaneamente emite 1 mando sem dica imitativa ou ecoica - pode ser com objeto (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 558,
-          cod: '2-e',
-          descricao:
-            'Generaliza 2 mandos conhecidos com 2 pessoas diferentes e em 2 contextos diferentes (T/O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 559,
-          cod: '3-a',
-          descricao:
-            'Emite 2 mandos espontâneos (sem dica verbal) - o objeto pode estar presente (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 560,
-          cod: '3-b',
-          descricao:
-            'Emite 5 mandos sem dica ecoica ou imitativa - pode ser com dica verbal ou com objeto (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 561,
-          cod: '3-c',
-          descricao:
-            "Generaliza 3 mandos por 2 exemplares de itens desejados (Ex. pede 'Escorregador' para 2 escorregadores diferentes) (T/O)",
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 562,
-          cod: '3-d',
-          descricao:
-            'Emite 6 mandos diferentes sem dica ecoica ou imitativa - pode ser com dica verbal ou com objeto (T/O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 563,
-          cod: '4-a',
-          descricao:
-            'Pede atenção 2 vezes com algum tipo de resposta identificável (ex. tocar no braço) (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 564,
-          cod: '4-b',
-          descricao:
-            "Emite 2 mandos sem o objeto presente – pode ser com pergunta 'O que você quer?' (O)",
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 565,
-          cod: '4-c',
-          descricao:
-            'Emite 2 mandos sem dicas verbais – pode ser com objeto (O)',
-          resposta: {
-            Sim: null,
-            'Às vezes': null,
-            Não: null,
-            NA: null,
-          },
-        },
-        {
-          id: 566,
-          cod: '4-d',
-          descricao:
-            'Pede para os outros olharem para o mesmo estímulo para o qual ela está olhando em 5 vezes por dia (O)',
+            'Emite 2 novos mandos sem treino (ex. dizer Eu quero chocolate quente sem treino) (O)',
           selected: null,
         },
         {
-          id: 567,
-          cod: '4-e',
+          id: 678,
+          cod: '10-b',
           descricao:
-            'Emite 1 mando para remover um item ou atividade indesejados (ex. não) (T/O)',
+            'Demonstrar generalização de respostas com 2 mandos diferentes (ex. Me pegue. Me persiga. Corre.) (O)',
           selected: null,
         },
         {
-          id: 568,
-          cod: '5-a',
+          id: 679,
+          cod: '10-c',
           descricao:
-            'Emite 3 mandos diferentes sem objeto presente – pode ser com dica verbal (ex. mamãe) (T/O)',
+            'Mandos com um adjetivo por 5 vezes – pode usar dicas verbais e não verbais (O)',
           selected: null,
         },
         {
-          id: 569,
-          cod: '5-b',
+          id: 680,
+          cod: '10-d',
           descricao:
-            'Emite 3 mandos diferentes sem dicas verbais – pode ser com dica do objeto (T/O)',
+            'Mandos por informação 3 vezes, usando perguntas com Quem (O)',
           selected: null,
         },
         {
-          id: 570,
-          cod: '5-c',
+          id: 681,
+          cod: '10-e',
           descricao:
-            'Os mandos contêm entonações que variam e são apropriadas à motivação do momento por 2 vezes (O)',
+            'Mandos espontâneos para outros, emitindo 20 ações diferentes (ex. Corre. Vai. Me empurra.) (O)',
           selected: null,
         },
         {
-          id: 571,
-          cod: '5-d',
+          id: 682,
+          cod: '10-f',
           descricao:
-            'Adquire um novo mando em menos de 20 tentativas de treino (T)',
+            'Mandos espontâneos para um estranho ou alguém não familiar por 2 vezes (O)',
           selected: null,
         },
         {
-          id: 572,
-          cod: '5-e',
+          id: 683,
+          cod: '6-a',
           descricao:
-            'Adquire um novo mando em menos de 20 tentativas de treino (persistência) (T/O)',
+            'Espontaneamente emite 5 mandos sem o objeto presente e sem dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 684,
+          cod: '6-b',
+          descricao:
+            'Emite 10 mandos diferentes sem dica ecoica ou imitativa – o objeto pode estar presente (T/O)',
+          selected: null,
+        },
+        {
+          id: 685,
+          cod: '6-c',
+          descricao:
+            'Mandos por 5 diferentes itens que não estão presentes, sem dica (T/O)',
+          selected: null,
+        },
+
+        {
+          id: 686,
+          cod: '6-d',
+          descricao: 'Generaliza 4 mandos com diferentes pessoas (T/O)',
+          selected: null,
+        },
+        {
+          id: 687,
+          cod: '6-e',
+          descricao:
+            'Mantém um mando recém adquirido por um item que não está presente após 24 horas sem contato com o item (T/O)',
+          selected: null,
+        },
+        {
+          id: 688,
+          cod: '7-a',
+          descricao:
+            'Pede duas vezes com 2 palavras em uma frase ou sentença (ex. Beber suco) (TO: 60 min.)',
+          selected: null,
+        },
+        {
+          id: 689,
+          cod: '7-b',
+          descricao:
+            'Pede para os outros indivíduos emitirem 2 ações diferentes com dica verbal (ex. ir, girar) (T/O)',
+          selected: null,
+        },
+        {
+          id: 690,
+          cod: '7-c',
+          descricao:
+            'Emite dois mandos para remover itens ou atividades indesejáveis (O)',
+          selected: null,
+        },
+        {
+          id: 691,
+          cod: '7-d',
+          descricao:
+            'Demonstra generalização de resposta para 2 diferentes mandos (ex. chama um copo cheio por ambos, copo ou bebida; chama um cachorro por ambos, cachorro ou Maggie) (O)',
+          selected: null,
+        },
+        {
+          id: 692,
+          cod: '7-e',
+          descricao:
+            'Mandos contendo variação apropriada de entonação para OMs positivas ou negativas por 5 vezes (O)',
+          selected: null,
+        },
+        {
+          id: 693,
+          cod: '7-f',
+          descricao: 'Pede por ajuda ou assistência 2 vezes (O)',
+          selected: null,
+        },
+        {
+          id: 694,
+          cod: '7-g',
+          descricao:
+            'Demonstra uma alta frequência de mandos (15 em um período de 5 minutos) (O)',
+          selected: null,
+        },
+        {
+          id: 695,
+          cod: '8-a',
+          descricao:
+            'Pede 5 vezes com 2 palavras em uma frase ou sentença (TO: 120 min.)',
+          selected: null,
+        },
+        {
+          id: 696,
+          cod: '8-b',
+          descricao:
+            'Mandos por informações usando questões com “o que” 2 vezes (ex. O que é isso?) (T/O)',
+          selected: null,
+        },
+        {
+          id: 697,
+          cod: '8-c',
+          descricao:
+            'Mandos com um pronome 2 vezes (ex. Meu trem. Esse é o seu) (O)',
+          selected: null,
+        },
+        {
+          id: 698,
+          cod: '8-d',
+          descricao:
+            'Mandos ocorrem com 3 frases possessivas diferentes (ex. Eu quero... Isso é meu... Eu posso... Esse é meu...) (O)',
+          selected: null,
+        },
+        {
+          id: 699,
+          cod: '8-e',
+          descricao:
+            'Mandos com sim e não por 4 vezes (ex. Você quer fazer um passeio? Sim.) (T/O)',
+          selected: null,
+        },
+        {
+          id: 700,
+          cod: '8-f',
+          descricao:
+            'Mandos por informações 2 vezes usando questões com Onde (ex. Onde está Elmo?) (T/O)',
+          selected: null,
+        },
+        {
+          id: 701,
+          cod: '9-a',
+          descricao:
+            'Espontaneamente emite 50 mandos por dia (podem ser com objetos presentes, mas sem dicas verbais) (O)',
+          selected: null,
+        },
+        {
+          id: 702,
+          cod: '9-b',
+          descricao:
+            'Adquire 2 mandos após treinamento de tato ou ecoico (ex. vê e tateia uma girafa ao vivo, e depois emite mando para voltar a ver a girafa.) (O)',
+          selected: null,
+        },
+        {
+          id: 703,
+          cod: '9-c',
+          descricao:
+            'Mandos por informação usando qualquer tipo de pronomes interrogativo por 25 vezes (O)',
+          selected: null,
+        },
+        {
+          id: 704,
+          cod: '9-d',
+          descricao:
+            'Mandos com um adjetivo por 5 vezes (ex. batata frita grande, carro vermelho) (O)',
+          selected: null,
+        },
+        {
+          id: 705,
+          cod: '9-e',
+          descricao:
+            'Emite 5 mandos em 30 segundos (ex. durante um jogo ou brincadeira divertida como um jogo na água) (TO: 30s)',
+          selected: null,
+        },
+        {
+          id: 706,
+          cod: '9-f',
+          descricao:
+            'Mandos contendo frases com 3 palavras por 10 vezes (ex. Esse é meu cavalo.) (O)',
           selected: null,
         },
       ],
@@ -625,58 +796,160 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 6,
       objetivos: [
         {
-          id: 573,
-          cod: '1-a',
+          id: 707,
+          cod: '10-a',
           descricao:
-            'Tateia uma pessoa, animal de estimação ou objeto familiar com dicas verbais e motivação presente.(ex. mamãe) (T/O)',
+            'Tateia 10 ações (ex. escalando, jogando, pintando, nadando, lavando) (T/O)',
           selected: null,
         },
         {
-          id: 574,
-          cod: '2-a', // Ajustado se necessário
+          id: 708,
+          cod: '10-b',
           descricao:
-            'Generaliza respostas desconhecidas para 2 diferentes pessoas e em 2 diferentes contextos (Ex: Nomeia para o papai e a mamãe; verbaliza enquanto está na cama e na cozinha) (T/O)',
+            'Tateia 2 estímulos gustativos (ex. tateia laranja quando prova uma laranja) (T/O)',
           selected: null,
         },
         {
-          id: 575,
-          cod: '2-b', // Ajustado se necessário
-          descricao:
-            'Generaliza tatos para 2 exemplos de um item com 2 itens (ex. tateia 2 telefones diferentes) (T)',
+          id: 709,
+          cod: '10-c',
+          descricao: 'Tateia 20 itens em 1 minuto em teste de fluência (T)',
           selected: null,
         },
         {
-          id: 576,
-          cod: '3-a', // Ajustado se necessário
-          descricao:
-            'Olha para foto da família e, com dicas verbais, nomeia 2 membros da família (T)',
+          id: 710,
+          cod: '10-d',
+          descricao: 'Tateia 2 cores diferentes (vermelho, azul) (T/O)',
           selected: null,
         },
         {
-          id: 577,
-          cod: '3-b', // Ajustado se necessário
-          descricao:
-            'Tateia 2 figuras de um livro ou cartões de figuras (2D) (ex. pato, bola) (T)',
+          id: 711,
+          cod: '10-e',
+          descricao: 'Tateia 2 formas diferentes (ex. círculo, estrela) (T/O)',
           selected: null,
         },
         {
-          id: 578,
-          cod: '4-a', // Ajustado se necessário
-          descricao: 'Tateia 5 figuras (2D) (T)',
+          id: 712,
+          cod: '6-a',
+          descricao:
+            'Tateia 4 diferentes pessoas, animais ou personagens pelo seu nome específico (podem incluir mama e papa) (T)',
           selected: null,
         },
         {
-          id: 579,
-          cod: '4-b', // Ajustado se necessário
+          id: 713,
+          cod: '6-b',
           descricao:
-            'Mantém um tato recém adquirido depois de 24 horas sem treino (T)',
+            'Tateia 2 ações quando perguntado, por exemplo, O que eu estou fazendo? (ex. pulando, batendo palmas) (T)',
           selected: null,
         },
         {
-          id: 580,
-          cod: '4-c', // Ajustado se necessário
+          id: 714,
+          cod: '6-c',
           descricao:
-            'Generaliza tatos para 3 exemplares de um item para 5 itens (ex. tateia 3 diferentes colheres) (T)',
+            'Adquire um novo tato em menos de 20 tentativas de treino (T)',
+          selected: null,
+        },
+        {
+          id: 715,
+          cod: '6-d',
+          descricao:
+            'Tateia 5 itens em um período de 15 segundos (fluência) (T)',
+          selected: null,
+        },
+        {
+          id: 716,
+          cod: '7-a',
+          descricao: 'Tateia 3 partes do corpo (ex. nariz, olhos, boca) (T)',
+          selected: null,
+        },
+        {
+          id: 717,
+          cod: '7-b',
+          descricao:
+            'Tateia 2 estímulos auditivos (ex. telefone tocando, sirene, cachorro latindo) (T)',
+          selected: null,
+        },
+        {
+          id: 718,
+          cod: '7-c',
+          descricao:
+            'Emite espontaneamente um tato contendo duas palavras em 5 tatos diferentes (ex. bebê chorando) (T/O)',
+          selected: null,
+        },
+        {
+          id: 719,
+          cod: '7-d',
+          descricao:
+            'Tateia 2 ações diferentes quando perguntado, O que ele está fazendo? (ex. bebendo, nadando) (T)',
+          selected: null,
+        },
+        {
+          id: 720,
+          cod: '7-e',
+          descricao:
+            'Tateia 40 itens quando perguntado O que é isso? (ex. árvore, tigela, meia, giz de cera, maçã) (T)',
+          selected: null,
+        },
+        {
+          id: 721,
+          cod: '8-a',
+          descricao:
+            'Tateia 3 estímulos tateáveis (ex. diz bola quando sente uma bola dentro de uma sacola) (T)',
+          selected: null,
+        },
+        {
+          id: 722,
+          cod: '8-b',
+          descricao:
+            'Tateia 5 combinações de substantivo-verbo ou verbo-substantivo (ex. cachorro comendo, bola rolando) (T)',
+          selected: null,
+        },
+        {
+          id: 723,
+          cod: '8-c',
+          descricao:
+            'Tateia 2 ou mais itens de 10 páginas diferentes de um livro quando perguntado, O que você vê aqui? (T)',
+          selected: null,
+        },
+        {
+          id: 724,
+          cod: '8-d',
+          descricao:
+            'Olha de relance para um ouvinte enquanto tateia em 5 ocasiões (O)',
+          selected: null,
+        },
+        {
+          id: 725,
+          cod: '9-a',
+          descricao:
+            'Tateia 25 relações de dois componentes substantivo-substantivo (ex. papel e lápis; carro e trator) (T)',
+          selected: null,
+        },
+        {
+          id: 726,
+          cod: '9-b',
+          descricao:
+            'Adquire um novo tato em menos de 15 tentativas de treino (T)',
+          selected: null,
+        },
+        {
+          id: 727,
+          cod: '9-c',
+          descricao:
+            'Tateia espontaneamente itens em um livro, na TV ou em um vídeo por 5 vezes (ex. Cinderela) (O)',
+          selected: null,
+        },
+        {
+          id: 728,
+          cod: '9-d',
+          descricao:
+            'Aprende 2 novos tatos sem treino direto (ex. transferência de ecoico para tato sem treino) (T)',
+          selected: null,
+        },
+        {
+          id: 729,
+          cod: '9-e',
+          descricao:
+            'Mostra generalização de resposta por 5 itens (ex. tateia o mesmo estímulo com 2 palavras diferentes professora e Katie; gato e Garfield; cachorro e Maggie) (T/O)',
           selected: null,
         },
       ],
@@ -687,173 +960,164 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 7,
       objetivos: [
         {
-          id: 581,
-          cod: '1-a',
+          id: 730,
+          cod: '10-a',
           descricao:
-            'Tem um item de conforto favorito que ele pode dormir ou carregar consigo (ex. um cobertor, bicho de pelúcia) (O)',
+            'Brinca com um brinquedo funcionalmente (ex. jogo de aniversário, jogo de chá) (O)',
           selected: null,
         },
         {
-          id: 582,
-          cod: '1-b',
+          id: 731,
+          cod: '10-b',
+          descricao: 'Permite que outros brinquem próximos (O)',
+          selected: null,
+        },
+        {
+          id: 732,
+          cod: '10-c',
           descricao:
-            'Direciona-se a objetos de interesse (ex., chaves, copo, bola) (O)',
+            'Demonstra interesse em um projeto realizado por um colega (ex. castelo de areia, estrutura de Lego) (O)',
           selected: null,
         },
         {
-          id: 583,
-          cod: '1-c',
-          descricao: 'Transfere itens de uma mão para outra (O)',
-          selected: null,
-        },
-        {
-          id: 584,
-          cod: '1-d',
+          id: 733,
+          cod: '10-d',
           descricao:
-            'Olha para um brinquedo quando ele é pego por um adulto (O)',
+            'Pede para outra criança não atrapalhar a sua estrutura ou a montagem de um brinquedo (O)',
           selected: null,
         },
         {
-          id: 585,
-          cod: '2-a',
-          descricao: 'Aponta para um brinquedo ou objeto de interesse (O)',
-          selected: null,
-        },
-        {
-          id: 586,
-          cod: '2-b',
+          id: 734,
+          cod: '10-e',
           descricao:
-            'Derruba itens para vê-los cair, ou demonstra outros interesses sobre causa e efeito (O)',
+            'Improvisa quando estão faltando partes (ex. continua brincando com um carro que está sem as rodinhas) (O)',
           selected: null,
         },
         {
-          id: 587,
-          cod: '2-c',
+          id: 735,
+          cod: '10-f',
           descricao:
-            'Abre as portas dos armários, caixas de brinquedo, ou alcança um recipiente de brinquedos (O)',
+            'Ajuda a pegar os brinquedos depois de uma atividade com dica de um adulto (O)',
           selected: null,
         },
         {
-          id: 588,
-          cod: '2-d',
+          id: 736,
+          cod: '6-a',
+          descricao: 'Transporta 2 ou mais brinquedos enquanto anda (O)',
+          selected: null,
+        },
+        {
+          id: 737,
+          cod: '6-b',
           descricao:
-            'Repete uma brincadeira que produz um som (ex. aperta brinquedos sonoros, bate em objetos) (O)',
+            'Brinca independente com um quebra cabeças por 1 minuto (O)',
           selected: null,
         },
         {
-          id: 589,
-          cod: '2-e',
+          id: 738,
+          cod: '6-c',
           descricao:
-            'Faz contato visual com outros, 3 vezes, durante a brincadeira (O)',
+            'Engaja-se em uma brincadeira sensorial por 2 minutos (ex. pá de areia, arroz na bandeja, brinca com o creme de barbear) (O)',
           selected: null,
         },
         {
-          id: 590,
-          cod: '3-a',
+          id: 739,
+          cod: '6-d',
+          descricao: 'Espirra água e brinca com objetos em uma piscina (O)',
+          selected: null,
+        },
+        {
+          id: 740,
+          cod: '6-e',
           descricao:
-            'Traz um brinquedo ou objeto de interesse para um adulto (O)',
+            'Brinca em um ambiente com brinquedos com várias partes por 2 minutos (ex. Animais da fazenda, bola de ginástica) (O)',
           selected: null,
         },
         {
-          id: 591,
-          cod: '3-b',
-          descricao: 'Despeja itens de um recipiente no chão (O)',
+          id: 741,
+          cod: '7-a',
+          descricao: 'Rabisca em uma Magna Doodle, quadro branco ou papel (O)',
           selected: null,
         },
         {
-          id: 592,
-          cod: '3-c',
+          id: 742,
+          cod: '7-b',
+          descricao: 'Espera enquanto a atividade está sendo organizada (O)',
+          selected: null,
+        },
+        {
+          id: 743,
+          cod: '7-c',
           descricao:
-            'Transfere itens para dentro ou para fora do container (O)',
+            'Brinca independente por 2 minutos sem a interação de um adulto (O)',
           selected: null,
         },
         {
-          id: 593,
-          cod: '3-d',
+          id: 744,
+          cod: '7-d',
           descricao:
-            'Generaliza comportamento de brincar para novos ambientes (O)',
+            'Sorteia ou separa um item do brinquedo preferido de outros em uma caixa (ex. Peças do trem Thomas) (O)',
           selected: null,
         },
         {
-          id: 594,
-          cod: '3-e',
+          id: 745,
+          cod: '7-e',
           descricao:
-            'Carrega objetos ou brinquedos de um lugar para o outro (O)',
+            'Imita espontaneamente um adulto usando um objeto (ex. Escovando o cabelo) (O)',
           selected: null,
         },
         {
-          id: 595,
-          cod: '4-a',
+          id: 746,
+          cod: '8-a',
           descricao:
-            'Entra em uma casa de brinquedo ou estrutura de brincar similar sem dica verbal de um adulto (O)',
+            'Brinca independente em um playground por 2 minutos sem a dica de um adulto (O)',
           selected: null,
         },
         {
-          id: 596,
-          cod: '4-b',
+          id: 747,
+          cod: '8-b',
           descricao:
-            'Aprende a manipular um brinquedo corretamente após um adulto demonstrar o uso (ex. apertar botões em um brinquedo) (O)',
+            'Observa, imita outra criança em uma brincadeira estruturada (ex. descer em um escorregador) (O)',
           selected: null,
         },
         {
-          id: 597,
-          cod: '4-c',
+          id: 748,
+          cod: '8-c',
           descricao:
-            'Emite mando para um adulto ajudar com um item (ex. mostra algo que não consegue abrir) (O)',
+            'Cordas com contas, laços ou atividades motoras finas por 1 minuto (O)',
           selected: null,
         },
         {
-          id: 598,
-          cod: '4-d',
-          descricao: 'Espontaneamente dança quando uma música é tocada (O)',
-          selected: null,
-        },
-        {
-          id: 599,
-          cod: '4-e',
+          id: 749,
+          cod: '8-d',
           descricao:
-            'Gosta de ser puxado ou empurrado em um vagão, em um triciclo ou em qualquer outro veículo de brinquedo (O)',
+            'Brinca com 2 brinquedos no contexto para que foi feito (ex. Martelo e mesa com pinos para pregar, jogo de cozinha) (O)',
           selected: null,
         },
         {
-          id: 600,
-          cod: '4-M',
+          id: 750,
+          cod: '9-a',
           descricao:
-            'Independentemente se engaja em brincadeira de movimento por 2 minutos (ex. balanço, dança, pula-pula)',
+            'Manda para ir pro playground ou estrutura de brincar, ou caso não tenha acesso a um brinquedo independentemente (ex. Pede para ser levantado para alcançar uma barra de macaco) (O)',
           selected: null,
         },
         {
-          id: 601,
-          cod: '5-a',
+          id: 751,
+          cod: '9-b',
+          descricao: 'Completa 5 quebra cabeças com 5 ou mais peças (O)',
+          selected: null,
+        },
+        {
+          id: 752,
+          cod: '9-c',
           descricao:
-            'Leva peças de um conjunto separado (ex. Duplos, Bristleblocks) (O)',
+            'Brinca repetidamente com componentes específicos de uma estrutura de brincar (ex. Desce no escorregador várias vezes, vai e volta por uma ponte de cordas) (O)',
           selected: null,
         },
         {
-          id: 602,
-          cod: '5-b',
-          descricao: 'Espontaneamente puxa e empurra itens em torno de si (O)',
-          selected: null,
-        },
-        {
-          id: 603,
-          cod: '5-c',
-          descricao:
-            'Carrega um objeto grande de brincar para um novo local (ex. uma garagem de brinquedo) (O)',
-          selected: null,
-        },
-        {
-          id: 604,
-          cod: '5-d',
-          descricao:
-            'Emite sons ou palavras associadas com brinquedos (ex. diz VroomVroom com um carro) (O)',
-          selected: null,
-        },
-        {
-          id: 605,
-          cod: '5-e',
-          descricao:
-            'Conecta coisas ou coloca-os juntos (ex. um carro em uma pista, Duplos) (O)',
+          id: 753,
+          cod: '9-d',
+          descricao: 'Chuta a bola pra frente espontaneamente (O)',
           selected: null,
         },
       ],
@@ -864,114 +1128,167 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 8,
       objetivos: [
         {
-          id: 606,
-          cod: '1-a',
+          id: 754,
+          cod: '10-a',
           descricao:
-            'Sorri ao ouvir vozes familiares 3 vezes (ex. a voz da mãe ou a voz do pai) (TO: 60 min)',
+            'Espontaneamente pede aos colegas para seguir direções 2 vezes (ex. coloque a bicicleta aqui) (O)',
           selected: null,
         },
         {
-          id: 607,
-          cod: '1-b',
+          id: 755,
+          cod: '10-b',
           descricao:
-            'Olha para faces de pessoas conhecidas ao menos 3 vezes (TO: 60 min)',
+            'Espontaneamente pede aos outros para atentar para o que ele está prestando atenção (ex. olhe para isto!) (O)',
           selected: null,
         },
         {
-          id: 608,
-          cod: '1-c',
+          id: 756,
+          cod: '10-c',
           descricao:
-            'Orienta-se ou faz contato visual com pessoas conhecidas pelo menos 5 vezes (TO: 30 min)',
+            'Espontaneamente pede aos outros para atentar para o comportamento dele 2 vezes (ex. Olhe-me!) (O)',
           selected: null,
         },
         {
-          id: 609,
-          cod: '2-a',
-          descricao:
-            'Sorri ou gargalha durante brincadeiras físicas pelo menos 5 vezes (T/O)',
+          id: 757,
+          cod: '10-d',
+          descricao: 'Pede por atenção de colegas 2 vezes (ex. Oi Johnny!) (O)',
           selected: null,
         },
         {
-          id: 610,
-          cod: '2-b',
+          id: 758,
+          cod: '10-e',
           descricao:
-            'Participa e sorri em brincadeira social recíproca pelo menos 2 vezes (ex. patycake, peek-a-boo) (T)',
+            'Espontaneamente imita um colega montando um triciclo, carro de brinquedo ou montando outro brinquedo 2 vezes (O)',
           selected: null,
         },
         {
-          id: 611,
-          cod: '2-c',
-          descricao:
-            'Procura atenção do adulto usando o olhar, sons ou gestos 3 vezes (ex. apontar) (TO: 60 min)',
+          id: 759,
+          cod: '6-a',
+          descricao: 'Olha para o colega quando este fala 2 vezes (O)',
           selected: null,
         },
         {
-          id: 612,
-          cod: '3-a',
+          id: 760,
+          cod: '6-b',
           descricao:
-            'Pega um item desejado de um adulto 3 vezes (ex. pega um brinquedo quando oferecido) (T)',
+            'Persegue/segue o colega na brincadeira com dica de um adulto 2 vezes (O)',
           selected: null,
         },
         {
-          id: 613,
-          cod: '3-b',
+          id: 761,
+          cod: '6-c',
           descricao:
-            'Reage positivamente à aproximação de outras crianças por 2 vezes (pode ser de um irmão) (O)',
+            'Senta com colegas em uma atividade de grupo (ex. música) sem comportamento disruptivo por 2 minutos (O)',
           selected: null,
         },
         {
-          id: 614,
-          cod: '3-c',
+          id: 762,
+          cod: '6-d',
           descricao:
-            'Responde aos cumprimentos de outros com 2 segundos de contato visual por 2 vezes (T/O)',
+            'Engaja-se com brincadeiras físicas com colegas (ex. rolar morro abaixo) com dica de um adulto 2 vezes (O)',
           selected: null,
         },
         {
-          id: 615,
-          cod: '4-a',
+          id: 763,
+          cod: '6-e',
           descricao:
-            'Aproxima-se de outra criança, 2 vezes, com dica de um adulto (TO: 30min)',
+            'Espontaneamente emite 5 diferentes comportamentos dos colegas (O)',
           selected: null,
         },
         {
-          id: 616,
-          cod: '4-b',
+          id: 764,
+          cod: '7-a',
           descricao:
-            'Apropriadamente fica perto de outra criança em atividade de grupo 2 vezes (TO: 30 min)',
+            'Pede ao colega com dica de um adulto 5 vezes (ex. Peça um biscoito à Katie) (T)',
           selected: null,
         },
         {
-          id: 617,
-          cod: '4-c',
+          id: 765,
+          cod: '7-b',
           descricao:
-            'Imita um aceno de tchau para outros com dica 2 vezes (T/O)',
+            'Ecoa sons e palavras dos colegas com dica de um adulto 2 vezes (ex. O que ele disse?) (T)',
           selected: null,
         },
         {
-          id: 618,
-          cod: '4-d',
+          id: 766,
+          cod: '7-c',
           descricao:
-            'Senta próximo de outra criança em atividades de grupo 2 vezes com dica de um adulto (O)',
+            'Espontaneamente atenta para outra criança em uma atividade lúdica 2 vezes (ex. teatro/cinema) (O)',
           selected: null,
         },
         {
-          id: 619,
-          cod: '5-a',
-          descricao: 'Espontaneamente segue outras crianças 2 vezes (O)',
+          id: 768,
+          cod: '7-d',
+          descricao:
+            'Espontaneamente oferece um reforçador ao colega 1 vez (O)',
           selected: null,
         },
         {
-          id: 620,
-          cod: '5-b',
+          id: 769,
+          cod: '8-a',
           descricao:
-            'Espontaneamente imita o comportamento de outras crianças 2 vezes (O)',
+            'Espontaneamente cumprimenta outros com um aceno ou resposta vocal 1 vez (O)',
           selected: null,
         },
         {
-          id: 621,
-          cod: '5-c',
+          id: 770,
+          cod: '8-b',
           descricao:
-            'Espontaneamente ri ou gargalha quando outros se engajam em comportamentos bobos, divertidos ou engraçados 2 vezes (O)',
+            'Espontaneamente imita ações de um colega com objetos 2 vezes (ex. soprando um cata-vento) (O)',
+          selected: null,
+        },
+        {
+          id: 771,
+          cod: '8-c',
+          descricao:
+            'Responde aos pedidos dos colegas com dica de um adulto 2 vezes (ex. Dê-lhe o carro) (T/O)',
+          selected: null,
+        },
+        {
+          id: 772,
+          cod: '8-d',
+          descricao: 'Espontaneamente ecoa palavras do colega 2 vezes (O)',
+          selected: null,
+        },
+        {
+          id: 773,
+          cod: '9-a',
+          descricao:
+            'Espontaneamente copia do colega a montagem de um brinquedo ou outro item 1 vez (ex. Duplo) (O)',
+          selected: null,
+        },
+        {
+          id: 774,
+          cod: '9-b',
+          descricao:
+            'Responde apropriadamente aos pedidos de colegas para um objeto 2 vezes (ex. dê-me o caminhão) (O/T)',
+          selected: null,
+        },
+        {
+          id: 775,
+          cod: '9-c',
+          descricao:
+            'Responde apropriadamente aos pedidos de colegas para uma ação 2 vezes (ex. empurre-me) (O/T)',
+          selected: null,
+        },
+        {
+          id: 776,
+          cod: '9-d',
+          descricao:
+            'Responde aos pedidos de colegas para cessar um comportamento 1 vez (ex. pare de me empurrar) (O/T)',
+          selected: null,
+        },
+        {
+          id: 777,
+          cod: '9-e',
+          descricao: 'Espontaneamente pede ajuda de adultos 1 vez (O)',
+          selected: null,
+        },
+        {
+          id: 778,
+          cod: '9-f',
+          descricao:
+            'Tateia itens para benefício de colegas com dica de um adulto, 2 vezes (ex. lá está seu carro) (O)',
           selected: null,
         },
       ],
@@ -995,9 +1312,177 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 10,
       objetivos: [
         {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
+          id: 779,
+          cod: '10-a',
+          descricao:
+            'Seleciona um item em um conjunto de 10, dado a classe e uma função (ex. ache alguma coisa que você usa nos seus pés) para 25 itens (T/O)',
+          selected: null,
+        },
+        {
+          id: 780,
+          cod: '10-b',
+          descricao:
+            'Seleciona um item em um conjunto de 10, dado a classe e uma característica (ex. ache um animal com asas) para 25 itens (T/O)',
+          selected: null,
+        },
+        {
+          id: 781,
+          cod: '10-c',
+          descricao:
+            'Demonstra 5 respostas ouvinte FCC não treinadas em ambiente natural (T)',
+          selected: null,
+        },
+        {
+          id: 782,
+          cod: '10-d',
+          descricao:
+            'Generaliza 25 novas tarefas LRFFC de dois componentes sem treino (ex. encontre uma fruta vermelha.) (T/O)',
+          selected: null,
+        },
+        {
+          id: 783,
+          cod: '10-e',
+          descricao:
+            'Emite espontaneamente 5 respostas LRFFC (ex. consegue uma vassoura depois de ouvir “Há sujeira no chão.”). (O)',
+          selected: null,
+        },
+        {
+          id: 784,
+          cod: '6-a',
+          descricao:
+            'Seleciona um animal em um conjunto de 3 para 5 diferentes sons produzidos por animais (ex. muuummmdiz uma...) (T)',
+          selected: null,
+        },
+        {
+          id: 785,
+          cod: '6-b',
+          descricao:
+            'Seleciona um objeto em um conjunto de 3 para 5 diferentes sons produzidos por objetos (T)',
+          selected: null,
+        },
+        {
+          id: 786,
+          cod: '6-c',
+          descricao:
+            'Seleciona um item de um conjunto de 3 para 5 diferentes músicas preenchendo com o item correspondente (ex. as rodas no...) (T)',
+          selected: null,
+        },
+        {
+          id: 787,
+          cod: '7-a',
+          descricao:
+            'Seleciona o item de um conjunto de 5 para 5 diferentes declarações incompletas (ex. você dorme na …) (T)',
+          selected: null,
+        },
+        {
+          id: 788,
+          cod: '7-b',
+          descricao:
+            'Seleciona o item de um conjunto de 5 para 5 diferentes jogo de palavras associadas (ex. sapatos e …) (T)',
+          selected: null,
+        },
+        {
+          id: 789,
+          cod: '7-c',
+          descricao:
+            'Inverte 5 associações adquiridas anteriormente em um formato LRFFC (ex. sapatos e ..., meias e ...) (T)',
+          selected: null,
+        },
+        {
+          id: 790,
+          cod: '7-d',
+          descricao:
+            'Generaliza 10 respostas de ouvinte por FCC conhecidas para diferentes tons de voz, volume, prosódia, etc. (T)',
+          selected: null,
+        },
+        {
+          id: 791,
+          cod: '7-e',
+          descricao:
+            'Generaliza 10 respostas de ouvinte por FCC conhecidas para novas frases sem treino (ex. vamos sentar na..., hora de sentar na...) (T)',
+          selected: null,
+        },
+        {
+          id: 792,
+          cod: '7-f',
+          descricao:
+            'Generaliza 10 respostas de ouvinte por FCC conhecidas para 2 diferentes figuras ou objetos (2 sapatos diferentes) (T/O)',
+          selected: null,
+        },
+        {
+          id: 793,
+          cod: '8-a',
+          descricao:
+            'Seleciona o item de um conjunto de 8 para 10 declarações funcionais incompletas (ex. você desenha com um...) (T)',
+          selected: null,
+        },
+        {
+          id: 794,
+          cod: '8-b',
+          descricao:
+            'Seleciona o item de um conjunto de 8 para 10 declarações de características (ex. você acha as rodas no...) (T)',
+          selected: null,
+        },
+        {
+          id: 795,
+          cod: '8-c',
+          descricao:
+            'Seleciona o item de um conjunto de 8 para 10 declarações de classes (ex. uma espécie de animal é...) (T)',
+          selected: null,
+        },
+        {
+          id: 796,
+          cod: '8-d',
+          descricao:
+            'Seleciona o item de um conjunto de 8 para 10 diferentes questões Qual? (ex. o que você come?) (T/O)',
+          selected: null,
+        },
+        {
+          id: 797,
+          cod: '8-e',
+          descricao:
+            'Seleciona o item de um conjunto de 8 para 10 diferentes questões O que? (ex.???) (T/O)',
+          selected: null,
+        },
+        {
+          id: 798,
+          cod: '8-f',
+          descricao:
+            'Seleciona o item de um conjunto de 8 para 10 diferentes questões Quem? (ex. quem constrói um ninho?) (T/O)',
+          selected: null,
+        },
+        {
+          id: 799,
+          cod: '9-a',
+          descricao:
+            'Demonstra generalização para classe de ROFCC com 5 exemplares (ex. 5 animais diferentes) para 10 classes (T)',
+          selected: null,
+        },
+        {
+          id: 800,
+          cod: '9-b',
+          descricao:
+            'Emite 10 respostas ROFCC conhecidas de um conjunto de 10 em no mínimo 1 minuto (fluência) (T)',
+          selected: null,
+        },
+        {
+          id: 801,
+          cod: '9-c',
+          descricao:
+            'Seleciona um item dado 2 diferentes declarações verbais sobre cada item quando apresentado independentemente (ex. ache a comida. O que você come?) para 10 diferentes itens (T)',
+          selected: null,
+        },
+        {
+          id: 802,
+          cod: '9-d',
+          descricao:
+            'Seleciona um item de um conjunto de 10 para 10 diferentes questões Onde? de ROFCC (ex. onde você acha o leite?) (T)',
+          selected: null,
+        },
+        {
+          id: 803,
+          cod: '9-e',
+          descricao: 'Demonstra 10 respostas de ROFCC em ambiente natural (T)',
           selected: null,
         },
       ],
@@ -1007,9 +1492,178 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 11,
       objetivos: [
         {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
+          id: 804,
+          cod: '10-a',
+          descricao:
+            'Responde 5 questões “onde” diferentes (ex.: Onde estão seus vídeos?) (T)',
+          selected: null,
+        },
+        {
+          id: 805,
+          cod: '10-b',
+          descricao:
+            'Responde 5 questões “quem” diferentes (ex.: Quem é seu professor?) (T)',
+          selected: null,
+        },
+        {
+          id: 806,
+          cod: '10-c',
+          descricao:
+            'Demonstra 2 respostas intraverbais não treinadas (ex.: responde flor quando alguém diz margarida) (T)',
+          selected: null,
+        },
+        {
+          id: 807,
+          cod: '10-d',
+          descricao:
+            'Responde 10 questões de classes diferentes (ex.: Qual animal você gosta? Qual brinquedo você gosta?) (T)',
+          selected: null,
+        },
+        {
+          id: 808,
+          cod: '10-e',
+          descricao:
+            'Responde questões sobre cores e nomes sobre 10 itens visíveis (ex.: O que é isso? Qual a cor disso?) (T)',
+          selected: null,
+        },
+        {
+          id: 809,
+          cod: '10-f',
+          descricao:
+            'Completa 10 frases diferentes de qualquer tipo no formato de preencher lacunas. (ex.: Continuar uma música, expressões verbais divertidas, sons de objetos ou animais.) (T)',
+          selected: null,
+        },
+        {
+          id: 810,
+          cod: '10-g',
+          descricao:
+            'Emite espontaneamente 5 mandos intraverbais (ex.: o pai diz Está calor e a criança diz Vamos nadar) (T/O)',
+          selected: null,
+        },
+        {
+          id: 811,
+          cod: '6-a',
+          descricao:
+            'Fornece o som feito por 2 animais ou objeto (ex.: Um cachorro faz... Uma buzina faz...) (T)',
+          selected: null,
+        },
+        {
+          id: 812,
+          cod: '6-b',
+          descricao:
+            'Dá 2 nomes de animais quando dado o som que ele faz (ex.: Quem faz miau...) (T)',
+          selected: null,
+        },
+        {
+          id: 813,
+          cod: '6-c',
+          descricao:
+            'Completa 5 sons diferentes nos espaços (ex. A roda do ônibus... Brilha, brilha estrelinha, quero ...) (T)',
+          selected: null,
+        },
+        {
+          id: 814,
+          cod: '6-d',
+          descricao:
+            'Completa 2 espaços verbais diferentes envolvendo atividades divertidas (ex.: Peek-a-... Ready, set...) (T)',
+          selected: null,
+        },
+        {
+          id: 815,
+          cod: '7-a',
+          descricao:
+            'Completa 5 espaços em diferentes contextos (ex.: Você dorme em sua... quando está no seu quarto.) (T)',
+          selected: null,
+        },
+        {
+          id: 816,
+          cod: '7-b',
+          descricao:
+            'Responde corretamente para 5 espaços quando os contextos se revertem (ex. Na sua cama você vai ...) (T)',
+          selected: null,
+        },
+        {
+          id: 817,
+          cod: '7-c',
+          descricao:
+            'Completa 5 espaços em branco diferentes em frases fora do contexto (ex.: Você lava seu...) (T)',
+          selected: null,
+        },
+        {
+          id: 818,
+          cod: '7-d',
+          descricao:
+            'Generaliza 10 respostas intraverbais conhecidas para um adulto e um ambiente diferentes (T/O)',
+          selected: null,
+        },
+        {
+          id: 819,
+          cod: '8-a',
+          descricao:
+            'Completa espaços de classificação de 2 comidas e 2 bebidas (ex.: Você come ... Você bebe ...) (T)',
+          selected: null,
+        },
+        {
+          id: 820,
+          cod: '8-b',
+          descricao:
+            'Completa espaços em branco de uma frase com 5 combinações substantivo-substantivo diferentes (ex.: mamãe e ...) (T)',
+          selected: null,
+        },
+        {
+          id: 821,
+          cod: '8-c',
+          descricao:
+            'Completa 5 músicas com duas ou mais palavras (ex. Seu Lobato ...)',
+          selected: null,
+        },
+        {
+          id: 822,
+          cod: '8-d',
+          descricao:
+            'Generaliza 10 respostas intraverbais para novas frases transmissoras (ex.: Nós saltamos um... Vamos saltar um...) (E)',
+          selected: null,
+        },
+        {
+          id: 823,
+          cod: '9-a',
+          descricao:
+            'Completa 10 espaços em branco de frases com substantivo-verbo diferentes (ex.: Você passeia na... Você brinca no...) (T)',
+          selected: null,
+        },
+        {
+          id: 824,
+          cod: '9-b',
+          descricao:
+            'Emite 2 respostas intraverbais espontaneamente (sem nenhuma dica verbal adicional) (O)',
+          selected: null,
+        },
+        {
+          id: 825,
+          cod: '9-c',
+          descricao:
+            'Responde 10 questões “O que” diferentes com um verbo como SD primário (ex.: O que você escova?) (T)',
+          selected: null,
+        },
+        {
+          id: 826,
+          cod: '9-d',
+          descricao:
+            'Responde 10 questões “O que” diferentes com um substantivo como SD primário (ex.: O que é um celeiro?) (T)',
+          selected: null,
+        },
+        {
+          id: 827,
+          cod: '9-e',
+          descricao:
+            'Quando perguntado O que você come (ou bebe)?, fornece dois ou mais membros de cada categoria (T)',
+          selected: null,
+        },
+        {
+          id: 828,
+          cod: '9-f',
+          descricao:
+            'Fornece 5 respostas novas para questões adquiridas previamente (generalização de resposta) (ex.: quando perguntado o nome de um animal a criança responde urso para a primeira vez sem receber treino em urso) (T)',
           selected: null,
         },
       ],
@@ -1020,9 +1674,166 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 12,
       objetivos: [
         {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
+          id: 829,
+          cod: '10-a',
+          descricao:
+            'Leva a bandeja ou pratos para a pia e coloca itens na lixeira com dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 830,
+          cod: '10-b',
+          descricao: 'Consegue almoçar com dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 831,
+          cod: '10-c',
+          descricao:
+            'Guarda a mochila, lancheira e casaco ao entrar na sala de aula com dica para o grupo (T/O)',
+          selected: null,
+        },
+        {
+          id: 832,
+          cod: '10-d',
+          descricao:
+            'Pega e guarda a maioria dos itens do lanche/almoço de forma independente (O)',
+          selected: null,
+        },
+        {
+          id: 833,
+          cod: '10-e',
+          descricao:
+            'Responde verbalmente em situação de grupo 2 vezes em uma sessão de 5 minutos (O)',
+          selected: null,
+        },
+        {
+          id: 834,
+          cod: '10-f',
+          descricao:
+            'Imita colegas cantando ou fazendo uma atividade em situação de grupo 2 vezes em uma sessão de 5 minutos (O)',
+          selected: null,
+        },
+        {
+          id: 835,
+          cod: '10-g',
+          descricao:
+            'Vai ao banheiro sem comportamento inadequado quando ajudado (O)',
+          selected: null,
+        },
+        {
+          id: 836,
+          cod: '6-a',
+          descricao:
+            'Ajusta-se ao se separar dos pais (ex.: não chora quando os pais partem) (O)',
+          selected: null,
+        },
+        {
+          id: 837,
+          cod: '6-b',
+          descricao:
+            'Senta por 1 minuto para lanchar ou almoçar quando ajudado fisicamente (O)',
+          selected: null,
+        },
+        {
+          id: 838,
+          cod: '6-c',
+          descricao:
+            'Alinha-se com outra criança quando ajudado fisicamente (O)',
+          selected: null,
+        },
+        {
+          id: 839,
+          cod: '6-d',
+          descricao: 'Demonstra complacência para todos os alunos (O)',
+          selected: null,
+        },
+        {
+          id: 840,
+          cod: '7-a',
+          descricao:
+            'Não tenta sair quando outra criança senta ao seu lado (O)',
+          selected: null,
+        },
+        {
+          id: 841,
+          cod: '7-b',
+          descricao:
+            'Coloca um item pessoal longe com dica gestual ou verbal (ex.: casaco, mochila, lancheira) (O)',
+          selected: null,
+        },
+        {
+          id: 842,
+          cod: '7-c',
+          descricao:
+            'Vai e senta à mesa com outra criança somente com dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 843,
+          cod: '7-d',
+          descricao: 'Coopera para lavar as mãos com ajuda física (O)',
+          selected: null,
+        },
+        {
+          id: 844,
+          cod: '7-e',
+          descricao:
+            'Não se engaja em comportamentos inadequados quando um colega senta ao seu lado (O)',
+          selected: null,
+        },
+        {
+          id: 845,
+          cod: '8-a',
+          descricao: 'Vai para a rodinha em grupo com dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 846,
+          cod: '8-b',
+          descricao:
+            'Senta à mesa ou em uma estação de trabalho com dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 847,
+          cod: '8-c',
+          descricao:
+            'Espera sentado à mesa sem tocar nos materiais até receber permissão (O)',
+          selected: null,
+        },
+        {
+          id: 848,
+          cod: '8-d',
+          descricao:
+            'Senta na rodinha em grupo por 2 minutos sem comportamento inadequado ou dicas para permanecer sentado (O)',
+          selected: null,
+        },
+
+        {
+          id: 849,
+          cod: '9-a',
+          descricao: 'Entra após recesso somente com dicas verbais (O)',
+          selected: null,
+        },
+        {
+          id: 850,
+          cod: '9-b',
+          descricao:
+            'Participa de movimentos em grupo e atividades musicais com dica verbal (O)',
+          selected: null,
+        },
+        {
+          id: 851,
+          cod: '9-c',
+          descricao:
+            'Imita atividades com objeto em grupo (ex.: tocando gravetos juntos, sacudindo um chocalho) (O)',
+          selected: null,
+        },
+        {
+          id: 852,
+          cod: '9-d',
+          descricao: 'Canta músicas com o grupo com dica verbal (O)',
           selected: null,
         },
       ],
@@ -1033,9 +1844,114 @@ const avaliacaoNivelDoisTarefas = {
       tipo: 13,
       objetivos: [
         {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
+          id: 853,
+          cod: '10-a',
+          descricao:
+            'Ecoa a maior parte das palavras ou aproximações das palavras após comando (repertório ecóico generalizado), mas ainda tem erros de articulação',
+          selected: null,
+        },
+        {
+          id: 854,
+          cod: '10-b',
+          descricao:
+            'Estranhos podem entender pelo menos 50% das palavras emitidas pela criança',
+          selected: null,
+        },
+        {
+          id: 855,
+          cod: '10-c',
+          descricao: 'Emite um vocabulário receptivo total com 400 palavras',
+          selected: null,
+        },
+        {
+          id: 856,
+          cod: '10-d',
+          descricao:
+            'Emite um comprimento médio de sentenças de 2 ½ morfemas (Ex: “Empurre o carro.”, “Onde mamãe vai?”)',
+          selected: null,
+        },
+        {
+          id: 857,
+          cod: '7-a',
+          descricao:
+            'Usa palavras reconhecíveis mais frequentemente do que jargões',
+          selected: null,
+        },
+        {
+          id: 858,
+          cod: '7-b',
+          descricao:
+            'Emite frases com 2 a 3 palavras sem compreender cada palavra (Ex: “Isso é um gato.”, “Vai dar uma volta?”)',
+          selected: null,
+        },
+        {
+          id: 859,
+          cod: '7-c',
+          descricao:
+            'Tem um vocabulário expressivo total de 50 palavras (todos os operantes verbais, exceto ecóico)',
+          selected: null,
+        },
+        {
+          id: 860,
+          cod: '8-a',
+          descricao:
+            'Emite mandos com 2 palavras para receber mais de alguma coisa (Ex: “Mais cócegas”)',
+          selected: null,
+        },
+        {
+          id: 861,
+          cod: '8-b',
+          descricao:
+            'Emite mandos ou tatos com 2 palavras – substantivo-verbo ou verbo-substantivo (Ex: “Coloquesuco”, “Bebê chorando”)',
+          selected: null,
+        },
+        {
+          id: 862,
+          cod: '8-c',
+          descricao:
+            'Ajusta o volume de voz após comando (Ex: sussurra e fala alto)',
+          selected: null,
+        },
+        {
+          id: 863,
+          cod: '8-d',
+          descricao: 'Ecoa 10 ritmos, entonações ou passos diferentes',
+          selected: null,
+        },
+        {
+          id: 864,
+          cod: '9-a',
+          descricao:
+            'Consistentemente emite as consoantes iniciais das palavras',
+          selected: null,
+        },
+
+        {
+          id: 865,
+          cod: '9-b',
+          descricao:
+            'Emite mandos com 2 palavras para posse (Ex: “Meu biscoito.”, “Isso é meu.”)',
+          selected: null,
+        },
+        {
+          id: 866,
+          cod: '9-c',
+          descricao:
+            'Emite mandos ou tatos com 2 palavras para localização (ex: “Vem aqui.”, “Lá está o Thomas.”)',
+          selected: null,
+        },
+        {
+          id: 867,
+          cod: '9-d',
+          descricao:
+            'Emite mandos com 2 palavras para negação ou recusa (Ex: “Barney não.”, “Sapatos não.”, “Não mais.”)',
+          selected: null,
+        },
+        {
+          id: 868,
+          cod: '9-e',
+          descricao:
+            'Combina 2 palavras para fazer uma palavra ou uma frase nova (Ex: “Senhorita Betty”)',
           selected: null,
         },
       ],
