@@ -39,21 +39,17 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import useNotify from 'src/composables/UseNotify';
-import useAuth from 'src/composables/useAuth';
 import { useQuasar } from 'quasar';
+import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRouter } from 'vue-router';
-import useSupabaseApi from 'src/composables/UseSupabaseApi'; import { AssinaturaService } from '../assinatura/AssinaturaService';
-;
-
-const supabase = useSupabaseApi();
 
 const router = useRouter();
 
 const $q = useQuasar();
 
-const { register } = useAuth();
-
 const { error } = useNotify();
+
+const acessoService = new AcessoService();
 
 const formCadastro = reactive({
   nome: '',
@@ -70,28 +66,19 @@ let isSubmitted = computed(() => {
 
 async function cadastrar() {
   $q.loading.show();
+
   if (formCadastro.senha.trim() !== formCadastro.senhaConfirmada.trim()) {
     error('Senhas não conferem');
     return;
   }
 
-  await register(formCadastro.email.trim(), formCadastro.senha.trim()).then(() => {
-    $q.loading.hide();
-    supabase.post('usuarios', { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao }).then(() => {
-      criarAssinatura();
-    }).catch(() => {
-      $q.loading.hide();
-      error('Erro ao cadastrar usuário');
-    });
-    router.push({ name: 'confirmado' });
-  }).catch(() => {
-    error('Erro ao cadastrar usuário');
-    $q.loading.hide();
-  });
-};
+  const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao } as Usuario;
 
-function criarAssinatura() {
-  const assinaturaService = new AssinaturaService();
-  assinaturaService.criarAssinatura();
-}
+  await acessoService
+    .criarNovoUsuario(novoUsurio)
+    .then((status) => status === 200 ? router.push({ name: 'confirmado' }) : error("Ocorreu um erro contate Suporte."))
+    .catch(() => error("Ocorreu um erro contate Suporte."));
+
+  $q.loading.hide();
+};
 </script>
