@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
-type localStorageKey = 'sb-admyhroxjebmgrdakhza-auth-token';
+type localStorageKey = '_t'; //Token autenticado da sessão do usuário
 
 interface IdentityData {
   avatar_url?: string;
@@ -74,7 +74,7 @@ interface TokenDTO {
 
 export function useManagerTokens() {
   const getToken = () => {
-    const key: localStorageKey = 'sb-admyhroxjebmgrdakhza-auth-token';
+    const key: localStorageKey = '_t';
     return localStorage.getItem(key) !== null
       ? localStorage.getItem(key)
       : null;

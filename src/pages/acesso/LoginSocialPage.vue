@@ -46,14 +46,11 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue';
-import useAuth from 'src/composables/useAuth';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useManagerTokens } from 'src/composables/managerTokens';
-
-export type Provider = 'google' | 'facebook' | 'normal';
-
-const service = useAuth();
+import { AcessoService, Auth } from 'src/services/AcessoService';
+import { useQuasar } from 'quasar';
 
 const { error } = useNotify();
 
@@ -65,17 +62,28 @@ const router = useRouter();
 
 const { getToken } = useManagerTokens();
 
+const acessoService = new AcessoService();
+
+const $q = useQuasar();
+
 let isSubmitted = computed(() => {
   return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
 });
 
-function entrar(provider: Provider) {
-  service.login(email.value.trim(), senha.value.trim(), provider).then(() => {
+async function entrar() {
+  const auth: Auth = {
+    username: email.value.toLocaleLowerCase().trim(),
+    password: senha.value.trim()
+  }
+
+  $q.loading.show();
+  await acessoService.login(auth).then((data) => {
+    localStorage.setItem('_t', JSON.stringify(data.data));
     router.push({ name: 'relatorios' })
-  }).catch((_error) => {
-    console.error(_error);
+  }).catch(() => {
     error('Erro ao logar. Verifique suas credenciais');
-  })
+  });
+  $q.loading.hide();
 }
 
 onBeforeMount(() => {

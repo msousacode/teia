@@ -72,7 +72,7 @@ async function cadastrar() {
     return;
   }
 
-  const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao } as Usuario;
+  const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao, senha: formCadastro.senhaConfirmada } as Usuario;
 
   await acessoService
     .criarNovoUsuario(novoUsurio)
