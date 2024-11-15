@@ -13,11 +13,11 @@
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                 <q-date v-model="form.nasc_aprendiz" :locale="{
-        days: dias,
-        months: meses,
-        daysShort: diasAbreviados,
-        monthsShort: meses,
-      }" mask="DD/MM/YYYY">
+                  days: dias,
+                  months: meses,
+                  daysShort: diasAbreviados,
+                  monthsShort: meses,
+                }" mask="DD/MM/YYYY">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
@@ -61,6 +61,8 @@ import {
   diasAbreviados,
   meses
 } from 'src/composables/utils';
+import { AprendizService } from 'src/services/AprendizService';
+import { useQuasar } from 'quasar';
 
 const { success, error } = useNotify();
 
@@ -68,10 +70,13 @@ const store = useAprendizStore();
 
 const routeLocation = useRoute();
 
+const aprendizeService = new AprendizService();
 
 let isSubmitted = computed(() => {
   return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '';
 });
+
+const $q = useQuasar();
 
 const form = ref({
   uuid: '',
@@ -81,11 +86,10 @@ const form = ref({
   nome_pai: '',
   nome_responsavel: '',
   observacao: '',
-  sync: false,
   ativo: true,
 });
 
-function submit() {
+async function submit() {
   isSubmitted.value = true;
 
   if (routeLocation.params.action === 'edit') {
@@ -94,16 +98,24 @@ function submit() {
   }
 
   form.value.uuid = uuid();
+
   const data = toRaw(form.value);
 
-  db.aprendizes
-    .add(data)
-    .then(() => {
-      reset();
-      success();
+  $q.loading.show();
+
+  await aprendizeService.salvar(data)
+    .then((response) => {
+      if (response.status == 200) {
+        reset();
+        success();
+      } else {
+        error("Ocorreu um erro ao salvar");
+      }
+
+      $q.loading.hide();
     })
     .catch((error) => {
-      error(error)
+      error("Ocorreu um erro");
     });
 }
 

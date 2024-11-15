@@ -16,7 +16,6 @@ const config = {
   headers: {
     accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
-    //access_token: process.env.ASSAS_KEY,
     'content-type': 'application/json',
   },
 };

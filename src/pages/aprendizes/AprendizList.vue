@@ -1,7 +1,8 @@
 <template>
-  <div class="q-pa-sm">
+  <q-page class="q-pa-sm">
+
     <div class="row">
-      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12" :loading="loading"
+      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
           <div class="text-h6 text-teal">Aprendizes</div>
@@ -22,7 +23,7 @@
       <q-btn v-if="$q.platform.is.mobile || $q.platform.is.desktop" fab icon="mdi-plus" color="blue"
         :to="{ name: 'aprendiz-novo' }" />
     </q-page-sticky>
-  </div>
+  </q-page>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
@@ -32,6 +33,7 @@ import { useRouter } from 'vue-router';
 import { db } from 'src/db';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
+import { AprendizService } from 'src/services/AprendizService';
 
 const $q = useQuasar();
 
@@ -39,22 +41,25 @@ const { success, error } = useNotify();
 
 const router = useRouter();
 
-const loading = ref(false);
-
 const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
+const aprendizService = new AprendizService();
 
-function carregarLista() {
-  loading.value = true;
-
-  db.aprendizes.toArray().then((res) => {
-    aprendizes.value = res.filter((aprendiz) => aprendiz.ativo);
-    loading.value = false;
+async function carregarLista() {
+  $q.loading.show();
+  await aprendizService.buscar().then((response) => {
+    if (response.status == 200) {
+      aprendizes.value = response.data.content;
+    } else {
+      error('Ocorreu um erro.')
+    }
+    $q.loading.hide();
   }).catch((_error) => {
     error(_error);
-  })
+    $q.loading.hide();
+  });
 }
 
 function handleEdit(aprendiz: any) {
