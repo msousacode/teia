@@ -38,11 +38,8 @@ import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
-import useAuth from 'src/composables/useAuth';
 
 const router = useRouter();
-
-const service = useAuth();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
@@ -111,7 +108,7 @@ function toggleLeftDrawer() {
 
 const sair = async () => {
   localStorage.clear();
-  await service.logout();
+  sessionStorage.clear();
   router.replace({ name: 'login' });
 };
 

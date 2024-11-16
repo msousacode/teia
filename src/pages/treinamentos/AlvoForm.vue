@@ -25,9 +25,9 @@
     </q-card>
   </q-dialog>
 
-  <div v-if="alvos.length == 0">
+  <!--div v-if="alvos.length == 0">
     <div class="text-teal text-body1 q-mt-md text-center">Nenhum objetivo cadastrado. Adicione objetivos</div>
-  </div>
+  </div-->
 
   <div v-for="(item, index) in alvos" :key="index" class="q-pa-sm">
     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
@@ -167,11 +167,10 @@ async function salvarAlvo() {
 }
 
 function getAlvos() {
-  db.alvos
-    .where({ treinamento_uuid_fk: store.getTreinamentoUuid })
-    .toArray()
-    .then((data) => {
-      alvos.value = toRaw(data);
+
+  treinamentoService.getAlvoAll(store.getTreinamentoUuid)
+    .then((response) => {
+      alvos.value = toRaw(response.data);
     }).catch((_error) => {
       error('Erro ao consultar alvos', _error);
     });
