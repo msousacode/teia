@@ -25,6 +25,10 @@
     </q-card>
   </q-dialog>
 
+  <div v-if="alvos.length == 0">
+    <div class="text-teal text-body1 q-mt-md text-center">Nenhum objetivo cadastrado. Adicione objetivos</div>
+  </div>
+
   <div v-for="(item, index) in alvos" :key="index" class="q-pa-sm">
     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
       <q-card-section>
@@ -75,6 +79,7 @@ import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { TreinamentoService } from 'src/services/TreinamentoService';
 
 const $q = useQuasar();
 
@@ -87,6 +92,8 @@ const store = useTreinamentoStore();
 const visible = ref(false);
 
 const alvos = ref<any>([]);
+
+const treinamentoService = new TreinamentoService();
 
 const aprendizados = [
   'Habilidades de Atenção',
@@ -108,6 +115,9 @@ const form = ref({
 async function salvarAlvo() {
 
   if (form.value.uuid) {
+
+
+
     await db.alvos.put(toRaw(form.value)).then(() => {
       visible.value = false;
       success("Alvo atualizado com sucesso");
@@ -140,17 +150,20 @@ async function salvarAlvo() {
 
   const data = toRaw(form.value);
 
-  db.alvos
-    .add(data)
-    .then(() => {
+  treinamentoService.salvarAlvo(data).then((response) => {
+    if (response.status == 200) {
       getAlvos();
       visible.value = false;
       reset();
       success();
-    })
-    .catch((_error) => {
-      error(_error);
-    });
+    } else {
+      error("Ocorreu um erro ao salvar");
+    }
+
+    $q.loading.hide();
+  }).catch((_error) => {
+    error(_error);
+  });
 }
 
 function getAlvos() {

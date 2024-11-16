@@ -39,11 +39,16 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import AlvoForm from './AlvoForm.vue';
-import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { TreinamentoService } from 'src/services/TreinamentoService';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+
+const treinamentoService = new TreinamentoService();
 
 const { success, error } = useNotify();
 
@@ -74,28 +79,42 @@ function salvar() {
 
   form.value.uuid = uuid();
   const data = toRaw(form.value);
+  console.log('treinamento', data)
 
-  db.treinamentos
-    .add(data)
-    .then((res) => {
-      store.$state.treinamentoUuid = res;
+  $q.loading.show();
+
+  treinamentoService.salvar(data).then((response) => {
+    if (response.status == 200) {
+      store.$state.treinamentoUuid = response.data.treinamentoId;
       success();
       editMode.value = true;
-    })
-    .catch((_error) => {
-      error(_error);
-    });
+    } else {
+      error("Ocorreu um erro ao salvar");
+    }
+
+    $q.loading.hide();
+  }).catch((_error) => {
+    error(_error);
+  });
 }
 
 function handleUpdate() {
-  db.treinamentos
-    .update(store.getTreinamentoUuid, toRaw(form.value))
-    .then(() => {
+
+  const data = toRaw(form.value);
+
+  treinamentoService.atualizar(data).then((response) => {
+    if (response.status == 200) {
+      store.$state.treinamentoUuid = response.data.treinamentoId;
       success();
-    })
-    .catch((_error) => {
-      error('Ocorreu um erro ao tentar atualizar o treinamento', _error);
-    });
+      editMode.value = true;
+    } else {
+      error("Ocorreu um erro ao salvar");
+    }
+
+    $q.loading.hide();
+  }).catch((_error) => {
+    error(_error);
+  });
 }
 
 function reset() {
@@ -113,15 +132,15 @@ function reset() {
 onMounted(() => {
 
   if (routeLocation.params.action === 'edit') {
-    db.treinamentos
-      .get(store.getTreinamentoUuid)
-      .then((res) => {
-        if (res) {
-          form.value.uuid = res.uuid || '';
-          form.value.treinamento = res.treinamento;
-          form.value.protocolo = res.protocolo;
-          form.value.descricao = res.descricao;
-          form.value.sync = res.sync;
+    treinamentoService.get(store.getTreinamentoUuid)
+      .then((response) => {
+
+        if (response.data) {
+          form.value.uuid = response.data.treinamentoId || '';
+          form.value.treinamento = response.data.treinamento;
+          form.value.protocolo = response.data.protocolo;
+          form.value.descricao = response.data.descricao;
+          form.value.sync = response.data.sync;
         }
       })
       .catch((_error) => {

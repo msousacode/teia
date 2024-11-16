@@ -34,12 +34,15 @@ import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
+import { TreinamentoService } from 'src/services/TreinamentoService';
 
 const { success, error } = useNotify();
 
 const router = useRouter();
 
 const $q = useQuasar();
+
+const treinamentoService = new TreinamentoService();
 
 const store = useTreinamentoStore();
 
@@ -52,7 +55,7 @@ const props = defineProps<{
 }>();
 
 function handleEdit(treinamento: any) {
-  store.$state.treinamentoUuid = treinamento.uuid;
+  store.$state.treinamentoUuid = treinamento.treinamentoId;
   router.push({ name: 'treinamento-novo', params: { action: 'edit' } });
 }
 
@@ -90,13 +93,20 @@ function handleSelectTreinamentos() {
 
 async function getTreinamentos() {
   $q.loading.show();
-  await db.treinamentos.toArray().then((res) => {
-    treinamentos.value = res;
+
+  await treinamentoService.getAll().then((response) => {
+    if (response.status == 200) {
+      treinamentos.value = response.data.content;
+    } else {
+      error('Ocorreu um erro.')
+    }
     $q.loading.hide();
   }).catch((_error) => {
     $q.loading.hide();
     error(_error);
   });
+  $q.loading.hide();
+
 }
 
 onMounted(async () => {
