@@ -23,11 +23,7 @@ export class TreinamentoService {
 
   async atualizar(data: any) {
     try {
-      const response = await api.put(
-        `/treinamentos${data.treinamentoId}`,
-        data,
-        config
-      );
+      const response = await api.put('/treinamentos', data, config);
       return response;
     } catch (error) {
       return error;
