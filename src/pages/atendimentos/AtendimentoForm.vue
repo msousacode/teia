@@ -599,24 +599,27 @@ function arquivarColetas(item: any) {
 function carregarAtendimentosTreinamentos() {
   if (editMode) {
     const uuidAtendimento = routeLocation.params.uuidAtendimento;
-
-    db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
-      const raw = toRaw(res);
-      form.value = raw;
-      storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo == true);
-    });
+    atendimentoService.get(uuidAtendimento)
+      .then((response) => {
+        debugger
+        const raw = toRaw(response);
+        form.value = raw;
+        storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo == true);
+      });
   }
 }
 
 function carregarSelectAprendizes() {
   if (!editMode) {
     aprendizService.buscar().then((response) => {
+
       response.data.content.filter(i => i.ativo === true).forEach((aprendiz) => {
         aprendizes.value.push({
           label: aprendiz.nome_aprendiz,
           value: aprendiz.uuid,
         });
       });
+
     });
   }
 }
