@@ -120,10 +120,8 @@ async function submit() {
 }
 
 function atualizar() {
-  db.aprendizes
-    .update(store.getAprendizUuid, toRaw(form.value))
+  aprendizeService.atualizar(toRaw(form.value))
     .then(() => {
-
       const data = {
         nome_aprendiz: form.value.nome_aprendiz,
         uuid: store.getAprendizUuid,
@@ -167,18 +165,18 @@ function atualizarNomeAprendizAtendimento(data: any) {
 
 onMounted(() => {
   if (routeLocation.params.action === 'edit') {
-    db.aprendizes
-      .get(store.getAprendizUuid)
-      .then((res) => {
-        if (res) {
-          form.value.uuid = res.uuid || '';
-          form.value.nome_aprendiz = res.nome_aprendiz;
-          form.value.nasc_aprendiz = res.nasc_aprendiz;
-          form.value.nome_mae = res.nome_mae;
-          form.value.nome_pai = res.nome_pai;
-          form.value.nome_responsavel = res.nome_responsavel;
-          form.value.observacao = res.observacao;
-          form.value.sync = res.sync;
+
+    aprendizeService.get(store.getAprendizUuid)
+      .then((response) => {
+        if (response) {
+          form.value.uuid = response.data.uuid || '';
+          form.value.nome_aprendiz = response.data.nome_aprendiz;
+          form.value.nasc_aprendiz = response.data.nasc_aprendiz;
+          form.value.nome_mae = response.data.nome_mae;
+          form.value.nome_pai = response.data.nome_pai;
+          form.value.nome_responsavel = response.data.nome_responsavel;
+          form.value.observacao = response.data.observacao;
+          form.value.sync = response.data.sync;
         }
       })
       .catch((error) => {

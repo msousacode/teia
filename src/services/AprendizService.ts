@@ -21,9 +21,27 @@ export class AprendizService {
     }
   }
 
+  async atualizar(data: any) {
+    try {
+      const response = await api.put('/aprendizes', data, config);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+
   async buscar() {
     try {
       const response = await api.get('/aprendizes', config);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async get(id: string | null) {
+    try {
+      const response = await api.get(`/aprendizes/${id}`, config);
       return response;
     } catch (error) {
       return error;
