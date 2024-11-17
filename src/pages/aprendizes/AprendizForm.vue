@@ -149,18 +149,21 @@ function reset() {
 }
 
 function atualizarNomeAprendizAtendimento(data: any) {
-  db.atendimentos.where({ aprendiz_uuid_fk: data.uuid })
-    .toArray()
-    .then((res) => {
-      res.forEach((item) => {
-        item.aprendiz.label = data.nome_aprendiz;
-        db.atendimentos.update(item.uuid, { aprendiz: item.aprendiz });
+  //TODO fazer isso no backend.
+  if (false) {
+    db.atendimentos.where({ aprendiz_uuid_fk: data.uuid })
+      .toArray()
+      .then((res) => {
+        res.forEach((item) => {
+          item.aprendiz.label = data.nome_aprendiz;
+          db.atendimentos.update(item.uuid, { aprendiz: item.aprendiz });
+        });
+        success();
+      })
+      .catch(() => {
+        error('Ocorreu um erro ao tentar atualizar o nome do aprendiz nos atendimentos');
       });
-      success();
-    })
-    .catch(() => {
-      error('Ocorreu um erro ao tentar atualizar o nome do aprendiz nos atendimentos');
-    });
+  }
 }
 
 onMounted(() => {

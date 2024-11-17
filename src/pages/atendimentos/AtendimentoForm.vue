@@ -21,11 +21,11 @@
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                 <q-date v-model="formTreinamento.data_final" :locale="{
-    days: dias,
-    months: meses,
-    daysShort: diasAbreviados,
-    monthsShort: meses,
-  }" mask="DD/MM/YYYY">
+                  days: dias,
+                  months: meses,
+                  daysShort: diasAbreviados,
+                  monthsShort: meses,
+                }" mask="DD/MM/YYYY">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
@@ -68,11 +68,11 @@
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                 <q-date v-model="form.data_inicio" :locale="{
-    days: dias,
-    months: meses,
-    daysShort: diasAbreviados,
-    monthsShort: meses,
-  }" mask="DD/MM/YYYY">
+                  days: dias,
+                  months: meses,
+                  daysShort: diasAbreviados,
+                  monthsShort: meses,
+                }" mask="DD/MM/YYYY">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
@@ -170,6 +170,12 @@ import {
   meses
 } from 'src/composables/utils';
 import { useQuasar } from 'quasar';
+import { AtendimentoService } from 'src/services/AtendimentoService';
+import { AprendizService } from 'src/services/AprendizService';
+
+const atendimentoService = new AtendimentoService();
+
+const aprendizService = new AprendizService();
 
 const routeLocation = useRoute();
 
@@ -306,11 +312,26 @@ async function salvar() {
   } else if (storeTreinamento.treinamentoConfig.new === undefined && editMode) {
     atualizar();
   } else {
-    await db.atendimentos
-      .add(data)
-      .catch((_error) => {
-        error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
-      });
+
+    atendimentoService.salvar(data).then((response) => {
+      if (response.status == 200) {
+        success()
+      } else {
+        error('Ocorreu um erro.')
+      }
+      $q.loading.hide();
+    }).catch((_error) => {
+      error(_error);
+      $q.loading.hide();
+    });
+
+    if (false) {
+      await db.atendimentos
+        .add(data)
+        .catch((_error) => {
+          error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
+        });
+    }
   }
 
   await gerarColetas(data).then(() => {
@@ -592,8 +613,8 @@ function carregarAtendimentosTreinamentos() {
 
 function carregarSelectAprendizes() {
   if (!editMode) {
-    db.aprendizes.toArray().then((res) => {
-      res.filter(i => i.ativo === true).forEach((aprendiz) => {
+    aprendizService.buscar().then((response) => {
+      response.data.content.filter(i => i.ativo === true).forEach((aprendiz) => {
         aprendizes.value.push({
           label: aprendiz.nome_aprendiz,
           value: aprendiz.uuid,

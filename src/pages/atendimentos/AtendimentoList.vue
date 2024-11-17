@@ -48,7 +48,7 @@
     </q-dialog>
 
     <div class="row">
-      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12" :loading="loading"
+      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
           <span class="text-h6 text-teal"> Atendimentos </span>
@@ -74,6 +74,15 @@ import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
 import { db } from 'src/db';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+import { AtendimentoService } from 'src/services/AtendimentoService';
+import useNotify from 'src/composables/UseNotify';
+
+const $q = useQuasar();
+
+const { error } = useNotify();
+
+const atendimentoService = new AtendimentoService();
 
 const router = useRouter();
 
@@ -117,15 +126,32 @@ onMounted(async () => {
   loading.value = true;
   const aprendizesUuids = await getAprendizesAtivos();
 
-  db.atendimentos.toArray().then(res => {
-    const data = toRaw(res);
-    const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
-    atendimentos.value = array1;
-
-    array1.forEach((item) => {
-      treinamentos.value = toRaw(item.treinamentos)
-    });
+  $q.loading.show();
+  await atendimentoService.buscar().then((response) => {
+    if (response.status == 200) {
+      const data = toRaw(response);
+      const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
+      atendimentos.value = array1;
+    } else {
+      error('Ocorreu um erro.')
+    }
+    $q.loading.hide();
+  }).catch((_error) => {
+    error(_error);
+    $q.loading.hide();
   });
-  loading.value = false;
+
+  if (false) {
+    db.atendimentos.toArray().then(res => {
+      const data = toRaw(res);
+      const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
+      atendimentos.value = array1;
+
+      array1.forEach((item) => {
+        treinamentos.value = toRaw(item.treinamentos)
+      });
+    });
+    loading.value = false;
+  }
 });
 </script>
