@@ -72,7 +72,6 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
-import { db } from 'src/db';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { AtendimentoService } from 'src/services/AtendimentoService';
@@ -116,22 +115,15 @@ function editarAtendimento(atendimento: any) {
   router.push({ name: 'atendimento-novo', params: { action: 'edit', uuidAtendimento: raw.uuid } });
 }
 
-async function getAprendizesAtivos() {
-  return db.aprendizes.toArray().then(res => {
-    return res.filter((item) => item.ativo).map(item => item.uuid);
-  });
-}
-
 onMounted(async () => {
   loading.value = true;
-  const aprendizesUuids = await getAprendizesAtivos();
 
   $q.loading.show();
   await atendimentoService.buscar().then((response) => {
     if (response.status == 200) {
       const data = toRaw(response);
-      const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
-      atendimentos.value = array1;
+      atendimentos.value = data.data.content;
+
     } else {
       error('Ocorreu um erro.')
     }
@@ -140,18 +132,5 @@ onMounted(async () => {
     error(_error);
     $q.loading.hide();
   });
-
-  if (false) {
-    db.atendimentos.toArray().then(res => {
-      const data = toRaw(res);
-      const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
-      atendimentos.value = array1;
-
-      array1.forEach((item) => {
-        treinamentos.value = toRaw(item.treinamentos)
-      });
-    });
-    loading.value = false;
-  }
 });
 </script>

@@ -172,8 +172,14 @@ import {
 import { useQuasar } from 'quasar';
 import { AtendimentoService } from 'src/services/AtendimentoService';
 import { AprendizService } from 'src/services/AprendizService';
+import { TreinamentoService } from 'src/services/TreinamentoService';
+import { ColetaService } from 'src/services/ColetaService';
 
 const atendimentoService = new AtendimentoService();
+
+const treinamentoService = new TreinamentoService();
+
+const coletaService = new ColetaService();
 
 const aprendizService = new AprendizService();
 
@@ -279,7 +285,6 @@ async function salvar() {
     );
   }
 
-  form.value.uuid = uuid();
   const data = toRaw(form.value);
   data.aprendiz_uuid_fk = form.value.aprendiz.value;
 
@@ -324,14 +329,6 @@ async function salvar() {
       error(_error);
       $q.loading.hide();
     });
-
-    if (false) {
-      await db.atendimentos
-        .add(data)
-        .catch((_error) => {
-          error('Ocorreu um erro ao tentar salvar o Atendimento', _error);
-        });
-    }
   }
 
   await gerarColetas(data).then(() => {
@@ -340,6 +337,7 @@ async function salvar() {
   }).catch(() => {
     throw Error('Ocorreu um erro ao tentar gerar as coletas');
   });
+
 }
 
 function atualizar() {
@@ -418,71 +416,71 @@ async function gerarColetas(data: any) {
 
     const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
 
-    db.alvos.where({ treinamento_uuid_fk: treino.uuid }).toArray().then(async (data) => {
+    treinamentoService.buscarAlvosPorTreinamento(treino.treinamento)
+      .then(async (response) => {
+        const raw = toRaw(response)
+        debugger
+        //TODO depois como ponto de melhoria reunir todas as coletas em um array e enviar para o backend.
+        await raw.data.forEach(async (alvo) => {
+          let count = 0;
+          let countSemana = 0;
 
-      const raw = toRaw(data)
+          while (count < (quantidadeRepticao * numeroSemanas)) {
+            count++;
+            countSemana++;
 
-      await raw.forEach(async (alvo) => {
-        let count = 0;
-        let countSemana = 0;
+            await diasDaSemanaComTreinamento.map(async (_dia) => {
 
-        while (count < (quantidadeRepticao * numeroSemanas)) {
-          count++;
-          countSemana++;
+              coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+              coleta.treinamento_uuid_fk = treino.uuid;
+              coleta.data_final_coleta = treino.configuracoes.data_final;
+              coleta.alvo = alvo;
 
-          await diasDaSemanaComTreinamento.map(async (_dia) => {
-            coleta.uuid = uuid();
-            coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-            coleta.treinamento_uuid_fk = treino.uuid;
-            coleta.data_final_coleta = treino.configuracoes.data_final;
-            coleta.alvo = alvo;
+              if (_dia.value === 'seg')
+                coleta.seg = diasDaSemana[0].selected;
+              else
+                coleta.seg = false;
 
-            if (_dia.value === 'seg')
-              coleta.seg = diasDaSemana[0].selected;
-            else
-              coleta.seg = false;
+              if (_dia.value === 'ter')
+                coleta.ter = diasDaSemana[1].selected;
+              else
+                coleta.ter = false;
 
-            if (_dia.value === 'ter')
-              coleta.ter = diasDaSemana[1].selected;
-            else
-              coleta.ter = false;
+              if (_dia.value === 'qua')
+                coleta.qua = diasDaSemana[2].selected;
+              else
+                coleta.qua = false;
 
-            if (_dia.value === 'qua')
-              coleta.qua = diasDaSemana[2].selected;
-            else
-              coleta.qua = false;
+              if (_dia.value === 'qui')
+                coleta.qui = diasDaSemana[3].selected;
+              else
+                coleta.qui = false;
 
-            if (_dia.value === 'qui')
-              coleta.qui = diasDaSemana[3].selected;
-            else
-              coleta.qui = false;
+              if (_dia.value === 'sex')
+                coleta.sex = diasDaSemana[4].selected;
+              else
+                coleta.sex = false;
 
-            if (_dia.value === 'sex')
-              coleta.sex = diasDaSemana[4].selected;
-            else
-              coleta.sex = false;
+              if (_dia.value === 'sab')
+                coleta.sab = diasDaSemana[5].selected;
+              else
+                coleta.sab = false;
 
-            if (_dia.value === 'sab')
-              coleta.sab = diasDaSemana[5].selected;
-            else
-              coleta.sab = false;
+              coleta.semana = countSemana;//contador para identificar a semana da coleta.
+              coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
 
-            coleta.semana = countSemana;//contador para identificar a semana da coleta.
-            coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+              await coletaService.salvar(coleta)
+                .catch((_error) => {
+                  error('Ocorreu um erro ao tentar salvar', _error);
+                });
+            });
 
-            await db.coletas
-              .add(coleta)
-              .catch((_error) => {
-                error('Ocorreu um erro ao tentar salvar', _error);
-              });
-          });
-
-          if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
-            countSemana = 0;
+            if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
+              countSemana = 0;
+            }
           }
-        }
+        });
       });
-    });
   });
 }
 

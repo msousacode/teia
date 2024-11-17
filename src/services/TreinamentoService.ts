@@ -50,7 +50,7 @@ export class TreinamentoService {
 
   async salvarAlvo(data: any) {
     try {
-      const response = await api.post('/treinamentos/alvos', data, config);
+      const response = await api.post('/alvos', data, config);
       return response;
     } catch (error) {
       return error;
@@ -59,7 +59,7 @@ export class TreinamentoService {
 
   async getAlvoAll(id: string | null) {
     try {
-      const response = await api.get(`/treinamentos/alvos/all/${id}`, config);
+      const response = await api.get(`/alvos/all/${id}`, config);
       return response;
     } catch (error) {
       return error;
@@ -68,7 +68,16 @@ export class TreinamentoService {
 
   async getAlvo(id: string | null) {
     try {
-      const response = await api.get(`/treinamentos/alvo/${id}`, config);
+      const response = await api.get(`/alvos/${id}`, config);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async buscarAlvosPorTreinamento(uuid: any) {
+    try {
+      const response = await api.get(`/alvos/all/treinamento/${uuid}`, config);
       return response;
     } catch (error) {
       return error;
