@@ -601,8 +601,7 @@ function carregarAtendimentosTreinamentos() {
     const uuidAtendimento = routeLocation.params.uuidAtendimento;
     atendimentoService.get(uuidAtendimento)
       .then((response) => {
-        debugger
-        const raw = toRaw(response);
+        const raw = toRaw(response.data);
         form.value = raw;
         storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo == true);
       });
