@@ -419,7 +419,6 @@ async function gerarColetas(data: any) {
     treinamentoService.buscarAlvosPorTreinamento(treino.treinamento)
       .then(async (response) => {
         const raw = toRaw(response)
-        debugger
         //TODO depois como ponto de melhoria reunir todas as coletas em um array e enviar para o backend.
         await raw.data.forEach(async (alvo) => {
           let count = 0;
