@@ -30,18 +30,16 @@
 
 
         <div class="col-md-12 q-mt-md">
-          <div class="text-center text-body2">Ou acesse com as redes sociais</div>
-
+          <div class="text-center text-body2">Ou acesse com p Google</div>
+          <div class="q-mt-sm">
+            <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
+          </div>
           <div class="row q-mt-md">
-            <div>
-              <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
-            </div>
-
             <div class="q-mx-md"></div>
 
-            <div>
+            <!--div>
               <q-btn class="full-width facebook-btn" label="Facebook" icon="mdi-facebook" @click="entrar('facebook')" />
-            </div>
+            </div-->
           </div>
         </div>
 
