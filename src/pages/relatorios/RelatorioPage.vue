@@ -537,6 +537,8 @@ onMounted(async () => {
         }
 
         backupSegundoPlano();
+    } else {
+        $q.notify('Conecte-se a Internet para usar o aplicativo.')
     }
 });
 </script>
