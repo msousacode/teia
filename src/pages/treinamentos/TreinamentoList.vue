@@ -107,5 +107,16 @@ onMounted(async () => {
   store.getTreinamentosSelecionados.forEach((treinamento) => {
     treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
   });
+
+  if (!navigator.onLine) {
+    $q.notify({
+      message:
+        'Sem conexão com a internet. Ative a internet e tente novamente.',
+      color: 'negative',
+      position: 'center',
+      icon: 'report_problem',
+      timeout: 2000,
+    });
+  }
 });
 </script>

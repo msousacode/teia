@@ -28,7 +28,7 @@
                     <div class="flex justify-center">
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
-            item.semana }}ª
+                            item.semana }}ª
                             SEMANA</q-chip>
                     </div>
 
@@ -91,7 +91,7 @@
                     <div class="flex justify-center">
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
-            item.semana }}ª
+                            item.semana }}ª
                             SEMANA</q-chip>
                     </div>
 
@@ -152,8 +152,8 @@
 
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
-            item.data_anotacao
-        }}</span>
+                                            item.data_anotacao
+                                            }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -399,6 +399,17 @@ function excluirAnotacao(item: any) {
 
 onMounted(() => {
     getColetasNaoRespondidas();
+
+    if (!navigator.onLine) {
+        $q.notify({
+            message:
+                'Sem conexão com a internet. Ative a internet e tente novamente.',
+            color: 'negative',
+            position: 'center',
+            icon: 'report_problem',
+            timeout: 2000,
+        });
+    }
 });
 
 </script>

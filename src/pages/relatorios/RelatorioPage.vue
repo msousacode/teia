@@ -70,12 +70,12 @@
               item, index
             ) in treinamentos" :key="index">
             <card-custom :item="{
-        id: item.uuid,
-        nomeTreinamento: item.treinamento,
-        nomeProtocolo: item.protocolo,
-        periodoTreinamento: item.configuracoes.data_final,
-        progresso: item.progresso
-    }" @selecao="gerarGrafico(item.uuid)" />
+                id: item.uuid,
+                nomeTreinamento: item.treinamento,
+                nomeProtocolo: item.protocolo,
+                periodoTreinamento: item.configuracoes.data_final,
+                progresso: item.progresso
+            }" @selecao="gerarGrafico(item.uuid)" />
         </div>
 
         <div ref="chartContainer"></div>
@@ -473,8 +473,8 @@ function backupSegundoPlano() {
         if (isNaN(Number(diferencaHoras))) {
             localStorage.setItem('ultimo_backup', new Date().getTime().toString());
         }
-        //Se a diferença entre o último backup for igual ou superior a 4 horas faz o backup.
-        if (diferencaHoras >= 4) {
+        //Se a diferença entre o último backup for igual ou superior a 3 horas faz o backup.
+        if (diferencaHoras >= 3) {
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }
@@ -483,6 +483,18 @@ function backupSegundoPlano() {
 
 
 onMounted(async () => {
+
+    if (!navigator.onLine) {
+        $q.notify({
+            message:
+                'Sem conexão com a internet. Ative a internet e tente novamente.',
+            color: 'negative',
+            position: 'center',
+            icon: 'report_problem',
+            timeout: 2000,
+        });
+    }
+
     carregarSelectAprendiz();
 
     if (navigator.onLine) {

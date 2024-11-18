@@ -45,7 +45,6 @@ const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
-
 function carregarLista() {
   loading.value = true;
 
@@ -79,7 +78,19 @@ function remover(aprendiz: any) {
     .onDismiss(() => { });
 }
 
+
 onMounted(() => {
   carregarLista();
+
+  if (navigator.onLine) {
+    $q.notify({
+      message:
+        'Sem conexão com a internet. Ative a internet e tente novamente.',
+      color: 'negative',
+      position: 'center',
+      icon: 'report_problem',
+      timeout: 2000,
+    });
+  }
 });
 </script>

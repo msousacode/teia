@@ -25,8 +25,8 @@
                 <q-btn icon="cloud_upload" no-caps label="Backup" color="secondary" class="full-width q-pa-sm q-mt-xl"
                     @click="backup" />
 
-                <q-btn icon="cloud_download" no-caps label="Restaurar" color="brown-5"
-                    class="full-width q-pa-sm q-mt-md" @click="restaurar" />
+                <!--q-btn icon="cloud_download" no-caps label="Restaurar" color="brown-5"
+                    class="full-width q-pa-sm q-mt-md" @click="restaurar" -->
 
                 <q-btn no-caps label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
                     :to="{ name: 'relatorios' }" />
@@ -99,24 +99,26 @@ function backup() {
         .onDismiss(() => { });
 }
 
-function restaurar() {
+/*
+    function restaurar() {
 
-    $q.dialog({
-        title: 'Deseja continuar com a restauração do banco de dados?',
-        message: 'Essa ação irá sobrescrever todos os dados atuais. \nCom essa ação você recupera a última versão do banco de dados salva disponível na nuvem.',
-        ok: true,
-        cancel: true,
-        persistent: true,
-    })
-        .onOk(async () => {
-            service.restaurarBackup().then(() => {
-                $q.loading.hide();
-            }).catch(() => {
-                $q.loading.hide();
-            });
+        $q.dialog({
+            title: 'Deseja continuar com a restauração do banco de dados?',
+            message: 'Essa ação irá sobrescrever todos os dados atuais. \nCom essa ação você recupera a última versão do banco de dados salva disponível na nuvem.',
+            ok: true,
+            cancel: true,
+            persistent: true,
         })
-        .onDismiss(() => { });
-}
+            .onOk(async () => {
+                service.restaurarBackup().then(() => {
+                    $q.loading.hide();
+                }).catch(() => {
+                    $q.loading.hide();
+                });
+            })
+            .onDismiss(() => { });
+    }*/
+
 
 async function atualizaInfoUltimoBackup() {
     const dataUlimoBackup = localStorage.getItem('ultimo_backup') || '';

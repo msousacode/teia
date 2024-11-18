@@ -39,9 +39,9 @@
 
             <div class="q-mx-md"></div>
 
-            <div>
+            <!--div>
               <q-btn class="full-width facebook-btn" label="Facebook" icon="mdi-facebook" @click="entrar('facebook')" />
-            </div>
+            </div-->
           </div>
         </div>
 

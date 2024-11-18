@@ -74,6 +74,9 @@ import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
 import { db } from 'src/db';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const router = useRouter();
 
@@ -127,5 +130,16 @@ onMounted(async () => {
     });
   });
   loading.value = false;
+
+  if (!navigator.onLine) {
+    $q.notify({
+      message:
+        'Sem conexão com a internet. Ative a internet e tente novamente.',
+      color: 'negative',
+      position: 'center',
+      icon: 'report_problem',
+      timeout: 2000,
+    });
+  }
 });
 </script>
