@@ -1,5 +1,4 @@
 <template>
-
     <q-dialog v-model="showBoasVindas" persistent>
         <q-card class="my-card q-pa-md full-width">
             <q-card-section>
@@ -473,8 +472,10 @@ function backupSegundoPlano() {
         if (isNaN(Number(diferencaHoras))) {
             localStorage.setItem('ultimo_backup', new Date().getTime().toString());
         }
+
         //Se a diferença entre o último backup for igual ou superior a 3 horas faz o backup.
         if (diferencaHoras >= 3) {
+
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }

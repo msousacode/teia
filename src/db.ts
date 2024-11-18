@@ -71,6 +71,29 @@ export interface Anotacao {
   ativo: boolean;
 }
 
+export interface AvaliacaoVbmapp {
+  uuid: string;
+  aprendiz_uuid_fk: '';
+  nome_aprendiz: '';
+  queixa: '';
+  objetivo_documento: '';
+  metodologia: '';
+  niveis_coleta: string;
+  sync: false;
+  ativo: true;
+}
+
+export interface AvaliacaoVbmappColetas {
+  uuid: string;
+  aprendiz_uuid_fk: string;
+  vbmapp_uuid_fk: string;
+  coleta_id: number;
+  nivel_coleta: number;
+  tipo: number;
+  pontuacao: number;
+  data_coleta: number;
+}
+
 export class DataBase extends Dexie {
   treinamentos!: Table<Treinamento>;
 
@@ -84,6 +107,10 @@ export class DataBase extends Dexie {
 
   anotacoes!: Table<Anotacao>;
 
+  vbmapp!: Table<AvaliacaoVbmapp>;
+
+  vbmappColetas!: Table<AvaliacaoVbmappColetas>;
+
   constructor() {
     super('sysabaDB');
     this.version(1).stores({
@@ -93,6 +120,8 @@ export class DataBase extends Dexie {
       atendimentos: 'uuid,aprendiz_uuid_fk',
       coletas: 'uuid,[aprendiz_uuid_fk+treinamento_uuid_fk]',
       anotacoes: 'uuid,treinamento_uuid_fk',
+      vbmapp: 'uuid, aprendiz_uuid_fk',
+      vbmappColetas: 'uuid, vbmapp_uuid_fk',
     });
   }
 }

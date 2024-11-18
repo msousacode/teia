@@ -25,6 +25,7 @@
             <div class="text-right text-blue text-body1">
               <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
             </div>
+            
           </div>
         </div>
 
@@ -39,13 +40,13 @@
 
             <div>
               <q-btn class="full-width facebook-btn" label="Facebook" icon="mdi-facebook" @click="entrar('facebook')" />
+
             </div>
           </div-->
         </div>
-
       </div>
 
-      <q-btn class="full-width text-left text-blue text-body1 q-mt-xl" color="white" unelevated to="/cadastrar"
+      <q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
         label="Novo por aqui? Cadastrar-se" no-caps />
 
     </q-page-container>

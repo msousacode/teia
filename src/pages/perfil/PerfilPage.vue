@@ -1,6 +1,6 @@
 <template>
     <q-page class="q-pa-sm">
-        <title-custom title="Configurações" />
+        <title-custom title="Meu Perfil" />
         <div class="row justify-center">
             <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
                 <q-input outlined label="Nome Completo" v-model="form.full_name"
@@ -12,9 +12,9 @@
 
                 <q-input outlined label="Registro Profissional:" v-model="form.documento" class="q-mb-md" />
 
-                <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
-                    :disable="!isSubmitted" />
             </q-form>
+        </div>
+
 
             <div class="fixed-bottom q-pa-md">
                 <q-banner class="bg-blue-1 text-blue-9">
@@ -31,6 +31,7 @@
                 <q-btn no-caps label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
                     :to="{ name: 'relatorios' }" />
             </div>
+
         </div>
     </q-page>
 </template>
@@ -40,9 +41,6 @@ import { computed, onMounted, ref } from 'vue';
 import useSupabaseApi from 'src/composables/UseSupabaseApi';
 import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { BackupService } from 'src/services/BackupService';
-
-const service = new BackupService()
 
 const supabase = useSupabaseApi();
 
@@ -59,8 +57,6 @@ const form = ref({
     email: '',
     documento: '',
 })
-
-const ultimoBackup = ref('');
 
 function submit() {
 
@@ -83,6 +79,7 @@ function submit() {
         error('Sem conexão com a internet!');
     }
 }
+
 
 function backup() {
     $q.dialog({
@@ -130,8 +127,6 @@ async function atualizaInfoUltimoBackup() {
 
 onMounted(() => {
     const storage = localStorage.getItem('user');
-
-    atualizaInfoUltimoBackup();
 
     if (storage) {
         const user = JSON.parse(storage);

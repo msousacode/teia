@@ -8,13 +8,17 @@
       </q-avatar>
 
       <div class="text-black q-mb-md q-mt-md"><b>O seu período de 7 dias grátis expirou.</b></div>
+
+      <q-btn label="Falar com o Suporte" icon="mdi-whatsapp" color="green" class="q-ma-xs full-width"
+        href="https://wa.me/5511977860977" />
+
+      <div class="q-ma-md"></div>
     </div>
 
     <AssinaturaOpcoesPage />
 
     <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar" no-caps />
   </q-page>
-
 </template>
 
 <script setup lang="ts">

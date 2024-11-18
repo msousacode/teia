@@ -60,6 +60,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
+    title: 'Avaliações',
+    icon: 'mdi-chart-gantt',
+    routeName: 'avaliacoes',
+    hide: true,
+    display: () => 'none',
+  },
+  {
     title: 'Atendimentos',
     icon: 'mdi-view-dashboard',
     routeName: 'atendimentos',
@@ -74,7 +81,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Configurações',
+    title: 'Meu Perfil',
     icon: 'mdi-cog',
     routeName: 'perfil',
     hide: true,

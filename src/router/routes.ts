@@ -83,6 +83,24 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'avaliacoes',
+        path: '/avaliacoes',
+        component: () => import('pages/avaliacoes/AvaliacaoOpcao.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'avaliacoes-novo',
+        path: '/avaliacoes-novo',
+        component: () => import('pages/avaliacoes/AvaliacaoForm.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'avaliacoes-coleta/vbmapp',
+        path: '/avaliacoes-coleta/vbmapp/aprendiz/:aprendizUuid/tipoAvaliacao/:tipoAvaliacao?/avaliacao/:vbmappUuid?',
+        component: () => import('pages/avaliacoes/AvaliacaoColeta.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'atendimento-novo',
         path: '/atendimento-novo/:action?/atendimento/:uuidAtendimento?',
         component: () => import('pages/atendimentos/AtendimentoForm.vue'),
