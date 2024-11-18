@@ -70,12 +70,12 @@
               item, index
             ) in treinamentos" :key="index">
             <card-custom :item="{
-        id: item.uuid,
-        nomeTreinamento: item.treinamento,
-        nomeProtocolo: item.protocolo,
-        periodoTreinamento: item.configuracoes.data_final,
-        progresso: item.progresso
-    }" @selecao="gerarGrafico(item.uuid)" />
+                id: item.uuid,
+                nomeTreinamento: item.treinamento,
+                nomeProtocolo: item.protocolo,
+                periodoTreinamento: item.configuracoes.data_final,
+                progresso: item.progresso
+            }" @selecao="gerarGrafico(item.uuid)" />
         </div>
 
         <div ref="chartContainer"></div>
@@ -478,6 +478,8 @@ function backupSegundoPlano() {
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }
+    } else {
+        $q.notify("Conecte-se na Internet para usar o Aplicativo!")
     }
 }
 
