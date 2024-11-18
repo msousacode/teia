@@ -26,11 +26,9 @@
               <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
             </div>
             <div class="col-md-4">
-              <div class="text-center text-body2 q-mb-md">Ou acesse com as redes sociais</div>
+              <div class="text-center text-body2 q-mb-md">Ou acesse com o Google</div>
               <div class="row">
                 <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
-                <q-btn class="full-width facebook-btn q-mt-md" label="Facebook" icon="mdi-facebook"
-                  @click="entrar('facebook')" />
               </div>
             </div>
           </div>

@@ -20,8 +20,10 @@
             <q-btn icon="cloud_upload" no-caps label="Sincronizar" color="secondary" class="full-width q-pa-sm q-mt-md"
                 @click="backup" />
 
+            <!--
             <q-btn icon="cloud_download" no-caps label="Restaurar" color="brown-5" class="full-width q-pa-sm q-mt-md"
                 @click="restaurar" />
+                -->
 
             <q-btn no-caps label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" flat
                 :to="{ name: 'relatorios' }" />
@@ -59,6 +61,7 @@ function backup() {
         .onDismiss(() => { });
 }
 
+/*
 function restaurar() {
 
     $q.dialog({
@@ -76,7 +79,7 @@ function restaurar() {
             });
         })
         .onDismiss(() => { });
-}
+}*/
 
 async function atualizaInfoUltimoBackup() {
     const dataUlimoBackup = localStorage.getItem('ultimo_backup') || '';

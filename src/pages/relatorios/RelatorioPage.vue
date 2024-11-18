@@ -472,8 +472,8 @@ function backupSegundoPlano() {
         if (isNaN(Number(diferencaHoras))) {
             localStorage.setItem('ultimo_backup', new Date().getTime().toString());
         }
-        //Se a diferença entre o último backup for igual ou superior a 12 horas faz o backup.
-        if (diferencaHoras >= 12) {
+        //Se a diferença entre o último backup for igual ou superior a 3 horas faz o backup.
+        if (diferencaHoras >= 3) {
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }
@@ -537,6 +537,8 @@ onMounted(async () => {
         }
 
         backupSegundoPlano();
+    } else {
+        $q.notify('Conecte-se a Internet para usar o aplicativo.')
     }
 });
 </script>
