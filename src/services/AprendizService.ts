@@ -1,50 +1,21 @@
-import { api } from 'src/boot/axios';
+import createHttp from './base/baseHttp';
 
-const token = JSON.parse(localStorage.getItem('_t') ?? '');
-
-const config = {
-  headers: {
-    accept: 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'content-type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  },
-};
+const http = createHttp('/api');
 
 export class AprendizService {
   async salvar(data: any) {
-    try {
-      const response = await api.post('/aprendizes', data, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.post('/aprendizes', data);
   }
 
   async atualizar(data: any) {
-    try {
-      const response = await api.put('/aprendizes', data, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.put('/aprendizes', data);
   }
 
   async buscar() {
-    try {
-      const response = await api.get('/aprendizes', config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.get('/aprendizes');
   }
 
   async get(id: string | null) {
-    try {
-      const response = await api.get(`/aprendizes/${id}`, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.get(`/aprendizes/${id}`);
   }
 }

@@ -1,0 +1,107 @@
+import axios, { AxiosError, AxiosResponse } from 'axios';
+
+const token = JSON.parse(localStorage.getItem('_t') ?? '');
+
+const backendUrl = 'http://localhost:8080/'; // Use variável de ambiente ou URL fixa
+
+export default function createHttp(base: string) {
+  const http = axios.create({
+    baseURL: `${backendUrl}sysaba${base}`,
+    withCredentials: false,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'Access-Control-Allow-Origin': '*',
+      'content-type': 'application/json',
+      accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    validateStatus: () => true,
+  });
+
+  const onRequestSuccess = <V>(value: V) => {
+    return value;
+  };
+  const onRequestError = <V>(value: V) => {
+    return value;
+  };
+
+  const onResponseSuccess = (res: AxiosResponse<any>) => {
+    return handleResponse(res);
+  };
+
+  const onResponseError = (error: AxiosError<any>) => {
+    if (error.response) {
+      if (error.response.data?.data) {
+        return handleResponse(error.response);
+      } else {
+        return { data: null, error: error.response.data };
+      }
+    } else {
+      return { data: null, error: null };
+    }
+  };
+
+  function handleResponse(res: AxiosResponse<any>) {
+    if (res.status === 401) {
+      /*changeRoute({
+        name: '500',
+        query: { msg: 'Por favor, faça login no sistema.', status: '401' },
+      });*/
+      return;
+    } else if (res.status >= 500) {
+      /*changeRoute({
+        name: '500',
+        query: {
+          msg: 'Ocorreu um erro inesperado, por favor contate o suporte.',
+          status: '500',
+        },
+      });*/
+      return {
+        data: null,
+        error: {
+          title: 'Erro interno do servidor',
+          validations: { errorMessage: 'Erro interno no servidor' },
+        },
+      };
+    }
+    try {
+      // Response sem erro
+      if (res.data.data) {
+        return {
+          data: res.data.data,
+          error: null,
+          headers: res.headers,
+          response: res,
+        };
+      } else if (isBoolean(res.data.data)) {
+        return {
+          data: res.data.data,
+          error: null,
+          headers: res.headers,
+          response: res,
+        };
+      } else {
+        // Tem error e é um objeto
+        if (res.data.error instanceof Object) {
+          throw res.data.error;
+        } else if (res.data.error === null) {
+          return { data: null, error: null };
+        }
+        // Tem erro mas n é o padrão que tá definido por APIError
+        else {
+          throw res.data;
+        }
+      }
+    } catch (error) {
+      return { data: null, error: error as any };
+    }
+  }
+
+  function isBoolean(value: any): boolean {
+    return typeof value === 'boolean';
+  }
+  http.interceptors.request.use(onRequestSuccess, onRequestError);
+  http.interceptors.response.use(onResponseSuccess as any, onResponseError);
+
+  return http;
+}
