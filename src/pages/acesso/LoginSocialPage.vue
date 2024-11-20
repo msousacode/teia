@@ -82,6 +82,8 @@ onBeforeMount(() => {
   }
 });
 
+localStorage.removeItem('periodoTeste');
+
 </script>
 
 <style scoped>
