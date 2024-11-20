@@ -318,9 +318,9 @@ async function salvar() {
 
     try {
       $q.loading.show();
-      const { data } = await atendimentoService.postAtendimento(object);
-
-      if (data != null) {
+      const { data, status } = await atendimentoService.postAtendimento(object);
+      debugger
+      if (data != null || status == 200) {
         success();
 
         await gerarColetas(object).then(() => {
@@ -331,7 +331,6 @@ async function salvar() {
 
       } else {
         error('Erro ao tentar salvar.');
-        return;
       }
     } catch (e) {
       error('Erro ao tentar salvar.');
