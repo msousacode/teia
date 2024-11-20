@@ -5,11 +5,8 @@
       <q-card-section>
         <title-custom title="Cadastro de Objetivo" />
       </q-card-section>
-      <q-card-section class="q-pt-none">
+      <q-card-section class="q-mt-none">
         <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
-          <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
-            :rules="[(val) => (val && val.length > 0) || 'Tipo de aprendizado é obrigatório']" />
-
           <q-input outlined label="Nome do Objetivo" v-model="form.nome_alvo"
             :rules="[(val) => (val && val.length > 0) || 'Nome do Objetivo é obrigatório']" />
 
@@ -73,13 +70,12 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { db } from 'src/db';
-import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { TreinamentoService } from 'src/services/TreinamentoService';
+import { AlvoService } from 'src/services/AlvoService';
 
 const $q = useQuasar();
 
@@ -93,87 +89,88 @@ const visible = ref(false);
 
 const alvos = ref<any>([]);
 
-const treinamentoService = new TreinamentoService();
-
-const aprendizados = [
-  'Habilidades de Atenção',
-  'Habilidades de Imitação',
-  'Habilidades de Linguagem Receptiva',
-  'Habilidades de Linguagem Expressiva',
-  'Habilidades Pré-Acadêmicas',
-];
+const alvoService = new AlvoService();
 
 const form = ref({
-  uuid: '',
+  alvoId: '',
   nome_alvo: '',
   pergunta: '',
   descricao_alvo: '',
   treinamento_uuid_fk: store.getTreinamentoUuid,
-  tipo_aprendizado: 'Habilidades de Atenção',
 });
 
 async function salvarAlvo() {
+  $q.loading.show();
+  if (form.value.alvoId) {
 
-  if (form.value.uuid) {
+    try {
+      const { data } = await alvoService.putAlvo(toRaw(form.value));
 
+      if (data) {
+        success('Salvo com sucesso!');
+      } else {
+        error('Erro ao tentar atualizar.')
+      }
 
-
-    await db.alvos.put(toRaw(form.value)).then(() => {
+    } catch (e) {
+      throw e;
+    } finally {
+      $q.loading.hide();
       visible.value = false;
-      success("Alvo atualizado com sucesso");
-    }).catch((_error) => {
-      error("Ocorreu um erro ao atualizar a anotação: ", _error);
-    });
 
-    visible.value = false;
+      form.value = {
+        alvoId: '',
+        nome_alvo: '',
+        pergunta: '',
+        descricao_alvo: '',
+        treinamento_uuid_fk: store.getTreinamentoUuid
+      };
 
-    form.value = {
-      uuid: '',
-      nome_alvo: '',
-      pergunta: '',
-      descricao_alvo: '',
-      treinamento_uuid_fk: store.getTreinamentoUuid,
-      tipo_aprendizado: 'Habilidades de Atenção',
-    };
+      return;
+    }
 
-    return;
   }
 
   if (
     form.value.treinamento_uuid_fk === '' ||
     form.value.treinamento_uuid_fk === null
   ) {
-    throw new Error('Treinamento não informado');
+    error('Treinamento não informado');
   }
 
-  form.value.uuid = uuid();
+  const object = toRaw(form.value);
 
-  const data = toRaw(form.value);
+  try {
+    const { data } = await alvoService.postAlvo(object);
 
-  treinamentoService.salvarAlvo(data).then((response) => {
-    if (response.status == 200) {
-      getAlvos();
-      visible.value = false;
-      reset();
+    if (data) {
       success();
-    } else {
-      error("Ocorreu um erro ao salvar");
+      reset();
+      getAlvos();
     }
 
+  } catch (e) {
+    error("Ocorreu um erro ao salvar");
+    throw e;
+  } finally {
+    visible.value = false;
     $q.loading.hide();
-  }).catch((_error) => {
-    error(_error);
-  });
+  }
 }
 
-function getAlvos() {
-
-  treinamentoService.getAlvoAll(store.getTreinamentoUuid)
-    .then((response) => {
-      alvos.value = toRaw(response.data);
-    }).catch((_error) => {
-      error('Erro ao consultar alvos', _error);
-    });
+async function getAlvos() {
+  $q.loading.show();
+  try {
+    const { data } = await alvoService.getAlvos(store.getTreinamentoUuid);
+    if (data) {
+      alvos.value = data;
+    }
+  } catch (e) {
+    error('Erro ao consultar');
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
 }
 
 function editarAlvo(item: any) {

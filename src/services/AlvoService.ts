@@ -2,7 +2,7 @@ import createHttp from './base/baseHttp';
 
 const http = createHttp('/api');
 
-export class TreinamentoService {
+export class AlvoService {
   async postAlvo(data: any) {
     return await http.post('/alvos', data);
   }

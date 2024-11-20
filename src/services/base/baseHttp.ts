@@ -30,7 +30,6 @@ export default function createHttp(base: string) {
   };
 
   const onResponseError = (error: AxiosError<any>) => {
-    debugger;
     if (error.response) {
       if (error.response.data?.data) {
         return handleResponse(error.response);
