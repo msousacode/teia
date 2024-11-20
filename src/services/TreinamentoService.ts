@@ -1,86 +1,37 @@
-import { api } from 'src/boot/axios';
+import createHttp from './base/baseHttp';
 
-const token = JSON.parse(localStorage.getItem('_t') ?? '');
-
-const config = {
-  headers: {
-    accept: 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'content-type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  },
-};
+const http = createHttp('/api');
 
 export class TreinamentoService {
-  async salvar(data: any) {
-    try {
-      const response = await api.post('/treinamentos', data, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+  async postTreinamento(data: any) {
+    return await http.post('/treinamentos', data);
   }
 
-  async atualizar(data: any) {
-    try {
-      const response = await api.put('/treinamentos', data, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+  async putTreinamento(data: any) {
+    return await http.put('/treinamentos', data);
   }
 
-  async getAll() {
-    try {
-      const response = await api.get('/treinamentos', config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+  async getTreinamentos() {
+    return await http.get('/treinamentos');
   }
 
-  async get(id: string | null) {
-    try {
-      const response = await api.get(`/treinamentos/${id}`, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+  async getTreinamentoById(id: string | null) {
+    return await http.get(`/treinamentos/${id}`);
   }
 
   async salvarAlvo(data: any) {
-    try {
-      const response = await api.post('/alvos', data, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.post('/alvos', data);
   }
 
   async getAlvoAll(id: string | null) {
-    try {
-      const response = await api.get(`/alvos/all/${id}`, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.get(`/alvos/all/${id}`);
   }
 
   async getAlvo(id: string | null) {
-    try {
-      const response = await api.get(`/alvos/${id}`, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.get(`/alvos/${id}`);
   }
 
   async buscarAlvosPorTreinamento(uuid: any) {
-    try {
-      const response = await api.get(`/alvos/all/treinamento/${uuid}`, config);
-      return response;
-    } catch (error) {
-      return error;
-    }
+    return await http.get(`/alvos/all/treinamento/${uuid}`);
   }
 }

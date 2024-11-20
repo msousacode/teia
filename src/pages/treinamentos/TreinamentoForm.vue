@@ -71,50 +71,56 @@ const form = ref({
 
 let editMode = ref(routeLocation.params.action === 'edit');
 
-function salvar() {
+async function salvar() {
   if (editMode.value) {
     handleUpdate();
     return;
   }
 
   form.value.uuid = uuid();
-  const data = toRaw(form.value);
-  console.log('treinamento', data)
+  const object = toRaw(form.value);
 
   $q.loading.show();
 
-  treinamentoService.salvar(data).then((response) => {
-    if (response.status == 200) {
-      store.$state.treinamentoUuid = response.data.treinamentoId;
+  try {
+    const { data } = await treinamentoService.postTreinamento(object)
+
+    if (data) {
+      store.$state.treinamentoUuid = data.treinamentoId;
       success();
       editMode.value = true;
-    } else {
-      error("Ocorreu um erro ao salvar");
     }
 
+  } catch (e) {
+    error('')
+    throw e;
+  } finally {
     $q.loading.hide();
-  }).catch((_error) => {
-    error(_error);
-  });
+  }
 }
 
-function handleUpdate() {
+async function handleUpdate() {
 
-  const data = toRaw(form.value);
+  const object = toRaw(form.value);
 
-  treinamentoService.atualizar(data).then((response) => {
-    if (response.status == 200) {
-      store.$state.treinamentoUuid = response.data.treinamentoId;
-      success();
+  try {
+    $q.loading.show();
+    const { data } = await treinamentoService.putTreinamento(object);
+
+    if (data) {
+      store.$state.treinamentoUuid = data.treinamentoId;
+      success('Salvo com sucesso!');
       editMode.value = true;
     } else {
       error("Ocorreu um erro ao salvar");
     }
 
+  } catch (e) {
+    error('Ocorreu um erro!')
+    throw e;
+  } finally {
     $q.loading.hide();
-  }).catch((_error) => {
-    error(_error);
-  });
+  }
 }
 
 function reset() {
@@ -129,23 +135,27 @@ function reset() {
 
   store.$reset();
 }
-onMounted(() => {
+onMounted(async () => {
 
   if (routeLocation.params.action === 'edit') {
-    treinamentoService.get(store.getTreinamentoUuid)
-      .then((response) => {
 
-        if (response.data) {
-          form.value.uuid = response.data.treinamentoId || '';
-          form.value.treinamento = response.data.treinamento;
-          form.value.protocolo = response.data.protocolo;
-          form.value.descricao = response.data.descricao;
-          form.value.sync = response.data.sync;
-        }
-      })
-      .catch((_error) => {
-        error('Erro ao tentar consultar os treinamentos', _error);
-      });
+    try {
+      $q.loading.show();
+      const { data } = await treinamentoService.getTreinamentoById(store.getTreinamentoUuid);
+
+      if (data) {
+        form.value.uuid = data.treinamentoId || '';
+        form.value.treinamento = data.treinamento;
+        form.value.protocolo = data.protocolo;
+        form.value.descricao = data.descricao;
+        form.value.sync = data.sync;
+      }
+    } catch (e) {
+      error('')
+      throw e;
+    } finally {
+      $q.loading.hide();
+    }
   } else {
     reset();
   }

@@ -80,6 +80,7 @@ export default function createHttp(base: string) {
       } else if (res.status == 200) {
         return {
           status: res.status,
+          error: null,
         };
       } else {
         // Tem error e é um objeto

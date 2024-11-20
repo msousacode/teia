@@ -53,7 +53,7 @@ async function listar() {
     const { data } = await aprendizService.getAprendizes();
     aprendizes.value = data;
   } catch (e) {
-    error;
+    error('');
     throw e;
   } finally {
     $q.loading.hide();

@@ -148,8 +148,8 @@ function reset() {
 onMounted(async () => {
   if (routeLocation.params.action === 'edit') {
 
-    $q.loading.show();
     try {
+      $q.loading.show();
       const { data } = await aprendizeService.getAprendizById(store.getAprendizUuid);
 
       if (data) {

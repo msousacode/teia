@@ -92,28 +92,20 @@ function handleSelectTreinamentos() {
 }
 
 async function getTreinamentos() {
-  $q.loading.show();
-
-  await treinamentoService.getAll().then((response) => {
-    if (response.status == 200) {
-      treinamentos.value = response.data.content;
-    } else {
-      error('Ocorreu um erro.')
-    }
+  try {
+    $q.loading.show();
+    const { data } = await treinamentoService.getTreinamentos();
+    treinamentos.value = data;
+  } catch (e) {
+    error('');
+    throw e;
+  } finally {
     $q.loading.hide();
-  }).catch((_error) => {
-    $q.loading.hide();
-    error(_error);
-  });
-  $q.loading.hide();
-
+  }
 }
 
-onMounted(async () => {
-  $q.loading.show();;
-
-  await getTreinamentos();
-
+onMounted(() => {
+  getTreinamentos();
   store.getTreinamentosSelecionados.forEach((treinamento) => {
     treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
   });
