@@ -4,7 +4,6 @@
       <TreinamentoList :selecionar-treinamento="true" />
     </q-card>
   </q-dialog>
-
   <q-dialog v-model="visibleConfiguracao">
     <q-card class="my-card">
       <div class="q-pa-md">
@@ -13,7 +12,6 @@
             será praticado durante a sessão e informe os dias da semana que o treinamento se realizará.
           </span></q-banner>
       </div>
-
       <q-form class="col-sm-12 q-pa-md">
         <q-input stack-label label="Data Final de Treinamento" outlined v-model="formTreinamento.data_final"
           mask="##/##/####" :rules="[(val) => (val && val.length > 0) || 'Data final é obrigatória']">
@@ -275,7 +273,7 @@ async function salvar() {
     form.value.treinamentos = storeTreinamento.getTreinamentosSelecionados.map(
       (_treinamento) => {
         return {
-          uuid: _treinamento.uuid,
+          uuid: _treinamento.treinamentoId,
           treinamento: _treinamento.treinamento,
           protocolo: _treinamento.protocolo,
           ativo: true,
@@ -285,10 +283,10 @@ async function salvar() {
     );
   }
 
-  const data = toRaw(form.value);
-  data.aprendiz_uuid_fk = form.value.aprendiz.value;
+  const object = toRaw(form.value);
+  object.aprendiz_uuid_fk = form.value.aprendiz.value;
 
-  if (data.aprendiz_uuid_fk === '') {
+  if (object.aprendiz_uuid_fk === '') {
     error('Selecione um aprendiz');
     throw new Error('Selecione um aprendiz');
   }
@@ -301,7 +299,7 @@ async function salvar() {
       const treinamentoUuids = raw?.treinamentos.map((treinamento) => treinamento.uuid);
 
       //Retira a duplicidade de treinamentos que acontece com os dados que vem do formulário.
-      const treinamentosSemDuplicacidade = data.treinamentos.filter(n => !treinamentoUuids?.includes(n.uuid));
+      const treinamentosSemDuplicacidade = object.treinamentos.filter(n => !treinamentoUuids?.includes(n.uuid));
 
       raw?.treinamentos.push(...treinamentosSemDuplicacidade);
 
@@ -318,26 +316,29 @@ async function salvar() {
     atualizar();
   } else {
 
-    atendimentoService.salvar(data).then((response) => {
-      if (response.status == 200) {
-        success()
+    try {
+      $q.loading.show();
+      const { data } = await atendimentoService.postAtendimento(object);
+
+      if (data != null) {
+        success();
+
+        await gerarColetas(object).then(() => {
+          reset();
+        }).catch(() => {
+          throw Error('Ocorreu um erro ao tentar gerar as coletas');
+        });
+
       } else {
-        error('Ocorreu um erro.')
+        error('Erro ao tentar salvar.');
+        return;
       }
+    } catch (e) {
+      error('Erro ao tentar salvar.');
+    } finally {
       $q.loading.hide();
-    }).catch((_error) => {
-      error(_error);
-      $q.loading.hide();
-    });
+    }
   }
-
-  await gerarColetas(data).then(() => {
-    reset();
-    success("Salvo com sucesso!")
-  }).catch(() => {
-    throw Error('Ocorreu um erro ao tentar gerar as coletas');
-  });
-
 }
 
 function atualizar() {
@@ -595,41 +596,58 @@ function arquivarColetas(item: any) {
   });
 }
 
-function carregarAtendimentosTreinamentos() {
+async function carregarAtendimentosTreinamentos() {
   if (editMode) {
     const uuidAtendimento = routeLocation.params.uuidAtendimento;
-    atendimentoService.get(uuidAtendimento)
-      .then((response) => {
-        debugger
-        const raw = toRaw(response.data);
+    try {
+      $q.loading.show();
+      const { data } = await atendimentoService.getAtendimentoById(uuidAtendimento);
+
+      if (data) {
+        const raw = toRaw(data);
         form.value = raw;
         storeTreinamento.$state.treinamentosSelecionados = raw.treinamentos.filter((treinamento: any) => treinamento.ativo == true);
-      });
+
+      } else {
+        error('Erro ao carregar atendimentos.');
+      }
+    } catch (e) {
+      error('Erro ao carregar atendimentos.');
+      throw e;
+    } finally {
+      $q.loading.hide();
+    }
   }
 }
 
-function carregarSelectAprendizes() {
+async function carregarSelectAprendizes() {
   if (!editMode) {
-    aprendizService.buscar().then((response) => {
 
-      response.data.content.filter(i => i.ativo === true).forEach((aprendiz) => {
-        aprendizes.value.push({
-          label: aprendiz.nome_aprendiz,
-          value: aprendiz.uuid,
+    try {
+      $q.loading.show();
+      const { data } = await aprendizService.getAprendizes();
+      if (data) {
+        data.filter(i => i.ativo === true).forEach((item: any) => {
+          aprendizes.value.push({
+            label: item.nome_aprendiz,
+            value: item.uuid,
+          });
         });
-      });
+      } else {
+        error('Erro ao carregar aprendizes.')
+      }
 
-    });
+    } catch (e) {
+      error('Erro ao carregar aprendizes.')
+    } finally {
+      $q.loading.hide();
+    }
   }
-}
-
-function carregarInicial() {
-  carregarAtendimentosTreinamentos()
-  carregarSelectAprendizes()
 }
 
 onMounted(() => {
   reset();
-  carregarInicial()
+  carregarAtendimentosTreinamentos()
+  carregarSelectAprendizes()
 });
 </script>

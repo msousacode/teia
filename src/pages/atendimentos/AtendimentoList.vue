@@ -118,19 +118,19 @@ function editarAtendimento(atendimento: any) {
 onMounted(async () => {
   loading.value = true;
 
-  $q.loading.show();
-  await atendimentoService.buscar().then((response) => {
-    if (response.status == 200) {
-      const data = toRaw(response);
-      atendimentos.value = data.data.content;
+  try {
+    $q.loading.show();
+    const { data } = await atendimentoService.getAtendimentos()
 
+    if (data != null) {
+      atendimentos.value = data
     } else {
-      error('Ocorreu um erro.')
+      error('Erro ao carregar atendimentos.')
     }
+  } catch (e) {
+    error('Erro ao carregar atendimentos.')
+  } finally {
     $q.loading.hide();
-  }).catch((_error) => {
-    error(_error);
-    $q.loading.hide();
-  });
+  }
 });
 </script>

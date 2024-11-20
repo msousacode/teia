@@ -43,25 +43,19 @@ export default function createHttp(base: string) {
 
   function handleResponse(res: AxiosResponse<any>) {
     if (res.status === 401) {
-      /*changeRoute({
-        name: '500',
-        query: { msg: 'Por favor, faça login no sistema.', status: '401' },
-      });*/
-      return;
-    } else if (res.status >= 500) {
-      /*changeRoute({
-        name: '500',
-        query: {
-          msg: 'Ocorreu um erro inesperado, por favor contate o suporte.',
-          status: '500',
-        },
-      });*/
+      return {
+        data: res.data,
+        error: null,
+      };
+    } else if (res.status === 400) {
       return {
         data: null,
-        error: {
-          title: 'Erro interno do servidor',
-          validations: { errorMessage: 'Erro interno no servidor' },
-        },
+        error: 'Bad request',
+      };
+    } else if (res.status >= 500) {
+      return {
+        data: null,
+        error: 'Erro interno do servidor',
       };
     }
     try {
