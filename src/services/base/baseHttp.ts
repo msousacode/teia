@@ -30,6 +30,7 @@ export default function createHttp(base: string) {
   };
 
   const onResponseError = (error: AxiosError<any>) => {
+    debugger;
     if (error.response) {
       if (error.response.data?.data) {
         return handleResponse(error.response);
@@ -66,19 +67,19 @@ export default function createHttp(base: string) {
     }
     try {
       // Response sem erro
-      if (res.data.data) {
+      if (res.data.content) {
         return {
-          data: res.data.data,
+          data: res.data.content,
           error: null,
-          headers: res.headers,
-          response: res,
         };
-      } else if (isBoolean(res.data.data)) {
+      } else if (res.data) {
         return {
-          data: res.data.data,
+          data: res.data,
           error: null,
-          headers: res.headers,
-          response: res,
+        };
+      } else if (res.status == 200) {
+        return {
+          status: res.status,
         };
       } else {
         // Tem error e é um objeto
@@ -97,9 +98,6 @@ export default function createHttp(base: string) {
     }
   }
 
-  function isBoolean(value: any): boolean {
-    return typeof value === 'boolean';
-  }
   http.interceptors.request.use(onRequestSuccess, onRequestError);
   http.interceptors.response.use(onResponseSuccess as any, onResponseError);
 

@@ -49,13 +49,11 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
-
 import {
   dias,
   diasAbreviados,
@@ -64,19 +62,20 @@ import {
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 
-const { success, error } = useNotify();
+const aprendizeService = new AprendizService();
 
 const store = useAprendizStore();
 
-const routeLocation = useRoute();
+const { success, error } = useNotify();
 
-const aprendizeService = new AprendizService();
+const $q = useQuasar();
+
+const routeLocation = useRoute();
 
 let isSubmitted = computed(() => {
   return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '';
 });
 
-const $q = useQuasar();
 
 const form = ref({
   uuid: '',
@@ -99,40 +98,40 @@ async function submit() {
 
   form.value.uuid = uuid();
 
-  const data = toRaw(form.value);
+  const object = toRaw(form.value);
 
-  $q.loading.show();
+  try {
+    $q.loading.show();
+    const { status } = await aprendizeService.postAprendiz(object);
 
-  await aprendizeService.salvar(data)
-    .then((response) => {
-      if (response.status == 200) {
-        reset();
-        success();
-      } else {
-        error("Ocorreu um erro ao salvar");
-      }
-
-      $q.loading.hide();
-    })
-    .catch((error) => {
-      error("Ocorreu um erro");
-    });
-}
-
-function atualizar() {
-  aprendizeService.atualizar(toRaw(form.value))
-    .then(() => {
-      const data = {
-        nome_aprendiz: form.value.nome_aprendiz,
-        uuid: store.getAprendizUuid,
-      };
-      atualizarNomeAprendizAtendimento(data);
+    if (status == 200) {
       reset();
       success();
-    })
-    .catch(() => {
-      error('Ocorreu um erro ao tentar atualizar o aprendiz');
-    });
+    }
+  } catch (e) {
+    error
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
+
+}
+
+async function atualizar() {
+  try {
+    $q.loading.show();
+    const { data } = await aprendizeService.putAprendiz(toRaw(form.value));
+
+    if (data) {
+      success('Atualizado com sucesso!');
+      reset();
+    }
+  } catch (e) {
+    error
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
 }
 
 function reset() {
@@ -143,48 +142,32 @@ function reset() {
   form.value.nome_pai = '';
   form.value.nome_responsavel = '';
   form.value.observacao = '';
-  form.value.sync = false;
-
   store.$reset();
 }
 
-function atualizarNomeAprendizAtendimento(data: any) {
-  //TODO fazer isso no backend.
-  if (false) {
-    db.atendimentos.where({ aprendiz_uuid_fk: data.uuid })
-      .toArray()
-      .then((res) => {
-        res.forEach((item) => {
-          item.aprendiz.label = data.nome_aprendiz;
-          db.atendimentos.update(item.uuid, { aprendiz: item.aprendiz });
-        });
-        success();
-      })
-      .catch(() => {
-        error('Ocorreu um erro ao tentar atualizar o nome do aprendiz nos atendimentos');
-      });
-  }
-}
-
-onMounted(() => {
+onMounted(async () => {
   if (routeLocation.params.action === 'edit') {
 
-    aprendizeService.get(store.getAprendizUuid)
-      .then((response) => {
-        if (response) {
-          form.value.uuid = response.data.uuid || '';
-          form.value.nome_aprendiz = response.data.nome_aprendiz;
-          form.value.nasc_aprendiz = response.data.nasc_aprendiz;
-          form.value.nome_mae = response.data.nome_mae;
-          form.value.nome_pai = response.data.nome_pai;
-          form.value.nome_responsavel = response.data.nome_responsavel;
-          form.value.observacao = response.data.observacao;
-          form.value.sync = response.data.sync;
-        }
-      })
-      .catch((error) => {
-        error(error);
-      });
+    $q.loading.show();
+    try {
+      const { data } = await aprendizeService.getAprendizById(store.getAprendizUuid);
+
+      if (data) {
+        form.value.uuid = data.uuid || '';
+        form.value.nome_aprendiz = data.nome_aprendiz;
+        form.value.nasc_aprendiz = data.nasc_aprendiz;
+        form.value.nome_mae = data.nome_mae;
+        form.value.nome_pai = data.nome_pai;
+        form.value.nome_responsavel = data.nome_responsavel;
+        form.value.observacao = data.observacao;
+      }
+
+    } catch (e) {
+      error('')
+      throw e;
+    } finally {
+      $q.loading.hide();
+    }
   }
 });
 </script>

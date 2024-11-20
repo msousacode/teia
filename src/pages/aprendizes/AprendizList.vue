@@ -9,7 +9,7 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="handleEdit(props.row)">
+            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editar(props.row)">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
             <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="remover(props.row)">
@@ -31,38 +31,36 @@ import { columnsCategory } from './table';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { useRouter } from 'vue-router';
 import { db } from 'src/db';
-import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AprendizService } from 'src/services/AprendizService';
+import useNotify from 'src/composables/UseNotify';
 
-const $q = useQuasar();
-
-const { success, error } = useNotify();
-
-const router = useRouter();
+const aprendizService = new AprendizService();
 
 const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
-const aprendizService = new AprendizService();
+const { success, error } = useNotify();
 
-async function carregarLista() {
+const $q = useQuasar();
+
+const router = useRouter();
+
+async function listar() {
   $q.loading.show();
-  await aprendizService.buscar().then((response) => {
-    if (response.status == 200) {
-      aprendizes.value = response.data.content;
-    } else {
-      error('Ocorreu um erro.')
-    }
+  try {
+    const { data } = await aprendizService.getAprendizes();
+    aprendizes.value = data;
+  } catch (e) {
+    error;
+    throw e;
+  } finally {
     $q.loading.hide();
-  }).catch((_error) => {
-    error(_error);
-    $q.loading.hide();
-  });
+  }
 }
 
-function handleEdit(aprendiz: any) {
+function editar(aprendiz: any) {
   store.$state.aprendizUuid = aprendiz.uuid;
   router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
 }
@@ -75,7 +73,7 @@ function remover(aprendiz: any) {
   })
     .onOk(async () => {
       db.aprendizes.update(aprendiz.uuid, { ativo: false }).then(() => {
-        carregarLista();
+        listar();
         success("Aprendiz excluído com sucesso");
       }).catch(() => {
         error("Ocorreu um erro ao excluir");
@@ -85,6 +83,6 @@ function remover(aprendiz: any) {
 }
 
 onMounted(() => {
-  carregarLista();
+  listar();
 });
 </script>

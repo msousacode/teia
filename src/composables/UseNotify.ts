@@ -11,8 +11,7 @@ export default function useNotify() {
     });
   };
 
-  const error = (message?: string, ...err: any) => {
-    console.error(err);
+  const error = (message?: string) => {
     $q.notify({
       position: 'center',
       type: 'negative',
