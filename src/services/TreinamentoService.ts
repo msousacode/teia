@@ -18,20 +18,4 @@ export class TreinamentoService {
   async getTreinamentoById(id: string | null) {
     return await http.get(`/treinamentos/${id}`);
   }
-
-  async salvarAlvo(data: any) {
-    return await http.post('/alvos', data);
-  }
-
-  async getAlvoAll(id: string | null) {
-    return await http.get(`/alvos/all/${id}`);
-  }
-
-  async getAlvo(id: string | null) {
-    return await http.get(`/alvos/${id}`);
-  }
-
-  async buscarAlvosPorTreinamento(uuid: any) {
-    return await http.get(`/alvos/all/treinamento/${uuid}`);
-  }
 }

@@ -170,12 +170,12 @@ import {
 import { useQuasar } from 'quasar';
 import { AtendimentoService } from 'src/services/AtendimentoService';
 import { AprendizService } from 'src/services/AprendizService';
-import { TreinamentoService } from 'src/services/TreinamentoService';
 import { ColetaService } from 'src/services/ColetaService';
+import { AlvoService } from 'src/services/AlvoService';
 
 const atendimentoService = new AtendimentoService();
 
-const treinamentoService = new TreinamentoService();
+const alvoService = new AlvoService();
 
 const coletaService = new ColetaService();
 
@@ -319,7 +319,6 @@ async function salvar() {
     try {
       $q.loading.show();
       const { data, status } = await atendimentoService.postAtendimento(object);
-      debugger
       if (data != null || status == 200) {
         success();
 
@@ -385,101 +384,109 @@ function confirmarConfiguracaoTreinamento() {
 }
 
 async function gerarColetas(data: any) {
+  $q.loading.show();
+  try {
+    const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
 
-  const numeroSemanas = calcularNumeroSemanas(data.data_inicio, data.treinamentos[0].configuracoes.data_final);
+    if (numeroSemanas > 12) {
+      error('O período de treinamento não pode ser superior há 3 meses.');
+      return;
+    }
 
-  if (numeroSemanas > 12) {
-    error('O período de treinamento não pode ser superior há 3 meses.');
-    return;
+    const aprendizUuuiFk = data.aprendiz.value;
+
+    data.treinamentos.forEach(async (treino: any) => {
+
+      const quantidadeRepticao = treino.configuracoes.repetir;
+      const seg = treino.configuracoes.seg;
+      const ter = treino.configuracoes.ter;
+      const qua = treino.configuracoes.qua;
+      const qui = treino.configuracoes.qui;
+      const sex = treino.configuracoes.sex;
+      const sab = treino.configuracoes.sab;
+
+      const diasDaSemana: any[] = [];
+      diasDaSemana[0] = { value: 'seg', selected: seg };
+      diasDaSemana[1] = { value: 'ter', selected: ter };
+      diasDaSemana[2] = { value: 'qua', selected: qua };
+      diasDaSemana[3] = { value: 'qui', selected: qui };
+      diasDaSemana[4] = { value: 'sex', selected: sex };
+      diasDaSemana[5] = { value: 'sab', selected: sab };
+
+      const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
+
+      const { data } = await alvoService.getAlvosByTreinamento(treino.uuid);
+
+      const raw = toRaw(data)
+      //TODO depois como ponto de melhoria reunir todas as coletas em um array e enviar para o backend.
+      await raw.forEach(async (alvo) => {
+        let count = 0;
+        let countSemana = 0;
+
+        while (count < (quantidadeRepticao * numeroSemanas)) {
+          count++;
+          countSemana++;
+
+          await diasDaSemanaComTreinamento.map(async (_dia) => {
+
+            coleta.aprendiz_uuid_fk = aprendizUuuiFk;
+            coleta.treinamento_uuid_fk = treino.uuid;
+            coleta.data_final_coleta = treino.configuracoes.data_final;
+            coleta.alvo = alvo;
+
+            if (_dia.value === 'seg')
+              coleta.seg = diasDaSemana[0].selected;
+            else
+              coleta.seg = false;
+
+            if (_dia.value === 'ter')
+              coleta.ter = diasDaSemana[1].selected;
+            else
+              coleta.ter = false;
+
+            if (_dia.value === 'qua')
+              coleta.qua = diasDaSemana[2].selected;
+            else
+              coleta.qua = false;
+
+            if (_dia.value === 'qui')
+              coleta.qui = diasDaSemana[3].selected;
+            else
+              coleta.qui = false;
+
+            if (_dia.value === 'sex')
+              coleta.sex = diasDaSemana[4].selected;
+            else
+              coleta.sex = false;
+
+            if (_dia.value === 'sab')
+              coleta.sab = diasDaSemana[5].selected;
+            else
+              coleta.sab = false;
+
+            coleta.semana = countSemana;//contador para identificar a semana da coleta.
+            coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
+
+            const { data, status } = await coletaService.postColeta(coleta)
+            if (data != null || status == 200) {
+              success('Coletas geradas com sucesso!');
+            } else {
+              error('Ocorreu um erro ao tentar salvar');
+            }
+          });
+
+          if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
+            countSemana = 0;
+          }
+        }
+      });
+    });
+  } catch (e) {
+    error('Ocorreu um erro ao tentar salvar');
+  } finally {
+    $q.loading.hide();
   }
 
-  const aprendizUuuiFk = data.aprendiz.value;
-
-  data.treinamentos.forEach((treino: any) => {
-
-    const quantidadeRepticao = treino.configuracoes.repetir;
-    const seg = treino.configuracoes.seg;
-    const ter = treino.configuracoes.ter;
-    const qua = treino.configuracoes.qua;
-    const qui = treino.configuracoes.qui;
-    const sex = treino.configuracoes.sex;
-    const sab = treino.configuracoes.sab;
-
-    const diasDaSemana: any[] = [];
-    diasDaSemana[0] = { value: 'seg', selected: seg };
-    diasDaSemana[1] = { value: 'ter', selected: ter };
-    diasDaSemana[2] = { value: 'qua', selected: qua };
-    diasDaSemana[3] = { value: 'qui', selected: qui };
-    diasDaSemana[4] = { value: 'sex', selected: sex };
-    diasDaSemana[5] = { value: 'sab', selected: sab };
-
-    const diasDaSemanaComTreinamento = diasDaSemana.filter((dia) => dia.selected === true);
-
-    treinamentoService.buscarAlvosPorTreinamento(treino.treinamento)
-      .then(async (response) => {
-        const raw = toRaw(response)
-        //TODO depois como ponto de melhoria reunir todas as coletas em um array e enviar para o backend.
-        await raw.data.forEach(async (alvo) => {
-          let count = 0;
-          let countSemana = 0;
-
-          while (count < (quantidadeRepticao * numeroSemanas)) {
-            count++;
-            countSemana++;
-
-            await diasDaSemanaComTreinamento.map(async (_dia) => {
-
-              coleta.aprendiz_uuid_fk = aprendizUuuiFk;
-              coleta.treinamento_uuid_fk = treino.uuid;
-              coleta.data_final_coleta = treino.configuracoes.data_final;
-              coleta.alvo = alvo;
-
-              if (_dia.value === 'seg')
-                coleta.seg = diasDaSemana[0].selected;
-              else
-                coleta.seg = false;
-
-              if (_dia.value === 'ter')
-                coleta.ter = diasDaSemana[1].selected;
-              else
-                coleta.ter = false;
-
-              if (_dia.value === 'qua')
-                coleta.qua = diasDaSemana[2].selected;
-              else
-                coleta.qua = false;
-
-              if (_dia.value === 'qui')
-                coleta.qui = diasDaSemana[3].selected;
-              else
-                coleta.qui = false;
-
-              if (_dia.value === 'sex')
-                coleta.sex = diasDaSemana[4].selected;
-              else
-                coleta.sex = false;
-
-              if (_dia.value === 'sab')
-                coleta.sab = diasDaSemana[5].selected;
-              else
-                coleta.sab = false;
-
-              coleta.semana = countSemana;//contador para identificar a semana da coleta.
-              coleta.alvo.identificador = coleta.uuid;//usado para identificar o objeto coleta e permitir a correta atualização da resposta no objeto Coleta.
-
-              await coletaService.salvar(coleta)
-                .catch((_error) => {
-                  error('Ocorreu um erro ao tentar salvar', _error);
-                });
-            });
-
-            if (countSemana >= numeroSemanas) {//limita o countSemana para não execer o número de semanas.
-              countSemana = 0;
-            }
-          }
-        });
-      });
-  });
 }
 
 function calcularNumeroSemanas(dataInicio: string, dataFinal: string) {
@@ -550,7 +557,6 @@ function excluir(treinamento: any) {
           salvarAtendimentoTreinamento(atendimentoRaw, treinamentoInativo);
           arquivarColetas(treinamento);
         }).then(() => {
-          carregarInicial();
           success('Arquivado com sucesso');
         }).catch(() => {
           error('Ocorreu um erro ao tentar arquivar');
