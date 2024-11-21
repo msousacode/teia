@@ -339,11 +339,11 @@ function abrirConfiguracoes(item: any) {
 function confirmarConfiguracaoTreinamento() {
 
   validarSeFoiSelecionadoDiaDaSemana();
-
+  debugger
   storeTreinamento.treinamentosSelecionados
     .filter(
       (treinamento) =>
-        treinamento.uuid === storeTreinamento.treinamentoConfig.uuid
+        treinamento.treinamentoId === storeTreinamento.treinamentoConfig.treinamentoId
     )
     .map((treinamento) => {
       treinamento.configuracoes = toRaw(formTreinamento.value);
@@ -524,7 +524,7 @@ async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinam
 function salvarAtendimentoTreinamento(atendimentoRaw: any, treinamentoInativo: any) {
 
   atendimentoRaw.treinamentos = atendimentoRaw.treinamentos.map((treinamento: any) => {
-    if (treinamento.uuid === treinamentoInativo.uuid) {
+    if (treinamento.treinamentoId === treinamentoInativo.treinamentoId) {
       return treinamentoInativo;
     }
     return treinamento;
