@@ -39,7 +39,7 @@
               </q-item-section>
               <q-item-section side>
                 <q-btn sm label="Coletar" color="blue"
-                  @click="redirecionaColetas(item.uuid, item.protocolo, aprendizUuidSelecionado)" />
+                  @click="redirecionaColetas(item.treinamentoId, item.protocolo, aprendizUuidSelecionado)" />
               </q-item-section>
             </q-item>
           </q-list>
@@ -123,8 +123,6 @@ onMounted(async () => {
     const { data } = await atendimentoService.getAtendimentos()
 
     if (data != null) {
-      debugger
-
       atendimentos.value = data
     } else {
       error('Erro ao carregar atendimentos.')

@@ -21,14 +21,13 @@
             <q-tab name="coletados" label="Coletados" />
             <q-tab name="anotacoes" label="Anotações" />
         </q-tabs>
-
         <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="pendentes">
                 <div v-for="(item, index) in alvosPendentes" :key="index" class="q-mb-sm">
                     <div class="flex justify-center">
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
-            item.semana }}ª
+                                item.semana }}ª
                             SEMANA</q-chip>
                     </div>
 
@@ -74,12 +73,12 @@
                             </q-input>
                         </div>
                         <div v-else>
-                            <q-radio v-model="respostas[item.alvo.identificador]" val="nao-fez" label="NÃO FEZ"
-                                keep-color color="red" size="lg" />
-                            <q-radio v-model="respostas[item.alvo.identificador]" val="com-ajuda" label="COM AJUDA"
-                                keep-color color="orange" size="lg" />
-                            <q-radio v-model="respostas[item.alvo.identificador]" val="sem-ajuda" label="SEM AJUDA"
-                                keep-color color="green" size="lg" />
+                            <q-radio v-model="respostas[item.coletaId]" val="nao-fez" label="NÃO FEZ" keep-color
+                                color="red" size="lg" />
+                            <q-radio v-model="respostas[item.coletaId]" val="com-ajuda" label="COM AJUDA" keep-color
+                                color="orange" size="lg" />
+                            <q-radio v-model="respostas[item.coletaId]" val="sem-ajuda" label="SEM AJUDA" keep-color
+                                color="green" size="lg" />
                         </div>
                     </q-card>
 
@@ -91,7 +90,7 @@
                     <div class="flex justify-center">
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
-            item.semana }}ª
+                                item.semana }}ª
                             SEMANA</q-chip>
                     </div>
 
@@ -152,8 +151,8 @@
 
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
-            item.data_anotacao
-        }}</span>
+                                            item.data_anotacao
+                                            }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -195,6 +194,9 @@ import { v4 as uuid } from 'uuid';
 import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
 import { useQuasar } from 'quasar';
+import { ColetaService } from 'src/services/ColetaService';
+
+const coletaService = new ColetaService();
 
 const router = useRouter();
 
@@ -277,27 +279,48 @@ function exibirDivisorAlvosPorSemana(semana: number) {
     return returnValue;//TODO ordenar a query para trazer os resultados organizados por semana para facilitar a função.
 }
 
-function getColetasNaoRespondidas() {
+async function getColetasNaoRespondidas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
 
-    db.coletas
-        .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
-        .and(coleta => coleta.foi_respondido === false)
-        .sortBy('semana').then((data) => {
-            const raw = toRaw(data)
-            raw.map(coleta => {
+    const { data, status } = await coletaService.getColetas(_uuidTreinamento);
+    debugger
+    if (data != null || status == 200) {
+        const raw = toRaw(data)
+        raw.map(coleta => {
 
-                const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+            const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
 
-                if (dia === _diaColeta.toString()) {
-                    alvosPendentes.value.push(coleta);
-                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.uuid, count: 0 }));
-                }
-            })
-        });
+            if (dia === _diaColeta.toString()) {
+                alvosPendentes.value.push(coleta);
+                counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
+            }
+        })
+    } else {
+        error('Não foi possível carregar as coletas.');
+    }
+
+    if (false) {
+
+
+        db.coletas
+            .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
+            .and(coleta => coleta.foi_respondido === false)
+            .sortBy('semana').then((data) => {
+                const raw = toRaw(data)
+                raw.map(coleta => {
+
+                    const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+
+                    if (dia === _diaColeta.toString()) {
+                        alvosPendentes.value.push(coleta);
+                        counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.uuid, count: 0 }));
+                    }
+                })
+            });
+    }
 
     getAnotacoes();
     getColetasRespondidas();

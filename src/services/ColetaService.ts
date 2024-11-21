@@ -7,15 +7,15 @@ export class ColetaService {
     return await http.post('/coletas', data);
   }
 
-  async atualizar(data: any) {
+  async putColeta(data: any) {
     return await http.put('/coletas', data);
   }
 
-  async buscar() {
-    return await http.get('/coletas');
+  async getColetas(id: string | null) {
+    return await http.get(`/coletas/treinamento/${id}`);
   }
 
-  async get(id: string | null) {
-    return await http.get(`/coletas/${id}`);
+  async getColeta(id: string | null) {
+    return await http.get(`/coleta/${id}`);
   }
 }
