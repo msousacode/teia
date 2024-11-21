@@ -152,7 +152,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                            }}</span>
+                                        }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -234,7 +234,9 @@ let counts = ref<any[]>([]);
 
 let acaoAnotacao = '';
 
-function salvarRespostas() {
+async function salvarRespostas() {
+    $q.loading.show();
+
     const _respostas = toRaw(respostas.value);
     const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
 
@@ -254,14 +256,20 @@ function salvarRespostas() {
         });
     }
 
-    arr.map(async i => {
-        await db.coletas.update(i.uuid, { resposta: i.resposta, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) })
-            .catch((_error) => {
-                error("Ocorreu um erro ao salvar as respostas: ", _error);
-            });
-        success("Respostas salvas com sucesso!");
-        setTimeout(() => router.go(0), 2000);//Esse código faz um redirect para a mesma página, atualizando os dados.
-    });
+    try {
+        const { data, status } = await coletaService.putColetaResposta(arr);
+
+        if (data != null || status == 200) {
+            success("Respostas salvas com sucesso!");
+            setTimeout(() => router.go(0), 1000);
+        } else {
+            error("Ocorreu um erro ao salvar as respostasx");
+        }
+    } catch (e) {
+
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 let value = 0;
@@ -279,80 +287,50 @@ function exibirDivisorAlvosPorSemana(semana: number) {
     return returnValue;//TODO ordenar a query para trazer os resultados organizados por semana para facilitar a função.
 }
 
-async function getColetasNaoRespondidas() {
+async function getColetas() {
 
     if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
         throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
     }
 
     const { data, status } = await coletaService.getColetas(_uuidTreinamento);
-    debugger
+
     if (data != null || status == 200) {
+
         const raw = toRaw(data)
-        raw.map(coleta => {
 
-            const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
-
-            if (dia === _diaColeta.toString()) {
-                alvosPendentes.value.push(coleta);
-                counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
-            }
-        })
-    } else {
-        error('Não foi possível carregar as coletas.');
-    }
-
-    if (false) {
-
-
-        db.coletas
-            .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
-            .and(coleta => coleta.foi_respondido === false)
-            .sortBy('semana').then((data) => {
-                const raw = toRaw(data)
-                raw.map(coleta => {
-
-                    const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
-
-                    if (dia === _diaColeta.toString()) {
-                        alvosPendentes.value.push(coleta);
-                        counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.uuid, count: 0 }));
-                    }
-                })
-            });
-    }
-
-    getAnotacoes();
-    getColetasRespondidas();
-}
-
-function getAnotacoes() {
-    db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
-        anotacoesFeitas.value = data;
-    });
-}
-
-function getColetasRespondidas() {
-
-    if (_uuidTreinamento === undefined || _uuidAprendiz === undefined || _diaColeta === undefined) {
-        throw new Error('uuidTreinamento, diaColeta ou uuidAprendiz não informado');
-    }
-
-    db.coletas
-        .where({ aprendiz_uuid_fk: _uuidAprendiz, treinamento_uuid_fk: _uuidTreinamento })
-        .and(coleta => coleta.foi_respondido === true)
-        .sortBy('semana').then((data) => {
-            const raw = toRaw(data);
-            raw.map(coleta => {
+        //Pendentes de Coletas
+        raw.filter(coleta => coleta.foi_respondido == false)
+            .map(coleta => {
 
                 const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
 
                 if (dia === _diaColeta.toString()) {
-                    alvosColetados.value.push(coleta)
+                    alvosPendentes.value.push(coleta);
+                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
                 }
             })
-        });
 
+        //Coletadas    
+        raw.filter(coleta => coleta.foi_respondido == true)
+            .map(coleta => {
+
+                const dia = coleta.seg ? 'seg' : coleta.ter ? 'ter' : coleta.qua ? 'qua' : coleta.qui ? 'qui' : coleta.sex ? 'sex' : coleta.sab ? 'sab' : null;
+
+                if (dia === _diaColeta.toString()) {
+                    alvosColetados.value.push(coleta);
+                    counts.value = alvosColetados.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
+                }
+            });
+
+    } else {
+        error('Não foi possível carregar as coletas.');
+    }
+
+    getAnotacoes();
+}
+
+function getAnotacoes() {
     db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
         anotacoesFeitas.value = data;
     });
@@ -421,7 +399,7 @@ function excluirAnotacao(item: any) {
 }
 
 onMounted(() => {
-    getColetasNaoRespondidas();
+    getColetas();
 });
 
 </script>

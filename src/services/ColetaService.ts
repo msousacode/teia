@@ -11,6 +11,10 @@ export class ColetaService {
     return await http.put('/coletas', data);
   }
 
+  async putColetaResposta(data: any) {
+    return await http.put('/coletas/respostas', data);
+  }
+
   async getColetas(id: string | null) {
     return await http.get(`/coletas/treinamento/${id}`);
   }

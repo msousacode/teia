@@ -109,6 +109,7 @@ import { AssinaturaService } from '../assinatura/AssinaturaService';
 import { useRouter } from 'vue-router';
 import useAuth from 'src/composables/useAuth';
 import useUtils from 'src/utils/util';
+import { AprendizService } from 'src/services/AprendizService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -117,6 +118,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Title,
     Tooltip,
     Legend);
+
+const aprendizService = new AprendizService();
 
 const gerandoRelatorio = ref(false);
 
@@ -446,15 +449,27 @@ const entendi = () => {
     carregarSelectAprendiz();
 }
 
-const carregarSelectAprendiz = () => {
-    db.aprendizes.toArray().then((res) => {
-        res.filter(i => i.ativo === true).forEach((aprendiz) => {
-            aprendizes.value.push({
-                label: aprendiz.nome_aprendiz,
-                value: aprendiz.uuid,
+const carregarSelectAprendiz = async () => {
+
+    try {
+        $q.loading.show();
+        const { data } = await aprendizService.getAprendizes();
+        if (data) {
+            data.filter(i => i.ativo === true).forEach((item: any) => {
+                aprendizes.value.push({
+                    label: item.nome_aprendiz,
+                    value: item.uuid,
+                });
             });
-        });
-    });
+        } else {
+            error('Erro ao carregar aprendizes.')
+        }
+
+    } catch (e) {
+        error('Erro ao carregar aprendizes.')
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 function backupSegundoPlano() {

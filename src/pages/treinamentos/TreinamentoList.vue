@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-sm">
     <div class="row">
-      <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns" row-key="uuid"
-        class="col-12" selection="multiple" v-model:selected="selected">
+      <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
+        row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
         <template v-slot:top>
           <span class="text-h6 text-teal"> Treinamentos </span>
         </template>
@@ -107,7 +107,7 @@ async function getTreinamentos() {
 onMounted(() => {
   getTreinamentos();
   store.getTreinamentosSelecionados.forEach((treinamento) => {
-    treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
+    treinamentos.value = treinamentos.value.filter(item => treinamento.treinamentoId !== item.treinamentoId);
   });
 });
 </script>
