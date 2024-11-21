@@ -102,13 +102,7 @@ import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
-import useSupabaseApi from 'src/composables/UseSupabaseApi';
-import { BackupService } from 'src/services/BackupService';
 import { useUserStore } from 'src/stores/user';
-import { AssinaturaService } from '../assinatura/AssinaturaService';
-import { useRouter } from 'vue-router';
-import useAuth from 'src/composables/useAuth';
-import useUtils from 'src/utils/util';
 import { AprendizService } from 'src/services/AprendizService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
@@ -145,23 +139,14 @@ const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
 
-const { getUserAuth, getByEmail, put } = useSupabaseApi();
-
-const backupService = new BackupService();
-
 const showBoasVindas = ref(false);
 
 const storeUser = useUserStore();
 
-const assinaturaService = new AssinaturaService();
 
-const router = useRouter();
+//const router = useRouter();
 
 const diasRestantesTeste = ref();
-
-const auth = useAuth();
-
-const utils = useUtils();
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -435,15 +420,6 @@ async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> 
     });
 }
 
-
-async function getUserAuthSupbase() {
-    return getUserAuth().then((user) => {
-        return user.data.user;
-    }).catch((err) => {
-        console.error(err);
-    });
-}
-
 const entendi = () => {
     showBoasVindas.value = false;
     carregarSelectAprendiz();
@@ -472,6 +448,7 @@ const carregarSelectAprendiz = async () => {
     }
 }
 
+/*
 function backupSegundoPlano() {
 
     if (navigator.onLine) {
@@ -493,12 +470,13 @@ function backupSegundoPlano() {
             backupService.iniciarBackup(false);
         }
     }
-}
+}*/
 
 
 onMounted(async () => {
     carregarSelectAprendiz();
 
+    /*
     if (navigator.onLine) {
 
         const userAuth = await getUserAuthSupbase() as any;
@@ -552,6 +530,6 @@ onMounted(async () => {
         }
 
         backupSegundoPlano();
-    }
+    }*/
 });
 </script>

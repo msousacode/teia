@@ -78,7 +78,7 @@ async function entrar() {
 
   $q.loading.show();
   await acessoService.login(auth).then((data) => {
-    localStorage.setItem('_t', JSON.stringify(data.data));
+    document.cookie = `token=${data.data}`
     router.push({ name: 'relatorios' })
   }).catch(() => {
     error('Erro ao logar. Verifique suas credenciais');
@@ -87,7 +87,7 @@ async function entrar() {
 }
 
 onBeforeMount(() => {
-  if (getToken() !== null) {
+  if (getToken('token') != null) {
     router.push({ name: 'relatorios' });
   }
 });

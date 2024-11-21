@@ -38,8 +38,11 @@ import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
+import { useManagerTokens } from 'src/composables/managerTokens';
 
 const router = useRouter();
+
+const manager = useManagerTokens();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
@@ -107,8 +110,7 @@ function toggleLeftDrawer() {
 }
 
 const sair = async () => {
-  localStorage.clear();
-  sessionStorage.clear();
+  manager.limparCookie("token");
   router.replace({ name: 'login' });
 };
 

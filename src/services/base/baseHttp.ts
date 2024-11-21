@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useManagerTokens } from 'src/composables/managerTokens';
 
-const token = JSON.parse(localStorage.getItem('_t') ?? '');
+const token = useManagerTokens().getToken();
 
 const backendUrl = 'http://localhost:8080/'; // Use variável de ambiente ou URL fixa
 

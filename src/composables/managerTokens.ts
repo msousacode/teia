@@ -1,7 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
 
-type localStorageKey = '_t'; //Token autenticado da sessão do usuário
-
 interface IdentityData {
   avatar_url?: string;
   email: string;
@@ -73,11 +71,15 @@ interface TokenDTO {
 }
 
 export function useManagerTokens() {
-  const getToken = () => {
-    const key: localStorageKey = '_t';
-    return localStorage.getItem(key) !== null
-      ? localStorage.getItem(key)
-      : null;
+  const getToken = (name: string = 'token') => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null; // Retorna null se o cookie não existir
   };
 
   const convertTokenToJson = (token: string) => {
@@ -100,16 +102,10 @@ export function useManagerTokens() {
   };
 
   const isTokenAuthenticaded = () => {
-    const token = getToken();
+    const token = getToken('token');
 
     if (token !== null) {
-      {
-        const _token: TokenDTO = convertTokenToJson(token);
-        if (_token.user.aud === 'authenticated') {
-          return true;
-        }
-      }
-
+      //TODO adicionar uma verificação para saber se o Token esta expirado.
       return false;
     }
   };
@@ -118,11 +114,16 @@ export function useManagerTokens() {
     return jwtDecode(token);
   };
 
+  const limparCookie = (nome: string) => {
+    document.cookie = `${nome}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
+
   return {
     getToken,
     getUserToken,
     getDadosBasicos,
     isTokenAuthenticaded,
     getTokenDecoded,
+    limparCookie,
   };
 }
