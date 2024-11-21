@@ -58,7 +58,7 @@
           <q-td :props="props" class="q-gutter-x-sm">
             <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editarAtendimento(props.row)">
             </q-btn>
-            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="handleSelectAtendimento(props.row)">
+            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="iniciarAtendimento(props.row)">
             </q-btn>
           </q-td>
         </template>
@@ -97,7 +97,7 @@ const aprendizUuidSelecionado = ref('');
 
 const diaColeta = ref('');
 
-function handleSelectAtendimento(atendimento: any) {
+function iniciarAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
   aprendizUuidSelecionado.value = raw.aprendiz.value;
   treinamentos.value = raw.treinamentos
@@ -123,6 +123,8 @@ onMounted(async () => {
     const { data } = await atendimentoService.getAtendimentos()
 
     if (data != null) {
+      debugger
+
       atendimentos.value = data
     } else {
       error('Erro ao carregar atendimentos.')
