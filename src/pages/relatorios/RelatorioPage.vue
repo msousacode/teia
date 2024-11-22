@@ -115,6 +115,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
 
 const aprendizService = new AprendizService();
 
+const $q = useQuasar();
+
 const gerandoRelatorio = ref(false);
 
 const showGrafico = ref(false);
@@ -122,8 +124,6 @@ const showGrafico = ref(false);
 const periodo = ref(30);
 
 const service = new RelatorioService();
-
-const $q = useQuasar();
 
 const { error } = useNotify();
 

@@ -17,13 +17,15 @@
                 <q-input outlined stack-label label="Objetivo do Documento" v-model="form.objetivo_documento"
                     class="q-mb-md" />
 
-                <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia" class="q-mb-md" />
+                <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia"
+                    class="q-mb-md" />
             </q-form>
         </div>
 
         <div class="q-mb-md" v-show="isVbmapp">
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]" :rows-per-page="10">
+                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]"
+                :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
@@ -59,6 +61,15 @@ import { useRouter } from 'vue-router';
 import { db } from 'src/db';
 import { computed } from 'vue';
 import { v4 as uuid } from 'uuid';
+import { useQuasar } from 'quasar';
+import { AprendizService } from 'src/services/AprendizService';
+import useNotify from 'src/composables/UseNotify';
+
+const aprendizService = new AprendizService();
+
+const $q = useQuasar();
+
+const { error } = useNotify();
 
 const router = useRouter()
 
@@ -112,15 +123,26 @@ async function avancar() {
     });
 }
 
-function carregarSelectAprendizes() {
-    db.aprendizes.toArray().then((res) => {
-        res.filter(i => i.ativo === true).forEach((aprendiz) => {
-            aprendizes.value.push({
-                label: aprendiz.nome_aprendiz,
-                value: aprendiz.uuid,
+async function carregarSelectAprendizes() {
+    try {
+        $q.loading.show();
+        const { data } = await aprendizService.getAprendizes();
+        if (data) {
+            data.filter(i => i.ativo === true).forEach((item: any) => {
+                aprendizes.value.push({
+                    label: item.nome_aprendiz,
+                    value: item.uuid,
+                });
             });
-        });
-    });
+        } else {
+            error('Erro ao carregar aprendizes.')
+        }
+
+    } catch (e) {
+        error('Erro ao carregar aprendizes.')
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 onMounted(() => {

@@ -80,8 +80,17 @@ import { computed } from 'vue';
 import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
 import { useRouter } from 'vue-router';
+import { AprendizService } from 'src/services/AprendizService';
+import { useQuasar } from 'quasar';
+import useNotify from 'src/composables/UseNotify';
+
+const aprendizService = new AprendizService();
+
+const $q = useQuasar();
 
 const router = useRouter();
+
+const { error } = useNotify();
 
 const columns = ref<any[]>([]);
 
@@ -137,15 +146,26 @@ watch(selected, () => {
 });
 
 
-function carregarSelectAprendizes() {
-    db.aprendizes.toArray().then((res) => {
-        res.filter(i => i.ativo === true).forEach((aprendiz) => {
-            aprendizes.value.push({
-                label: aprendiz.nome_aprendiz,
-                value: aprendiz.uuid,
+async function carregarSelectAprendizes() {
+    try {
+        $q.loading.show();
+        const { data } = await aprendizService.getAprendizes();
+        if (data) {
+            data.filter(i => i.ativo === true).forEach((item: any) => {
+                aprendizes.value.push({
+                    label: item.nome_aprendiz,
+                    value: item.uuid,
+                });
             });
-        });
-    });
+        } else {
+            error('Erro ao carregar aprendizes.')
+        }
+
+    } catch (e) {
+        error('Erro ao carregar aprendizes.')
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 function ir(tipoAvaliacao: string) {

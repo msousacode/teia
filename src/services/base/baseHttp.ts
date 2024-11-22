@@ -1,9 +1,14 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useManagerTokens } from 'src/composables/managerTokens';
 
-const token = useManagerTokens().getToken();
+//const token = useManagerTokens().getToken();
 
 const backendUrl = 'http://localhost:8080/'; // Use variável de ambiente ou URL fixa
+
+// Atualize o header globalmente
+//axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+const managerTokens = useManagerTokens();
 
 export default function createHttp(base: string) {
   const http = axios.create({
@@ -14,7 +19,7 @@ export default function createHttp(base: string) {
       'Access-Control-Allow-Origin': '*',
       'content-type': 'application/json',
       accept: 'application/json',
-      Authorization: `Bearer ${token}`,
+      //Authorization: `Bearer ${token}`,
     },
     validateStatus: () => true,
   });
@@ -95,6 +100,19 @@ export default function createHttp(base: string) {
 
   http.interceptors.request.use(onRequestSuccess, onRequestError);
   http.interceptors.response.use(onResponseSuccess as any, onResponseError);
+
+  http.interceptors.request.use(
+    (config) => {
+      const token = managerTokens.getToken(); // Obtenha o token atualizado
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   return http;
 }
