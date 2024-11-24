@@ -151,7 +151,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                            }}</span>
+                                        }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -264,7 +264,7 @@ async function salvarRespostas() {
             success("Respostas salvas com sucesso!");
             setTimeout(() => router.go(0), 1000);
         } else {
-            error("Ocorreu um erro ao salvar as respostasx");
+            error("Ocorreu um erro ao salvar as respostas");
         }
     } catch (e) {
 
