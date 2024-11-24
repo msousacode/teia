@@ -46,13 +46,13 @@
         </q-card>
 
         <title-custom title="Relatório" />
+        <div class="text-body1 text-teal-7 q-mt-md">Selecione o período:</div>
         <div class="row">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
                     @update:model-value="pesquisar" />
             </q-form>
-            <p class="text-body1 text-teal-7 q-mt-md">Selecione o período:</p>
-            <div class="col-12">
+            <div class="col-12 q-mt-md">
                 <q-radio class="text-body2" v-model="periodo" :val=30 label="Último mês" color="teal" />
             </div>
             <div class="col-12">

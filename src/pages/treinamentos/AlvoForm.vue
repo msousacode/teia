@@ -34,9 +34,6 @@
             <span class="text-subtitle2 text-teal">Nome do Objetivo: </span>
             <div class="text-subtitle1">{{ item.nome_alvo }}</div>
 
-            <span class="text-subtitle2 text-teal">Tipo de aprendizado: </span>
-            <div class="text-subtitle1">{{ item.tipo_aprendizado }}</div>
-
             <span class="text-subtitle2 text-teal">Pergunta: </span>
             <div class="text-subtitle1">{{ item.pergunta }}</div>
 

@@ -6,11 +6,10 @@
                 <div class="text-center text-body1">Anotação</div>
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
                     :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
-                <q-btn label="Salvar" color="green" no-caps class="full-width q-mb-md" type="submit"
-                    @click="salvarAnotacao" />
+                <q-btn label="Salvar" color="green" no-caps class="q-mb-md" type="submit" @click="salvarAnotacao" />
 
 
-                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" rounded flat
+                <q-btn label="Voltar" color="primary" class="q-pa-sm q-mt-md" rounded flat
                     @click="visibleAnotacao = false" no-caps />
             </q-card>
         </q-dialog>
@@ -152,7 +151,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                        }}</span>
+                                            }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -190,11 +189,13 @@
 import { onMounted, ref, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Anotacao, db } from 'src/db';
-import { v4 as uuid } from 'uuid';
 import useNotify from 'src/composables/UseNotify';
 import { Coleta } from 'src/db';
 import { useQuasar } from 'quasar';
 import { ColetaService } from 'src/services/ColetaService';
+import { AnotacaoService } from 'src/services/AnotacaoService';
+
+const anotacaoService = new AnotacaoService();
 
 const coletaService = new ColetaService();
 
@@ -330,10 +331,22 @@ async function getColetas() {
     getAnotacoes();
 }
 
-function getAnotacoes() {
-    db.anotacoes.where({ treinamento_uuid_fk: _uuidTreinamento }).toArray().then((data) => {
-        anotacoesFeitas.value = data;
-    });
+async function getAnotacoes() {
+
+    try {
+        $q.loading.show()
+        const { data, status } = await anotacaoService.getAnotacoes(_uuidTreinamento);
+
+        if (data != null || status == 200) {
+            anotacoesFeitas.value = data;
+        } else {
+            error("Erro ao carregar as anotações")
+        }
+    } catch (e) {
+        error("Erro ao carregar as anotações")
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 function abreModalAnotacao(item: any, acao: string) {
@@ -343,41 +356,58 @@ function abreModalAnotacao(item: any, acao: string) {
     acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
-function salvarAnotacao() {
+async function salvarAnotacao() {
+
     if (acaoAnotacao === 'editar') {
         atualizarAnotacao()
     } else {
 
-        db.anotacoes.add({
-            uuid: uuid(),
-            alvo_identidicador_fk: alvoSelecionadoToAnotacao.value?.alvo.identificador,
-            treinamento_uuid_fk: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
-            data_anotacao: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }),
+        const object = {
+            treinamentoId: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
+            coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
             anotacao: anotacao.value,
-            sync: false,
-            ativo: true
-        }).then(() => {
-            getAnotacoes();
-            success("Anotação salva com sucesso");
-        }).catch((_error) => {
-            error("Ocorreu um erro ao salvar a anotação: ", _error);
-        });
+        }
+        try {
+            $q.loading.show();
+            const { data, status } = await anotacaoService.postAnotacao(object);
+
+            if (data != null || status == 200) {
+                success("Anotação salva com sucesso!")
+            } else {
+                error("Ocorreu um erro ao salvar a anotação.")
+            }
+
+        } catch (e) {
+            error("Ocorreu um erro ao salvar a anotação.")
+        } finally {
+            visibleAnotacao.value = false;
+            anotacao.value = '';
+            $q.loading.hide();
+        }
     }
 
-    visibleAnotacao.value = false;
-    anotacao.value = '';
 }
 
-function atualizarAnotacao() {
-    db.anotacoes.update(alvoSelecionadoToAnotacao.value?.uuid, { anotacao: anotacao.value }).then(() => {
-        getAnotacoes();
-        success("Anotação atualizada com sucesso");
-    }).catch((_error) => {
-        error("Ocorreu um erro ao atualizar a anotação: ", _error);
-    });
+async function atualizarAnotacao() {
 
-    visibleAnotacao.value = false;
-    anotacao.value = '';
+    try {
+        $q.loading.show();
+        const { data, status } = await anotacaoService.putAnotacao(anotacao.value);
+
+        if (data != null || status == 200) {
+            success("Anotação salva com sucesso!")
+        } else {
+            error("Ocorreu um erro ao salvar a anotação.")
+        }
+
+
+    } catch (e) {
+        error("Ocorreu um erro ao salvar a anotação.")
+    } finally {
+        visibleAnotacao.value = false;
+        anotacao.value = '';
+        $q.loading.hide();
+    }
 }
 
 function excluirAnotacao(item: any) {

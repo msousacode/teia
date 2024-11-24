@@ -60,7 +60,7 @@
           :rules="[(val) => isSubmitted && !editMode ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
           :readonly="editMode" />
         <q-input stack-label label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
-          :readonly="editMode"
+          v-show="!editMode"
           :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -97,27 +97,28 @@
                 <q-item-label>{{ item.protocolo }}</q-item-label>
 
                 <div v-if="item.configuracoes">
-                  <div><b class="text-teal">Data Final:</b></div>
-                  <q-item-label>{{ item.configuracoes.data_final }}</q-item-label>
+                  <div><b class="text-teal">Período:</b></div>
+                  <q-item-label>{{ `${form.data_inicio} até ${item.configuracoes.data_final}`
+                    }}</q-item-label>
                   <div><b class="text-teal">Repetir:</b></div>
-                  <q-item-label>{{ item.configuracoes.repetir }} uma vez por sessão</q-item-label>
+                  <q-item-label>{{ item.configuracoes.repetir }} por sessão</q-item-label>
                   <q-item-label>
-                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.seg">
+                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.seg">
                       {{ item.configuracoes.seg ? 'SEG' : '' }}
                     </q-chip>
-                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.ter">
+                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.ter">
                       {{ item.configuracoes.ter ? 'TER' : '' }}
                     </q-chip>
-                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.qua">
+                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.qua">
                       {{ item.configuracoes.qua ? 'QUA' : '' }}
                     </q-chip>
-                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.qui">
+                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.qui">
                       {{ item.configuracoes.qui ? 'QUI' : '' }}
                     </q-chip>
-                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.sex">
+                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.sex">
                       {{ item.configuracoes.sex ? 'SEX' : '' }}
                     </q-chip>
-                    <q-chip color="brown-4" text-color="white" v-if="item.configuracoes.sab">
+                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.sab">
                       {{ item.configuracoes.sab ? 'SAB' : '' }}
                     </q-chip>
                   </q-item-label>
@@ -339,7 +340,7 @@ function abrirConfiguracoes(item: any) {
 function confirmarConfiguracaoTreinamento() {
 
   validarSeFoiSelecionadoDiaDaSemana();
-  debugger
+
   storeTreinamento.treinamentosSelecionados
     .filter(
       (treinamento) =>
