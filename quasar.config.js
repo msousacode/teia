@@ -65,7 +65,7 @@ module.exports = configure(function (ctx) {
       // analyze: true,
       env: {
         API_URL: ctx.dev
-          ? 'http://localhost:9200/'
+          ? 'http://localhost:9000/'
           : 'https://sysaba.netlify.app',
         SUPABASE_URL: 'https://admyhroxjebmgrdakhza.supabase.co',
         SUPABASE_KEY:
