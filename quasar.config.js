@@ -76,6 +76,7 @@ module.exports = configure(function (ctx) {
           'pk_test_51QOdWGE7oRUy6lRCzUrOMQmucN9hftFYGaF4GbYAgcDpQ0ILL3nx975cfJ1L7DiDRorpaeBZVAytvD60SAEjGvlY00NgxNJ056',
         STRIPE_SECRET_KEY:
           'sk_test_51QOdWGE7oRUy6lRCqHCvnwczwt60S3EiCUBK8qz91tvvtIzZ6DM80SBbNov5TQ9buFZaNxT86Eygo4q8TCuX40vm00fPyRedUn',
+        STRIPE_WEBHOOK_SECRET: 'whsec_oZlDPIs4vRmudtIjkon5ouJFUduSMV56',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
