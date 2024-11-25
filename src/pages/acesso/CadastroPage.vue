@@ -42,7 +42,6 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRouter } from 'vue-router';
-import { createStripeCustomer } from 'src/services/stripe';
 
 const router = useRouter();
 
@@ -76,26 +75,14 @@ async function cadastrar() {
 
   try {
     $q.loading.show();
+    const { status } = await acessoService.criarNovoUsuario(novoUsurio);
 
-    const input = {
-      name: formCadastro.nome,
-      email: formCadastro.email,
-    }
-
-    const { id } = await createStripeCustomer(input);
-
-    if (id) {
-      const { status } = await acessoService.criarNovoUsuario(novoUsurio);
-
-      if (status == 200) {
-        router.push({ name: 'confirmado' });
-      } else {
-        error("Ocorreu um erro contate Suporte.")
-      }
-
+    if (status == 200) {
+      router.push({ name: 'confirmado' });
     } else {
-      error('Erro ao criar customer!');
+      error("Ocorreu um erro contate Suporte.")
     }
+
   } catch (e) {
     console.log(e);
     error('Erro ao criar customer!');

@@ -105,6 +105,7 @@ import jsPDF from 'jspdf';
 import { useUserStore } from 'src/stores/user';
 import { AprendizService } from 'src/services/AprendizService';
 import { UsuarioService } from 'src/services/UsuarioService';
+import { createStripeCustomer } from 'src/services/stripe';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -473,13 +474,38 @@ function backupSegundoPlano() {
 }*/
 
 
+async function criarContaStripe() {
+    try {
+        $q.loading.show();
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        const input = {
+            name: user.fullName,
+            email: user.email,
+        }
+
+        const { id } = await createStripeCustomer(input);
+
+        if (!id) {
+            error('Erro ao criar customer Stripe!');
+        }
+    } catch (e) {
+        console.log(e);
+        error('Erro ao criar customer!');
+    } finally {
+        $q.loading.hide();
+    }
+}
+
 onMounted(async () => {
     carregarSelectAprendiz();
 
     await usuarioSerive.getUsuarioInfo().then(data => {
-        localStorage.setItem("user", JSON.stringify(data.data));
+        localStorage.setItem("user", JSON.stringify(data));
     });
 
+    await criarContaStripe();
     /*
     if (navigator.onLine) {
 
