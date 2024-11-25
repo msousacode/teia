@@ -252,6 +252,7 @@ import { useUserStore } from 'src/stores/user';
 import { AprendizService } from 'src/services/AprendizService';
 import { UsuarioService } from 'src/services/UsuarioService';
 import { createStripeCustomer } from 'src/services/stripe';
+import { TermoService } from 'src/services/TermoService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -295,12 +296,21 @@ const diasRestantesTeste = ref();
 
 const usuarioSerive = new UsuarioService();
 
-const showTermsDialog = ref(true);
+const showTermsDialog = ref();
 
-const acceptTerms = ref(false);
+const acceptTerms = ref();
+
+const termoService = new TermoService();
 
 async function handleAccept() {
-    console.log('aceitou os termos');
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const { aceite } = await termoService.postAceiteTermo(user.email);
+
+    if (aceite) {
+        showTermsDialog.value = !aceite;
+    }
 }
 
 function pesquisar() {
@@ -657,6 +667,10 @@ onMounted(async () => {
 
     await usuarioSerive.getUsuarioInfo().then(data => {
         localStorage.setItem("user", JSON.stringify(data));
+
+        acceptTerms.value = data.termoAceite;
+        showTermsDialog.value = !acceptTerms.value;
+
     });
 
     await criarContaStripe();

@@ -9,6 +9,7 @@ export class UsuarioService {
         usuarioId: res.data.usuarioId,
         fullName: res.data.fullName,
         email: res.data.email,
+        termoAceite: res.data.termoAceite,
       };
     });
   }
