@@ -36,6 +36,7 @@ export const createStripeCustomer = async (input: {
     stripeSubscriptionId: createdCustomerSubscription.id,
     stripeSubscriptionStatus: createdCustomerSubscription.status,
     stripePriceId: config.stripe.plans.free.priceId,
+    email: createdCustomer.email,
   };
 
   await stripeService.postAprendiz(object);
@@ -60,13 +61,13 @@ export const createCheckoutSession = async (
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customer.id,
-      return_url: 'http://localhost:9200/aprendizes',
+      return_url: 'http://localhost:9000/#/assinatura',
       flow_data: {
         type: 'subscription_update_confirm',
         after_completion: {
           type: 'redirect',
           redirect: {
-            return_url: 'http://localhost:9200/aprendizes',
+            return_url: 'http://localhost:9000/#/relatorios',
             //'http://localhost:3000/app/settings/billing?success=true',
           },
         },

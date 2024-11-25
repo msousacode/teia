@@ -40,7 +40,7 @@
             <div class="text-h5 text-dark"><b>R$ 44,90/mês</b></div>
 
             <div class="q-mt-md">
-              <q-btn label="Assinar" no-caps color="primary" size="md" class="full-width" @click="checkoutSession()" />
+              <q-btn label="Assinar" no-caps color="primary" size="md" class="full-width" @click="assinar()" />
             </div>
           </div>
         </div>
@@ -54,21 +54,26 @@
 
 <script setup lang="ts">
 import TitleCustom from 'src/components/TitleCustom.vue';
-//import { createCheckoutSession, createStripeCustomer } from 'src/services/stripe';
+import { createCheckoutSession } from 'src/services/stripe';
+import { StripeService } from 'src/services/stripe/StripeService';
+import { UsuarioService } from 'src/services/UsuarioService';
 
-// Pegando o período de teste do localStorage
 const diasRestantesTeste = localStorage.getItem("periodoTeste") || "7 dias";
 
-//TODO aqui eu vou pegar o email do usuário logado.
-const user = JSON.parse(localStorage.getItem("user"));
+const stripeService = new StripeService();
 
-console.log('x', user);
+const usuarioService = new UsuarioService();
 
-/*async function assinar() {
+async function assinar() {
 
-  const checkoutSession = await createCheckoutSession(user.usuarioId, user.email, '');
+  const { usuarioId, email } = await usuarioService.getUsuarioInfo();
 
-}*/
+  const { stripeSubscriptionId } = await stripeService.getUsuarioInfoStripe(email);
 
+  const { url } = await createCheckoutSession(usuarioId, email, stripeSubscriptionId);
+
+  if (url)
+    window.location.href = url;
+}
 
 </script>

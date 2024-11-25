@@ -12,7 +12,7 @@
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="text-body2">
-              <div class="text-body2 text-pink"><b>PLANO PRO</b></div>
+              <div class="text-body2 text-pink"><b>PLANO PROxxx</b></div>
               <span class="text-h6">R$ 44,90</span>
             </div>
 
@@ -26,27 +26,18 @@
   </div>
 
   <div>
-    <iframe :src="urlPagamento"></iframe>
   </div>
 
 </template>
 
 <script setup lang="ts">
-import { createCheckoutSession } from 'src/services/stripe';
-import { onMounted, ref } from 'vue';
 
-const urlPagamento = ref('');
 
 async function assinarMensal() {
-  createCheckoutSession
+
+
 }
 
-//TODO aqui eu vou pegar o email do usuário logado.
 
-const checkoutSession = await createCheckoutSession('', '', '');
-
-onMounted(() => {
-  window.location.href = checkoutSession.url;
-})
 
 </script>

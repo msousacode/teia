@@ -76,7 +76,13 @@ async function cadastrar() {
 
   try {
     $q.loading.show();
-    const { id } = await createStripeCustomer(novoUsurio.email);
+
+    const input = {
+      name: formCadastro.nome,
+      email: formCadastro.email,
+    }
+
+    const { id } = await createStripeCustomer(input);
 
     if (id) {
       const { status } = await acessoService.criarNovoUsuario(novoUsurio);

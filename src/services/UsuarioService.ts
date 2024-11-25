@@ -4,6 +4,12 @@ const http = createHttp('/api');
 
 export class UsuarioService {
   async getUsuarioInfo() {
-    return await http.get('/user-info');
+    return await http.get('/user-info').then((res) => {
+      return {
+        usuarioId: res.data.usuarioId,
+        fullName: res.data.fullName,
+        email: res.data.email,
+      };
+    });
   }
 }
