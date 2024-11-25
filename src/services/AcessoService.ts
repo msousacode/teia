@@ -23,11 +23,11 @@ export class AcessoService {
   async criarNovoUsuario(usuario: Usuario) {
     return api
       .post('/auth/usuarios', usuario, config)
-      .then((data) => {
-        return data.status;
+      .then(() => {
+        return { status: 200 };
       })
-      .catch((error) => {
-        return error.status;
+      .catch(() => {
+        return { status: 500 };
       });
   }
 

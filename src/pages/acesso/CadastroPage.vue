@@ -42,6 +42,7 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRouter } from 'vue-router';
+import { createStripeCustomer } from 'src/services/stripe';
 
 const router = useRouter();
 
@@ -65,7 +66,6 @@ let isSubmitted = computed(() => {
 
 
 async function cadastrar() {
-  $q.loading.show();
 
   if (formCadastro.senha.trim() !== formCadastro.senhaConfirmada.trim()) {
     error('Senhas não conferem');
@@ -74,11 +74,27 @@ async function cadastrar() {
 
   const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email, banco_demonstracao: formCadastro.banco_demonstracao, senha: formCadastro.senhaConfirmada } as Usuario;
 
-  await acessoService
-    .criarNovoUsuario(novoUsurio)
-    .then((status) => status === 200 ? router.push({ name: 'confirmado' }) : error("Ocorreu um erro contate Suporte."))
-    .catch(() => error("Ocorreu um erro contate Suporte."));
+  try {
+    $q.loading.show();
+    const { id } = await createStripeCustomer(novoUsurio.email);
 
-  $q.loading.hide();
+    if (id) {
+      const { status } = await acessoService.criarNovoUsuario(novoUsurio);
+
+      if (status == 200) {
+        router.push({ name: 'confirmado' });
+      } else {
+        error("Ocorreu um erro contate Suporte.")
+      }
+
+    } else {
+      error('Erro ao criar customer!');
+    }
+  } catch (e) {
+    console.log(e);
+    error('Erro ao criar customer!');
+  } finally {
+    $q.loading.hide();
+  }
 };
 </script>

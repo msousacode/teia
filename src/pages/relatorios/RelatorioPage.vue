@@ -104,6 +104,7 @@ import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { useUserStore } from 'src/stores/user';
 import { AprendizService } from 'src/services/AprendizService';
+import { UsuarioService } from 'src/services/UsuarioService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -143,10 +144,9 @@ const showBoasVindas = ref(false);
 
 const storeUser = useUserStore();
 
-
-//const router = useRouter();
-
 const diasRestantesTeste = ref();
+
+const usuarioSerive = new UsuarioService();
 
 function pesquisar() {
     const raw = toRaw(form.value);
@@ -475,6 +475,10 @@ function backupSegundoPlano() {
 
 onMounted(async () => {
     carregarSelectAprendiz();
+
+    await usuarioSerive.getUsuarioInfo().then(data => {
+        localStorage.setItem("user", JSON.stringify(data.data));
+    });
 
     /*
     if (navigator.onLine) {
