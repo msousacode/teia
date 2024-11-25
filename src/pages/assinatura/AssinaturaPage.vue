@@ -53,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { createCheckoutSession } from 'src/services/stripe';
 import { StripeService } from 'src/services/stripe/StripeService';
@@ -64,16 +65,20 @@ const stripeService = new StripeService();
 
 const usuarioService = new UsuarioService();
 
-async function assinar() {
+const $q = useQuasar();
 
+async function assinar() {
+  $q.loading.show();
   const { usuarioId, email } = await usuarioService.getUsuarioInfo();
 
   const { stripeSubscriptionId } = await stripeService.getUsuarioInfoStripe(email);
 
   const { url } = await createCheckoutSession(usuarioId, email, stripeSubscriptionId);
 
-  if (url)
+  if (url) {
     window.location.href = url;
+  }
+  $q.loading.hide();
 }
 
 </script>
