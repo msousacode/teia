@@ -13,7 +13,7 @@
                 <div class="q-pa-sm">
                     Última atualização: Novembro 2024<br><br>
 
-                    Bem-vindo ao ao aplicativo SysABA!<br><br>
+                    Bem-vindo(a)! ao aplicativo SysABA!<br><br>
 
                     Este Termo de Uso estabelece as condições para utilização do
                     aplicativo e dos serviços fornecidos. Ao utilizar o aplicativo, você concorda integralmente com os
