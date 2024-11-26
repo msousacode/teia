@@ -19,7 +19,6 @@ export default function createHttp(base: string) {
       'Access-Control-Allow-Origin': '*',
       'content-type': 'application/json',
       accept: 'application/json',
-      //Authorization: `Bearer ${token}`,
     },
     validateStatus: () => true,
   });

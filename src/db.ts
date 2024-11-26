@@ -79,7 +79,6 @@ export interface AvaliacaoVbmapp {
   objetivo_documento: '';
   metodologia: '';
   niveis_coleta: string;
-  sync: false;
   ativo: true;
 }
 
