@@ -82,8 +82,10 @@ import { v4 as uuid } from 'uuid';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { computed } from 'vue';
+import { VbMappService } from 'src/services/VbMappService';
+import { useQuasar } from 'quasar';
 
-const { success } = useNotify();
+const { success, error } = useNotify();
 
 const routeLocation = useRoute();
 
@@ -122,6 +124,10 @@ const tituloSelecionado = ref()
 const state = reactive({
     cache: new Map()
 });
+
+const vbMappService = new VbMappService();
+
+const $q = useQuasar();
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
 
@@ -233,15 +239,23 @@ async function refresh() {
 }
 
 async function configTela() {
-    db.vbmapp
-        .get({ uuid: vbmappUuidParam.value })
-        .then((res) => {
-            showNiveis.value = res?.niveis_coleta.split(',') || [];
-            uuidVbmapp.value = res?.uuid;
-        })
-        .catch((_error) => {
-            console.error('Erro ao tentar consultar os treinamentos', _error);
-        });
+
+    try {
+        $q.loading.show();
+        const { uuid, niveis_coleta } = await vbMappService.getVbMappAvaliacaoConfigTelaById(vbmappUuidParam.value);
+        debugger
+        if (uuid != null && niveis_coleta != null) {
+            uuidVbmapp.value = uuid;
+            showNiveis.value = niveis_coleta.split(',') || [];
+        } else {
+            error('Erro ao tentar consultar o VBMAPP');
+        }
+    } catch (e) {
+        error('Erro ao tentar consultar o VBMAPP');
+        throw e;
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 function coletar(item: any, pontuacao: number) {

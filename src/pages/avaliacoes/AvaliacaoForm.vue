@@ -107,7 +107,7 @@ async function avancar() {
     try {
         $q.loading.show();
         const { data, status } = await vbMappService.postAvaliacao(object);
-        debugger
+
         if (data != null && status == 200) {
             const uuid = form.value.aprendiz_uuid_fk;
             router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid, vbmappUuid: data } });
