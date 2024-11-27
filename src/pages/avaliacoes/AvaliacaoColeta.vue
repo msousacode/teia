@@ -34,16 +34,16 @@
 
                         <div class="q-pa-md q-gutter-y-md flex justify-center">
                             <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
-                                <q-btn label="1 Ponto" size="13px"
+                                <q-btn label="1 Ponto"
                                     :class="item.selected === 1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 1)" />
-                                <q-btn label="0,5 Ponto" size="13px"
+                                <q-btn label="0,5 Ponto"
                                     :class="item.selected === 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0.5)" />
-                                <q-btn label="0 Ponto" size="13px"
+                                <q-btn label="0 Ponto"
                                     :class="item.selected === 0 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0)" />
-                                <q-btn label="NA" size="13px"
+                                <q-btn label="NA"
                                     :class="item.selected === -1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, -1)" />
                             </q-btn-group>
@@ -202,10 +202,23 @@ async function salvar() {
 
     const itens = coletas.get("coletasRealizadas");
 
-    await db.vbmappColetas.bulkAdd(itens).finally(() => {
-        success('Coletas salvas com sucesso!');
-        refresh();
-    })
+    try {
+        $q.loading.show();
+        const { data } = await vbMappService.postColetaAvaliacao(itens);
+
+        if (data) {
+            success('Coletas salvas com sucesso!');
+            //refresh();
+        } else {
+            error('Ocorreu um erro ao salvar as coletas');
+        }
+    } catch (e) {
+        error('Ocorreu um erro ao salvar as coletas');
+        throw e;
+    } finally {
+        $q.loading.hide();
+    }
+
 }
 
 async function refresh() {
@@ -243,7 +256,7 @@ async function configTela() {
     try {
         $q.loading.show();
         const { uuid, niveis_coleta } = await vbMappService.getVbMappAvaliacaoConfigTelaById(vbmappUuidParam.value);
-        debugger
+
         if (uuid != null && niveis_coleta != null) {
             uuidVbmapp.value = uuid;
             showNiveis.value = niveis_coleta.split(',') || [];

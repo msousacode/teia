@@ -20,6 +20,10 @@ export class VbMappService {
       });
   }
 
+  async postColetaAvaliacao(object: any) {
+    return await http.post('/coletas', object);
+  }
+
   async getVbMappAvaliacaoConfigTelaById(id: string | null) {
     return await http.get(`/config-tela/${id}`).then((data) => {
       return {
