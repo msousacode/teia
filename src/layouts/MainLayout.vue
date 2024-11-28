@@ -60,7 +60,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Avaliações',
+    title: 'Protocolos',
     icon: 'mdi-chart-gantt',
     routeName: 'avaliacoes',
     hide: true,

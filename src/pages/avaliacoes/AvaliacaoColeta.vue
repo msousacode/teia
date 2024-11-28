@@ -1,5 +1,6 @@
 <template>
     <q-page padding>
+
         <div class="text-teal">{{ descritivoTitulo }}</div>
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
@@ -16,6 +17,47 @@
         <q-tab-panels v-model="tab3">
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
+                    <div>
+                        <q-dialog persistent :key="index" v-model="visible[index]">
+                            <q-card class="my-card q-px-md q-py-md" style="max-width: 90vw; width: auto;">
+                                <q-card-section>
+                                    <div class="text-h6">Objetivo</div>
+                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.objetivo }}
+                                    </div>
+
+                                    <q-separator />
+
+                                    <div class="text-h6">Materiais</div>
+                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.materiais
+                                        }}</div>
+
+                                    <q-separator />
+
+                                    <div class="text-h6">Exemplo</div>
+                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.exemplo }}
+                                    </div>
+
+                                    <q-separator />
+
+                                    <div class="text-h6">1 Ponto</div>
+                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{
+                                        item.observacoes.pontuacao.umPonto
+                                    }}</div>
+
+                                    <div class="text-h6">0,5 Ponto</div>
+
+                                    <q-separator />
+                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{
+                                        item.observacoes.pontuacao.meioPonto
+                                    }}
+                                    </div>
+                                </q-card-section>
+                                <q-card-actions>
+                                    <q-btn label="Fechar" color="primary" @click="fecharModalAjuda(index)" />
+                                </q-card-actions>
+                            </q-card>
+                        </q-dialog>
+                    </div>
                     <q-card flat bordered class="my-card" :class="nivelSelecionado === '1'
                         ? 'bg-orange-1'
                         : nivelSelecionado === '2'
@@ -23,6 +65,7 @@
                             : nivelSelecionado === '3'
                                 ? 'bg-blue-1'
                                 : ''">
+                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -78,7 +121,6 @@ import { avaliacaoNivelUmTarefas } from './data/vbmappNivelUmTarefas';
 import { avaliacaoNivelDoisTarefas } from './data/vbmappNivelDoisTarefas';
 import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
-import { v4 as uuid } from 'uuid';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { computed } from 'vue';
@@ -128,6 +170,8 @@ const state = reactive({
 const vbMappService = new VbMappService();
 
 const $q = useQuasar();
+
+const visible = ref([]);
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
 
@@ -276,7 +320,6 @@ function coletar(item: any, pontuacao: number) {
     item.selected = pontuacao; // Atualiza a seleção do cartão  
 
     const novaColeta: AvaliacaoVbmappColetas = {
-        uuid: uuid(),
         vbmapp_uuid_fk: uuidVbmapp.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
@@ -308,6 +351,14 @@ function getData(key: string) {
         return state.cache.get(key);
     }
     state.cache.set(key, []);
+}
+
+function abrirModalAjuda(index: number) {
+    visible.value[index] = true;
+}
+
+function fecharModalAjuda(index: number) {
+    visible.value[index] = false;
 }
 
 onMounted(async () => {
