@@ -12,7 +12,7 @@
         <div class="col-md-4 col-sm-6 col-xs-10">
           <div class="q-pa-md">
 
-            <div class="text-center text-body1 q-mb-md">Registre-se ou faça o Login</div>
+            <div class="text-center text-body1 q-mb-md">Faça o seu Login</div>
 
             <q-input outlined stack-label v-model="email" label="E-mail"
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
@@ -22,21 +22,21 @@
 
             <q-btn class="full-width bg-primary text-white" no-caps label="Entrar" @click="entrar('normal')"
               :disable="!isSubmitted" />
-            <div class="text-right text-blue text-body1">
+            <div class="text-right text-blue text-body1 q-mt-md">
               <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
             </div>
-            <div class="col-md-4">
+            <!--div class="col-md-4">
               <div class="text-center text-body2 q-mb-md">Ou acesse com as redes sociais</div>
               <div class="row">
                 <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
               </div>
-            </div>
+            </div-->
           </div>
         </div>
       </div>
 
-      <q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
-        label="Novo por aqui? Cadastrar-se" no-caps />
+      <!--q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
+        label="Novo por aqui? Cadastrar-se" no-caps /-->
 
     </q-page-container>
   </q-layout>
