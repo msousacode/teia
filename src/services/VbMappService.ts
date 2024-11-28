@@ -32,4 +32,8 @@ export class VbMappService {
       };
     });
   }
+
+  async getVbMappAvaliacaoByAprendizId(id: string | null) {
+    return await http.get(`/aprendiz/${id}`);
+  }
 }

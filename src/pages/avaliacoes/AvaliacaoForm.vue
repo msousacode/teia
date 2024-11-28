@@ -110,7 +110,7 @@ async function avancar() {
 
         if (data != null && status == 200) {
             const uuid = form.value.aprendiz_uuid_fk;
-            router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid, vbmappUuid: data } });
+            router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid, tipoAvaliacao: 'milestones', vbmappUuid: data } });
         } else {
             error('erro ao criar avaliação.')
         }

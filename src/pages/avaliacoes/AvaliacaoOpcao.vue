@@ -72,7 +72,6 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { db } from 'src/db';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { watch } from 'vue';
@@ -83,6 +82,7 @@ import { useRouter } from 'vue-router';
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
+import { VbMappService } from 'src/services/VbMappService';
 
 const aprendizService = new AprendizService();
 
@@ -121,24 +121,36 @@ const isHabilitaProtocolos = computed(() => {
     return selected.value.length > 0 && showOpcoes;
 });
 
-watch(form.value, () => {
+const vbmappService = new VbMappService();
+
+watch(form.value, async () => {
     showOpcoes.value = form.value.aprendiz != null;
 
     if (form.value != null)
         store.aprendizSelected = form.value.aprendiz;
 
-    db.vbmapp.where({ aprendiz_uuid_fk: form.value.aprendiz.value }).toArray((res) => {
+    try {
+        $q.loading.show();
+        const { data } = await vbmappService.getVbMappAvaliacaoByAprendizId(form.value.aprendiz.value);
 
-        const response = res.map((i, idx) => {
-            return {
-                id: i.uuid,
-                name: `Avaliação - ${idx++}`,
-                protocolo: i.protocolo.label,
-                align: 'left',
-            }
-        })
-        avaliacaoRows.value = response;
-    });
+        if (data) {
+            const response = data.map((i, idx) => {
+                return {
+                    id: i.vbMappId,
+                    name: `Avaliação - ${idx + 1}`,
+                    protocolo: i.protocolo,
+                    nivel: i.niveisColeta,
+                    align: 'left',
+                }
+            })
+            avaliacaoRows.value = response;
+        }
+
+    } catch (e) {
+
+    } finally {
+        $q.loading.hide();
+    }
 });
 
 watch(selected, () => {
@@ -217,6 +229,11 @@ avaliacaoColumns.value = [
         label: 'Avaliações',
         align: 'left',
         field: 'name'
+    },
+    {
+        label: 'Níveis',
+        align: 'left',
+        field: 'nivel'
     },
     {
         label: 'Protocolo',
