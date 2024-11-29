@@ -29,7 +29,6 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns, visibleColumns } from './table';
-import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
@@ -68,6 +67,8 @@ function deletar(treinamento: any) {
   })
     .onOk(async () => {
       $q.loading.show();
+
+      /* TODO fazer esse 
       await db.treinamentos.delete(treinamento.uuid).then(() => {
         treinamentos.value = treinamentos.value.filter((item) => item.uuid !== treinamento.uuid);
         success('Deletado com sucesso!');
@@ -79,7 +80,7 @@ function deletar(treinamento: any) {
         .then(() => $q.loading.hide())
         .catch((_error) => {
           error(_error);
-        });
+        });*/
     })
     .onDismiss(() => { });
 }

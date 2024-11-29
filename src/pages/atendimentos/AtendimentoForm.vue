@@ -153,7 +153,6 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db';
 import { useRoute } from 'vue-router';
 import TreinamentoList from '../treinamentos/TreinamentoList.vue';
 import { useAprendizStore } from 'src/stores/aprendiz';
@@ -274,6 +273,9 @@ async function salvar() {
 
   if (storeTreinamento.treinamentoConfig.new && editMode) {
 
+
+    /*
+    TODO fazer o autualizar atendimentos
     await db.atendimentos.get({ uuid: uuidAtendimento }).then((res) => {
       let raw = toRaw(res);
 
@@ -292,6 +294,7 @@ async function salvar() {
         error('Ocorreu um erro ao tentar atualizar');
       });
     });
+    */
 
   } else if (storeTreinamento.treinamentoConfig.new === undefined && editMode) {
     atualizar();
@@ -321,6 +324,9 @@ async function salvar() {
 }
 
 function atualizar() {
+
+  /*
+  TODO Fazer o atualizar
   db.aprendizes
     .update(storeAprendiz.getAprendizUuid, toRaw(form.value))
     .then(() => {
@@ -330,6 +336,7 @@ function atualizar() {
     .catch(() => {
       throw Error('Ocorreu um erro ao tentar atualizar');
     });
+    */
 }
 
 function abrirConfiguracoes(item: any) {
@@ -497,6 +504,7 @@ function excluir(treinamento: any) {
   })
     .onOk(async () => {
 
+      /* TODO fazer a exclusão
       db.atendimentos.get({ uuid: uuidAtendimento })
         .then(async (res) => {
           let atendimentoRaw = toRaw(res);
@@ -509,6 +517,7 @@ function excluir(treinamento: any) {
         }).catch(() => {
           error('Ocorreu um erro ao tentar arquivar');
         });
+        */
     })
     .onDismiss(() => { });
 }
@@ -521,7 +530,8 @@ async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinam
   });
   return treinamentoRaw;
 }
-
+/**
+ * TODO fazer esse tmb
 function salvarAtendimentoTreinamento(atendimentoRaw: any, treinamentoInativo: any) {
 
   atendimentoRaw.treinamentos = atendimentoRaw.treinamentos.map((treinamento: any) => {
@@ -548,6 +558,7 @@ function arquivarColetas(item: any) {
     });
   });
 }
+ */
 
 async function carregarAtendimentosTreinamentos() {
   if (editMode) {

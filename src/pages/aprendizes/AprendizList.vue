@@ -30,7 +30,6 @@ import { onMounted, ref } from 'vue';
 import { columnsCategory } from './table';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { useRouter } from 'vue-router';
-import { db } from 'src/db';
 import { useQuasar } from 'quasar';
 import { AprendizService } from 'src/services/AprendizService';
 import useNotify from 'src/composables/UseNotify';
@@ -72,12 +71,19 @@ function remover(aprendiz: any) {
     cancel: true,
   })
     .onOk(async () => {
+
+
+      //TODO fazer o update de aprendiz
+      /*
       db.aprendizes.update(aprendiz.uuid, { ativo: false }).then(() => {
         listar();
         success("Aprendiz excluído com sucesso");
       }).catch(() => {
         error("Ocorreu um erro ao excluir");
       });
+      */
+
+
     })
     .onDismiss(() => { });
 }

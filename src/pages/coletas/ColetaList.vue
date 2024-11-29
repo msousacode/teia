@@ -248,10 +248,11 @@ async function salvarRespostas() {
                 return;
             }
 
+            /* TODO fazer esse tmb
             await db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) })
                 .catch((_error) => {
                     error("Ocorreu um erro ao salvar as respostas: ", _error);
-                });
+                });*/
             success("Respostas salvas com sucesso!");
             setTimeout(() => router.go(0), 2000);//Esse código faz um redirect para a mesma página, atualizando os dados.
         });
@@ -418,12 +419,14 @@ function excluirAnotacao(item: any) {
         cancel: true,
     })
         .onOk(async () => {
+            /** TODO fazer o delete
             db.anotacoes.delete(item.uuid).then(() => {
                 getAnotacoes();
                 success("Anotação excluída com sucesso");
             }).catch((_error) => {
                 error("Ocorreu um erro ao excluir a anotação: ", _error);
             });
+             */
         })
         .onDismiss(() => { });
 }

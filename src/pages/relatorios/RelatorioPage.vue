@@ -220,34 +220,31 @@
                 nomeProtocolo: item.protocolo,
                 periodoTreinamento: item.configuracoes.data_final,
                 progresso: item.progresso
-            }" @selecao="gerarGrafico(item.uuid)" />
+            }" />
         </div>
 
         <div ref="chartContainer"></div>
 
-        <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps @click="imprimirPDF"
+        <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps
             :disabled="!exibirRelatorioBtn" />
 
     </q-page>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db'
+import { onMounted, ref } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
-import Chart, {
+import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
     PointElement,
     Title,
     LineElement,
 } from 'chart.js/auto'
-import { RelatorioService } from 'src/services/RelatorioService';
+//import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
-import autoTable from 'jspdf-autotable';
-import jsPDF from 'jspdf';
 import { useUserStore } from 'src/stores/user';
 import { AprendizService } from 'src/services/AprendizService';
 import { UsuarioService } from 'src/services/UsuarioService';
@@ -272,7 +269,7 @@ const showGrafico = ref(false);
 
 const periodo = ref(30);
 
-const service = new RelatorioService();
+//const service = new RelatorioService();
 
 const { error } = useNotify();
 
@@ -284,7 +281,7 @@ const aprendizes = ref<any[]>([]);
 
 const treinamentos = ref<any[]>([]);
 
-const atendimentos = ref<any[]>([]);
+//const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
 
@@ -314,8 +311,9 @@ async function handleAccept() {
 }
 
 function pesquisar() {
-    const raw = toRaw(form.value);
+    //const raw = toRaw(form.value);
 
+    /* TODO fazer 
     db.atendimentos.where({ aprendiz_uuid_fk: raw.aprendiz.value }).toArray().then(res => {
         atendimentos.value = toRaw(res);
 
@@ -330,10 +328,12 @@ function pesquisar() {
             treinamentos.value = toRaw(item.treinamentos)
         });
     });
+    */
 
     exibirRelatorioBtn.value = true;
 }
 
+/*TODO fazer
 async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
     let valor = 0;
     await db.coletas.where({ aprendiz_uuid_fk: aprendizUUid, treinamento_uuid_fk: treinamentoUUid }).toArray((res) => {
@@ -343,12 +343,13 @@ async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) 
     })
 
     return valor;
-}
+}**/
 
 const chartContainer = ref(null);
 
-let myChart: Chart | null = null;
+//let myChart: Chart | null = null;
 
+/*
 async function gerarGrafico(itemId: string) {
 
     showGrafico.value = true;
@@ -424,24 +425,6 @@ async function imprimirPDF() {
             nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
         }
 
-        /*
-        const imgLogo = await loadImageData('src/assets/logo.png');
-        
-        const imgDataWithoutPrefix = imgLogo.split(",")[1];
-
-        autoTable(pdf, {
-            head: [['']],
-            headStyles: {
-                cellWidth: 30, minCellHeight: 10,
-            },
-            didDrawCell: (data) => {
-                if (data.section === 'head' && data.column.index === 0) {
-                    pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-                }
-            },
-            theme: 'plain',
-        });*/
-
         autoTable(pdf, {
             head: [['PROFISSIONAL', 'REGISTRO PROF.', 'APRENDIZ', 'GERADO EM:']],
             body: [
@@ -510,7 +493,7 @@ async function imprimirPDF() {
     gerandoRelatorio.value = false;
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
-}
+}*/
 /*
 async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
@@ -522,7 +505,7 @@ async function loadImageData(url: string): Promise<string> {
         reader.readAsDataURL(blob);
     });
 }*/
-
+/**
 async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> {
 
     gerandoRelatorio.value = true;
@@ -583,7 +566,7 @@ async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> 
         // Cria o gráfico com as configurações apropriadas
         myChart = new Chart(ctx, config);
     });
-}
+} */
 
 const entendi = () => {
     showBoasVindas.value = false;

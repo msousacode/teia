@@ -42,14 +42,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                    }}
+                                        }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -270,29 +270,30 @@ async function refresh() {
     cards.value = carregarAvaliacao();
 
     let cardsTela = toRaw(cards.value);
-
-    await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam.value }).toArray((resultDB) => {
-
-        resultDB.forEach(row => {
-            // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
-            const card = cardsTela.find(card => card.id === row.coleta_id);
-
-            // Verificar se o card foi encontrado  
-            if (card) {
-                // Atualizar a propriedade selected do card  
-                card.selected = row.pontuacao;
-                // Adicionar o card ao array cardsRespondidos  
-
-                // Usando map para substituir o objeto com o id específico  
-                const cardsAtualizados = cardsTela.map(item =>
-                    item.id === card.id ? card : item
-                );
-
-                //cards atualizados para exibir na tela.
-                cards.value = cardsAtualizados;
-            }
+    /** TODO fazer esse refresh
+        await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam.value }).toArray((resultDB) => {
+    
+            resultDB.forEach(row => {
+                // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
+                const card = cardsTela.find(card => card.id === row.coleta_id);
+    
+                // Verificar se o card foi encontrado  
+                if (card) {
+                    // Atualizar a propriedade selected do card  
+                    card.selected = row.pontuacao;
+                    // Adicionar o card ao array cardsRespondidos  
+    
+                    // Usando map para substituir o objeto com o id específico  
+                    const cardsAtualizados = cardsTela.map(item =>
+                        item.id === card.id ? card : item
+                    );
+    
+                    //cards atualizados para exibir na tela.
+                    cards.value = cardsAtualizados;
+                }
+            });
         });
-    });
+         */
 }
 
 async function configTela() {

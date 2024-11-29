@@ -137,8 +137,6 @@ class Anotacao {
   }
 }
 
-import { db } from 'src/db';
-
 export class RelatorioService {
   async gerarRelatorio(uuid: string, periodoPesquisa: number) {
     const cabecario = new Cabecario(
@@ -174,6 +172,8 @@ export class RelatorioService {
   }
 
   getAprendiz(uuidAprendiz: string) {
+    console.log(uuidAprendiz);
+    /** TODO fazer
     return db.aprendizes
       .get(uuidAprendiz)
       .then((res) => {
@@ -183,9 +183,12 @@ export class RelatorioService {
       .catch((error) => {
         throw new Error(error);
       });
+       */
   }
 
   async getTreinamentos(uuidAprendiz: string, periodoPesquisa: number) {
+    console.log(uuidAprendiz, periodoPesquisa);
+    /**
     const atendimentos = await db.atendimentos
       .where({ aprendiz_uuid_fk: uuidAprendiz })
       .toArray();
@@ -193,7 +196,7 @@ export class RelatorioService {
     if (!atendimentos || atendimentos.length === 0) {
       return [];
     }
-
+ */
     const inicioPesquisa = new Date().getTime();
     const dataFinal = this.getDataFinalToRelatorio(periodoPesquisa);
 

@@ -66,7 +66,6 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
@@ -183,6 +182,8 @@ function deletarAlvo(item: any) {
     cancel: true,
   })
     .onOk(async () => {
+
+      /** TODO Fazer
       db.alvos
         .delete(item.uuid)
         .then(() => {
@@ -192,7 +193,7 @@ function deletarAlvo(item: any) {
         })
         .catch((_error) => {
           error('Erro ao tentar deletar o alvo', _error);
-        });
+        }); */
     })
     .onDismiss(() => { });
 }
