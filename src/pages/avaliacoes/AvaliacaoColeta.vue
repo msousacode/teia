@@ -42,14 +42,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                        }}</div>
+                                    }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                        }}
+                                    }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -119,7 +119,6 @@ import { avaliacaoNivelDois } from './data/vbmappNivelDois';
 import { avaliacaoNivelTres } from './data/vbmappNivelTres';
 import { avaliacaoNivelUmTarefas } from './data/vbmappNivelUmTarefas';
 import { avaliacaoNivelDoisTarefas } from './data/vbmappNivelDoisTarefas';
-import { AvaliacaoVbmappColetas, db } from 'src/db';
 import { useRoute } from 'vue-router';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
@@ -269,7 +268,7 @@ async function refresh() {
 
     cards.value = carregarAvaliacao();
 
-    let cardsTela = toRaw(cards.value);
+    //let cardsTela = toRaw(cards.value);
     /** TODO fazer esse refresh
         await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam.value }).toArray((resultDB) => {
     
