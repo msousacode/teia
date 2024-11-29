@@ -91,21 +91,18 @@ const avaliacaoNivelUm = {
         {
           id: 104,
           cod: 'M5',
-          descricao:
-            'Imita 20 movimentos motores de qualquer tipo (e.g., motor fino, motor grosso, imitação com objetos). (T)',
+          descricao: 'Pontuação de no mínimo 2 no sub-teste APCE',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se o comportamento imitativo da criança está se fortalecendo e generalizando.',
-            materiais:
-              'Uma lista de possíveis comportamentos imitativos e uma coleção de objetos que podem ser usados para ações específicas de imitação.',
-            exemplo:
-              'Agitar dedos, cutucar no ombro, tocar dedos, fechar a mão, girar um pião, etc.',
+              'Determinar se a criança emite algum comportamento ecóico.',
+            materiais: 'O sub-teste APCE.',
+            exemplo: 'Criança emite “muu” e “aa” quando avaliada.',
             pontuacao: {
               umPonto:
-                'Dê 1 ponto à criança se ela imitar 20 comportamentos motores de quaisquer tipos.',
+                'Dê 1 ponto à criança se ela pontuar 2 ou mais no sub-teste APCE',
               meioPonto:
-                'Dê 1/2 ponto à criança se ela imitar 15 comportamentos motores de quaisquer tipos.',
+                'Dê 1⁄2 ponto à criança se ela pontuar 1 no sub-teste APCE',
             },
           },
         },
@@ -113,25 +110,96 @@ const avaliacaoNivelUm = {
     },
 
     {
-      titulo: 'Ecoico',
+      titulo: 'Ecoico (SUBTESTE APCE)',
       tipo: 2,
       objetivos: [
         {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
+          id: 105,
+          cod: '1M',
+          descricao: 'Pontuação de no mínimo 2 no sub-teste APCE',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
+              'Determinar se a criança emite algum comportamento ecóico.',
+            materiais: 'O sub-teste APCE.',
+            exemplo: 'A criança emite “muu” e “aa” quando avaliada.',
             pontuacao: {
               umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
+                'Dê 1 ponto à criança se ela pontuar 2 ou mais no sub-teste APCE.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela pontuar 1 no sub-teste APCE.',
+            },
+          },
+        },
+        {
+          id: 106,
+          cod: '2M',
+          descricao: 'Pontuação de no mínimo 5 no sub-teste APCE.',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se o repertório ecóico da criança está crescendo',
+            materiais: 'O sub-teste APCE.',
+            exemplo: 'A criança emite “pão”, “pipa” ou “uau” quando avaliada.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela pontuar 5 ou mais no sub-teste APCE.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela pontuar 3 no sub-teste APCE.',
+            },
+          },
+        },
+        {
+          id: 107,
+          cod: '3M',
+          descricao: 'Pontuação de no mínimo 10 no sub-teste APCE.',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se o repertório ecóico da criança está crescendo.',
+            materiais: 'O sub-teste APCE.',
+            exemplo:
+              'A criança emite “bebê”, “papa” ou “mamãe” quando avaliada.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela pontuar 10 ou mais no sub-teste APCE.',
+              meioPonto: 'Dê 1⁄2 ponto à criança se ela pontuar 7 no APCE.',
+            },
+          },
+        },
+        {
+          id: 108,
+          cod: '4M',
+          descricao: 'Pontuação de no mínimo 15 no sub-teste APCE.',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se o repertório ecóico da criança está crescendo.',
+            materiais: 'O sub-teste APCE.',
+            exemplo: 'A criança emite “boi”, “dia” ou “pão” quando avaliada.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela pontuar 15 ou mais no sub-teste APCE.',
+              meioPonto: 'Dê 1⁄2 ponto à criança se ela pontuar 12 no APCE.',
+            },
+          },
+        },
+        {
+          id: 109,
+          cod: '5M',
+          descricao:
+            'Pontuação de no mínimo 25 no sub-teste APCE (pelo menos 20 no grupo 1)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a ecoar palavras inteiras.',
+            materiais: 'O sub-teste APCE.',
+            exemplo: 'A criança ecoa “copo”, “gato” e “faca” quando avaliada.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela pontuar 25 ou mais no sub-teste APCE com no mínimo 20 do grupo 1.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela pontuar 20 no APCE com no mínimo 15 no grupo 1.',
             },
           },
         },
@@ -784,255 +852,99 @@ const avaliacaoNivelUm = {
       objetivos: [
         {
           id: 140,
-          cod: 1,
-          descricao: 'Emite espontaneamente uma média de 5 sons por hora',
+          cod: '1M',
+          descricao:
+            'Emite espontaneamente uma média de 5 sons por hora (OC: 60 min).',
           selected: null,
           observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
+            objetivo: 'Determinar se a criança emite sons de fala sem dicas.',
+            materiais: 'Nenhum.',
+            exemplo: 'A criança emite “aa” algumas vezes por hora.',
             pontuacao: {
               umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
+                'Dê à criança 1 ponto se ela emitir espontaneamente uma média de 5 sons por hora. Um registro de dados de tempo e de amostra pode ser utilizado para mensurar este comportamento. Não pontue se o som for um tipo de auto estimulação.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente uma média de 2 sons por hora',
             },
           },
         },
         {
           id: 141,
-          cod: 2,
+          cod: '2M',
           descricao:
-            'Emite espontaneamente 5 sons diferentes, uma média de 10 sons no total por hora',
+            'Emissão espontânea de 5 sons diferentes, com uma média total de 10 sons a cada hora (OC: 60 min).',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
+              'Determinar se a criança está começando a emitir diferentes sons de fala e se a frequência está aumentando.',
+            materiais: 'Nenhum.',
             exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
+              'A criança emite "aa," "ba," "ma", "oo",e "ga," algumas vezes por hora.',
             pontuacao: {
               umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
+                'Dê à criança 1 ponto se ela emitir espontaneamente 5 sons diferentes, com média total de 10 sons por hora ( não incluir sons auto-estimulatórios).',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 3 sons diferentes, com média total de 10 sons por hora ( não incluir sons auto-estimulatórios).',
             },
           },
         },
         {
           id: 142,
-          cod: 3,
+          cod: '3M',
           descricao:
-            'Emite espontaneamente 10 sons diferentes com entonações variadas, média de 25 sons no total por hora',
+            'Emissão espontânea de 10 sons diferentes, com variação de entonação, com uma média total de 25 sons a cada hora (OC:60 min).',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
+              'Determinar se o número e a frequência dos sons vocais estão aumentando.',
+            materiais: 'Nenhum.',
             exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
+              'A criança emite "ee," "ba," "da," "ii," "pa," e "ta," várias vezes por hora com diferentes entonações.',
             pontuacao: {
               umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
+                'Dê à criança 1 ponto se ela emitir espontaneamente 10 sons diferentes, com variação de entonação, com média total de 25 sons a cada hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 5 sons diferentes, com variação de entonação, com média total de 25 sons a cada hora.',
             },
           },
         },
         {
           id: 143,
-          cod: 4,
+          cod: '4M',
           descricao:
-            'Emite espontaneamente 5 aproximações diferentes de palavras inteiras',
+            'Emissão espontânea de 5 palavras inteiras diferentes por aproximação (OC:60 min).',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
+              'Determinar se a taxa de produção vocal está aumentando, e se as palavras inteiras estão começando a aparecer.',
+            materiais: 'Nenhum.',
             exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
+              'A criança emite "mama", "dada", "ato" (para “gato”), “uau” (para tchau), “papa”, mas não necessariamente no contexto apropriado.',
             pontuacao: {
               umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
+                'Dê à criança 1 ponto se ela emitir espontaneamente 5 aproximações de palavras durante a observação.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 2 aproximações de palavras durante a observação.',
             },
           },
         },
         {
           id: 144,
-          cod: 5,
+          cod: '5M',
           descricao:
-            'Vocaliza espontaneamente 15 palavras inteiras ou frases com entonação e ritmo apropriados',
+            'Vocalização espontânea de 15 palavras inteiras ou frases com entonação apropriada e ritmo (OC: 60 min).',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
             exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
             pontuacao: {
               umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Resposta',
-      tipo: 10,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
-            pontuacao: {
-              umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
-            },
-          },
-        },
-      ],
-    },
-    {
-      titulo: 'Interverbal',
-      tipo: 11,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
-            pontuacao: {
-              umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Grupo',
-      tipo: 12,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
-            pontuacao: {
-              umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Linguístisca',
-      tipo: 13,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
-            pontuacao: {
-              umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Leitura',
-      tipo: 14,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
-            pontuacao: {
-              umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Matemática',
-      tipo: 15,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos com dicas ecóicas. Para uma criança que utiliza linguagem de sinais ou seleciona figuras, verificar se ela consegue emitir mandos com dicas imitativas ou de apontar. Se o repertório inicial de mando for fraco, limitado ou exigir dica física, será necessário uma avaliação mais cuidadosa do nível exato da criança.',
-            materiais:
-              'Providencie itens ou planeje atividades que funcionem comoReforçadores para a criança.',
-            exemplo:
-              'A criança diz "biscoito" quando quer biscoito, mas ela precisa de uma dica ecóica para responder. Para uma criança que utiliza sinais, elasinaliza “biscoito” quando quer ou vê o biscoito, mas precisa de uma dica imitativa ou talvez precise ouvir apalavra para responder. Para uma criança que utiliza figuras, ela seleciona a figura de “biscoito" quando quer e vê um biscoito, mas precisa de uma dica de apontar para responder. Um mando para ser empurrada no balanço seria umexemplo de mando para ação.',
-            pontuacao: {
-              umPonto:
-                'Dê um ponto à criança se ela responder quando um adulto forneceruma dica ecóica, como "diga biscoito", quando um biscoito estiverpresente, para 2 itens ou atividades desejadas.Dê 1 ponto à criança que utiliza linguagem de sinais se ela responderquando o adulto fornecer uma dica imitativa ou falar a palavra (dicaintraverbal). Para uma criança utilizando um sistema de figuras, oadulto pode apontar para a figura em questão e estimular a criançaverbalmente a pegá-la. Não dê ponto se for necessária uma dica físicapara sinalizar ou escolheruma figura ou símbolo.',
-              meioPonto: 'Dê 1/2 ponto à criança se ela emitir apenas 1 mando.',
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
             },
           },
         },

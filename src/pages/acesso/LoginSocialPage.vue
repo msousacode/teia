@@ -12,7 +12,11 @@
         <div class="col-md-4 col-sm-6 col-xs-10">
           <div class="q-pa-md">
 
-            <div class="text-center text-body1 q-mb-md">Faça o seu Login</div>
+            <div class="flex justify-center items-center">
+              <q-img src="../../assets/sys.png" width="120px" height="120px" />
+            </div>
+
+            <div class="text-center text-h6 q-mb-md q-mt-md">Faça o seu Login</div>
 
             <q-input outlined stack-label v-model="email" label="E-mail"
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
