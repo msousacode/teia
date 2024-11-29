@@ -36,8 +36,13 @@
       <q-card-section class="q-py-md">
         <div class="row items-center no-wrap">
           <div class="col">
-            <div class="text-body1 text-pink"><b>PLANO PRO</b></div>
+            <div class="text-body1 text-pink"><b>PLANO MENSAL</b></div>
             <div class="text-h5 text-dark"><b>R$ 44,90/mês</b></div>
+
+            <div class="text-body2 q-mt-sm">
+              <q-icon name="event" size="md" color="grey-8" class="q-mr-xs" />
+              Cobrado de modo recorrente a cada mês
+            </div>
 
             <div class="q-mt-md">
               <q-btn label="Assinar" no-caps color="primary" size="md" class="full-width" @click="assinar()" />
