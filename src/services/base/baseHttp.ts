@@ -3,7 +3,7 @@ import { useManagerTokens } from 'src/composables/managerTokens';
 
 //const token = useManagerTokens().getToken();
 
-const backendUrl = 'http://localhost:8080/'; // Use variável de ambiente ou URL fixa
+const backendUrl = process.env.SUPABASE_URL; // Use variável de ambiente ou URL fixa
 
 // Atualize o header globalmente
 //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
