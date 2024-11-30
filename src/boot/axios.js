@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers';
 import axios from 'axios';
 
-const url = 'http://localhost:8080/sysaba/api';
+const url = process.env.SUPABASE_URL;
 
 const api = axios.create({ baseURL: url });
 
