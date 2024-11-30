@@ -11,19 +11,15 @@
                     <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Protocolos" />
                 </div>
 
-                <q-input outlined stack-label label="Queixa Inicial do Tratamento (CID)" v-model="form.queixa"
-                    class="q-mb-md" />
-
                 <q-input outlined stack-label label="Objetivo do Documento" v-model="form.objetivo_documento"
                     class="q-mb-md" />
-
-                <q-input outlined stack-label label="Metodologia utilizada" v-model="form.metodologia" class="q-mb-md" />
             </q-form>
         </div>
 
         <div class="q-mb-md" v-show="isVbmapp">
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]" :rows-per-page="10">
+                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]"
+                :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
@@ -50,15 +46,20 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { onMounted } from 'vue';
+import { useQuasar } from 'quasar';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { toRaw } from 'vue';
-import { avaliacaoColumns, avaliacaoRows } from './table'
+import useNotify from 'src/composables/UseNotify';
+import { AprendizService } from 'src/services/AprendizService';
+import { VbMappService } from 'src/services/VbMappService';
+import { computed, onMounted, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
-import { db } from 'src/db';
-import { computed } from 'vue';
-import { v4 as uuid } from 'uuid';
+import { avaliacaoColumns, avaliacaoRows } from './table';
+
+const aprendizService = new AprendizService();
+
+const $q = useQuasar();
+
+const { error } = useNotify();
 
 const router = useRouter()
 
@@ -74,12 +75,8 @@ const form = ref({
     nome_aprendiz: '',
     protocolo: '',
     aprendiz: '',
-    queixa: '',
     objetivo_documento: '',
-    metodologia: '',
     niveis_coleta: '',
-    sync: false,
-    ativo: true,
 });
 
 const aprendizes = ref<any[]>([]);
@@ -95,32 +92,56 @@ const isVbmapp = computed(() => form.value.protocolo.label === 'VB-MAPP');
 
 const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || !(niveisSelcionados.value.length > 0));
 
+const vbMappService = new VbMappService();
+
 async function avancar() {
 
     const avaliacoes = niveisSelcionados.value.map(i => i.id);
 
-    form.value.uuid = uuid();
     form.value.aprendiz_uuid_fk = form.value.aprendiz.value;
-    form.value.nome_aprendiz = form.value.aprendiz.label;
     form.value.niveis_coleta = avaliacoes.toString();
+    form.value.protocolo = form.value.protocolo.label;
 
-    const data = toRaw(form.value);
+    const object = toRaw(form.value);
 
-    await db.vbmapp.add(data).then(result => {
-        const uuid = form.value.aprendiz_uuid_fk;
-        router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid, vbmappUuid: result } });
-    });
+    try {
+        $q.loading.show();
+        const { data, status } = await vbMappService.postAvaliacao(object);
+
+        if (data != null && status == 200) {
+            const uuid = form.value.aprendiz_uuid_fk;
+            router.push({ name: 'avaliacoes-coleta/vbmapp', params: { aprendizUuid: uuid, tipoAvaliacao: 'milestones', vbmappUuid: data } });
+        } else {
+            error('erro ao criar avaliação.')
+        }
+
+    } catch (e) {
+        throw e;
+    } finally {
+        $q.loading.hide();
+    }
 }
 
-function carregarSelectAprendizes() {
-    db.aprendizes.toArray().then((res) => {
-        res.filter(i => i.ativo === true).forEach((aprendiz) => {
-            aprendizes.value.push({
-                label: aprendiz.nome_aprendiz,
-                value: aprendiz.uuid,
+async function carregarSelectAprendizes() {
+    try {
+        $q.loading.show();
+        const { data } = await aprendizService.getAprendizes();
+        if (data) {
+            data.filter(i => i.ativo === true).forEach((item: any) => {
+                aprendizes.value.push({
+                    label: item.nome_aprendiz,
+                    value: item.uuid,
+                });
             });
-        });
-    });
+        } else {
+            error('Erro ao carregar aprendizes.')
+        }
+
+    } catch (e) {
+        error('Erro ao carregar aprendizes.')
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 onMounted(() => {

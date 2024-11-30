@@ -15,14 +15,10 @@
       <div class="q-ma-md"></div>
     </div>
 
-    <AssinaturaOpcoesPage />
 
     <q-btn class="full-width text-teal" color="white" text-color="blue" unelevated to="/" label="Voltar" no-caps />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import AssinaturaOpcoesPage from './AssinaturaOpcoesPage.vue';
-
-localStorage.removeItem('periodoTeste');
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-sm">
     <div class="row">
-      <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns" row-key="uuid"
-        class="col-12" :loading="loading" selection="multiple" v-model:selected="selected">
+      <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
+        row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
         <template v-slot:top>
           <span class="text-h6 text-teal"> Treinamentos </span>
         </template>
@@ -29,17 +29,19 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns, visibleColumns } from './table';
-import { db } from 'src/db';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
+import { TreinamentoService } from 'src/services/TreinamentoService';
 
-const { success, error } = useNotify();
+const { error } = useNotify();
 
 const router = useRouter();
 
 const $q = useQuasar();
+
+const treinamentoService = new TreinamentoService();
 
 const store = useTreinamentoStore();
 
@@ -52,11 +54,12 @@ const props = defineProps<{
 }>();
 
 function handleEdit(treinamento: any) {
-  store.$state.treinamentoUuid = treinamento.uuid;
+  store.$state.treinamentoUuid = treinamento.treinamentoId;
   router.push({ name: 'treinamento-novo', params: { action: 'edit' } });
 }
 
 function deletar(treinamento: any) {
+  console.log(treinamento)
 
   $q.dialog({
     title: 'Confirma a exclusão da Anotação?',
@@ -65,6 +68,8 @@ function deletar(treinamento: any) {
   })
     .onOk(async () => {
       $q.loading.show();
+
+      /* TODO fazer esse 
       await db.treinamentos.delete(treinamento.uuid).then(() => {
         treinamentos.value = treinamentos.value.filter((item) => item.uuid !== treinamento.uuid);
         success('Deletado com sucesso!');
@@ -76,7 +81,7 @@ function deletar(treinamento: any) {
         .then(() => $q.loading.hide())
         .catch((_error) => {
           error(_error);
-        });
+        });*/
     })
     .onDismiss(() => { });
 }
@@ -89,23 +94,22 @@ function handleSelectTreinamentos() {
 }
 
 async function getTreinamentos() {
-  $q.loading.show();
-  await db.treinamentos.toArray().then((res) => {
-    treinamentos.value = res;
+  try {
+    $q.loading.show();
+    const { data } = await treinamentoService.getTreinamentos();
+    treinamentos.value = data;
+  } catch (e) {
+    error('');
+    throw e;
+  } finally {
     $q.loading.hide();
-  }).catch((_error) => {
-    $q.loading.hide();
-    error(_error);
-  });
+  }
 }
 
-onMounted(async () => {
-  $q.loading.show();;
-
-  await getTreinamentos();
-
+onMounted(() => {
+  getTreinamentos();
   store.getTreinamentosSelecionados.forEach((treinamento) => {
-    treinamentos.value = treinamentos.value.filter(item => treinamento.uuid !== item.uuid);
+    treinamentos.value = treinamentos.value.filter(item => treinamento.treinamentoId !== item.treinamentoId);
   });
 });
 </script>

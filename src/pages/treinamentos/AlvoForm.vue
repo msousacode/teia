@@ -5,11 +5,8 @@
       <q-card-section>
         <title-custom title="Cadastro de Objetivo" />
       </q-card-section>
-      <q-card-section class="q-pt-none">
+      <q-card-section class="q-mt-none">
         <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
-          <q-select outlined v-model="form.tipo_aprendizado" :options="aprendizados" label="Tipo de Aprendizado"
-            :rules="[(val) => (val && val.length > 0) || 'Tipo de aprendizado é obrigatório']" />
-
           <q-input outlined label="Nome do Objetivo" v-model="form.nome_alvo"
             :rules="[(val) => (val && val.length > 0) || 'Nome do Objetivo é obrigatório']" />
 
@@ -25,6 +22,10 @@
     </q-card>
   </q-dialog>
 
+  <!--div v-if="alvos.length == 0">
+    <div class="text-teal text-body1 q-mt-md text-center">Nenhum objetivo cadastrado. Adicione objetivos</div>
+  </div-->
+
   <div v-for="(item, index) in alvos" :key="index" class="q-pa-sm">
     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
       <q-card-section>
@@ -32,9 +33,6 @@
           <div class="col">
             <span class="text-subtitle2 text-teal">Nome do Objetivo: </span>
             <div class="text-subtitle1">{{ item.nome_alvo }}</div>
-
-            <span class="text-subtitle2 text-teal">Tipo de aprendizado: </span>
-            <div class="text-subtitle1">{{ item.tipo_aprendizado }}</div>
 
             <span class="text-subtitle2 text-teal">Pergunta: </span>
             <div class="text-subtitle1">{{ item.pergunta }}</div>
@@ -68,13 +66,12 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db';
-import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { AlvoService } from 'src/services/AlvoService';
 
 const $q = useQuasar();
 
@@ -88,80 +85,88 @@ const visible = ref(false);
 
 const alvos = ref<any>([]);
 
-const aprendizados = [
-  'Habilidades de Atenção',
-  'Habilidades de Imitação',
-  'Habilidades de Linguagem Receptiva',
-  'Habilidades de Linguagem Expressiva',
-  'Habilidades Pré-Acadêmicas',
-];
+const alvoService = new AlvoService();
 
 const form = ref({
-  uuid: '',
+  alvoId: '',
   nome_alvo: '',
   pergunta: '',
   descricao_alvo: '',
   treinamento_uuid_fk: store.getTreinamentoUuid,
-  tipo_aprendizado: 'Habilidades de Atenção',
 });
 
 async function salvarAlvo() {
+  $q.loading.show();
+  if (form.value.alvoId) {
 
-  if (form.value.uuid) {
-    await db.alvos.put(toRaw(form.value)).then(() => {
+    try {
+      const { data } = await alvoService.putAlvo(toRaw(form.value));
+
+      if (data) {
+        success('Salvo com sucesso!');
+      } else {
+        error('Erro ao tentar atualizar.')
+      }
+
+    } catch (e) {
+      throw e;
+    } finally {
+      $q.loading.hide();
       visible.value = false;
-      success("Alvo atualizado com sucesso");
-    }).catch((_error) => {
-      error("Ocorreu um erro ao atualizar a anotação: ", _error);
-    });
 
-    visible.value = false;
+      form.value = {
+        alvoId: '',
+        nome_alvo: '',
+        pergunta: '',
+        descricao_alvo: '',
+        treinamento_uuid_fk: store.getTreinamentoUuid
+      };
 
-    form.value = {
-      uuid: '',
-      nome_alvo: '',
-      pergunta: '',
-      descricao_alvo: '',
-      treinamento_uuid_fk: store.getTreinamentoUuid,
-      tipo_aprendizado: 'Habilidades de Atenção',
-    };
+      return;
+    }
 
-    return;
   }
 
   if (
     form.value.treinamento_uuid_fk === '' ||
     form.value.treinamento_uuid_fk === null
   ) {
-    throw new Error('Treinamento não informado');
+    error('Treinamento não informado');
   }
 
-  form.value.uuid = uuid();
+  const object = toRaw(form.value);
 
-  const data = toRaw(form.value);
+  try {
+    const { data } = await alvoService.postAlvo(object);
 
-  db.alvos
-    .add(data)
-    .then(() => {
-      getAlvos();
-      visible.value = false;
-      reset();
+    if (data) {
       success();
-    })
-    .catch((_error) => {
-      error(_error);
-    });
+      reset();
+      getAlvos();
+    }
+
+  } catch (e) {
+    error("Ocorreu um erro ao salvar");
+    throw e;
+  } finally {
+    visible.value = false;
+    $q.loading.hide();
+  }
 }
 
-function getAlvos() {
-  db.alvos
-    .where({ treinamento_uuid_fk: store.getTreinamentoUuid })
-    .toArray()
-    .then((data) => {
-      alvos.value = toRaw(data);
-    }).catch((_error) => {
-      error('Erro ao consultar alvos', _error);
-    });
+async function getAlvos() {
+  $q.loading.show();
+  try {
+    const { data } = await alvoService.getAlvos(store.getTreinamentoUuid);
+    if (data) {
+      alvos.value = data;
+    }
+  } catch (e) {
+    error('Erro ao consultar');
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
 }
 
 function editarAlvo(item: any) {
@@ -170,6 +175,7 @@ function editarAlvo(item: any) {
 }
 
 function deletarAlvo(item: any) {
+  console.log(item)
 
   $q.dialog({
     title: 'Confirma a exclusão do Alvo?',
@@ -177,6 +183,8 @@ function deletarAlvo(item: any) {
     cancel: true,
   })
     .onOk(async () => {
+
+      /** TODO Fazer
       db.alvos
         .delete(item.uuid)
         .then(() => {
@@ -186,7 +194,7 @@ function deletarAlvo(item: any) {
         })
         .catch((_error) => {
           error('Erro ao tentar deletar o alvo', _error);
-        });
+        }); */
     })
     .onDismiss(() => { });
 }

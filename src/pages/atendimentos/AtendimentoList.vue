@@ -39,7 +39,7 @@
               </q-item-section>
               <q-item-section side>
                 <q-btn sm label="Coletar" color="blue"
-                  @click="redirecionaColetas(item.uuid, item.protocolo, aprendizUuidSelecionado)" />
+                  @click="redirecionaColetas(item.treinamentoId, item.protocolo, aprendizUuidSelecionado)" />
               </q-item-section>
             </q-item>
           </q-list>
@@ -48,7 +48,7 @@
     </q-dialog>
 
     <div class="row">
-      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12" :loading="loading"
+      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
           <span class="text-h6 text-teal"> Atendimentos </span>
@@ -58,7 +58,7 @@
           <q-td :props="props" class="q-gutter-x-sm">
             <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editarAtendimento(props.row)">
             </q-btn>
-            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="handleSelectAtendimento(props.row)">
+            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="iniciarAtendimento(props.row)">
             </q-btn>
           </q-td>
         </template>
@@ -72,8 +72,16 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { columns } from './table';
-import { db } from 'src/db';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+import { AtendimentoService } from 'src/services/AtendimentoService';
+import useNotify from 'src/composables/UseNotify';
+
+const $q = useQuasar();
+
+const { error } = useNotify();
+
+const atendimentoService = new AtendimentoService();
 
 const router = useRouter();
 
@@ -89,7 +97,7 @@ const aprendizUuidSelecionado = ref('');
 
 const diaColeta = ref('');
 
-function handleSelectAtendimento(atendimento: any) {
+function iniciarAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
   aprendizUuidSelecionado.value = raw.aprendiz.value;
   treinamentos.value = raw.treinamentos
@@ -107,25 +115,22 @@ function editarAtendimento(atendimento: any) {
   router.push({ name: 'atendimento-novo', params: { action: 'edit', uuidAtendimento: raw.uuid } });
 }
 
-async function getAprendizesAtivos() {
-  return db.aprendizes.toArray().then(res => {
-    return res.filter((item) => item.ativo).map(item => item.uuid);
-  });
-}
-
 onMounted(async () => {
   loading.value = true;
-  const aprendizesUuids = await getAprendizesAtivos();
 
-  db.atendimentos.toArray().then(res => {
-    const data = toRaw(res);
-    const array1 = data.filter(item => aprendizesUuids.includes(item.aprendiz_uuid_fk));
-    atendimentos.value = array1;
+  try {
+    $q.loading.show();
+    const { data } = await atendimentoService.getAtendimentos()
 
-    array1.forEach((item) => {
-      treinamentos.value = toRaw(item.treinamentos)
-    });
-  });
-  loading.value = false;
+    if (data != null) {
+      atendimentos.value = data
+    } else {
+      error('Erro ao carregar atendimentos.')
+    }
+  } catch (e) {
+    error('Erro ao carregar atendimentos.')
+  } finally {
+    $q.loading.hide();
+  }
 });
 </script>

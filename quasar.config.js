@@ -65,13 +65,18 @@ module.exports = configure(function (ctx) {
       // analyze: true,
       env: {
         API_URL: ctx.dev
-          ? 'http://localhost:9200/'
+          ? 'http://localhost:9000/'
           : 'https://sysaba.netlify.app',
-        SUPABASE_URL: 'https://admyhroxjebmgrdakhza.supabase.co',
+        SUPABASE_URL: 'ec2-54-205-228-44.compute-1.amazonaws.com:8080',
         SUPABASE_KEY:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkbXlocm94amVibWdyZGFraHphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk1NDI5NjksImV4cCI6MjAzNTExODk2OX0.zty5JEo6odbmNLL5yNf_6a4JxgBkLoyxOE3Ris9Kk9g',
         ASSAS_KEY:
           '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0MDQ0MjQ6OiRhYWNoX2NjY2JmMGYxLTc4YjEtNDFiZS1hYjgxLTAxOGVlN2M4YzY4ZQ==',
+        STRIPE_PUBLISHABLE_KEY:
+          'pk_test_51QOdWGE7oRUy6lRCzUrOMQmucN9hftFYGaF4GbYAgcDpQ0ILL3nx975cfJ1L7DiDRorpaeBZVAytvD60SAEjGvlY00NgxNJ056',
+        STRIPE_SECRET_KEY:
+          'sk_test_51QOdWGE7oRUy6lRCqHCvnwczwt60S3EiCUBK8qz91tvvtIzZ6DM80SBbNov5TQ9buFZaNxT86Eygo4q8TCuX40vm00fPyRedUn',
+        STRIPE_WEBHOOK_SECRET: 'whsec_oZlDPIs4vRmudtIjkon5ouJFUduSMV56',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

@@ -1,4 +1,150 @@
 <template>
+
+    <q-dialog v-model="showTermsDialog" persistent>
+        <q-card>
+            <q-card-section>
+                <div class="text-body1"><b>TERMO DE USO DO APLICATIVO</b></div>
+            </q-card-section>
+
+            <q-separator />
+
+            <q-card-section style="max-height: 50vh" class="scroll text-justify">
+
+                <div class="q-pa-sm">
+                    Última atualização: Novembro 2024<br><br>
+
+                    Bem-vindo(a)! ao aplicativo SysABA!<br><br>
+
+                    Este Termo de Uso estabelece as condições para utilização do
+                    aplicativo e dos serviços fornecidos. Ao utilizar o aplicativo, você concorda integralmente com os
+                    termos aqui descritos. Caso não concorde, não utilize o aplicativo.
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>1. ACEITAÇÃO DOS TERMOS</b><br>
+                    <b>1.1.</b> Ao acessar e utilizar este aplicativo, o usuário declara ter lido, compreendido e
+                    aceitado os
+                    termos de uso aqui descritos, bem como a nossa Política de Privacidade.<br>
+                    <b>1.2.</b> O aplicativo é destinado ao uso exclusivamente on-line. Para utilizá-lo, é necessário
+                    acesso à
+                    internet, sendo de responsabilidade do usuário prover os meios de conexão.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>2. DESCRIÇÃO DO SERVIÇO</b><br>
+                    <b>2.1.</b> O aplicativo SysABA é um serviço que auxilia Profissionais da área da psicologia na
+                    coleta das
+                    informações de seus pacientes.<br>
+                    <b>2.2.</b> O aplicativo é fornecido "como está", podendo sofrer atualizações, alterações ou
+                    interrupções a
+                    qualquer momento, sem aviso prévio.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>3. USO DO APLICATIVO</b><br>
+                    <b>3.1.</b> O usuário compromete-se a:<br><br>
+
+                    Não usar o aplicativo para atividades ilícitas ou que violem direitos de terceiros;<br><br>
+                    Não realizar engenharia reversa ou tentar acessar código-fonte ou dados do aplicativo de forma não
+                    autorizada;<br><br>
+                    Fornecer informações verídicas e completas ao registrar-se e utilizar o serviço.<br><br>
+                    <b>3.2.</b> A utilização do aplicativo deve respeitar as leis vigentes no Brasil e no local onde o
+                    usuário
+                    se encontra.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>4. CONTA DO USUÁRIO</b><br>
+                    <b>4.1.</b> Para acessar determinadas funcionalidades, o usuário poderá ser solicitado a criar uma
+                    conta
+                    pessoal.<br>
+                    <b>4.2.</b> O usuário é responsável por manter a confidencialidade de sua conta e senha, bem como
+                    por todas
+                    as atividades realizadas sob sua conta.<br>
+                    <b>4.3.</b> Caso perceba qualquer uso não autorizado de sua conta, o usuário deve notificar
+                    imediatamente a
+                    equipe do aplicativo SysABA.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>5. LIMITAÇÃO DE RESPONSABILIDADE</b><br>
+                    <b>5.1.</b> O aplicativo SysABA não se responsabiliza por danos decorrentes de:<br>
+
+                    Falhas de conexão com a internet;<br>
+                    Uso inadequado do aplicativo;<br>
+                    Interrupções ou indisponibilidade do serviço.<br>
+                    <b>5.2.</b> O aplicativo pode conter links para sites ou serviços de terceiros, pelos quais o
+                    aplicativo
+                    SysABA não assume qualquer responsabilidade.
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>6. PROPRIEDADE INTELECTUAL</b><br>
+                    <b>6.1.</b> Todos os direitos sobre o conteúdo, layout, design, e funcionalidades do aplicativo
+                    pertencem a
+                    empresa SysABA.<br>
+                    <b>6.2.</b> O uso do aplicativo não confere ao usuário qualquer direito sobre propriedade
+                    intelectual
+                    associada ao serviço.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    <b>7. ATUALIZAÇÕES DO TERMO DE USO</b><br>
+                    <b>7.1.</b> O aplicativo SysABA pode alterar este Termo de Uso a qualquer momento.<br>
+                    <b>7.2.</b> Alterações relevantes serão informadas por meio de notificação no próprio aplicativo ou
+                    por
+                    outros meios razoáveis.<br>
+                </div>
+                <div class="q-pa-sm">
+                    <b>8. DISPOSIÇÕES FINAIS</b><br>
+                    <b>8.1.</b> Este Termo de Uso é regido pelas leis brasileiras.<br>
+                    <b>8.2.</b> Qualquer disputa será resolvida no foro da Comarca de São Paulo/SP, com exclusão de
+                    qualquer
+                    outro.<br>
+                </div>
+                <div class="q-pa-sm">
+                    <b>9. ALTERAÇÃO OU REMOÇÃO DE FUNCIONALIDADES</b><br>
+                    <b>9.1.</b> O aplicativo SysABA reserva-se o direito de modificar, suspender ou descontinuar
+                    qualquer
+                    funcionalidade, recurso ou serviço do aplicativo, a qualquer momento e sem aviso prévio.<br>
+                    <b>9.2.</b> Caso funcionalidades relevantes sejam removidas, a SysABA poderá, a seu critério,
+                    comunicar os
+                    usuários por meio de notificações no aplicativo, e-mail ou outros meios razoáveis.<br>
+                    <b>9.3.</b> O usuário concorda que a SysABA não será responsabilizado por quaisquer prejuízos ou
+                    danos
+                    decorrentes da alteração ou remoção de funcionalidades.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    Dúvidas e Suporte<br>
+                    Caso você tenha qualquer dúvida sobre os Termos de Uso, por favor, entre em contato pelo e-mail
+                    sysaba.suporte@gmail.com.<br>
+                </div>
+
+                <div class="q-pa-sm">
+                    Ao continuar a utilizar o o aplicativo SysABA, você declara que leu, entendeu e concorda com este
+                    Termo de Uso.
+                </div>
+
+                <div class="q-pa-sm">
+                    SysABA<br>
+                    58.024.694/0001-87
+                </div>
+
+            </q-card-section>
+
+            <q-separator />
+
+            <q-card-actions align="center" class="q-mt-md">
+                <q-checkbox v-model="acceptTerms" label="Li e concordo com os termos" />
+                <q-btn :disable="!acceptTerms" label="Li e concordo com os termos" color="primary" @click="handleAccept"
+                    class="q-mt-md q-mb-md" />
+            </q-card-actions>
+        </q-card>
+    </q-dialog>
+
+
+
     <q-dialog v-model="showBoasVindas" persistent>
         <q-card class="my-card q-pa-md full-width">
             <q-card-section>
@@ -46,13 +192,13 @@
         </q-card>
 
         <title-custom title="Relatório" />
+        <div class="text-body1 text-teal-7 q-mt-md">Selecione o período:</div>
         <div class="row">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
                     @update:model-value="pesquisar" />
             </q-form>
-            <p class="text-body1 text-teal-7 q-mt-md">Selecione o período:</p>
-            <div class="col-12">
+            <div class="col-12 q-mt-md">
                 <q-radio class="text-body2" v-model="periodo" :val=30 label="Último mês" color="teal" />
             </div>
             <div class="col-12">
@@ -74,41 +220,36 @@
                 nomeProtocolo: item.protocolo,
                 periodoTreinamento: item.configuracoes.data_final,
                 progresso: item.progresso
-            }" @selecao="gerarGrafico(item.uuid)" />
+            }" />
         </div>
 
         <div ref="chartContainer"></div>
 
-        <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps @click="imprimirPDF"
+        <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps
             :disabled="!exibirRelatorioBtn" />
 
     </q-page>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db'
+import { onMounted, ref } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
-import Chart, {
+import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
     PointElement,
     Title,
     LineElement,
 } from 'chart.js/auto'
-import { RelatorioService } from 'src/services/RelatorioService';
+//import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
-import autoTable from 'jspdf-autotable';
-import jsPDF from 'jspdf';
-import useSupabaseApi from 'src/composables/UseSupabaseApi';
-import { BackupService } from 'src/services/BackupService';
 import { useUserStore } from 'src/stores/user';
-import { AssinaturaService } from '../assinatura/AssinaturaService';
-import { useRouter } from 'vue-router';
-import useAuth from 'src/composables/useAuth';
-import useUtils from 'src/utils/util';
+import { AprendizService } from 'src/services/AprendizService';
+import { UsuarioService } from 'src/services/UsuarioService';
+import { createStripeCustomer } from 'src/services/stripe';
+import { TermoService } from 'src/services/TermoService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -118,15 +259,17 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Tooltip,
     Legend);
 
+const aprendizService = new AprendizService();
+
+const $q = useQuasar();
+
 const gerandoRelatorio = ref(false);
 
 const showGrafico = ref(false);
 
 const periodo = ref(30);
 
-const service = new RelatorioService();
-
-const $q = useQuasar();
+//const service = new RelatorioService();
 
 const { error } = useNotify();
 
@@ -138,31 +281,39 @@ const aprendizes = ref<any[]>([]);
 
 const treinamentos = ref<any[]>([]);
 
-const atendimentos = ref<any[]>([]);
+//const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
-
-const { getUserAuth, getByEmail, put } = useSupabaseApi();
-
-const backupService = new BackupService();
 
 const showBoasVindas = ref(false);
 
 const storeUser = useUserStore();
 
-const assinaturaService = new AssinaturaService();
-
-const router = useRouter();
-
 const diasRestantesTeste = ref();
 
-const auth = useAuth();
+const usuarioSerive = new UsuarioService();
 
-const utils = useUtils();
+const showTermsDialog = ref();
+
+const acceptTerms = ref();
+
+const termoService = new TermoService();
+
+async function handleAccept() {
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const { aceite } = await termoService.postAceiteTermo(user.email);
+
+    if (aceite) {
+        showTermsDialog.value = !aceite;
+    }
+}
 
 function pesquisar() {
-    const raw = toRaw(form.value);
+    //const raw = toRaw(form.value);
 
+    /* TODO fazer 
     db.atendimentos.where({ aprendiz_uuid_fk: raw.aprendiz.value }).toArray().then(res => {
         atendimentos.value = toRaw(res);
 
@@ -177,10 +328,12 @@ function pesquisar() {
             treinamentos.value = toRaw(item.treinamentos)
         });
     });
+    */
 
     exibirRelatorioBtn.value = true;
 }
 
+/*TODO fazer
 async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
     let valor = 0;
     await db.coletas.where({ aprendiz_uuid_fk: aprendizUUid, treinamento_uuid_fk: treinamentoUUid }).toArray((res) => {
@@ -190,12 +343,13 @@ async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) 
     })
 
     return valor;
-}
+}**/
 
 const chartContainer = ref(null);
 
-let myChart: Chart | null = null;
+//let myChart: Chart | null = null;
 
+/*
 async function gerarGrafico(itemId: string) {
 
     showGrafico.value = true;
@@ -271,24 +425,6 @@ async function imprimirPDF() {
             nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
         }
 
-        /*
-        const imgLogo = await loadImageData('src/assets/logo.png');
-        
-        const imgDataWithoutPrefix = imgLogo.split(",")[1];
-
-        autoTable(pdf, {
-            head: [['']],
-            headStyles: {
-                cellWidth: 30, minCellHeight: 10,
-            },
-            didDrawCell: (data) => {
-                if (data.section === 'head' && data.column.index === 0) {
-                    pdf.addImage(imgDataWithoutPrefix, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-                }
-            },
-            theme: 'plain',
-        });*/
-
         autoTable(pdf, {
             head: [['PROFISSIONAL', 'REGISTRO PROF.', 'APRENDIZ', 'GERADO EM:']],
             body: [
@@ -357,7 +493,7 @@ async function imprimirPDF() {
     gerandoRelatorio.value = false;
     $q.loading.hide();
     pdf.save(`${nomeArquivo}.pdf`);
-}
+}*/
 /*
 async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
@@ -369,7 +505,7 @@ async function loadImageData(url: string): Promise<string> {
         reader.readAsDataURL(blob);
     });
 }*/
-
+/**
 async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> {
 
     gerandoRelatorio.value = true;
@@ -430,33 +566,37 @@ async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> 
         // Cria o gráfico com as configurações apropriadas
         myChart = new Chart(ctx, config);
     });
-}
-
-
-async function getUserAuthSupbase() {
-    return getUserAuth().then((user) => {
-        return user.data.user;
-    }).catch((err) => {
-        console.error(err);
-    });
-}
+} */
 
 const entendi = () => {
     showBoasVindas.value = false;
     carregarSelectAprendiz();
 }
 
-const carregarSelectAprendiz = () => {
-    db.aprendizes.toArray().then((res) => {
-        res.filter(i => i.ativo === true).forEach((aprendiz) => {
-            aprendizes.value.push({
-                label: aprendiz.nome_aprendiz,
-                value: aprendiz.uuid,
+const carregarSelectAprendiz = async () => {
+
+    try {
+        $q.loading.show();
+        const { data } = await aprendizService.getAprendizes();
+        if (data) {
+            data.filter(i => i.ativo === true).forEach((item: any) => {
+                aprendizes.value.push({
+                    label: item.nome_aprendiz,
+                    value: item.uuid,
+                });
             });
-        });
-    });
+        } else {
+            error('Erro ao carregar aprendizes.')
+        }
+
+    } catch (e) {
+        error('Erro ao carregar aprendizes.')
+    } finally {
+        $q.loading.hide();
+    }
 }
 
+/*
 function backupSegundoPlano() {
 
     if (navigator.onLine) {
@@ -478,12 +618,46 @@ function backupSegundoPlano() {
             backupService.iniciarBackup(false);
         }
     }
-}
+}*/
 
+
+async function criarContaStripe() {
+    try {
+        $q.loading.show();
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        const input = {
+            name: user.fullName,
+            email: user.email,
+        }
+
+        const { id } = await createStripeCustomer(input);
+
+        if (!id) {
+            error('Erro ao criar customer Stripe!');
+        }
+    } catch (e) {
+        console.log(e);
+        error('Erro ao criar customer!');
+    } finally {
+        $q.loading.hide();
+    }
+}
 
 onMounted(async () => {
     carregarSelectAprendiz();
 
+    await usuarioSerive.getUsuarioInfo().then(data => {
+        localStorage.setItem("user", JSON.stringify(data));
+
+        acceptTerms.value = data.termoAceite;
+        showTermsDialog.value = !acceptTerms.value;
+
+    });
+
+    await criarContaStripe();
+    /*
     if (navigator.onLine) {
 
         const userAuth = await getUserAuthSupbase() as any;
@@ -537,8 +711,7 @@ onMounted(async () => {
         }
 
         backupSegundoPlano();
-    } else {
-        $q.notify('Conecte-se a Internet para usar o aplicativo.')
-    }
+
+    }*/
 });
 </script>
