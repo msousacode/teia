@@ -151,7 +151,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                        }}</span>
+                                            }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -188,9 +188,7 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { Anotacao, db } from 'src/db';
 import useNotify from 'src/composables/UseNotify';
-import { Coleta } from 'src/db';
 import { useQuasar } from 'quasar';
 import { ColetaService } from 'src/services/ColetaService';
 import { AnotacaoService } from 'src/services/AnotacaoService';
@@ -227,9 +225,9 @@ const alvosColetados = ref<any[]>([]);
 
 const anotacao = ref('');
 
-const alvoSelecionadoToAnotacao = ref<Coleta>();
+const alvoSelecionadoToAnotacao = ref<any>();
 
-const anotacoesFeitas = ref<Anotacao[]>([]);
+const anotacoesFeitas = ref<[]>([]);
 
 let counts = ref<any[]>([]);
 
@@ -412,7 +410,7 @@ async function atualizarAnotacao() {
 }
 
 function excluirAnotacao(item: any) {
-
+    console.log(item)
     $q.dialog({
         title: 'Confirma a exclusão da Anotação?',
         ok: true,

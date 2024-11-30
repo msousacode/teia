@@ -21,5 +21,4 @@
 </template>
 
 <script setup lang="ts">
-import AssinaturaOpcoesPage from './AssinaturaOpcoesPage.vue';
 </script>
