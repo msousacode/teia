@@ -24,13 +24,7 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { computed, onMounted, ref } from 'vue';
-import useSupabaseApi from 'src/composables/UseSupabaseApi';
-import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
-
-const supabase = useSupabaseApi();
-
-const { success, error } = useNotify();
 
 const $q = useQuasar();
 
@@ -50,22 +44,24 @@ function submit() {
         $q.loading.show();
 
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-        supabase.put('usuarios', { id: user.id, full_name: form.value.full_name, documento: form.value.documento }).then(() => {
-            $q.loading.hide();
-            user.full_name = form.value.full_name;
-            user.documento = form.value.documento;
-            localStorage.setItem('user', user);
-            success('Perfil atualizado com sucesso!');
-        }).catch(() => {
-            $q.loading.hide();
-            error('Erro ao atualizar configurações!');
-        });
-    } else {
-        error('Sem conexão com a internet!');
+        console.log(user)
+        /*
+                supabase.put('usuarios', { id: user.id, full_name: form.value.full_name, documento: form.value.documento }).then(() => {
+                    $q.loading.hide();
+                    user.full_name = form.value.full_name;
+                    user.documento = form.value.documento;
+                    localStorage.setItem('user', user);
+                    success('Perfil atualizado com sucesso!');
+                }).catch(() => {
+                    $q.loading.hide();
+                    error('Erro ao atualizar configurações!');
+                });
+            } else {
+                error('Sem conexão com a internet!');
+            }
+                */
     }
 }
-
 onMounted(() => {
     const storage = localStorage.getItem('user');
 

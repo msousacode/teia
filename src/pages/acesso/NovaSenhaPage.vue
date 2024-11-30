@@ -30,18 +30,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import useAuth from 'src/composables/useAuth';
-import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
+//import { useRouter } from 'vue-router';
 
 const $q = useQuasar();
 
-const { success } = useNotify();
-
-const router = useRouter();
-
-const auth = useAuth();
+//const router = useRouter();
 
 const novaSenha = ref('');
 
@@ -58,7 +52,8 @@ async function recuperar() {
     return;
   }
   $q.loading.show();
-  try {
+  //TODO meter a nova lógica aqui
+  /*try {
     await auth.resetPassword(novaSenha.value.trim())
     $q.loading.hide();
     success('Senha redefinida com sucesso');
@@ -66,6 +61,6 @@ async function recuperar() {
   } catch (error) {
     $q.loading.show();
     console.log(error);
-  }
+  }*/
 }
 </script>
