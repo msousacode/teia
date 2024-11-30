@@ -29,8 +29,10 @@
             <div class="text-right text-blue text-body1 q-mt-md">
               <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
             </div>
+
             <!--div class="col-md-4">
               <div class="text-center text-body2 q-mb-md">Ou acesse com as redes sociais</div>
+
               <div class="row">
                 <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
               </div>
@@ -93,6 +95,8 @@ onBeforeMount(() => {
     router.push({ name: 'relatorios' });
   }
 });
+
+localStorage.removeItem('periodoTeste');
 
 </script>
 
