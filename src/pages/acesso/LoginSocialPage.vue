@@ -1,8 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated style="background-color: #e91e63">
       <q-toolbar>
-        <div class="text-h6">SysABA</div>
+        <q-toolbar-title>SysABA</q-toolbar-title>
+        <q-space />
+        <div style="color: white;">v1.0.0.1.30122024</div>
       </q-toolbar>
     </q-header>
 

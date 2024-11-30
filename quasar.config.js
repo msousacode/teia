@@ -68,7 +68,7 @@ module.exports = configure(function (ctx) {
           ? 'http://localhost:9000/'
           : 'https://sysaba.netlify.app',
         SUPABASE_URL:
-          'https://ec2-54-205-228-44.compute-1.amazonaws.com:8080/sysaba/api/',
+          'http://ec2-54-205-228-44.compute-1.amazonaws.com:8080/sysaba/api/',
         SUPABASE_KEY:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkbXlocm94amVibWdyZGFraHphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk1NDI5NjksImV4cCI6MjAzNTExODk2OX0.zty5JEo6odbmNLL5yNf_6a4JxgBkLoyxOE3Ris9Kk9g',
         ASSAS_KEY:
