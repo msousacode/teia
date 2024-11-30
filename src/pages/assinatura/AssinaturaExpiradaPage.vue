@@ -22,4 +22,6 @@
 
 <script setup lang="ts">
 import AssinaturaOpcoesPage from './AssinaturaOpcoesPage.vue';
+
+localStorage.removeItem('periodoTeste');
 </script>
