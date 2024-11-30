@@ -40,7 +40,7 @@ const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
-const { success, error } = useNotify();
+const { error } = useNotify();
 
 const $q = useQuasar();
 
@@ -65,6 +65,7 @@ function editar(aprendiz: any) {
 }
 
 function remover(aprendiz: any) {
+  console.log(aprendiz)
   $q.dialog({
     title: 'Confirma a exclusão do Aprendiz?',
     ok: true,

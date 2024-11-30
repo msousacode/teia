@@ -1,7 +1,7 @@
 const stripe = require('stripe')(
   'sk_test_51QOdWGE7oRUy6lRCqHCvnwczwt60S3EiCUBK8qz91tvvtIzZ6DM80SBbNov5TQ9buFZaNxT86Eygo4q8TCuX40vm00fPyRedUn'
-); // Substitua pelo seu Secret Key
-const endpointSecret = 'whsec_oZlDPIs4vRmudtIjkon5ouJFUduSMV56'; // O segredo do webhook fornecido pelo Stripe
+);
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 exports.handler = async (event) => {
   // Verifique se o método HTTP é POST

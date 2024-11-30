@@ -185,7 +185,7 @@ const routeLocation = useRoute();
 
 const editMode = routeLocation.params.action === 'edit';
 
-const uuidAtendimento = routeLocation.params.uuidAtendimento;
+//const uuidAtendimento = routeLocation.params.uuidAtendimento;
 
 const { success, error } = useNotify();
 
@@ -496,7 +496,7 @@ function reset() {
 }
 
 function excluir(treinamento: any) {
-
+  console.log(treinamento)
   $q.dialog({
     title: 'Confirma a exclusão do Treinamento?',
     ok: true,
@@ -522,6 +522,7 @@ function excluir(treinamento: any) {
     .onDismiss(() => { });
 }
 
+/**
 async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinamentoRaw: any) {
   await atendimentoRaw?.treinamentos.forEach((data: any) => {
     if (data.uuid == treinamentoRaw.uuid) {
@@ -529,7 +530,7 @@ async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinam
     }
   });
   return treinamentoRaw;
-}
+}*/
 /**
  * TODO fazer esse tmb
 function salvarAtendimentoTreinamento(atendimentoRaw: any, treinamentoInativo: any) {

@@ -175,6 +175,7 @@ function editarAlvo(item: any) {
 }
 
 function deletarAlvo(item: any) {
+  console.log(item)
 
   $q.dialog({
     title: 'Confirma a exclusão do Alvo?',

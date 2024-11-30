@@ -35,7 +35,7 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { TreinamentoService } from 'src/services/TreinamentoService';
 
-const { success, error } = useNotify();
+const { error } = useNotify();
 
 const router = useRouter();
 
@@ -59,6 +59,7 @@ function handleEdit(treinamento: any) {
 }
 
 function deletar(treinamento: any) {
+  console.log(treinamento)
 
   $q.dialog({
     title: 'Confirma a exclusão da Anotação?',
