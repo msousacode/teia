@@ -80,7 +80,7 @@ export default route(function (/* { store, ssrContext } */) {
       }
     }
     if (to.meta.requiresAuth) {
-      if (getToken() === null) {
+      if (getToken('token') === null) {
         return { name: 'login' };
       }
     }

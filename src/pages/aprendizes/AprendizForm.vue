@@ -13,11 +13,11 @@
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                 <q-date v-model="form.nasc_aprendiz" :locale="{
-        days: dias,
-        months: meses,
-        daysShort: diasAbreviados,
-        monthsShort: meses,
-      }" mask="DD/MM/YYYY">
+                  days: dias,
+                  months: meses,
+                  daysShort: diasAbreviados,
+                  monthsShort: meses,
+                }" mask="DD/MM/YYYY">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
@@ -49,29 +49,33 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';
-import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import useNotify from 'src/composables/UseNotify';
 import TitleCustom from 'src/components/TitleCustom.vue';
-
 import {
   dias,
   diasAbreviados,
   meses
 } from 'src/composables/utils';
+import { AprendizService } from 'src/services/AprendizService';
+import { useQuasar } from 'quasar';
 
-const { success, error } = useNotify();
+const aprendizeService = new AprendizService();
 
 const store = useAprendizStore();
 
-const routeLocation = useRoute();
+const { success, error } = useNotify();
 
+const $q = useQuasar();
+
+const routeLocation = useRoute();
 
 let isSubmitted = computed(() => {
   return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '';
 });
+
 
 const form = ref({
   uuid: '',
@@ -81,11 +85,10 @@ const form = ref({
   nome_pai: '',
   nome_responsavel: '',
   observacao: '',
-  sync: false,
   ativo: true,
 });
 
-function submit() {
+async function submit() {
   isSubmitted.value = true;
 
   if (routeLocation.params.action === 'edit') {
@@ -94,35 +97,41 @@ function submit() {
   }
 
   form.value.uuid = uuid();
-  const data = toRaw(form.value);
 
-  db.aprendizes
-    .add(data)
-    .then(() => {
+  const object = toRaw(form.value);
+
+  try {
+    $q.loading.show();
+    const { status } = await aprendizeService.postAprendiz(object);
+
+    if (status == 200) {
       reset();
       success();
-    })
-    .catch((error) => {
-      error(error)
-    });
+    }
+  } catch (e) {
+    error
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
+
 }
 
-function atualizar() {
-  db.aprendizes
-    .update(store.getAprendizUuid, toRaw(form.value))
-    .then(() => {
+async function atualizar() {
+  try {
+    $q.loading.show();
+    const { data } = await aprendizeService.putAprendiz(toRaw(form.value));
 
-      const data = {
-        nome_aprendiz: form.value.nome_aprendiz,
-        uuid: store.getAprendizUuid,
-      };
-      atualizarNomeAprendizAtendimento(data);
+    if (data) {
+      success('Atualizado com sucesso!');
       reset();
-      success();
-    })
-    .catch(() => {
-      error('Ocorreu um erro ao tentar atualizar o aprendiz');
-    });
+    }
+  } catch (e) {
+    error
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
 }
 
 function reset() {
@@ -133,45 +142,32 @@ function reset() {
   form.value.nome_pai = '';
   form.value.nome_responsavel = '';
   form.value.observacao = '';
-  form.value.sync = false;
-
   store.$reset();
 }
 
-function atualizarNomeAprendizAtendimento(data: any) {
-  db.atendimentos.where({ aprendiz_uuid_fk: data.uuid })
-    .toArray()
-    .then((res) => {
-      res.forEach((item) => {
-        item.aprendiz.label = data.nome_aprendiz;
-        db.atendimentos.update(item.uuid, { aprendiz: item.aprendiz });
-      });
-      success();
-    })
-    .catch(() => {
-      error('Ocorreu um erro ao tentar atualizar o nome do aprendiz nos atendimentos');
-    });
-}
-
-onMounted(() => {
+onMounted(async () => {
   if (routeLocation.params.action === 'edit') {
-    db.aprendizes
-      .get(store.getAprendizUuid)
-      .then((res) => {
-        if (res) {
-          form.value.uuid = res.uuid || '';
-          form.value.nome_aprendiz = res.nome_aprendiz;
-          form.value.nasc_aprendiz = res.nasc_aprendiz;
-          form.value.nome_mae = res.nome_mae;
-          form.value.nome_pai = res.nome_pai;
-          form.value.nome_responsavel = res.nome_responsavel;
-          form.value.observacao = res.observacao;
-          form.value.sync = res.sync;
-        }
-      })
-      .catch((error) => {
-        error(error);
-      });
+
+    try {
+      $q.loading.show();
+      const { data } = await aprendizeService.getAprendizById(store.getAprendizUuid);
+
+      if (data) {
+        form.value.uuid = data.uuid || '';
+        form.value.nome_aprendiz = data.nome_aprendiz;
+        form.value.nasc_aprendiz = data.nasc_aprendiz;
+        form.value.nome_mae = data.nome_mae;
+        form.value.nome_pai = data.nome_pai;
+        form.value.nome_responsavel = data.nome_responsavel;
+        form.value.observacao = data.observacao;
+      }
+
+    } catch (e) {
+      error('')
+      throw e;
+    } finally {
+      $q.loading.hide();
+    }
   }
 });
 </script>

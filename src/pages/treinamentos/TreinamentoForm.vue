@@ -39,11 +39,16 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';
 import AlvoForm from './AlvoForm.vue';
-import { db } from 'src/db';
 import { v4 as uuid } from 'uuid';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
+import { TreinamentoService } from 'src/services/TreinamentoService';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+
+const treinamentoService = new TreinamentoService();
 
 const { success, error } = useNotify();
 
@@ -66,36 +71,56 @@ const form = ref({
 
 let editMode = ref(routeLocation.params.action === 'edit');
 
-function salvar() {
+async function salvar() {
   if (editMode.value) {
     handleUpdate();
     return;
   }
 
   form.value.uuid = uuid();
-  const data = toRaw(form.value);
+  const object = toRaw(form.value);
 
-  db.treinamentos
-    .add(data)
-    .then((res) => {
-      store.$state.treinamentoUuid = res;
+  $q.loading.show();
+
+  try {
+    const { data } = await treinamentoService.postTreinamento(object)
+
+    if (data) {
+      store.$state.treinamentoUuid = data.treinamentoId;
       success();
       editMode.value = true;
-    })
-    .catch((_error) => {
-      error(_error);
-    });
+    }
+
+  } catch (e) {
+    error('')
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
 }
 
-function handleUpdate() {
-  db.treinamentos
-    .update(store.getTreinamentoUuid, toRaw(form.value))
-    .then(() => {
-      success();
-    })
-    .catch((_error) => {
-      error('Ocorreu um erro ao tentar atualizar o treinamento', _error);
-    });
+async function handleUpdate() {
+
+  const object = toRaw(form.value);
+
+  try {
+    $q.loading.show();
+    const { data } = await treinamentoService.putTreinamento(object);
+
+    if (data) {
+      store.$state.treinamentoUuid = data.treinamentoId;
+      success('Salvo com sucesso!');
+      editMode.value = true;
+    } else {
+      error("Ocorreu um erro ao salvar");
+    }
+
+  } catch (e) {
+    error('Ocorreu um erro!')
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
 }
 
 function reset() {
@@ -110,23 +135,27 @@ function reset() {
 
   store.$reset();
 }
-onMounted(() => {
+onMounted(async () => {
 
   if (routeLocation.params.action === 'edit') {
-    db.treinamentos
-      .get(store.getTreinamentoUuid)
-      .then((res) => {
-        if (res) {
-          form.value.uuid = res.uuid || '';
-          form.value.treinamento = res.treinamento;
-          form.value.protocolo = res.protocolo;
-          form.value.descricao = res.descricao;
-          form.value.sync = res.sync;
-        }
-      })
-      .catch((_error) => {
-        error('Erro ao tentar consultar os treinamentos', _error);
-      });
+
+    try {
+      $q.loading.show();
+      const { data } = await treinamentoService.getTreinamentoById(store.getTreinamentoUuid);
+
+      if (data) {
+        form.value.uuid = data.treinamentoId || '';
+        form.value.treinamento = data.treinamento;
+        form.value.protocolo = data.protocolo;
+        form.value.descricao = data.descricao;
+        form.value.sync = data.sync;
+      }
+    } catch (e) {
+      error('')
+      throw e;
+    } finally {
+      $q.loading.hide();
+    }
   } else {
     reset();
   }

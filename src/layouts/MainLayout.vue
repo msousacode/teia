@@ -38,11 +38,11 @@ import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
-import useAuth from 'src/composables/useAuth';
+import { useManagerTokens } from 'src/composables/managerTokens';
 
 const router = useRouter();
 
-const service = useAuth();
+const manager = useManagerTokens();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
@@ -56,6 +56,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Aprendizes',
     icon: 'mdi-account-multiple',
     routeName: 'aprendizes',
+    hide: true,
+    display: () => 'none',
+  },
+  {
+    title: 'Protocolos',
+    icon: 'mdi-chart-gantt',
+    routeName: 'avaliacoes',
     hide: true,
     display: () => 'none',
   },
@@ -74,7 +81,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Configurações',
+    title: 'Meu Perfil',
     icon: 'mdi-cog',
     routeName: 'perfil',
     hide: true,
@@ -103,8 +110,7 @@ function toggleLeftDrawer() {
 }
 
 const sair = async () => {
-  localStorage.clear();
-  await service.logout();
+  manager.limparCookie("token");
   router.replace({ name: 'login' });
 };
 
