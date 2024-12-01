@@ -2,6 +2,8 @@
     <q-page padding>
 
         <div class="text-teal">{{ descritivoTitulo }}</div>
+        <!--TODO fazer depois essa contagem-->
+        <!--div class="text-teal">{{ descritivoTitulo }} - Coletados {{ qtdCardsRespondidos }} de {{ qtdCards }}</div-->
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="1" label="Nível 1" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
@@ -172,6 +174,10 @@ const $q = useQuasar();
 
 const visible = ref([]);
 
+const qtdCards = ref<number>(0);
+
+//const qtdCardsRespondidos = ref<number>(0);
+
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
 
     if (abaSelecionada)
@@ -181,7 +187,7 @@ async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string)
 
     tituloSelecionado.value = toRaw(tipoColeta);
 
-    //cards.value = carregarAvaliacao();
+    cards.value = carregarAvaliacao();
 
     refresh();
 }
@@ -201,9 +207,16 @@ function carregarAvaliacao() {
                 .filter(i => i.tipo == tipoColeta)
                 .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
         } else {
+
+            let count = 0;
+            avaliacaoNivelUm.avaliacoes.forEach(i => {
+                count += i.objetivos.length;
+            });
+            qtdCards.value = count
+
             objetivos = avaliacaoNivelUm.avaliacoes
                 .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio              
         }
 
     } else if (nivelSelecionado.value == '2') {
@@ -259,6 +272,7 @@ async function salvar() {
         error('Ocorreu um erro ao salvar as coletas');
         throw e;
     } finally {
+        await refresh();
         $q.loading.hide();
     }
 
@@ -268,31 +282,29 @@ async function refresh() {
 
     cards.value = carregarAvaliacao();
 
-    //let cardsTela = toRaw(cards.value);
-    /** TODO fazer esse refresh
-        await db.vbmappColetas.where({ vbmapp_uuid_fk: vbmappUuidParam.value }).toArray((resultDB) => {
-    
-            resultDB.forEach(row => {
-                // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
-                const card = cardsTela.find(card => card.id === row.coleta_id);
-    
-                // Verificar se o card foi encontrado  
-                if (card) {
-                    // Atualizar a propriedade selected do card  
-                    card.selected = row.pontuacao;
-                    // Adicionar o card ao array cardsRespondidos  
-    
-                    // Usando map para substituir o objeto com o id específico  
-                    const cardsAtualizados = cardsTela.map(item =>
-                        item.id === card.id ? card : item
-                    );
-    
-                    //cards atualizados para exibir na tela.
-                    cards.value = cardsAtualizados;
-                }
-            });
-        });
-         */
+    let cardsTela = toRaw(cards.value);
+
+    const { data } = await vbMappService.getColetasRespondidas(vbmappUuidParam.value);
+
+    data.forEach(row => {
+        // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
+        const card = cardsTela.find(card => card.id === row.coleta_id);
+
+        // Verificar se o card foi encontrado  
+        if (card) {
+            // Atualizar a propriedade selected do card  
+            card.selected = row.pontuacao;
+            // Adicionar o card ao array cardsRespondidos  
+
+            // Usando map para substituir o objeto com o id específico  
+            const cardsAtualizados = cardsTela.map(item =>
+                item.id === card.id ? card : item
+            );
+
+            //cards atualizados para exibir na tela.
+            cards.value = cardsAtualizados;
+        }
+    });
 }
 
 async function configTela() {
@@ -316,20 +328,24 @@ async function configTela() {
 }
 
 function coletar(item: any, pontuacao: number) {
-
     item.selected = pontuacao; // Atualiza a seleção do cartão  
 
-    const novaColeta: AvaliacaoVbmappColetas = {
+    const novaColeta = {
         vbmapp_uuid_fk: uuidVbmapp.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
         nivel_coleta: 1,
         tipo: tituloSelecionado.value,
         pontuacao: pontuacao,
-        data_coleta: Date.now()
     };
 
+    // Usar toRaw para obter a versão reativa normal do estado  
     const stateCache = toRaw(state.cache);
+
+    // Verifica se já existe a lista de coletas realizadas no cache  
+    if (!stateCache.has("coletasRealizadas")) {
+        stateCache.set("coletasRealizadas", []); // Inicializa a lista se ainda não existir  
+    }
 
     // Obtendo a lista de coletas realizadas  
     const coletasRealizadas = stateCache.get("coletasRealizadas");
@@ -339,11 +355,15 @@ function coletar(item: any, pontuacao: number) {
 
     if (coletaExistente) {
         // Se a coleta já existe, atualiza a pontuação  
-        coletaExistente.selected = novaColeta.pontuacao;
+        coletaExistente.pontuacao = novaColeta.pontuacao; // Atualizando pontuação  
+        coletaExistente.selected = novaColeta.selected; // Verificando se deseja atualizar o selected  
     } else {
         // Se a coleta não existe, adiciona a nova coleta  
         coletasRealizadas.push(novaColeta);
     }
+
+    // Opcional: atualizar o cache após as modificações  
+    stateCache.set("coletasRealizadas", coletasRealizadas);
 }
 
 function getData(key: string) {
@@ -368,8 +388,6 @@ onMounted(async () => {
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, '1');
     getData('coletasRealizadas');
-
-    console.log(tipoAvaliacao.value)
 });
 
 </script>

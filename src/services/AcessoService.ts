@@ -1,4 +1,6 @@
-import { api } from 'src/boot/axios';
+import createHttp from './base/baseHttp';
+
+const http = createHttp('/api');
 
 export interface Usuario {
   full_name: string;
@@ -21,7 +23,7 @@ const config = {
 };
 export class AcessoService {
   async criarNovoUsuario(usuario: Usuario) {
-    return api
+    return http
       .post('/auth/usuarios', usuario, config)
       .then(() => {
         return { status: 200 };
@@ -32,7 +34,7 @@ export class AcessoService {
   }
 
   async login(auth: Auth) {
-    return api
+    return http
       .post('/auth/login', auth, config)
       .then((data) => {
         return data;

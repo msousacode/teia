@@ -1,9 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useManagerTokens } from 'src/composables/managerTokens';
 
-//const token = useManagerTokens().getToken();
-
-const backendUrl = process.env.SUPABASE_URL; // Use variável de ambiente ou URL fixa
+const backendUrl = `${process.env.BACKEND_URL}/sysaba`;
 
 // Atualize o header globalmente
 //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -12,7 +10,7 @@ const managerTokens = useManagerTokens();
 
 export default function createHttp(base: string) {
   const http = axios.create({
-    baseURL: `${backendUrl}sysaba${base}`,
+    baseURL: `${backendUrl}${base}`,
     withCredentials: false,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',

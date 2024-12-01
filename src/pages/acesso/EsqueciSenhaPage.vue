@@ -34,13 +34,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import useAuth from 'src/composables/useAuth';
-import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
 
-const auth = useAuth();
 
 const email = ref('');
 
@@ -48,7 +45,8 @@ const mostarMensagemSucesso = ref(false);
 
 async function recuperar() {
   $q.loading.show();
-  try {
+  //TODO meter a lógica aqui.
+  /*try {
     await auth.sendPasswordRestEmail(email.value.trim());
     email.value = '';
     mostarMensagemSucesso.value = true;
@@ -56,6 +54,6 @@ async function recuperar() {
   } catch (error) {
     useNotify().error('Erro ao enviar e-mail', error);
     $q.loading.hide();
-  }
+  }*/
 }
 </script>

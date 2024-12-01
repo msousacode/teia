@@ -9,8 +9,6 @@ import {
 import routes from './routes';
 
 import { useManagerTokens } from 'src/composables/managerTokens';
-import useSupabaseApi, { UserSapabase } from 'src/composables/UseSupabaseApi';
-import { AssinaturaService } from 'src/pages/assinatura/AssinaturaService';
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -37,9 +35,7 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  const { getTokenDecoded, getToken } = useManagerTokens();
-
-  const supabase = useSupabaseApi();
+  const { getToken } = useManagerTokens();
 
   Router.beforeEach(async (to) => {
     if (to.hash.includes('type=recovery') && to.name !== 'reset-password') {
@@ -47,47 +43,11 @@ export default route(function (/* { store, ssrContext } */) {
       const token = accessToken.replace('#access_token=', '');
       return { name: 'reset-password', query: { token } };
     } else if (to.hash.includes('access_token')) {
-      const accessToken = to.hash.split('=')[1];
-
-      const encode = getTokenDecoded(accessToken);
-
-      if (encode.aud === 'authenticated') {
-        const user: UserSapabase = {
-          email: encode.user_metadata.email,
-          full_name: encode.user_metadata.full_name,
-          avatar_url: encode.user_metadata.picture,
-          banco_demonstracao: '3e19d9a2-2587-4d65-b673-181989780416', //Nome do banco que deve ser usado para demonstração.
-        };
-
-        const userSupabase = await supabase.getByEmail('usuarios', user.email);
-
-        if (userSupabase === undefined) {
-          supabase
-            .post('usuarios', user)
-            .then(() => {
-              criarAssinatura();
-              Router.replace({ name: 'relatorios' });
-            })
-            .catch(() => {
-              Router.replace({ name: 'login' });
-              localStorage.clear();
-            });
-        } else {
-          Router.replace({ name: 'relatorios' });
+      if (to.meta.requiresAuth) {
+        if (getToken('token') === null) {
+          return { name: 'login' };
         }
-      } else {
-        Router.replace({ name: 'login' });
       }
-    }
-    if (to.meta.requiresAuth) {
-      if (getToken('token') === null) {
-        return { name: 'login' };
-      }
-    }
-
-    function criarAssinatura() {
-      const assinaturaService = new AssinaturaService();
-      assinaturaService.criarAssinatura();
     }
   });
 

@@ -617,6 +617,8 @@ function backupSegundoPlano() {
             const backupService = new BackupService();
             backupService.iniciarBackup(false);
         }
+    } else {
+        $q.notify("Conecte-se na Internet para usar o Aplicativo!")
     }
 }*/
 
