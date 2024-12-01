@@ -314,7 +314,6 @@ async function configTela() {
 }
 
 function coletar(item: any, pontuacao: number) {
-
     item.selected = pontuacao; // Atualiza a seleção do cartão  
 
     const novaColeta = {
@@ -326,7 +325,13 @@ function coletar(item: any, pontuacao: number) {
         pontuacao: pontuacao,
     };
 
+    // Usar toRaw para obter a versão reativa normal do estado  
     const stateCache = toRaw(state.cache);
+
+    // Verifica se já existe a lista de coletas realizadas no cache  
+    if (!stateCache.has("coletasRealizadas")) {
+        stateCache.set("coletasRealizadas", []); // Inicializa a lista se ainda não existir  
+    }
 
     // Obtendo a lista de coletas realizadas  
     const coletasRealizadas = stateCache.get("coletasRealizadas");
@@ -336,11 +341,15 @@ function coletar(item: any, pontuacao: number) {
 
     if (coletaExistente) {
         // Se a coleta já existe, atualiza a pontuação  
-        coletaExistente.selected = novaColeta.pontuacao;
+        coletaExistente.pontuacao = novaColeta.pontuacao; // Atualizando pontuação  
+        coletaExistente.selected = novaColeta.selected; // Verificando se deseja atualizar o selected  
     } else {
         // Se a coleta não existe, adiciona a nova coleta  
         coletasRealizadas.push(novaColeta);
     }
+
+    // Opcional: atualizar o cache após as modificações  
+    stateCache.set("coletasRealizadas", coletasRealizadas);
 }
 
 function getData(key: string) {
