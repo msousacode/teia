@@ -69,7 +69,7 @@ module.exports = configure(function (ctx) {
           : 'https://sysaba.netlify.app',
         BACKEND_URL: ctx.dev
           ? 'http://localhost:8080'
-          : 'https://ec2-54-205-228-44.compute-1.amazonaws.com:8080',
+          : 'lbl-java-1765611289.us-east-1.elb.amazonaws.com',
         STRIPE_PUBLISHABLE_KEY:
           'pk_test_51QOdWGE7oRUy6lRCzUrOMQmucN9hftFYGaF4GbYAgcDpQ0ILL3nx975cfJ1L7DiDRorpaeBZVAytvD60SAEjGvlY00NgxNJ056',
         STRIPE_SECRET_KEY:
