@@ -9,6 +9,7 @@ const backendUrl = `${process.env.BACKEND_URL}/sysaba`;
 const managerTokens = useManagerTokens();
 
 export default function createHttp(base: string) {
+  debugger;
   const http = axios.create({
     baseURL: `${backendUrl}${base}`,
     withCredentials: false,
