@@ -67,7 +67,7 @@ module.exports = configure(function (ctx) {
         API_URL: ctx.dev
           ? 'http://localhost:9000/'
           : 'https://sysaba.netlify.app',
-        BACKEND_URL: 'http://esodia-1905998283.us-east-1.elb.amazonaws.com',
+        BACKEND_URL: 'https://esodia-1905998283.us-east-1.elb.amazonaws.com',
         STRIPE_PUBLISHABLE_KEY:
           'pk_test_51QOdWGE7oRUy6lRCzUrOMQmucN9hftFYGaF4GbYAgcDpQ0ILL3nx975cfJ1L7DiDRorpaeBZVAytvD60SAEjGvlY00NgxNJ056',
         STRIPE_SECRET_KEY:
