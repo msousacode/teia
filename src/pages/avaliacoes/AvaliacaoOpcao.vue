@@ -1,4 +1,24 @@
 <template>
+
+    <q-dialog v-model="dialog">
+        <q-card>
+            <q-card-section>
+                <div class="text-h6">Alert</div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas
+                eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus
+                minima, porro labore.
+            </q-card-section>
+
+            <q-card-actions align="right">
+                <q-btn flat label="OK" color="primary" v-close-popup />
+            </q-card-actions>
+        </q-card>
+    </q-dialog>
+
+
     <div class="q-pa-md">
         <title-custom title="Cadastrar Protocolo para Avaliação" />
         <div class="q-mb-md">
@@ -33,8 +53,7 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="blue-3">
-                        </q-btn>
+                        <q-btn icon="mdi-chart-line" color="blue-3" @click="abrirGrafrico()" />
                     </q-td>
                 </template>
             </q-table>
@@ -123,6 +142,8 @@ const isHabilitaProtocolos = computed(() => {
 
 const vbmappService = new VbMappService();
 
+const dialog = ref(false);
+
 watch(form.value, async () => {
     showOpcoes.value = form.value.aprendiz != null;
 
@@ -187,6 +208,11 @@ function ir(tipoAvaliacao: string) {
 
     const obj = toRaw(selected.value[0])
     router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
+}
+
+function abrirGrafrico() {
+    dialog.value = true;
+    console.log('grafico...');
 }
 
 onMounted(() => {
