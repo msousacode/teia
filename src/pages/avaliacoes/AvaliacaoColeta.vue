@@ -1,6 +1,9 @@
 <template>
     <q-page padding>
+
         <div class="text-teal">{{ descritivoTitulo }}</div>
+        <!--TODO fazer depois essa contagem-->
+        <!--div class="text-teal">{{ descritivoTitulo }} - Coletados {{ qtdCardsRespondidos }} de {{ qtdCards }}</div-->
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="1" label="Nível 1" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
@@ -171,6 +174,10 @@ const $q = useQuasar();
 
 const visible = ref([]);
 
+const qtdCards = ref<number>(0);
+
+//const qtdCardsRespondidos = ref<number>(0);
+
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
 
     if (abaSelecionada)
@@ -200,9 +207,16 @@ function carregarAvaliacao() {
                 .filter(i => i.tipo == tipoColeta)
                 .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
         } else {
+
+            let count = 0;
+            avaliacaoNivelUm.avaliacoes.forEach(i => {
+                count += i.objetivos.length;
+            });
+            qtdCards.value = count
+
             objetivos = avaliacaoNivelUm.avaliacoes
                 .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio              
         }
 
     } else if (nivelSelecionado.value == '2') {

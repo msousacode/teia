@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <title-custom title="Avaliações" />
+        <title-custom title="Cadastrar Protocolo para Avaliação" />
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
