@@ -251,6 +251,7 @@ import { UsuarioService } from 'src/services/UsuarioService';
 import { createStripeCustomer } from 'src/services/stripe';
 import { TermoService } from 'src/services/TermoService';
 import { useRouter } from 'vue-router';
+import { useManagerTokens } from 'src/composables/managerTokens';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -301,6 +302,8 @@ const acceptTerms = ref();
 const termoService = new TermoService();
 
 const router = useRouter();
+
+const managerTokens = useManagerTokens();
 
 async function handleAccept() {
 
@@ -580,13 +583,7 @@ const carregarSelectAprendiz = async () => {
 
     try {
         $q.loading.show();
-        const { data, status } = await aprendizService.getAprendizes();
-
-        if (status == 401) {
-            router.push({ name: 'login' });
-            return;
-        }
-
+        const { data } = await aprendizService.getAprendizes();
 
         if (data) {
             data.filter(i => i.ativo === true).forEach((item: any) => {
@@ -596,7 +593,8 @@ const carregarSelectAprendiz = async () => {
                 });
             });
         } else {
-            error('Erro ao carregar aprendizes.')
+            managerTokens.limparLocalStorage();
+            router.push({ name: 'login' });
         }
 
     } catch (e) {
