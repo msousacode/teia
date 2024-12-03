@@ -34,13 +34,6 @@ export class AcessoService {
   }
 
   async login(auth: Auth) {
-    return http
-      .post('/auth/login', auth, config)
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        return error.status;
-      });
+    return http.post('/auth/login', auth, config);
   }
 }

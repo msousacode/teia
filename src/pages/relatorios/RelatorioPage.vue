@@ -250,6 +250,7 @@ import { AprendizService } from 'src/services/AprendizService';
 import { UsuarioService } from 'src/services/UsuarioService';
 import { createStripeCustomer } from 'src/services/stripe';
 import { TermoService } from 'src/services/TermoService';
+import { useRouter } from 'vue-router';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -298,6 +299,8 @@ const showTermsDialog = ref();
 const acceptTerms = ref();
 
 const termoService = new TermoService();
+
+const router = useRouter();
 
 async function handleAccept() {
 
@@ -577,7 +580,14 @@ const carregarSelectAprendiz = async () => {
 
     try {
         $q.loading.show();
-        const { data } = await aprendizService.getAprendizes();
+        const { data, status } = await aprendizService.getAprendizes();
+
+        if (status == 401) {
+            router.push({ name: 'login' });
+            return;
+        }
+
+
         if (data) {
             data.filter(i => i.ativo === true).forEach((item: any) => {
                 aprendizes.value.push({
