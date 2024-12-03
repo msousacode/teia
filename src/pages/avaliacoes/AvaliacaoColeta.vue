@@ -44,14 +44,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                    }}
+                                        }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -264,7 +264,7 @@ async function salvar() {
 
         if (data) {
             success('Coletas salvas com sucesso!');
-            //refresh();
+            refresh();
         } else {
             error('Ocorreu um erro ao salvar as coletas');
         }
@@ -272,7 +272,7 @@ async function salvar() {
         error('Ocorreu um erro ao salvar as coletas');
         throw e;
     } finally {
-        await refresh();
+        //await refresh();
         $q.loading.hide();
     }
 
@@ -286,29 +286,27 @@ async function refresh() {
 
     const { data } = await vbMappService.getColetasRespondidas(vbmappUuidParam.value);
 
-    if (!Array.isArray(data)) {
-        Array.from(data);
+    if (data) {
+        data.forEach(row => {
+            // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
+            const card = cardsTela.find(card => card.id === row.coleta_id);
+
+            // Verificar se o card foi encontrado  
+            if (card) {
+                // Atualizar a propriedade selected do card  
+                card.selected = row.pontuacao;
+                // Adicionar o card ao array cardsRespondidos  
+
+                // Usando map para substituir o objeto com o id específico  
+                const cardsAtualizados = cardsTela.map(item =>
+                    item.id === card.id ? card : item
+                );
+
+                //cards atualizados para exibir na tela.
+                cards.value = cardsAtualizados;
+            }
+        });
     }
-
-    data.forEach(row => {
-        // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
-        const card = cardsTela.find(card => card.id === row.coleta_id);
-
-        // Verificar se o card foi encontrado  
-        if (card) {
-            // Atualizar a propriedade selected do card  
-            card.selected = row.pontuacao;
-            // Adicionar o card ao array cardsRespondidos  
-
-            // Usando map para substituir o objeto com o id específico  
-            const cardsAtualizados = cardsTela.map(item =>
-                item.id === card.id ? card : item
-            );
-
-            //cards atualizados para exibir na tela.
-            cards.value = cardsAtualizados;
-        }
-    });
 }
 
 async function configTela() {
