@@ -286,6 +286,10 @@ async function refresh() {
 
     const { data } = await vbMappService.getColetasRespondidas(vbmappUuidParam.value);
 
+    if (!Array.isArray(data)) {
+        Array.from(data);
+    }
+
     data.forEach(row => {
         // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
         const card = cardsTela.find(card => card.id === row.coleta_id);

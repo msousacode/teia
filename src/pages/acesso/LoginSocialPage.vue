@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.6.20241201</div>
+        <div style="color: white;">v1.0.0.7.20241202</div>
       </q-toolbar>
     </q-header>
 
@@ -84,7 +84,13 @@ async function entrar() {
 
   $q.loading.show();
   await acessoService.login(auth).then((data) => {
-    document.cookie = `token=${data.data}`
+
+    if (data.status == 401) {
+      error('Erro ao logar. Verifique suas credenciais');
+      return;
+    }
+
+    localStorage.setItem('_tsysaba', data.data);
     router.push({ name: 'relatorios' })
   }).catch(() => {
     error('Erro ao logar. Verifique suas credenciais');
@@ -93,7 +99,7 @@ async function entrar() {
 }
 
 onBeforeMount(() => {
-  if (getToken('token') != null) {
+  if (getToken() != null) {
     router.push({ name: 'relatorios' });
   }
 });

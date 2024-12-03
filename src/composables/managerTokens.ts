@@ -71,14 +71,9 @@ interface TokenDTO {
 }
 
 export function useManagerTokens() {
-  const getToken = (name: string = 'token') => {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.startsWith(name + '=')) {
-        return cookie.substring(name.length + 1);
-      }
-    }
+  const getToken = () => {
+    const token = localStorage.getItem('_tsysaba');
+    if (token) return token;
     return null; // Retorna null se o cookie não existir
   };
 
@@ -102,9 +97,9 @@ export function useManagerTokens() {
   };
 
   const isTokenAuthenticaded = () => {
-    const token = getToken('token');
-
-    if (token !== null) {
+    const token = getToken();
+    debugger;
+    if (token) {
       //TODO adicionar uma verificação para saber se o Token esta expirado.
       return false;
     }
@@ -114,8 +109,8 @@ export function useManagerTokens() {
     return jwtDecode(token);
   };
 
-  const limparCookie = (nome: string) => {
-    document.cookie = `${nome}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  const limparLocalStorage = () => {
+    localStorage.removeItem('_tsysaba');
   };
 
   return {
@@ -124,6 +119,6 @@ export function useManagerTokens() {
     getDadosBasicos,
     isTokenAuthenticaded,
     getTokenDecoded,
-    limparCookie,
+    limparLocalStorage,
   };
 }

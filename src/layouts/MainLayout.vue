@@ -110,7 +110,7 @@ function toggleLeftDrawer() {
 }
 
 const sair = async () => {
-  manager.limparCookie("token");
+  manager.limparLocalStorage();
   router.replace({ name: 'login' });
 };
 

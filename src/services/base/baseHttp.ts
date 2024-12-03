@@ -49,6 +49,7 @@ export default function createHttp(base: string) {
       return {
         data: res.data,
         error: null,
+        status: 401,
       };
     } else if (res.status === 400) {
       return {
