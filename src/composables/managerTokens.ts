@@ -98,7 +98,6 @@ export function useManagerTokens() {
 
   const isTokenAuthenticaded = () => {
     const token = getToken();
-    debugger;
     if (token) {
       //TODO adicionar uma verificação para saber se o Token esta expirado.
       return false;
