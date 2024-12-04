@@ -44,14 +44,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                        }}</div>
+                                    }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                        }}
+                                    }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -178,7 +178,7 @@ const qtdCards = ref<number>(0);
 
 //const qtdCardsRespondidos = ref<number>(0);
 
-async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada?: string) {
+async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string = '1') {
 
     if (abaSelecionada)
         tab2.value = 1
@@ -318,6 +318,11 @@ async function configTela() {
         if (uuid != null && niveis_coleta != null) {
             uuidVbmapp.value = uuid;
             showNiveis.value = niveis_coleta.split(',') || [];
+
+            if (showNiveis.value.length == 1) {
+                nivelSelecionado.value = showNiveis.value[0]
+            }
+
         } else {
             error('Erro ao tentar consultar o VBMAPP');
         }
@@ -388,7 +393,7 @@ onMounted(async () => {
     vbmappUuidParam.value = routeLocation.params.vbmappUuid;
     await configTela();
     titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.    
-    getTitulosAvaliacoes(1, '1');
+    getTitulosAvaliacoes(1, nivelSelecionado.value);
     getData('coletasRealizadas');
 });
 

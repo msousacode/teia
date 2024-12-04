@@ -1,29 +1,4 @@
 <template>
-
-    <q-dialog v-model="dialog">
-        <q-card>
-
-            <div class="q-pa-md">
-                <div class="text-h6">Nível 1</div>
-                <VueApexCharts width="500" height="350" type="bar" :options="chartOptions" :series="seriesNivelUm">
-                </VueApexCharts>
-
-                <div class="text-h6">Nível 2</div>
-                <VueApexCharts width="500" height="350" type="bar" :options="chartOptions" :series="seriesNivelDois">
-                </VueApexCharts>
-
-                <div class="text-h6">Nível 3</div>
-                <VueApexCharts width="500" height="350" type="bar" :options="chartOptions" :series="seriesNivelTres">
-                </VueApexCharts>
-            </div>
-
-            <q-card-actions align="right">
-                <q-btn flat label="OK" color="primary" v-close-popup />
-            </q-card-actions>
-        </q-card>
-    </q-dialog>
-
-
     <div class="q-pa-md">
         <title-custom title="Cadastrar Protocolo para Avaliação" />
         <div class="q-mb-md">
@@ -46,6 +21,12 @@
             </q-table>
         </div>
 
+        <q-dialog v-model="dialog">
+            <q-card class="my-card q-pa-md full-width">
+                <canvas id="grafico" width="400" height="200"></canvas>
+                <div class="text-center text-body1 text-teal">Gráfico</div>
+            </q-card>
+        </q-dialog>
 
         <div v-if="isHabilitaProtocolos">
             <div class="text-teal text-h6">VB-MAPP</div>
@@ -63,6 +44,8 @@
                 </template>
             </q-table>
         </div>
+
+
 
         <!--
         <div class="q-pa-sm"></div>
@@ -95,7 +78,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { watch } from 'vue';
@@ -107,7 +90,23 @@ import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { VbMappService } from 'src/services/VbMappService';
-import VueApexCharts from "vue3-apexcharts"
+
+import { nextTick } from 'vue';
+import {
+    Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
+    LinearScale,
+    PointElement,
+    Title,
+    LineElement,
+} from 'chart.js/auto'
+// Registre as escalas e elementos que você pretende usar  
+ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend);
 
 const aprendizService = new AprendizService();
 
@@ -149,57 +148,6 @@ const isHabilitaProtocolos = computed(() => {
 const vbmappService = new VbMappService();
 
 const dialog = ref(false);
-
-let chartOptions = reactive({
-    chart: {
-        type: 'bar',
-        height: 350,
-        stacked: true,
-        stackType: '5'
-    },
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            legend: {
-                position: 'bottom',
-                offsetX: -10,
-                offsetY: 0
-            }
-        }
-    }],
-    xaxis: {
-        categories: ['Imitação', 'Ecoico', 'Ouvinte', 'PV/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'],
-    },
-    fill: {
-        opacity: 1 // Use 1 para opacidade total  
-    },
-    legend: {
-        position: 'right',
-        offsetX: 0,
-        offsetY: 50
-    },
-});
-
-const seriesNivelUm = reactive(
-    [{
-        name: 'Nível 1',
-        data: [0.5, 2, 2, 0.5, 2, 3, 4, 1.5, 2.5]
-    }],
-)
-
-const seriesNivelDois = reactive(
-    [{
-        name: 'Nível 1',
-        data: [0.5, 2, 2, 0.5, 2, 3, 4, 1.5, 2.5]
-    }],
-)
-
-const seriesNivelTres = reactive(
-    [{
-        name: 'Nível 1',
-        data: [0.5, 2, 2, 0.5, 2, 3, 4, 1.5, 2.5]
-    }],
-)
 
 watch(form.value, async () => {
     showOpcoes.value = form.value.aprendiz != null;
@@ -267,9 +215,62 @@ function ir(tipoAvaliacao: string) {
     router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
 }
 
+let myChart: ChartJS | null = null; // Declare myChart fora da função para manter o contexto  
+
 function abrirGrafrico() {
-    dialog.value = true;
-    console.log('grafico...');
+    dialog.value = true; // Abre o diálogo  
+    setTimeout(async () => {
+
+        nextTick(() => { // Espera o próximo tick para garantir que o canvas esteja no DOM  
+            const canvas = document.getElementById("grafico") as HTMLCanvasElement;
+
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+
+                if (ctx) {
+                    // Destruir o gráfico existente se houver  
+                    if (myChart) {
+                        myChart.destroy(); // Destroi o gráfico anterior  
+                    }
+
+                    // Definição dos dados  
+                    const labels = ['Imitação', 'Ecoico', 'Ouvinte', 'PV/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'];
+                    const data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Nível 1',
+                                data: [1, 2, 5, 3, 4, 3, 1, 0.5, 2.5],
+                                backgroundColor: '#f2c037',
+                                stack: 'Stack 0',
+                            },
+                        ]
+                    };
+
+                    // Configurações do gráfico  
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            animation: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    };
+
+                    // Criação do gráfico com as configurações apropriadas  
+                    myChart = new ChartJS(ctx, config);
+                } else {
+                    console.error("Falha ao obter o contexto 2D do canvas.");
+                }
+            } else {
+                console.error("Canvas não encontrado.");
+            }
+        });
+    }, 500);
 }
 
 onMounted(() => {
