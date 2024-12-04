@@ -84,7 +84,7 @@ async function entrar() {
 
   $q.loading.show();
   await acessoService.login(auth).then((data) => {
-    debugger
+
     if (data.status == 401) {
       error('Erro ao logar. Verifique suas credenciais');
       return;
