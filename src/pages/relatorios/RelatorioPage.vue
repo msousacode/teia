@@ -182,24 +182,20 @@
     </q-dialog>
 
 
-    <title-custom title="Relatórios" />
+    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+        v-if="storeUser.assinatura == 'FREE'">
+        <q-card-section>
+            <span class="text-body2">O período de testes termina em {{ diasRestantesTeste }}</span>
+            <br />
+            <q-btn label="Assinar SysABA" color="primary" no-caps flat :to="{ name: 'assinatura' }" dense />
+        </q-card-section>
+    </q-card>
 
+    <title-custom title="Gerar Relatório:" />
     <q-page class="q-pa-sm">
 
-        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
-            v-if="storeUser.assinatura == 'FREE'">
-            <q-card-section>
-                <span class="text-body2">O período de testes termina em {{ diasRestantesTeste }}</span>
-                <br />
-                <q-btn label="Assinar SysABA" color="primary" no-caps flat :to="{ name: 'assinatura' }" dense />
-            </q-card-section>
-        </q-card>
-
-
-        <div class="text-body1 text-teal-7">Selecione o período para gerar o relatório: <div class="text-overline">
-                Limite
-                máximo de
-                6 meses.</div>
+        <div class="text-h6 text-teal-7">Preencha o período: <div class="text-overline">
+                O período da pesquisa é limitado até 6 meses.</div>
         </div>
 
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
