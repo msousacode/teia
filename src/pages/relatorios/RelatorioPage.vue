@@ -181,7 +181,11 @@
         </q-card>
     </q-dialog>
 
+
+    <title-custom title="Relatórios" />
+
     <q-page class="q-pa-sm">
+
         <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
             v-if="storeUser.assinatura == 'FREE'">
             <q-card-section>
@@ -191,22 +195,62 @@
             </q-card-section>
         </q-card>
 
-        <title-custom title="Relatório" />
-        <div class="text-body1 text-teal-7 q-mt-md">Selecione o período:</div>
-        <div class="row">
-            <q-form class="col-md-7 col-xs-12 col-sm-12">
-                <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-                    @update:model-value="pesquisar" />
-            </q-form>
-            <div class="col-12 q-mt-md">
-                <q-radio class="text-body2" v-model="periodo" :val=30 label="Último mês" color="teal" />
+
+        <div class="text-body1 text-teal-7">Selecione o período para gerar o relatório: <div class="text-overline">
+                Limite
+                máximo de
+                6 meses.</div>
+        </div>
+
+        <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
+
+            <div class="row q-gutter-md">
+                <div class="col">
+                    <q-input label="Data de Início" outlined stack-label v-model="form.dataInicial" mask="##/##/####">
+                        <template v-slot:append>
+                            <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="form.dataInicial" :locale="{
+                                        days: dias,
+                                        months: meses,
+                                        daysShort: diasAbreviados,
+                                        monthsShort: meses,
+                                    }" mask="DD/MM/YYYY">
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-date>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                    </q-input>
+                </div>
+
+                <div class="col">
+                    <q-input label="Data de Final" outlined stack-label v-model="form.dataFinal" mask="##/##/####">
+                        <template v-slot:append>
+                            <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="form.dataFinal" :locale="{
+                                        days: dias,
+                                        months: meses,
+                                        daysShort: diasAbreviados,
+                                        monthsShort: meses,
+                                    }" mask="DD/MM/YYYY">
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                    </q-date>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                    </q-input>
+                </div>
             </div>
-            <div class="col-12">
-                <q-radio class="text-body2" v-model="periodo" :val=60 label="Últimos 2 meses" color="teal" />
-            </div>
-            <div class="col-12">
-                <q-radio class="text-body2" v-model="periodo" :val=90 label="Últimos 3 meses" color="teal" />
-            </div>
+
+            <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
+                @update:model-value="pesquisar" />
+
         </div>
 
         <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="exibirRelatorioBtn">Treinamentos em
@@ -232,7 +276,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
 import {
@@ -252,6 +296,11 @@ import { createStripeCustomer } from 'src/services/stripe';
 import { TermoService } from 'src/services/TermoService';
 import { useRouter } from 'vue-router';
 import { useManagerTokens } from 'src/composables/managerTokens';
+import {
+    dias,
+    diasAbreviados,
+    meses
+} from 'src/composables/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -269,14 +318,14 @@ const gerandoRelatorio = ref(false);
 
 const showGrafico = ref(false);
 
-const periodo = ref(30);
-
 //const service = new RelatorioService();
 
 const { error } = useNotify();
 
-const form = ref({
+const form = reactive({
     aprendiz: '',
+    dataInicio: '',
+    dataFinal: ''
 });
 
 const aprendizes = ref<any[]>([]);
