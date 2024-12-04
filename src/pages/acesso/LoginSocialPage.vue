@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.8.20241202</div>
+        <div style="color: white;">v1.0.0.1.20241204</div>
       </q-toolbar>
     </q-header>
 
@@ -84,7 +84,7 @@ async function entrar() {
 
   $q.loading.show();
   await acessoService.login(auth).then((data) => {
-
+    debugger
     if (data.status == 401) {
       error('Erro ao logar. Verifique suas credenciais');
       return;

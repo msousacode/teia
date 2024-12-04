@@ -4,27 +4,26 @@
     <title-custom title="Minha Assinatura" />
 
     <!-- Plano Atual -->
-    <div class="text-h6 q-mb-md"><b>Seu Plano Atual</b></div>
+    <div class="q-ma-md">
+      <div class="text-h6 q-mb-md"><b>Seu Plano Atual</b></div>
 
-    <p class="q-pa-none text-body2">
-      Você pode cancelar sua assinatura por aqui. Caso precise de assistência ou tenha alguma dúvida, nossa equipe está
-      à disposição para ajudar!
-    </p>
-
-    <!-- Cartão: Plano Atual -->
-    <q-card flat bordered class="my-card q-ma-md bg-light-green-2 text-dark">
+      <p class="q-pa-none text-body2">
+        Você pode cancelar sua assinatura por aqui. Caso precise de assistência ou tenha alguma dúvida, nossa equipe
+        está
+        à disposição para ajudar!
+      </p>
+    </div>
+    <q-card flat bordered class="my-card q-ma-md bg-grey-3 text-dark">
+      <!-- Cartão: Plano Atual -->
       <q-card-section class="q-py-md">
-        <q-badge color="green" class="text-subtitle2 q-mb-md q-pa-xs text-dark">
-          TESTE GRÁTIS
-        </q-badge>
         <div class="row items-center no-wrap">
           <div class="col">
-            <div class="text-subtitle1"><b>7 dias grátis</b></div>
-            <div class="text-h5 text-primary"><b>R$ 0,00</b></div>
+            <div class="text-h5 text-blue"><b>PLANO CLÍNICAS</b></div>
+            <div class="text-h5 text-primary"><b>SOB CONSULTA</b></div>
 
             <div class="text-body2 q-mt-sm">
               <q-icon name="event" size="md" color="grey-8" class="q-mr-xs" />
-              O período de testes termina em <b>{{ diasRestantesTeste }}</b>
+              Cobrado de modo recorrente a cada mês no cartão de crédito, boleto ou pix.
             </div>
           </div>
         </div>
@@ -32,16 +31,16 @@
     </q-card>
 
     <!-- Cartão: Plano Pro -->
-    <q-card flat bordered class="my-card q-ma-md bg-grey-2">
+    <q-card flat bordered class="my-card q-ma-md bg-grey-3">
       <q-card-section class="q-py-md">
         <div class="row items-center no-wrap">
           <div class="col">
-            <div class="text-body1 text-pink"><b>PLANO MENSAL</b></div>
-            <div class="text-h5 text-dark"><b>R$ 44,90/mês</b></div>
+            <div class="text-h5 text-blue"><b>PLANO MENSAL</b></div>
+            <div class="text-h5"><b>R$ 99,90/mês</b></div>
 
             <div class="text-body2 q-mt-sm">
               <q-icon name="event" size="md" color="grey-8" class="q-mr-xs" />
-              Cobrado de modo recorrente a cada mês
+              Cobrado de modo recorrente a cada mês no cartão de crédito
             </div>
 
             <div class="q-mt-md">
@@ -63,8 +62,6 @@ import TitleCustom from 'src/components/TitleCustom.vue';
 import { createCheckoutSession } from 'src/services/stripe';
 import { StripeService } from 'src/services/stripe/StripeService';
 import { UsuarioService } from 'src/services/UsuarioService';
-
-const diasRestantesTeste = localStorage.getItem("periodoTeste") || "7 dias";
 
 const stripeService = new StripeService();
 
