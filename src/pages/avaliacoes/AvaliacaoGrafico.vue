@@ -102,7 +102,7 @@ function abrirGrafrico() {
                 console.error("Canvas não encontrado.");
             }
         });
-    }, 500);
+    }, 700);
 }
 
 async function getColetaPontuacoes() {
@@ -118,10 +118,10 @@ onMounted(async () => {
             colorGrafico.value = '#f2c037';
             break;
         case '2':
-            colorGrafico.value = '#00BFFF';
+            colorGrafico.value = '#228B22';
             break;
         case '3':
-            colorGrafico.value = '#228B22';
+            colorGrafico.value = '#00BFFF';
             break;
         default:
             return '';
