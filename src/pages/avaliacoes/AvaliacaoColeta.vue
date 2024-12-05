@@ -44,14 +44,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                    }}
+                                        }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -67,7 +67,8 @@
                             : nivelSelecionado === '3'
                                 ? 'bg-blue-1'
                                 : ''">
-                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
+                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)"
+                            v-if="!item.id.toString().startsWith('3')" />
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -178,7 +179,7 @@ const qtdCards = ref<number>(0);
 
 //const qtdCardsRespondidos = ref<number>(0);
 
-async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string = '1') {
+async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string) {
 
     if (abaSelecionada)
         tab2.value = 1
