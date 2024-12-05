@@ -35,7 +35,7 @@
       <q-card-section class="q-py-md">
         <div class="row items-center no-wrap">
           <div class="col">
-            <div class="text-h5 text-blue"><b>PLANO MENSAL</b></div>
+            <div class="text-h5 text-blue"><b>PLANO PROFISSIONAL INDIVIDUAL</b></div>
             <div class="text-h5"><b>R$ 99,90/mês</b></div>
 
             <div class="text-body2 q-mt-sm">
