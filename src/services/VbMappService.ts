@@ -40,4 +40,8 @@ export class VbMappService {
   async getColetasRespondidas(vbmappUuid: string) {
     return await http.get(`/coletas-respondidas/${vbmappUuid}`);
   }
+
+  async getColetaPontuacoes(avaliacaoId: string) {
+    return await http.get(`/chart/milestones/${avaliacaoId}`);
+  }
 }

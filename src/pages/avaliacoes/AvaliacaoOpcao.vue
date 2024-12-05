@@ -22,10 +22,7 @@
         </div>
 
         <q-dialog v-model="dialog">
-            <q-card class="my-card q-pa-md full-width">
-                <canvas id="grafico" width="400" height="200"></canvas>
-                <div class="text-center text-body1 text-teal">Gráfico</div>
-            </q-card>
+            <avaliacao-grafico v-bind="graficoDataProps"></avaliacao-grafico>
         </q-dialog>
 
         <div v-if="isHabilitaProtocolos">
@@ -39,7 +36,7 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="blue-3" @click="abrirGrafrico()" />
+                        <q-btn icon="mdi-chart-line" color="blue-3" @click="dialog = true" />
                     </q-td>
                 </template>
             </q-table>
@@ -78,9 +75,10 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { onMounted } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import AvaliacaoGrafico, { GraficoProps } from './AvaliacaoGrafico.vue';
+import { reactive, ref } from 'vue';
+import { onMounted } from 'vue';
 import { watch } from 'vue';
 import { computed } from 'vue';
 import { useAvaliacaoStore } from 'src/stores/avaliacao';
@@ -90,23 +88,6 @@ import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { VbMappService } from 'src/services/VbMappService';
-
-import { nextTick } from 'vue';
-import {
-    Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
-    LinearScale,
-    PointElement,
-    Title,
-    LineElement,
-} from 'chart.js/auto'
-// Registre as escalas e elementos que você pretende usar  
-ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend);
 
 const aprendizService = new AprendizService();
 
@@ -148,6 +129,21 @@ const isHabilitaProtocolos = computed(() => {
 const vbmappService = new VbMappService();
 
 const dialog = ref(false);
+
+const graficoDataProps: GraficoProps = reactive({
+    label: '',
+    avaliacaoId: '',
+    nivel: '',
+})
+
+watch(store, () => {
+    const avaliacao = store.$state.avaliacao[0];
+    if (avaliacao) {
+        graficoDataProps.avaliacaoId = avaliacao.id;
+        graficoDataProps.label = avaliacao.name;
+        graficoDataProps.nivel = avaliacao.nivel;
+    }
+})
 
 watch(form.value, async () => {
     showOpcoes.value = form.value.aprendiz != null;
@@ -213,64 +209,6 @@ function ir(tipoAvaliacao: string) {
 
     const obj = toRaw(selected.value[0])
     router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
-}
-
-let myChart: ChartJS | null = null; // Declare myChart fora da função para manter o contexto  
-
-function abrirGrafrico() {
-    dialog.value = true; // Abre o diálogo  
-    setTimeout(async () => {
-
-        nextTick(() => { // Espera o próximo tick para garantir que o canvas esteja no DOM  
-            const canvas = document.getElementById("grafico") as HTMLCanvasElement;
-
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-
-                if (ctx) {
-                    // Destruir o gráfico existente se houver  
-                    if (myChart) {
-                        myChart.destroy(); // Destroi o gráfico anterior  
-                    }
-
-                    // Definição dos dados  
-                    const labels = ['Imitação', 'Ecoico', 'Ouvinte', 'PV/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'];
-                    const data = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Nível 1',
-                                data: [1, 2, 5, 3, 4, 3, 1, 0.5, 2.5],
-                                backgroundColor: '#f2c037',
-                                stack: 'Stack 0',
-                            },
-                        ]
-                    };
-
-                    // Configurações do gráfico  
-                    const config = {
-                        type: 'bar',
-                        data: data,
-                        options: {
-                            animation: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    };
-
-                    // Criação do gráfico com as configurações apropriadas  
-                    myChart = new ChartJS(ctx, config);
-                } else {
-                    console.error("Falha ao obter o contexto 2D do canvas.");
-                }
-            } else {
-                console.error("Canvas não encontrado.");
-            }
-        });
-    }, 500);
 }
 
 onMounted(() => {
