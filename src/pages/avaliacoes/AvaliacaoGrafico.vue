@@ -16,6 +16,8 @@ import {
     Title,
     LineElement,
 } from 'chart.js/auto'
+import { VbMappService } from 'src/services/VbMappService';
+
 // Registre as escalas e elementos que você pretende usar  
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -39,9 +41,11 @@ const props = withDefaults(defineProps<GraficoProps>(), {
 
 const labelGrafico = props.label;
 
-const dataGrafico = [1, 2, 5, 3, 4, 3, 1, 0.5, 2.5];
+const dataGrafico = ref<any[]>([]);
 
 const colorGrafico = ref('');
+
+const vbmappService = new VbMappService();
 
 function abrirGrafrico() {
 
@@ -66,7 +70,7 @@ function abrirGrafrico() {
                         datasets: [
                             {
                                 label: labelGrafico,
-                                data: dataGrafico,
+                                data: dataGrafico.value,
                                 backgroundColor: colorGrafico.value,
                             },
                         ]
@@ -101,8 +105,13 @@ function abrirGrafrico() {
     }, 500);
 }
 
-onMounted(() => {
+async function getColetaPontuacoes() {
+    dataGrafico.value = (await vbmappService.getColetaPontuacoes(props.avaliacaoId)).data;
+}
+
+onMounted(async () => {
     abrirGrafrico();
+    await getColetaPontuacoes();
 
     switch (props.nivel) {
         case '1':
