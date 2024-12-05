@@ -36,7 +36,7 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="blue-3" @click="dialog = true" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" />
                     </q-td>
                 </template>
             </q-table>
