@@ -24,4 +24,50 @@ const avaliacaoRows = [
   },
 ];
 
-export { avaliacaoColumns, avaliacaoRows };
+const avaliacaoPortageColumns = [
+  {
+    label: 'Idade que será avaliada',
+    align: 'left',
+    field: 'name',
+  },
+];
+
+const avaliacaoPortageRows = [
+  {
+    id: 1,
+    name: 'Idade (0 a 1 ano)',
+    align: 'left',
+  },
+  {
+    id: 2,
+    name: 'Idade (1 a 2 anos)',
+    align: 'left',
+  },
+  {
+    id: 3,
+    name: 'Idade (2 a 3 ano)',
+    align: 'left',
+  },
+  {
+    id: 4,
+    name: 'Idade (3 a 4 ano)',
+    align: 'left',
+  },
+  {
+    id: 5,
+    name: 'Idade (4 a 5 ano)',
+    align: 'left',
+  },
+  {
+    id: 6,
+    name: 'Idade (5 a 6 ano)',
+    align: 'left',
+  },
+];
+
+export {
+  avaliacaoColumns,
+  avaliacaoRows,
+  avaliacaoPortageColumns,
+  avaliacaoPortageRows,
+};

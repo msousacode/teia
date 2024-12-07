@@ -156,8 +156,8 @@
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
                                     <div class="text-subtitle1">{{ item.anotacao }}</div>
                                 </div>
-                                <div class="col-auto">
-                                    <q-btn color="grey-7" round flat icon="more_vert">
+                                <div class="col-auto q-gutter-x-sm">
+                                    <!--q-btn color="grey-7" round flat icon="more_vert">
                                         <q-menu cover auto-close>
                                             <q-list>
                                                 <q-item clickable>
@@ -170,6 +170,12 @@
                                                 </q-item>
                                             </q-list>
                                         </q-menu>
+                                    </q-btn-->
+                                    <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                        @click="abreModalAnotacao(item, 'editar')">
+                                    </q-btn>
+                                    <q-btn icon="mdi-delete-outline" color="negative" dense size="md"
+                                        @click="excluirAnotacao(item)">
                                     </q-btn>
                                 </div>
                             </div>

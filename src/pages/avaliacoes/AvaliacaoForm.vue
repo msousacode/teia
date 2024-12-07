@@ -17,8 +17,25 @@
         </div>
 
         <div class="q-mb-md" v-show="isVbmapp">
-            <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
+            <q-table :rows="rowsVbMapp" :columns="columnsVbMapp" row-key="name" class="my-sticky-column-table"
                 v-model:selected="niveisSelcionados" selection="single" :rows-per-page-options="[10]"
+                :rows-per-page="10">
+                <template v-slot:body-cell-actionsx="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actions="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-pencil" color="teal">
+                        </q-btn>
+                    </q-td>
+                </template>
+            </q-table>
+        </div>
+
+        <div class="q-mb-md" v-show="isPortage">
+            <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
+                v-model:selected="idadeSelcionados" selection="multiple" :rows-per-page-options="[10]"
                 :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
@@ -53,7 +70,7 @@ import { AprendizService } from 'src/services/AprendizService';
 import { VbMappService } from 'src/services/VbMappService';
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
-import { avaliacaoColumns, avaliacaoRows } from './table';
+import { avaliacaoColumns, avaliacaoRows, avaliacaoPortageColumns, avaliacaoPortageRows } from './table';
 
 const aprendizService = new AprendizService();
 
@@ -63,11 +80,17 @@ const { error } = useNotify();
 
 const router = useRouter()
 
-const columns = ref<any[]>(avaliacaoColumns);
+const columnsVbMapp = ref<any[]>(avaliacaoColumns);
 
-const rows = ref<any[]>(avaliacaoRows);
+const rowsVbMapp = ref<any[]>(avaliacaoRows);
 
 const niveisSelcionados = ref([]);
+
+const columnsPortage = ref<any[]>(avaliacaoPortageColumns);
+
+const rowsPortage = ref<any[]>(avaliacaoPortageRows);
+
+const idadeSelcionados = ref([]);
 
 const form = ref({
     uuid: '',
@@ -83,19 +106,30 @@ const aprendizes = ref<any[]>([]);
 
 const protocolos = ref([
     { label: 'VB-MAPP', value: '1' },
+    { label: 'PORTAGE', value: '2' },
     //{ label: 'ABLLS', value: '2' },
-    //{ label: 'PORTAGE', value: '3' },
     //{ label: 'SOCIALLY SAVVY', value: '4' }
 ]);
 
 const isVbmapp = computed(() => form.value.protocolo.label === 'VB-MAPP');
 
-const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || !(niveisSelcionados.value.length > 0));
+const isPortage = computed(() => form.value.protocolo.label === 'PORTAGE');
+
+const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || (!(niveisSelcionados.value.length > 0 || idadeSelcionados.value.length > 0)));
 
 const vbMappService = new VbMappService();
 
 async function avancar() {
 
+    if (isVbmapp.value)
+        criarAvaliacaoVbMapp();
+    else if (isPortage.value)
+        console.log('Criar Portage...');
+    else
+        throw new Error('Nenhum protocolo selecionado.')
+}
+
+async function criarAvaliacaoVbMapp() {
     const avaliacoes = niveisSelcionados.value.map(i => i.id);
 
     form.value.aprendiz_uuid_fk = form.value.aprendiz.value;
