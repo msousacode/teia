@@ -50,15 +50,8 @@
                                     <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <q-btn color="grey-7" round flat icon="more_vert">
-                                        <q-menu cover auto-close>
-                                            <q-list>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
+                                    <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                        @click="abreModalAnotacao(item, 'inserir')">
                                     </q-btn>
                                 </div>
                             </div>
@@ -78,11 +71,13 @@
                         </div>
                         <div v-else>
                             <q-radio v-model="respostas[item.coletaId]" val="nao-fez" label="NÃO FEZ" keep-color
-                                color="red" size="lg" />
+                                color="red" size="md" />
                             <q-radio v-model="respostas[item.coletaId]" val="com-ajuda" label="COM AJUDA" keep-color
-                                color="orange" size="lg" />
+                                color="orange" size="md" />
                             <q-radio v-model="respostas[item.coletaId]" val="sem-ajuda" label="SEM AJUDA" keep-color
-                                color="green" size="lg" />
+                                color="green" size="md" />
+                            <q-radio v-model="respostas[item.coletaId]" val="nao-aplica" label="NÃO APLICA" keep-color
+                                color="grey" size="md" />
                         </div>
                     </q-card>
 
@@ -115,15 +110,8 @@
                                     <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <q-btn color="grey-7" round flat icon="more_vert">
-                                        <q-menu cover auto-close>
-                                            <q-list>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
+                                    <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                        @click="abreModalAnotacao(item, 'inserir')">
                                     </q-btn>
                                 </div>
                             </div>
@@ -134,11 +122,13 @@
                         </div>
                         <div v-else>
                             <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
-                                size="lg" disable />
+                                size="md" disable />
                             <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
-                                size="lg" disable />
+                                size="md" disable />
                             <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
-                                size="lg" disable />
+                                size="md" disable />
+                            <q-radio v-model="respostas[item.coletaId]" val="nao-aplica" label="NÃO APLICA" keep-color
+                                color="grey" size="md" disable />
                         </div>
                     </q-card>
 
@@ -156,7 +146,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                            }}</span>
+                                        }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
