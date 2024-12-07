@@ -3,14 +3,19 @@
 
         <q-dialog v-model="visibleAnotacao" persistent>
             <q-card class="my-card q-pa-md full-width">
-                <div class="text-center text-body1">Anotação</div>
+                <div class="text-center text-h6 q-mb-md text-teal">Anotação</div>
+
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
-                    :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
-                <q-btn label="Salvar" color="green" no-caps class="q-mb-md" type="submit" @click="salvarAnotacao" />
+                    :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
+                    placeholder="Digite sua anotação aqui..." class="q-mb-lg" />
 
+                <div class="q-gutter-md flex justify-around">
+                    <q-btn label="Salvar" color="green" no-caps class="q-mt-md" style="flex-grow: 1;"
+                        @click="salvarAnotacao" />
 
-                <q-btn label="Voltar" color="primary" class="q-pa-sm q-mt-md" rounded flat
-                    @click="visibleAnotacao = false" no-caps />
+                    <q-btn label="Voltar" color="primary" class="q-mt-md" rounded flat style="flex-grow: 1;"
+                        @click="visibleAnotacao = false" no-caps />
+                </div>
             </q-card>
         </q-dialog>
 
