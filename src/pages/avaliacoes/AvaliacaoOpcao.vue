@@ -31,23 +31,21 @@
                 :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" />
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-file-pdf" color="red-8" />
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" />
                     </q-td>
                 </template>
             </q-table>
         </div>
-
-
 
         <!--
         <div class="q-pa-sm"></div>
