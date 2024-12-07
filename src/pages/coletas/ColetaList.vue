@@ -3,14 +3,23 @@
 
         <q-dialog v-model="visibleAnotacao" persistent>
             <q-card class="my-card q-pa-md full-width">
-                <div class="text-center text-body1">Anotação</div>
+                <div class="text-center text-h6 q-mb-md text-teal">Anotação</div>
+
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
-                    :rules="[(val) => (val && val.length > 0) || 'Name is required']" />
-                <q-btn label="Salvar" color="green" no-caps class="q-mb-md" type="submit" @click="salvarAnotacao" />
+                    :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
+                    placeholder="Digite sua anotação aqui..." />
 
+                <div class="text-body2 q-mb-md">
+                    <q-checkbox v-model="podeImprimir" label="Marque para não exibir essa anotação no relatório." />
+                </div>
 
-                <q-btn label="Voltar" color="primary" class="q-pa-sm q-mt-md" rounded flat
-                    @click="visibleAnotacao = false" no-caps />
+                <div class="q-gutter-md flex justify-around">
+                    <q-btn label="Salvar" color="green" no-caps class="q-mt-md" style="flex-grow: 1;"
+                        @click="salvarAnotacao(podeImprimir)" />
+
+                    <q-btn label="Voltar" color="primary" class="q-mt-md" rounded flat style="flex-grow: 1;"
+                        @click="visibleAnotacao = false" no-caps />
+                </div>
             </q-card>
         </q-dialog>
 
@@ -45,15 +54,8 @@
                                     <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <q-btn color="grey-7" round flat icon="more_vert">
-                                        <q-menu cover auto-close>
-                                            <q-list>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
+                                    <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                        @click="abreModalAnotacao(item, 'inserir')">
                                     </q-btn>
                                 </div>
                             </div>
@@ -73,11 +75,13 @@
                         </div>
                         <div v-else>
                             <q-radio v-model="respostas[item.coletaId]" val="nao-fez" label="NÃO FEZ" keep-color
-                                color="red" size="lg" />
+                                color="red" size="md" />
                             <q-radio v-model="respostas[item.coletaId]" val="com-ajuda" label="COM AJUDA" keep-color
-                                color="orange" size="lg" />
+                                color="orange" size="md" />
                             <q-radio v-model="respostas[item.coletaId]" val="sem-ajuda" label="SEM AJUDA" keep-color
-                                color="green" size="lg" />
+                                color="green" size="md" />
+                            <q-radio v-model="respostas[item.coletaId]" val="nao-aplica" label="NÃO APLICA" keep-color
+                                color="grey" size="md" />
                         </div>
                     </q-card>
 
@@ -110,15 +114,8 @@
                                     <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <q-btn color="grey-7" round flat icon="more_vert">
-                                        <q-menu cover auto-close>
-                                            <q-list>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="abreModalAnotacao(item, 'inserir')">Anotar</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
+                                    <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                        @click="abreModalAnotacao(item, 'inserir')">
                                     </q-btn>
                                 </div>
                             </div>
@@ -129,11 +126,13 @@
                         </div>
                         <div v-else>
                             <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
-                                size="lg" disable />
+                                size="md" disable />
                             <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color color="orange"
-                                size="lg" disable />
+                                size="md" disable />
                             <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color color="green"
-                                size="lg" disable />
+                                size="md" disable />
+                            <q-radio v-model="respostas[item.coletaId]" val="nao-aplica" label="NÃO APLICA" keep-color
+                                color="grey" size="md" disable />
                         </div>
                     </q-card>
 
@@ -151,7 +150,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                            }}</span>
+                                        }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
@@ -232,6 +231,8 @@ const anotacoesFeitas = ref<[]>([]);
 let counts = ref<any[]>([]);
 
 let acaoAnotacao = '';
+
+const podeImprimir = ref<boolean>(false);
 
 async function salvarRespostas() {
     $q.loading.show();
@@ -355,7 +356,7 @@ function abreModalAnotacao(item: any, acao: string) {
     acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
-async function salvarAnotacao() {
+async function salvarAnotacao(_podeImprimir: boolean) {
 
     if (acaoAnotacao === 'editar') {
         atualizarAnotacao()
@@ -365,6 +366,7 @@ async function salvarAnotacao() {
             treinamentoId: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
             coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
             anotacao: anotacao.value,
+            naoImprimir: _podeImprimir
         }
         try {
             $q.loading.show();
@@ -381,6 +383,7 @@ async function salvarAnotacao() {
         } finally {
             visibleAnotacao.value = false;
             anotacao.value = '';
+            podeImprimir.value = true;
             $q.loading.hide();
         }
     }

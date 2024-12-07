@@ -282,7 +282,6 @@ import {
     Title,
     LineElement,
 } from 'chart.js/auto'
-//import { RelatorioService } from 'src/services/RelatorioService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { useUserStore } from 'src/stores/user';
@@ -314,8 +313,6 @@ const gerandoRelatorio = ref(false);
 
 const showGrafico = ref(false);
 
-//const service = new RelatorioService();
-
 const { error } = useNotify();
 
 const form = reactive({
@@ -327,8 +324,6 @@ const form = reactive({
 const aprendizes = ref<any[]>([]);
 
 const treinamentos = ref<any[]>([]);
-
-//const atendimentos = ref<any[]>([]);
 
 const exibirRelatorioBtn = ref(false);
 
@@ -449,102 +444,8 @@ async function gerarGrafico(itemId: string) {
         }
 
     }, 800);
-}
-
-async function imprimirPDF() {
-    $q.loading.show();
-    let nomeArquivo: string = '';
-
-    const uuidAprendiz = toRaw(form.value.aprendiz.value);
-    const data = await service.gerarRelatorio(uuidAprendiz, periodo.value);
-
-    if (data[0].treinamentos.length === 0 || data === undefined) {
-        $q.loading.hide();
-        error("Nenhum registro encontrado para o período selecionado.");
-        return;
-    }
-
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    pdf.setFont('Helvetica');
-    pdf.setProperties({
-        title: 'relatorio_evolutivo',
-    });
-
-    for (const item of data) {
-
-        if (nomeArquivo === '') {
-            nomeArquivo = 'relatorio_' + item.aprendiz.nome + '_' + new Date().toLocaleDateString();
-        }
-
-        autoTable(pdf, {
-            head: [['PROFISSIONAL', 'REGISTRO PROF.', 'APRENDIZ', 'GERADO EM:']],
-            body: [
-                [item.profissional.nome.toUpperCase(), item.profissional.documento, item.aprendiz.nome.toUpperCase(), new Date().toLocaleDateString()],
-            ],
-            theme: 'plain',
-            columnStyles: {
-                0: { cellWidth: 50 },
-                1: { cellWidth: 50 },
-                2: { cellWidth: 50 },
-                3: { cellWidth: 50 },
-                //4: { cellWidth: 50 },
-            },
-        });
-
-        for (const treinamento of item.treinamentos) {
-
-            autoTable(pdf, {
-                head: [['DATA ÍNICIO', 'NOME DO TREINAMENTO', 'PROTOCOLO', 'DESCRIÇÃO']],
-                body: [
-                    [treinamento.data, treinamento.titulo, treinamento.protocolo, treinamento.descricao],
-                ],
-                headStyles: { fillColor: '#f06c8a' }
-            });
-
-            autoTable(pdf, {
-                head: [['DATA', 'OBJETIVO', 'TP. APRENDIZAGEM', 'RESPOSTA COLETA']],
-                body: treinamento.alvosColetados.map(alvo => {
-                    return [alvo.dataColeta, alvo.nomeAlvo, alvo.tipoAprendizagem, alvo.resposta];
-                }),
-                headStyles: { fillColor: '#f8a0b1' }
-            });
-
-            autoTable(pdf, {
-                head: [['DATA', 'ANOTAÇÃO']],
-                body: treinamento.alvosColetados.flatMap(alvo => {
-                    return alvo.anotacoes.map(anotacao => {
-                        return [anotacao.data, anotacao.descricao];
-                    });
-                }),
-                headStyles: { fillColor: '#f8a0b1' }
-            });
-
-            let chartBase64: string;
-            // Gera o gráfico como imagem base64            
-            await gerarGraficoPDF(treinamento.uuid).then(res => {
-                chartBase64 = res || '';
-            });
-
-            autoTable(pdf, {
-                head: [['REPRESENTAÇÃO GRÁFICA:']],
-                body: [['']],
-                columnStyles: {
-                    0: { cellWidth: 100, minCellHeight: treinamento.protocolo === 'Protocolo ABC' ? 100 : 50 },
-                },
-                didDrawCell: (data) => {
-                    if (data.section === 'body' && data.column.index === 0) {
-                        pdf.addImage(chartBase64, 'PNG', data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-                    }
-                },
-                theme: 'plain',
-            });
-        }
-    }
-
-    gerandoRelatorio.value = false;
-    $q.loading.hide();
-    pdf.save(`${nomeArquivo}.pdf`);
 }*/
+
 /*
 async function loadImageData(url: string): Promise<string> {
     const response = await fetch(url);
@@ -649,33 +550,6 @@ const carregarSelectAprendiz = async () => {
     }
 }
 
-/*
-function backupSegundoPlano() {
-
-    if (navigator.onLine) {
-
-        if (localStorage.getItem('ultimo_backup') == null) {
-            localStorage.setItem('ultimo_backup', new Date().getTime().toString());
-        }
-
-        const dateUltimoBackup = localStorage.getItem('ultimo_backup') || '';
-
-        const diferencaHoras = utils.calculateHoursBetween(dateUltimoBackup);
-
-        if (isNaN(Number(diferencaHoras))) {
-            localStorage.setItem('ultimo_backup', new Date().getTime().toString());
-        }
-        //Se a diferença entre o último backup for igual ou superior a 3 horas faz o backup.
-        if (diferencaHoras >= 3) {
-            const backupService = new BackupService();
-            backupService.iniciarBackup(false);
-        }
-    } else {
-        $q.notify("Conecte-se na Internet para usar o Aplicativo!")
-    }
-}*/
-
-
 async function criarContaStripe() {
     try {
         $q.loading.show();
@@ -712,61 +586,5 @@ onMounted(async () => {
     });
 
     await criarContaStripe();
-    /*
-    if (navigator.onLine) {
-
-        const userAuth = await getUserAuthSupbase() as any;
-
-        const user = await getByEmail('usuarios', userAuth.email).then((res) => {
-            storeUser.setUser({
-                id: res.id,
-                nome: res.full_name,
-                email: res.email
-            });
-            localStorage.setItem('user', JSON.stringify(res));
-            return res;
-        }).catch((err) => {
-            error(err);
-        });
-
-        if (user) {
-
-            let isAssinante = true;
-
-            await assinaturaService.validarAssinaturaPagante().then((res) => {
-                if (res == 'EXPIRADO' || res == 'NEGADO') {
-                    auth.logout();
-                    localStorage.clear();
-                    router.replace({ name: 'expirada' });
-                    isAssinante = false;
-                }
-            });
-
-            if (isAssinante) {
-                assinaturaService.salvaDiasRestantesAssinatura();
-                diasRestantesTeste.value = localStorage.getItem("periodoTeste")
-                if (user.demonstracao_restore == false && user.primeiro_acesso_realizado == false) {
-                    //restaurar base de dados
-                    await backupService.restaurarBackup(user.banco_demonstracao);
-
-                    //atualizar informações do usuário no supabase.
-                    user.demonstracao_restore = true;
-                    user.primeiro_acesso_realizado = true;
-
-                    //Atualize as informações do usuário no supabase.
-                    await put('usuarios', user).then(() => {
-                        showBoasVindas.value = true;
-                    }).catch((err) => {
-                        error(err);
-                    });
-                }
-            }
-        } else {
-            error('Usuário não encontrado.');
-        }
-
-        backupSegundoPlano();
-
-    }*/
 });
 </script>
