@@ -18,7 +18,7 @@
 
         <div class="q-mb-md" v-show="isVbmapp">
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                v-model:selected="niveisSelcionados" selection="multiple" :rows-per-page-options="[10]"
+                v-model:selected="niveisSelcionados" selection="single" :rows-per-page-options="[10]"
                 :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">

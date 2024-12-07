@@ -31,7 +31,7 @@
                 :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row.name)" />
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsx="props">
@@ -202,13 +202,25 @@ async function carregarSelectAprendizes() {
     }
 }
 
-function ir(tipoAvaliacao: string) {
+function ir(tipoAvaliacao: any) {
+
+    const avaliacaoEscolhida = toRaw(tipoAvaliacao);
 
     if (tipoAvaliacao == '')
         throw new Error("precisa ser informada o tipo de avaliação.")
 
     const obj = toRaw(selected.value[0])
-    router.push({ name: "avaliacoes-coleta/vbmapp", params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoAvaliacao.toLocaleLowerCase(), vbmappUuid: obj.id } });
+
+    const tipoColeta = avaliacaoEscolhida.name.toLocaleLowerCase();
+
+    if ('milestones' == tipoColeta || 'tarefas' == tipoColeta)
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
+    else if ('barreiras' == tipoColeta)
+        router.push({ name: avaliacaoEscolhida.path })
+    else {
+        throw new Error('nenhum tipo de avaliacao selecionado.');
+    }
+
 }
 
 onMounted(() => {
@@ -228,14 +240,17 @@ columns.value = [
 rows.value = [
     {
         name: 'MILESTONES',
+        path: 'avaliacoes-coleta/vbmapp'
     },
     {
         name: 'TAREFAS',
-    },
-    /*{
-        name: 'BARREIRAS',
+        path: 'avaliacoes-coleta/vbmapp/barreiras'
     },
     {
+        name: 'BARREIRAS',
+        path: 'avaliacoes-coleta/vbmapp/barreiras'
+    },
+    /*{
         name: 'TRANSIÇÃO',
     },
     {
