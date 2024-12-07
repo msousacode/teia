@@ -88,7 +88,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Minha Assinatura',
+    title: 'Assinatura',
     icon: 'mdi-currency-usd',
     routeName: 'assinatura',
     hide: true,

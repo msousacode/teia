@@ -1,8 +1,5 @@
 <template>
   <q-page class="q-pa-md bg-grey-1">
-    <!-- Título -->
-    <title-custom title="Minha Assinatura" />
-
     <!-- Plano Atual -->
     <div class="q-ma-md">
       <div class="text-h6 q-mb-md"><b>Seu Plano Atual</b></div>
@@ -58,7 +55,6 @@
 
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import TitleCustom from 'src/components/TitleCustom.vue';
 import { createCheckoutSession } from 'src/services/stripe';
 import { StripeService } from 'src/services/stripe/StripeService';
 import { UsuarioService } from 'src/services/UsuarioService';
