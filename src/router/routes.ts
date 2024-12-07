@@ -101,6 +101,13 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'avaliacoes-coleta/vbmapp/barreiras',
+        //path: '/avaliacoes-coleta/vbmapp/aprendiz/:aprendizUuid/tipoAvaliacao/:tipoAvaliacao?/avaliacao/:vbmappUuid?',
+        path: '/avaliacoes-coleta/vbmapp/barreiras',
+        component: () => import('pages/avaliacoes/AvaliacaoBarreira.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'atendimento-novo',
         path: '/atendimento-novo/:action?/atendimento/:uuidAtendimento?',
         component: () => import('pages/atendimentos/AtendimentoForm.vue'),
