@@ -213,14 +213,7 @@ function ir(tipoAvaliacao: any) {
 
     const tipoColeta = avaliacaoEscolhida.name.toLocaleLowerCase();
 
-    if ('milestones' == tipoColeta || 'tarefas' == tipoColeta)
-        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
-    else if ('barreiras' == tipoColeta)
-        router.push({ name: avaliacaoEscolhida.path })
-    else {
-        throw new Error('nenhum tipo de avaliacao selecionado.');
-    }
-
+    router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
 }
 
 onMounted(() => {
@@ -244,7 +237,7 @@ rows.value = [
     },
     {
         name: 'TAREFAS',
-        path: 'avaliacoes-coleta/vbmapp/barreiras'
+        path: 'avaliacoes-coleta/vbmapp'
     },
     {
         name: 'BARREIRAS',
