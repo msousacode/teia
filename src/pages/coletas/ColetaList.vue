@@ -7,11 +7,15 @@
 
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
                     :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
-                    placeholder="Digite sua anotação aqui..." class="q-mb-lg" />
+                    placeholder="Digite sua anotação aqui..." />
+
+                <div class="text-body2 q-mb-md">
+                    <q-checkbox v-model="podeImprimir" label="Marque para não exibir essa anotação no relatório." />
+                </div>
 
                 <div class="q-gutter-md flex justify-around">
                     <q-btn label="Salvar" color="green" no-caps class="q-mt-md" style="flex-grow: 1;"
-                        @click="salvarAnotacao" />
+                        @click="salvarAnotacao(podeImprimir)" />
 
                     <q-btn label="Voltar" color="primary" class="q-mt-md" rounded flat style="flex-grow: 1;"
                         @click="visibleAnotacao = false" no-caps />
@@ -228,6 +232,8 @@ let counts = ref<any[]>([]);
 
 let acaoAnotacao = '';
 
+const podeImprimir = ref<boolean>(false);
+
 async function salvarRespostas() {
     $q.loading.show();
 
@@ -350,7 +356,7 @@ function abreModalAnotacao(item: any, acao: string) {
     acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
-async function salvarAnotacao() {
+async function salvarAnotacao(_podeImprimir: boolean) {
 
     if (acaoAnotacao === 'editar') {
         atualizarAnotacao()
@@ -360,6 +366,7 @@ async function salvarAnotacao() {
             treinamentoId: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
             coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
             anotacao: anotacao.value,
+            naoImprimir: _podeImprimir
         }
         try {
             $q.loading.show();
@@ -376,6 +383,7 @@ async function salvarAnotacao() {
         } finally {
             visibleAnotacao.value = false;
             anotacao.value = '';
+            podeImprimir.value = true;
             $q.loading.hide();
         }
     }
