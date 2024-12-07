@@ -39,6 +39,11 @@
                         <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" />
                     </q-td>
                 </template>
+                <template v-slot:body-cell-actionsy="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-file-pdf" color="red-8" />
+                    </q-td>
+                </template>
             </q-table>
         </div>
 
@@ -213,14 +218,7 @@ function ir(tipoAvaliacao: any) {
 
     const tipoColeta = avaliacaoEscolhida.name.toLocaleLowerCase();
 
-    if ('milestones' == tipoColeta || 'tarefas' == tipoColeta)
-        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
-    else if ('barreiras' == tipoColeta)
-        router.push({ name: avaliacaoEscolhida.path })
-    else {
-        throw new Error('nenhum tipo de avaliacao selecionado.');
-    }
-
+    router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
 }
 
 onMounted(() => {
@@ -234,7 +232,8 @@ columns.value = [
         field: 'name'
     },
     { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
-    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' }
+    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
+    { name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
 ]
 
 rows.value = [
@@ -244,7 +243,7 @@ rows.value = [
     },
     {
         name: 'TAREFAS',
-        path: 'avaliacoes-coleta/vbmapp/barreiras'
+        path: 'avaliacoes-coleta/vbmapp'
     },
     {
         name: 'BARREIRAS',

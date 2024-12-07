@@ -1,26 +1,40 @@
 <template>
+    <title-custom title="Barreiras" class="q-ml-md"></title-custom>
     <q-page class="q-pa-sm">
         <div class="q-pa-md">
-            <title-custom title="Avaliação de Comportamentos"></title-custom>
             <form @submit.prevent="">
                 <div v-for="assessment in barreiras" :key="assessment.id" class="q-mb-xl">
                     <div class="text-h6">{{ assessment.question }}</div>
-                    <q-select v-model="assessment.id" :options="assessment.options" label="Resposta" />
+                    <q-select v-model="assessment.id" @update:model-value="coletaResposta(assessment)"
+                        :options="assessment.options" label="Resposta" />
                 </div>
 
                 <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit" />
             </form>
         </div>
-
     </q-page>
 </template>
+
 <script setup lang="ts">
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { reactive } from 'vue';
 
+const respostas = reactive<any[]>([]);
+
+function coletaResposta(item: any) {
+    // Atualiza ou adiciona a resposta 
+    const index = respostas.findIndex(resposta => resposta.id === item.id);
+
+    if (index !== -1) {
+        respostas[index].selectedOption = item.options;
+    } else {
+        respostas.push({ id: item.id, selectedOption: item.value });
+    }
+}
+
 const barreiras = reactive([
     {
-        "id": "B_1",
+
         "question": "1 - Comportamentos negativos que dificultam a aprendizagem",
         "options": [
             { "value": "SR", "label": "-" },
@@ -32,279 +46,256 @@ const barreiras = reactive([
         ]
     },
     {
-        "id": "B_2",
         "question": "2 - Controle instrucional fraco",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Criança cooperativa" },
-            { "value": "1", "label": "Comportamento desobediente pouco frequente. Em geral é cooperativa, algumas demandas geram desobediência, mas se recupera rapidamente." },
-            { "value": "2", "label": "Comportamentos desobedientes menores, porém várias vezes ao dia, sendo mais difícil para o adulto manejar e fazer com que a criança volte." },
-            { "value": "3", "label": "Os comportamentos tem se tornado mais frequentes e graves, ocorrendo em diferentes contextos." },
-            { "value": "4", "label": "Problema grave e diário que inclui agressão, destruição de itens caso a demanda não seja removida. Ocorrem várias vezes ao dia e representam perigo para si e para os outros." }
+            { "value": "0", "label": "0 - Criança cooperativa" },
+            { "value": "1", "label": "1 - Comportamento desobediente pouco frequente. Em geral é cooperativa, algumas demandas geram desobediência, mas se recupera rapidamente." },
+            { "value": "2", "label": "2 - Comportamentos desobedientes menores, porém várias vezes ao dia, sendo mais difícil para o adulto manejar e fazer com que a criança volte." },
+            { "value": "3", "label": "3- Os comportamentos tem se tornado mais frequentes e graves, ocorrendo em diferentes contextos." },
+            { "value": "4", "label": "4 - Problema grave e diário que inclui agressão, destruição de itens caso a demanda não seja removida. Ocorrem várias vezes ao dia e representam perigo para si e para os outros." }
         ]
     },
     {
-        "id": "B_3",
         "question": "3 - Mando fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Repertório adequado e proporcional às outras habilidades." },
-            { "value": "1", "label": "Emite mandos, porém possui uma pontuação bem maior nos outros operantes verbais." },
-            { "value": "2", "label": "Emite pouquíssimos mandos e restritos aos itens reforçadores, embora a pontuação dos outros operantes verbais esteja bem mais alta." },
-            { "value": "3", "label": "Os mandos raramente são espontâneos, não correspondem à motivação, ocorrem por meio de comportamento negativo ou adivinhação." },
-            { "value": "4", "label": "A criança não emite nenhum tipo de mando ou emite de acordo com o n° 3, porém sem muitas outras habilidades verbais." }
+            { "value": "0", "label": "0 - Repertório adequado e proporcional às outras habilidades." },
+            { "value": "1", "label": "1- Emite mandos, porém possui uma pontuação bem maior nos outros operantes verbais." },
+            { "value": "2", "label": "2- Emite pouquíssimos mandos e restritos aos itens reforçadores, embora a pontuação dos outros operantes verbais esteja bem mais alta." },
+            { "value": "3", "label": "3 - Os mandos raramente são espontâneos, não correspondem à motivação, ocorrem por meio de comportamento negativo ou adivinhação." },
+            { "value": "4", "label": "4 - A criança não emite nenhum tipo de mando ou emite de acordo com o n° 3, porém sem muitas outras habilidades verbais." }
         ]
     },
     {
-        "id": "B_4",
         "question": "4 - Tato fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Repertório adequado e proporcional às outras habilidades." },
-            { "value": "1", "label": "Consegue tatear alguns itens e tem bom repertório de ecóico." },
-            { "value": "2", "label": "Erros ocorrem com frequência, a criança tenta adivinhar e a emissão fica dependente de dicas." },
-            { "value": "3", "label": "Repertório inferior ao de outras habilidades verbais, pouco espontâneo, mecânico, com emissão de fuga durante o ensino." },
-            { "value": "4", "label": "A criança não emite nenhum tipo de tato ou tem um repertório muito limitado." }
+            { "value": "0", "label": "0 - Repertório adequado e proporcional às outras habilidades." },
+            { "value": "1", "label": "1 - Consegue tatear alguns itens e tem bom repertório de ecóico." },
+            { "value": "2", "label": "2 - Erros ocorrem com frequência, a criança tenta adivinhar e a emissão fica dependente de dicas." },
+            { "value": "3", "label": "3 - Repertório inferior ao de outras habilidades verbais, pouco espontâneo, mecânico, com emissão de fuga durante o ensino." },
+            { "value": "4", "label": "4 - A criança não emite nenhum tipo de tato ou tem um repertório muito limitado." }
         ]
     },
     {
-        "id": "B_5",
         "question": "5 - Imitação motora ausente, fraca ou prejudicada",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Repertório de imitar crescendo e proporcional às outras habilidades." },
-            { "value": "1", "label": "Imita, porém possui uma pontuação bem maior nas outras áreas." },
-            { "value": "2", "label": "Possui dificuldade em generalizar, dependente de dicas, imita comportamentos inadequados." },
-            { "value": "3", "label": "Imitação sempre dependente de dica física ou verbal, não ocorrendo caso assim não seja feito." },
-            { "value": "4", "label": "A criança não tem habilidades de imitação e tentativas de ensino anteriores falharam." }
+            { "value": "0", "label": "0 - Repertório de imitar crescendo e proporcional às outras habilidades." },
+            { "value": "1", "label": "1 - Imita, porém possui uma pontuação bem maior nas outras áreas." },
+            { "value": "2", "label": "2 - Possui dificuldade em generalizar, dependente de dicas, imita comportamentos inadequados." },
+            { "value": "3", "label": "3 - Imitação sempre dependente de dica física ou verbal, não ocorrendo caso assim não seja feito." },
+            { "value": "4", "label": "4 - A criança não tem habilidades de imitação e tentativas de ensino anteriores falharam." }
         ]
     },
     {
-        "id": "B_6",
         "question": "6 - Ecoico ausente, fraco ou prejudicado.",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Repertório de ecoar proporcional às outras habilidades." },
-            { "value": "1", "label": "Ecoa, porém possui uma pontuação bem maior nas outras áreas." },
-            { "value": "2", "label": "Habilidades de ecoar estão ficando ainda mais atrasadas quando comparadas às outras." },
-            { "value": "3", "label": "Não ocorre ecoar espontâneo, aprendizado lento e ensino intensivo ou ocorre em excesso." },
-            { "value": "4", "label": "A criança não tem habilidades de ecoar, mesmo tendo habilidades de imitação tentativas de ensino anteriores falharam." }
+            { "value": "0", "label": "0 - Repertório de ecoar proporcional às outras habilidades." },
+            { "value": "1", "label": "1 - Ecoa, porém possui uma pontuação bem maior nas outras áreas." },
+            { "value": "2", "label": "2 - Habilidades de ecoar estão ficando ainda mais atrasadas quando comparadas às outras." },
+            { "value": "3", "label": "3 - Não ocorre ecoar espontâneo, aprendizado lento e ensino intensivo ou ocorre em excesso." },
+            { "value": "4", "label": "4 - A criança não tem habilidades de ecoar, mesmo tendo habilidades de imitação tentativas de ensino anteriores falharam." }
         ]
     },
     {
-        "id": "B_7",
         "question": "7 - MTS fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "VP-MTS proporcional às outras habilidades, crescendo e adequado à idade." },
-            { "value": "1", "label": "Consegue realizar pareamento, mas possui uma pontuação bem maior nas outras áreas." },
-            { "value": "2", "label": "Apresenta adivinhação, falha em escanear a matriz ou em selecionar o item de acordo com o modelo." },
-            { "value": "3", "label": "Adquiriu algumas habilidades, mas ainda não proporcionais às outras habilidades, além de exibir comportamentos negativos. Repertório limitado à pequenas matrizes, falha em generalizar, estímulos semelhantes geram erros." },
-            { "value": "4", "label": "A criança não tem habilidades de VP-MTS e/ou já foram realizadas diversas tentativas de ensino. Ou habilidades adquiridas não são espontâneas, nunca ocorre de forma funcional." }
+            { "value": "0", "label": "0 - VP-MTS proporcional às outras habilidades, crescendo e adequado à idade." },
+            { "value": "1", "label": "1 - Consegue realizar pareamento, mas possui uma pontuação bem maior nas outras áreas." },
+            { "value": "2", "label": "2 - Apresenta adivinhação, falha em escanear a matriz ou em selecionar o item de acordo com o modelo." },
+            { "value": "3", "label": "3 - Adquiriu algumas habilidades, mas ainda não proporcionais às outras habilidades, além de exibir comportamentos negativos. Repertório limitado à pequenas matrizes, falha em generalizar, estímulos semelhantes geram erros." },
+            { "value": "4", "label": "4 - A criança não tem habilidades de VP-MTS e/ou já foram realizadas diversas tentativas de ensino. Ou habilidades adquiridas não são espontâneas, nunca ocorre de forma funcional." }
         ]
     },
     {
-        "id": "B_8",
         "question": "8 - Responder de ouvinte fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Ouvinte proporcional às outras habilidades, crescendo e adequado à idade." },
-            { "value": "1", "label": "Demonstra habilidades de ouvinte, mas possui uma pontuação bem maior nas outras áreas." },
-            { "value": "2", "label": "Não consegue executar alguma resposta necessária para a tarefa como falha em escanear a matriz, adivinha a resposta ou aponta sempre para o mesmo lado da matriz." },
-            { "value": "3", "label": "Exibe comportamentos negativos. Repertório limitado à pequenas matrizes, falha em generalizar, estímulos semelhantes geram erros e instruções verbais maiores." },
-            { "value": "4", "label": "A criança não tem habilidades de ouvinte e/ou já foram realizadas diversas tentativas de ensino. Ou habilidades adquiridas não são espontâneas, nunca ocorre de forma funcional." }
+            { "value": "0", "label": "0 - Ouvinte proporcional às outras habilidades, crescendo e adequado à idade." },
+            { "value": "1", "label": "1 - Demonstra habilidades de ouvinte, mas possui uma pontuação bem maior nas outras áreas." },
+            { "value": "2", "label": "2 - Não consegue executar alguma resposta necessária para a tarefa como falha em escanear a matriz, adivinha a resposta ou aponta sempre para o mesmo lado da matriz." },
+            { "value": "3", "label": "3 - Exibe comportamentos negativos. Repertório limitado à pequenas matrizes, falha em generalizar, estímulos semelhantes geram erros e instruções verbais maiores." },
+            { "value": "4", "label": "4 - A criança não tem habilidades de ouvinte e/ou já foram realizadas diversas tentativas de ensino. Ou habilidades adquiridas não são espontâneas, nunca ocorre de forma funcional." }
         ]
     },
     {
-        "id": "B_9",
         "question": "9 - Intraverbal ausente, fraco ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Intraverbal proporcional às outras habilidades, crescendo e adequado à idade." },
-            { "value": "1", "label": "Demonstra responder Intraverbal, mas possui uma pontuação bem maior nas outras áreas, em especial tato e ouvinte." },
-            { "value": "2", "label": "Criança, com frequência apresenta erros, adivinha a resposta, dependente de algum tipo de dica, apresenta ecolalia, respostas espontâneas nunca ocorrem." },
-            { "value": "3", "label": "Exibe respostas mecânicas, respostas rapidamente esquecidas, repertório limitado e nenhuma ou poucas generalizações." },
-            { "value": "4", "label": "A criança não tem habilidades intraverbais e/ou já foram realizadas diversas tentativas de ensino. Ou habilidades adquiridas não são espontâneas, nunca ocorre de forma funcional." }
+            { "value": "0", "label": "0 - Intraverbal proporcional às outras habilidades, crescendo e adequado à idade." },
+            { "value": "1", "label": "1 - Demonstra responder Intraverbal, mas possui uma pontuação bem maior nas outras áreas, em especial tato e ouvinte." },
+            { "value": "2", "label": "2 - Criança, com frequência apresenta erros, adivinha a resposta, dependente de algum tipo de dica, apresenta ecolalia, respostas espontâneas nunca ocorrem." },
+            { "value": "3", "label": "3 - Exibe respostas mecânicas, respostas rapidamente esquecidas, repertório limitado e nenhuma ou poucas generalizações." },
+            { "value": "4", "label": "4 - A criança não tem habilidades intraverbais e/ou já foram realizadas diversas tentativas de ensino. Ou habilidades adquiridas não são espontâneas, nunca ocorre de forma funcional." }
         ]
     },
     {
-        "id": "B_10",
         "question": "10 - Habilidades sociais ausentes, fracas ou prejudicadas",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Habilidades sociais proporcional às outras habilidades, crescendo e adequado à idade." },
-            { "value": "1", "label": "Ocorre comportamento social, mas possui uma pontuação bem maior nas outras áreas, em especial tato e ouvinte." },
-            { "value": "2", "label": "Raramente inicia interação social com colega, embora consiga isso com um adulto. Raramente imita, brinca ou emite mando para os colegas. Emite comportamento socialmente negativo." },
-            { "value": "3", "label": "Em situação de brincar, geralmente fica sozinha, não costuma compartilhar brinquedos, responder a comandos, mesmo que consiga fazer isso com adultos." },
-            { "value": "4", "label": "A criança TEM habilidades de linguagem, mas evita outras crianças, não responde a mandos, emite comportamento negativo quando é solicitado que ela esteja em situações sociais." }
+            { "value": "0", "label": "0 - Habilidades sociais proporcional às outras habilidades, crescendo e adequado à idade." },
+            { "value": "1", "label": "1 - Ocorre comportamento social, mas possui uma pontuação bem maior nas outras áreas, em especial tato e ouvinte." },
+            { "value": "2", "label": "2 - Raramente inicia interação social com colega, embora consiga isso com um adulto. Raramente imita, brinca ou emite mando para os colegas. Emite comportamento socialmente negativo." },
+            { "value": "3", "label": "3 - Em situação de brincar, geralmente fica sozinha, não costuma compartilhar brinquedos, responder a comandos, mesmo que consiga fazer isso com adultos." },
+            { "value": "4", "label": "4 - A criança TEM habilidades de linguagem, mas evita outras crianças, não responde a mandos, emite comportamento negativo quando é solicitado que ela esteja em situações sociais." }
         ]
     },
     {
-        "id": "B_11",
         "question": "11 - Dependente de dicas",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança está aprendendo de modo consistente, sem estar dependente do uso de dicas." },
-            { "value": "1", "label": "São necessárias várias tentativas para o esvanecimento da dica, porém a criança está conseguindo aprender e emitir a resposta sem a dica." },
-            { "value": "2", "label": "Algumas dicas são difíceis de serem retiradas, especialmente." },
-            { "value": "3", "label": "O aplicador tem muita dificuldade em retirar a dica, estas ocorrem de modo sutil." },
-            { "value": "4", "label": "Extremamente difícil de retirar as dicas e a maioria das respostas são vinculadas a dicas ecóicas, imitativas ou verbais." }
+            { "value": "0", "label": "0 - A criança está aprendendo de modo consistente, sem estar dependente do uso de dicas." },
+            { "value": "1", "label": "1 - São necessárias várias tentativas para o esvanecimento da dica, porém a criança está conseguindo aprender e emitir a resposta sem a dica." },
+            { "value": "2", "label": "2 - Algumas dicas são difíceis de serem retiradas, especialmente." },
+            { "value": "3", "label": "3 - O aplicador tem muita dificuldade em retirar a dica, estas ocorrem de modo sutil." },
+            { "value": "4", "label": "4 - Extremamente difícil de retirar as dicas e a maioria das respostas são vinculadas a dicas ecóicas, imitativas ou verbais." }
         ]
     },
     {
-        "id": "B_12",
         "question": "12 - Resposta de adivinhação",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança não emite respostas de adivinhação." },
-            { "value": "1", "label": "Tenta adivinhar ocasionalmente, diante de novos estímulos, mas após alguns treinos para de adivinhar, aprendendo e generalizando posteriormente." },
-            { "value": "2", "label": "Adivinhação é um problema frequente, principalmente quando novos estímulos são introduzidos, sendo necessários vários treinos até que o aprendizado ocorra." },
-            { "value": "3", "label": "Adivinhação continua a acontecer, mesmo que com habilidades já 'adquiridas', embora isso possa ocorrer apenas com as palavras mais difíceis." },
-            { "value": "4", "label": "Adivinhação ocorre com quase todas as tentativas." }
+            { "value": "0", "label": "0 - A criança não emite respostas de adivinhação." },
+            { "value": "1", "label": "1 - Tenta adivinhar ocasionalmente, diante de novos estímulos, mas após alguns treinos para de adivinhar, aprendendo e generalizando posteriormente." },
+            { "value": "2", "label": "2 - Adivinhação é um problema frequente, principalmente quando novos estímulos são introduzidos, sendo necessários vários treinos até que o aprendizado ocorra." },
+            { "value": "3", "label": "3 - Adivinhação continua a acontecer, mesmo que com habilidades já 'adquiridas', embora isso possa ocorrer apenas com as palavras mais difíceis." },
+            { "value": "4", "label": "4 - Adivinhação ocorre com quase todas as tentativas." }
         ]
     },
     {
-        "id": "B_13",
         "question": "13 - Rastreamento Comprometido",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança geralmente faz uma varredura de matrizes sem erros." },
-            { "value": "1", "label": "Realiza varredura de matrizes com 6 a 8 itens, mas a partir de 10 itens começa a ter dificuldades." },
-            { "value": "2", "label": "Geralmente não consegue selecionar um item em uma matriz maior que 5 itens ou em um livro." },
-            { "value": "3", "label": "A varredura ocorre apenas em uma matriz de dois ou três estímulos." },
-            { "value": "4", "label": "Criança não faz a varredura, responde antes da varredura ou emite comportamento de fuga quando solicitada essa resposta." }
+            { "value": "0", "label": "0 - A criança geralmente faz uma varredura de matrizes sem erros." },
+            { "value": "1", "label": "1 - Realiza varredura de matrizes com 6 a 8 itens, mas a partir de 10 itens começa a ter dificuldades." },
+            { "value": "2", "label": "2 - Geralmente não consegue selecionar um item em uma matriz maior que 5 itens ou em um livro." },
+            { "value": "3", "label": "3 - A varredura ocorre apenas em uma matriz de dois ou três estímulos." },
+            { "value": "4", "label": "4 - Criança não faz a varredura, responde antes da varredura ou emite comportamento de fuga quando solicitada essa resposta." }
         ]
     },
     {
-        "id": "B_14",
         "question": "14 - Discriminação condicional falha",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança realiza discriminações condicionais de modo equilibrado com suas pontuações de outros marcos." },
-            { "value": "1", "label": "A criança apresenta precisa de mais esforço em matrizes maiores contendo estímulos semelhantes." },
-            { "value": "2", "label": "Apresenta dificuldades quando a condição possui múltiplos estímulos verbais." },
-            { "value": "3", "label": "Falha na maioria das tarefas que exigem discriminação condicional. Emite comportamento negativo durante essas tarefas e pode ser difícil a aquisição desta habilidade." },
-            { "value": "4", "label": "Apesar de demonstrar habilidades de discriminação simples, não consegue realizar tarefas que contenham discriminação condicional." }
+            { "value": "0", "label": "0 - A criança realiza discriminações condicionais de modo equilibrado com suas pontuações de outros marcos." },
+            { "value": "1", "label": "1 - A criança apresenta precisa de mais esforço em matrizes maiores contendo estímulos semelhantes." },
+            { "value": "2", "label": "2 - Apresenta dificuldades quando a condição possui múltiplos estímulos verbais." },
+            { "value": "3", "label": "3 - Falha na maioria das tarefas que exigem discriminação condicional. Emite comportamento negativo durante essas tarefas e pode ser difícil a aquisição desta habilidade." },
+            { "value": "4", "label": "4 - Apesar de demonstrar habilidades de discriminação simples, não consegue realizar tarefas que contenham discriminação condicional." }
         ]
     },
     {
-        "id": "B_15",
         "question": "15 - Falha em generalizar",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança apresenta generalização em um nível compatível com as suas habilidades." },
-            { "value": "1", "label": "Apresenta algum tipo de dificuldades para generalizar (Novos estímulos, uma área específica)." },
-            { "value": "2", "label": "A criança precisa de treinamento formal de generalização na maioria das habilidades." },
-            { "value": "3", "label": "É necessário fazer um trabalho maior e diversas vezes a criança “esquece” algumas respostas." },
-            { "value": "4", "label": "A criança não demonstra nenhum tipo de generalização para situações não treinadas." }
+            { "value": "0", "label": "0 - A criança apresenta generalização em um nível compatível com as suas habilidades." },
+            { "value": "1", "label": "1 - Apresenta algum tipo de dificuldades para generalizar (Novos estímulos, uma área específica)." },
+            { "value": "2", "label": "2 - A criança precisa de treinamento formal de generalização na maioria das habilidades." },
+            { "value": "3", "label": "3 - É necessário fazer um trabalho maior e diversas vezes a criança “esquece” algumas respostas." },
+            { "value": "4", "label": "4 - A criança não demonstra nenhum tipo de generalização para situações não treinadas." }
         ]
     },
     {
-        "id": "B_16",
         "question": "16 - Operações motivadoras fracas ou atípicas",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança apresenta diversas OM apropriadas à idade." },
-            { "value": "1", "label": "OM ligeiramente diferentes de crianças com desenvolvimento típico." },
-            { "value": "2", "label": "A criança tem OM fracas para itens comuns da idade ou tem OM fortes para estímulos distintos do esperado (Movimentos estereotipados, brincar de uma forma 'não funcional')." },
-            { "value": "3", "label": "OM atípicas para reforçadores não aprendidos ou OM que enfraquece rapidamente após contato com o item." },
-            { "value": "4", "label": "Criança apresenta OM muito limitadas, 2 ou 3, sendo essas atípicas." }
+            { "value": "0", "label": "0 - A criança apresenta diversas OM apropriadas à idade." },
+            { "value": "1", "label": "1 - OM ligeiramente diferentes de crianças com desenvolvimento típico." },
+            { "value": "2", "label": "2 - A criança tem OM fracas para itens comuns da idade ou tem OM fortes para estímulos distintos do esperado (Movimentos estereotipados, brincar de uma forma 'não funcional')." },
+            { "value": "3", "label": "3 - OM atípicas para reforçadores não aprendidos ou OM que enfraquece rapidamente após contato com o item." },
+            { "value": "4", "label": "4 - Criança apresenta OM muito limitadas, 2 ou 3, sendo essas atípicas." }
         ]
     },
     {
-        "id": "B_17",
         "question": "17 - Custo de resposta enfraquece a OM",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança em geral não perde o interesse quando demandas razoáveis são exigidas." },
-            { "value": "1", "label": "OM ligeiramente diferentes de crianças com desenvolvimento típico." },
-            { "value": "2", "label": "Caso a demanda fique muito alta ou apenas a sinalização de que pode ficar alta, a criança perde o interesse algumas vezes." },
-            { "value": "3", "label": "A criança demonstra muito interesse em diversos itens, mas quando uma exigência mais alta é colocada, esta rapidamente se afasta." },
-            { "value": "4", "label": "Criança foge da demanda, mesmo que seja para conseguir o mais potente dos seus reforçadores e que a demanda seja mínima." }
+            { "value": "0", "label": "0 - A criança em geral não perde o interesse quando demandas razoáveis são exigidas." },
+            { "value": "1", "label": "1 - OM ligeiramente diferentes de crianças com desenvolvimento típico." },
+            { "value": "2", "label": "2 - Caso a demanda fique muito alta ou apenas a sinalização de que pode ficar alta, a criança perde o interesse algumas vezes." },
+            { "value": "3", "label": "3 - A criança demonstra muito interesse em diversos itens, mas quando uma exigência mais alta é colocada, esta rapidamente se afasta." },
+            { "value": "4", "label": "4 - Criança foge da demanda, mesmo que seja para conseguir o mais potente dos seus reforçadores e que a demanda seja mínima." }
         ]
     },
     {
-        "id": "B_18",
         "question": "18 - Dependência de reforço",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança não apresenta problemas com reforço intermitente, social ou verbal." },
-            { "value": "1", "label": "Prefere itens tangíveis ou comestíveis, embora consiga aceitar reforço social (mesmo relutante)." },
-            { "value": "2", "label": "A criança fica relutante em não receber os itens preferidos e a aprendizagem é mais lenta sem estes." },
-            { "value": "3", "label": "É difícil manter o atendimento caso não sejam entregues reforçadores frequentes para a criança (Ex. Não consegue emitir 3 ou 4 respostas sem o tangível)." },
-            { "value": "4", "label": "Uma grande quantidade de reforçadores tangíveis e comestíveis é necessária para ensino de uma única habilidade, sendo necessário esse mesmo nível para manter a ocorrência da resposta." }
+            { "value": "0", "label": "0 - A criança não apresenta problemas com reforço intermitente, social ou verbal." },
+            { "value": "1", "label": "1 - Prefere itens tangíveis ou comestíveis, embora consiga aceitar reforço social (mesmo relutante)." },
+            { "value": "2", "label": "2 - A criança fica relutante em não receber os itens preferidos e a aprendizagem é mais lenta sem estes." },
+            { "value": "3", "label": "3 - É difícil manter o atendimento caso não sejam entregues reforçadores frequentes para a criança (Ex. Não consegue emitir 3 ou 4 respostas sem o tangível)." },
+            { "value": "4", "label": "4 - Uma grande quantidade de reforçadores tangíveis e comestíveis é necessária para ensino de uma única habilidade, sendo necessário esse mesmo nível para manter a ocorrência da resposta." }
         ]
     },
     {
-        "id": "B_19",
         "question": "19 - Autoestimulação",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A criança não apresenta movimentos de autoestimulação fora do comum." },
-            { "value": "1", "label": "Se envolve em respostas de autoestimulação, mas que não concorrem com outras atividades importantes." },
-            { "value": "2", "label": "Criança emite respostas de autoestimulação, porém embora estas possam competir com outros reforçadores, a taxa de aquisição de novas habilidades se mantém." },
-            { "value": "3", "label": "Criança emite respostas de autoestimulação com alta frequência, as quais competem com atividades importantes. Em geral, costuma parar após repreensões verbais." },
-            { "value": "4", "label": "A criança frequentemente se engaja em alguma tipo de autoestimulação e os outros reforçadores são fracos. A aquisição de novas habilidades é lenta e prejudicada." }
+            { "value": "0", "label": "0 - A criança não apresenta movimentos de autoestimulação fora do comum." },
+            { "value": "1", "label": "1 - Se envolve em respostas de autoestimulação, mas que não concorrem com outras atividades importantes." },
+            { "value": "2", "label": "2 - Criança emite respostas de autoestimulação, porém embora estas possam competir com outros reforçadores, a taxa de aquisição de novas habilidades se mantém." },
+            { "value": "3", "label": "3 - Criança emite respostas de autoestimulação com alta frequência, as quais competem com atividades importantes. Em geral, costuma parar após repreensões verbais." },
+            { "value": "4", "label": "4 - A criança frequentemente se engaja em alguma tipo de autoestimulação e os outros reforçadores são fracos. A aquisição de novas habilidades é lenta e prejudicada." }
         ]
     },
     {
-        "id": "B_20",
         "question": "20 - Dificuldades articulatórias",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "A maioria dos adultos consegue entender o que a criança diz." },
-            { "value": "1", "label": "Apresenta dificuldade na articulação de algumas palavras, mas a grande maioria consegue entender." },
-            { "value": "2", "label": "Tem habilidades do nível dois, mas pessoas estranhas têm dificuldade de entender o que é dito." },
-            { "value": "3", "label": "Habilidades vocais muito limitadas e demonstra uma grande variedade de erros de articulação." },
-            { "value": "4", "label": "A criança pontua em diversas habilidades, mas não fala ou tem uma fala completamente ininteligível." }
+            { "value": "0", "label": "0 - A maioria dos adultos consegue entender o que a criança diz." },
+            { "value": "1", "label": "1 - Apresenta dificuldade na articulação de algumas palavras, mas a grande maioria consegue entender." },
+            { "value": "2", "label": "2 - Tem habilidades do nível dois, mas pessoas estranhas têm dificuldade de entender o que é dito." },
+            { "value": "3", "label": "3 - Habilidades vocais muito limitadas e demonstra uma grande variedade de erros de articulação." },
+            { "value": "4", "label": "4 - A criança pontua em diversas habilidades, mas não fala ou tem uma fala completamente ininteligível." }
         ]
     },
     {
-        "id": "B_21",
         "question": "21 - Comportamento Obsessivo Compulsivo",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Não demonstra comportamento obsessivo que atrapalhe a aprendizagem." },
-            { "value": "1", "label": "Obsessões menores, mas que não atrapalham o aprendizado de outras habilidades." },
-            { "value": "2", "label": "Várias obsessões diferentes e apresenta comportamento negativo moderado quando não pode executar essas respostas. No entanto, aceita e participa das tarefas de aprendizagem sem maiores interrupções." },
-            { "value": "3", "label": "Emite respostas obsessivas diversas e fortes que impedem o aprendizado. Tem dificuldade de realizar a demanda exigida sem completar a obsessão." },
-            { "value": "4", "label": "Obsessão bastante consistente e são o foco/ações principais do dia." }
+            { "value": "0", "label": "0 - Não demonstra comportamento obsessivo que atrapalhe a aprendizagem." },
+            { "value": "1", "label": "1 - Obsessões menores, mas que não atrapalham o aprendizado de outras habilidades." },
+            { "value": "2", "label": "2 - Várias obsessões diferentes e apresenta comportamento negativo moderado quando não pode executar essas respostas. No entanto, aceita e participa das tarefas de aprendizagem sem maiores interrupções." },
+            { "value": "3", "label": "3 - Emite respostas obsessivas diversas e fortes que impedem o aprendizado. Tem dificuldade de realizar a demanda exigida sem completar a obsessão." },
+            { "value": "4", "label": "4 - Obsessão bastante consistente e são o foco/ações principais do dia." }
         ]
     },
     {
-        "id": "B_22",
         "question": "22 - Hiperatividade",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Não apresenta respostas hiperativas quando comparadas com outras crianças da idade." },
-            { "value": "1", "label": "Emite comportamento hiperativo ocasional ou perde o foco em atividades em andamento, mas sem prejuízo ao aprendizado." },
-            { "value": "2", "label": "Anda pelo ambiente com frequência maior que a dos colegas, apresenta dificuldade em realizar tarefas mais difíceis e estes comportamentos hiperativos interferem na aquisição de habilidades importantes." },
-            { "value": "3", "label": "Adultos têm dificuldade de controlar o comportamento hiperativo da criança. Apresenta dificuldades em esperar, permanecer sentado ou concluir atividade que envolva atenção." },
-            { "value": "4", "label": "Constantemente em movimento e o comportamento hiperativo é o foco/ações principais do dia." }
+            { "value": "0", "label": "0 - Não apresenta respostas hiperativas quando comparadas com outras crianças da idade." },
+            { "value": "1", "label": "1 - Emite comportamento hiperativo ocasional ou perde o foco em atividades em andamento, mas sem prejuízo ao aprendizado." },
+            { "value": "2", "label": "2 - Anda pelo ambiente com frequência maior que a dos colegas, apresenta dificuldade em realizar tarefas mais difíceis e estes comportamentos hiperativos interferem na aquisição de habilidades importantes." },
+            { "value": "3", "label": "3 - Adultos têm dificuldade de controlar o comportamento hiperativo da criança. Apresenta dificuldades em esperar, permanecer sentado ou concluir atividade que envolva atenção." },
+            { "value": "4", "label": "4 - Constantemente em movimento e o comportamento hiperativo é o foco/ações principais do dia." }
         ]
     },
     {
-        "id": "B_23",
         "question": "23 - Falha em manter o contato visual",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Realiza contato visual adequado para a idade e atende adequadamente as pessoas." },
-            { "value": "1", "label": "Não realiza contato visual semelhante aos pares." },
-            { "value": "2", "label": "A criança não realiza contato visual com frequência ou atenta para o rosto de outras pessoas." },
-            { "value": "3", "label": "Não realiza nenhum contato visual quando emite mandos e dificilmente realiza em outras circunstâncias." },
-            { "value": "4", "label": "Quase nunca faz contato visual." }
+            { "value": "0", "label": "0 - Realiza contato visual adequado para a idade e atende adequadamente as pessoas." },
+            { "value": "1", "label": "1 - Não realiza contato visual semelhante aos pares." },
+            { "value": "2", "label": "2 - A criança não realiza contato visual com frequência ou atenta para o rosto de outras pessoas." },
+            { "value": "3", "label": "3 - Não realiza nenhum contato visual quando emite mandos e dificilmente realiza em outras circunstâncias." },
+            { "value": "4", "label": "4 - Quase nunca faz contato visual." }
         ]
     },
     {
-        "id": "B_24",
         "question": "24 - Defesa sensorial",
         "options": [
             { "value": "SR", "label": "-" },
-            { "value": "0", "label": "Não apresenta problemas relacionados a estímulos sensoriais." },
-            { "value": "1", "label": "Apresenta uma sensibilidade a diversos estímulos, o que difere dos pares." },
-            { "value": "2", "label": "A criança é afetada por estimulação sensorial, mas geralmente não interfere nas atividades de aprendizagem." },
-            { "value": "3", "label": "Frequentemente foge de determinados estímulos e fica agitado caso a demanda não seja removida." },
-            { "value": "4", "label": "Reage a estímulos sensoriais específicos com respostas negativas mais graves (agressão, destruir itens)." }
+            { "value": "0", "label": "0 - Não apresenta problemas relacionados a estímulos sensoriais." },
+            { "value": "1", "label": "1 - Apresenta uma sensibilidade a diversos estímulos, o que difere dos pares." },
+            { "value": "2", "label": "2 - A criança é afetada por estimulação sensorial, mas geralmente não interfere nas atividades de aprendizagem." },
+            { "value": "3", "label": "3 - Frequentemente foge de determinados estímulos e fica agitado caso a demanda não seja removida." },
+            { "value": "4", "label": "4 - Reage a estímulos sensoriais específicos com respostas negativas mais graves (agressão, destruir itens)." }
         ]
     }
 ])
