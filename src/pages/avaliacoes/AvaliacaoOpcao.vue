@@ -39,6 +39,11 @@
                         <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" />
                     </q-td>
                 </template>
+                <template v-slot:body-cell-actionsy="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-file-pdf" color="red-8" />
+                    </q-td>
+                </template>
             </q-table>
         </div>
 
@@ -227,7 +232,8 @@ columns.value = [
         field: 'name'
     },
     { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
-    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' }
+    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
+    { name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
 ]
 
 rows.value = [
