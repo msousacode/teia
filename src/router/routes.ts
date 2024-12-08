@@ -101,6 +101,13 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'avaliacoes-coleta/portage',
+        path: '/avaliacoes-coleta/portage/aprendiz/:aprendizUuid/avaliacao/:portageId?',
+        component: () =>
+          import('pages/avaliacoes/portage/PortageAvaliacaoColeta.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'avaliacoes-coleta/vbmapp/barreiras',
         //path: '/avaliacoes-coleta/vbmapp/aprendiz/:aprendizUuid/tipoAvaliacao/:tipoAvaliacao?/avaliacao/:vbmappUuid?',
         path: '/avaliacoes-coleta/vbmapp/barreiras',

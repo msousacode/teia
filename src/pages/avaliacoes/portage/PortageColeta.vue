@@ -2,8 +2,6 @@
     <q-page padding>
 
         <div class="text-teal">{{ descritivoTitulo }}</div>
-        <!--TODO fazer depois essa contagem-->
-        <!--div class="text-teal">{{ descritivoTitulo }} - Coletados {{ qtdCardsRespondidos }} de {{ qtdCards }}</div-->
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="1" label="Nível 1" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
@@ -117,11 +115,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ref, reactive } from 'vue';
-import { avaliacaoNivelUm } from './data/vbmappNivelUm';
-import { avaliacaoNivelDois } from './data/vbmappNivelDois';
-import { avaliacaoNivelTres } from './data/vbmappNivelTres';
-import { avaliacaoNivelUmTarefas } from './data/vbmappNivelUmTarefas';
-import { avaliacaoNivelDoisTarefas } from './data/vbmappNivelDoisTarefas';
+import { portageZeroHaUmAno } from '../data/portage/portageZeroHaUmAno';
 import { useRoute } from 'vue-router';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
@@ -201,49 +195,51 @@ function carregarAvaliacao() {
 
     let objetivos;
 
-    if (nivelSelecionado.value == '1') {
-
-        if (tipoAvaliacao.value == 'tarefas') {
-            objetivos = avaliacaoNivelUmTarefas.avaliacoes
-                .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        } else {
-
-            let count = 0;
-            avaliacaoNivelUm.avaliacoes.forEach(i => {
-                count += i.objetivos.length;
-            });
-            qtdCards.value = count
-
-            objetivos = avaliacaoNivelUm.avaliacoes
-                .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio              
-        }
-
-    } else if (nivelSelecionado.value == '2') {
-
-        if (tipoAvaliacao.value == 'tarefas') {
-            objetivos = avaliacaoNivelDoisTarefas.avaliacoes
-                .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        } else {
-            objetivos = avaliacaoNivelDois.avaliacoes
-                .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        }
-
-    } else if (nivelSelecionado.value == '3') {
-
-        if (tipoAvaliacao.value == 'tarefas') {
-            objetivos = avaliacaoNivelDoisTarefas.avaliacoes
-                .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        } else {
-            objetivos = avaliacaoNivelTres.avaliacoes
-                .filter(i => i.tipo == tipoColeta)
-                .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-        }
-    }
+    objetivos = portageZeroHaUmAno.avaliacoes;
+    /*
+        if (nivelSelecionado.value == '1') {
+    
+            if (tipoAvaliacao.value == 'tarefas') {
+                objetivos = avaliacaoNivelUmTarefas.avaliacoes
+                    .filter(i => i.tipo == tipoColeta)
+                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+            } else {
+    
+                let count = 0;
+                avaliacaoNivelUm.avaliacoes.forEach(i => {
+                    count += i.objetivos.length;
+                });
+                qtdCards.value = count
+    
+                objetivos = avaliacaoNivelUm.avaliacoes
+                    .filter(i => i.tipo == tipoColeta)
+                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio              
+            }
+    
+        } else if (nivelSelecionado.value == '2') {
+    
+            if (tipoAvaliacao.value == 'tarefas') {
+                objetivos = avaliacaoNivelDoisTarefas.avaliacoes
+                    .filter(i => i.tipo == tipoColeta)
+                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+            } else {
+                objetivos = avaliacaoNivelDois.avaliacoes
+                    .filter(i => i.tipo == tipoColeta)
+                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+            }
+    
+        } else if (nivelSelecionado.value == '3') {
+    
+            if (tipoAvaliacao.value == 'tarefas') {
+                objetivos = avaliacaoNivelDoisTarefas.avaliacoes
+                    .filter(i => i.tipo == tipoColeta)
+                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+            } else {
+                objetivos = avaliacaoNivelTres.avaliacoes
+                    .filter(i => i.tipo == tipoColeta)
+                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
+            }
+        }*/
 
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
@@ -309,7 +305,7 @@ async function refresh() {
         });
     }
 }
-
+/*
 async function configTela() {
 
     try {
@@ -334,7 +330,7 @@ async function configTela() {
         $q.loading.hide();
     }
 }
-
+*/
 function coletar(item: any, pontuacao: number) {
     item.selected = pontuacao; // Atualiza a seleção do cartão  
 
@@ -373,13 +369,13 @@ function coletar(item: any, pontuacao: number) {
     // Opcional: atualizar o cache após as modificações  
     stateCache.set("coletasRealizadas", coletasRealizadas);
 }
-
+/*
 function getData(key: string) {
     if (state.cache.has(key)) {
         return state.cache.get(key);
     }
     state.cache.set(key, []);
-}
+}*/
 
 function abrirModalAjuda(index: number) {
     visible.value[index] = true;
@@ -392,10 +388,14 @@ function fecharModalAjuda(index: number) {
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
     vbmappUuidParam.value = routeLocation.params.vbmappUuid;
-    await configTela();
-    titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.    
+
+    //await configTela();
+
+    titulosNivelUm.value = portageZeroHaUmAno.avaliacoes;
+
     getTitulosAvaliacoes(1, nivelSelecionado.value);
-    getData('coletasRealizadas');
+
+    //getData('coletasRealizadas');
 });
 
 </script>

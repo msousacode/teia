@@ -1,8 +1,8 @@
 import createHttp from './base/baseHttp';
 
-const http = createHttp('/api/vbmapp');
+const http = createHttp('/api/portage');
 
-export class VbMappService {
+export class PortageService {
   async postAvaliacao(object: any) {
     return await http
       .post('/avaliacoes', object)
@@ -24,11 +24,11 @@ export class VbMappService {
     return await http.post('/coletas', object);
   }
 
-  async getVbMappAvaliacaoConfigTelaById(id: string | null) {
+  async getPortageAvaliacaoConfigTelaById(id: string | null) {
     return await http.get(`/config-tela/${id}`).then((data) => {
       return {
         uuid: data.data.portageId,
-        niveis_coleta: data.data.idadesColeta,
+        idades_coleta: data.data.idadesColeta,
       };
     });
   }
