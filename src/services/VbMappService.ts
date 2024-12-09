@@ -27,8 +27,8 @@ export class VbMappService {
   async getVbMappAvaliacaoConfigTelaById(id: string | null) {
     return await http.get(`/config-tela/${id}`).then((data) => {
       return {
-        uuid: data.data.portageId,
-        niveis_coleta: data.data.idadesColeta,
+        uuid: data.data.vbMappId,
+        niveis_coleta: data.data.niveisColeta,
       };
     });
   }
