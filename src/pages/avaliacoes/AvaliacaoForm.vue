@@ -71,6 +71,7 @@ import { VbMappService } from 'src/services/VbMappService';
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { avaliacaoColumns, avaliacaoRows, avaliacaoPortageColumns, avaliacaoPortageRows } from './table';
+import { PortageService } from 'src/services/PortageService';
 
 const aprendizService = new AprendizService();
 
@@ -100,6 +101,7 @@ const form = ref({
     aprendiz: '',
     objetivo_documento: '',
     niveis_coleta: '',
+    idades_coleta: ''
 });
 
 const aprendizes = ref<any[]>([]);
@@ -119,12 +121,14 @@ const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.valu
 
 const vbMappService = new VbMappService();
 
+const portageService = new PortageService();
+
 async function avancar() {
 
     if (isVbmapp.value)
         criarAvaliacaoVbMapp();
     else if (isPortage.value)
-        console.log('Criar Portage...');
+        criarAvaliacaoPortage();
     else
         throw new Error('Nenhum protocolo selecionado.')
 }
@@ -154,6 +158,36 @@ async function criarAvaliacaoVbMapp() {
     } finally {
         $q.loading.hide();
     }
+}
+
+async function criarAvaliacaoPortage() {
+    const avaliacoes = idadeSelcionados.value.map(i => i.id);
+
+    form.value.aprendiz_uuid_fk = form.value.aprendiz.value;
+    form.value.idades_coleta = avaliacoes.toString();
+    form.value.protocolo = form.value.protocolo.label;
+
+    const object = toRaw(form.value);
+
+    console.log(object);
+
+    try {
+        $q.loading.show();
+        const { data, status } = await portageService.postAvaliacao(object);
+
+        if (data != null && status == 200) {
+            const uuid = form.value.aprendiz_uuid_fk;
+            router.push({ name: 'avaliacoes-coleta/portage', params: { aprendizUuid: uuid, portageId: data } });
+        } else {
+            error('erro ao criar avaliação.')
+        }
+
+    } catch (e) {
+        throw e;
+    } finally {
+        $q.loading.hide();
+    }
+
 }
 
 async function carregarSelectAprendizes() {
