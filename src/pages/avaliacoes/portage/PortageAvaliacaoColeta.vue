@@ -62,13 +62,14 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
+            <q-btn fab icon="save" color="green" @click="salvar" :disable="true" />
         </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
 import { portageZeroHaUmAno } from '../data/portage/portageZeroHaUmAno';
 import { portageUmHaDoisAno } from '../data/portage/portageUmHaDoisAno';
+import { portageDoisHaTresAno } from '../data/portage/portageDoisHaTresAno';
 import { onMounted } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
@@ -151,6 +152,11 @@ function carregarAvaliacao() {
         objetivos = portageUmHaDoisAno.avaliacoes
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || [];
+    } else if (idadeSelecionada.value == '3') {
+        objetivos = portageDoisHaTresAno.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || [];
+
     }
     //}
     /*
