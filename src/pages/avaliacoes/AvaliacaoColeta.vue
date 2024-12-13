@@ -67,8 +67,7 @@
                             : nivelSelecionado === '3'
                                 ? 'bg-blue-1'
                                 : ''">
-                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)"
-                            v-if="!item.id.toString().startsWith('3')" />
+                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -321,7 +320,21 @@ async function configTela() {
             showNiveis.value = niveis_coleta.split(',') || [];
 
             if (showNiveis.value.length == 1) {
-                nivelSelecionado.value = showNiveis.value[0]
+                nivelSelecionado.value = showNiveis.value[0];
+
+                switch (nivelSelecionado.value) {
+                    case '1':
+                        titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;
+                        break;
+                    case '2':
+                        titulosNivelUm.value = avaliacaoNivelDois.avaliacoes;
+                        break;
+                    case '3':
+                        titulosNivelUm.value = avaliacaoNivelTres.avaliacoes;
+                        break;
+                    default:
+                        return;
+                }
             }
 
         } else {
@@ -393,7 +406,6 @@ onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
     vbmappUuidParam.value = routeLocation.params.vbmappUuid;
     await configTela();
-    titulosNivelUm.value = avaliacaoNivelUm.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, nivelSelecionado.value);
     getData('coletasRealizadas');
 });
