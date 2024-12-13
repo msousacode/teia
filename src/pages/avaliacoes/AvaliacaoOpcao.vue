@@ -4,7 +4,6 @@
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
-
         <div class="q-mb-md" v-show="showOpcoes">
             <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name" class="my-sticky-column-table"
                 v-model:selected="selected" selection="single" :rows-per-page-options="[10]" :rows-per-page="10">
@@ -25,7 +24,7 @@
             <avaliacao-grafico v-bind="graficoDataProps"></avaliacao-grafico>
         </q-dialog>
 
-        <div v-if="isHabilitaProtocolos">
+        <div v-if="isHabilitaProtocolos && isVbmapp">
             <div class="text-teal text-h6">VB-MAPP</div>
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                 :rows-per-page-options="[10]" :rows-per-page="10">
@@ -46,6 +45,29 @@
                 </template>
             </q-table>
         </div>
+
+        <div v-if="isHabilitaProtocolos && isPortage">
+            <div class="text-teal text-h6">Portage</div>
+            <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
+                :rows-per-page-options="[10]" :rows-per-page="10">
+                <template v-slot:body-cell-actions="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsx="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsy="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" />
+                    </q-td>
+                </template>
+            </q-table>
+        </div>
+
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
@@ -77,6 +99,10 @@ const { error } = useNotify();
 const columns = ref<any[]>([]);
 
 const rows = ref<any[]>([]);
+
+const columnsPortage = ref<any[]>([]);
+
+const rowsPortage = ref<any[]>([]);
 
 const avaliacaoColumns = ref<any[]>([]);
 
@@ -156,6 +182,14 @@ watch(selected, () => {
     store.avaliacao = selected.value
 });
 
+const isVbmapp = computed(() => {
+    return selected.value[0].protocolo == 'VB-MAPP'
+})
+
+const isPortage = computed(() => {
+    return selected.value[0].protocolo == 'PORTAGE'
+})
+
 
 async function carregarSelectAprendizes() {
     try {
@@ -227,6 +261,24 @@ rows.value = [
     {
         name: 'PEI',
     },*/
+]
+
+columnsPortage.value = [
+    {
+        label: 'Avaliação',
+        align: 'center',
+        field: 'name'
+    },
+    { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
+    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
+    { name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
+]
+
+rowsPortage.value = [
+    {
+        name: 'Coleta',
+        path: 'avaliacoes-coleta/vbmapp'
+    },
 ]
 
 avaliacaoColumns.value = [
