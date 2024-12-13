@@ -46,32 +46,6 @@
                 </template>
             </q-table>
         </div>
-
-        <!--
-        <div class="q-pa-sm"></div>
-
-        <q-list bordered v-show="false">
-            <q-expansion-item expand-separator label="ABLLS" :disable="!isHabilitaProtocolos">
-                <q-card>
-                    <q-card-section>
-                        EM BREVE
-                    </q-card-section>
-                </q-card>
-            </q-expansion-item>
-        </q-list>
-
-        <div class="q-pa-sm"></div>
-
-        <q-list bordered v-show="false">
-            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!isHabilitaProtocolos">
-                <q-card>
-                    <q-card-section>
-                        EM BREVE
-                    </q-card-section>
-                </q-card>
-            </q-expansion-item>
-        </q-list>
--->
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
@@ -90,7 +64,7 @@ import { useRouter } from 'vue-router';
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
-import { VbMappService } from 'src/services/VbMappService';
+import { AvaliacaoService } from 'src/services/AvaliacaoService';
 
 const aprendizService = new AprendizService();
 
@@ -129,7 +103,7 @@ const isHabilitaProtocolos = computed(() => {
     return selected.value.length > 0 && showOpcoes;
 });
 
-const vbmappService = new VbMappService();
+const avaliacaoService = new AvaliacaoService();
 
 const dialog = ref(false);
 
@@ -156,7 +130,7 @@ watch(form.value, async () => {
 
     try {
         $q.loading.show();
-        const { data } = await vbmappService.getVbMappAvaliacaoByAprendizId(form.value.aprendiz.value);
+        const { data } = await avaliacaoService.getAvaliacoes(form.value.aprendiz.value);
 
         if (data) {
             const response = data.map((i, idx) => {
@@ -164,7 +138,7 @@ watch(form.value, async () => {
                     id: i.vbMappId,
                     name: `Avaliação - ${idx + 1}`,
                     protocolo: i.protocolo,
-                    nivel: i.niveisColeta,
+                    nivel: i.protocolo == 'VB-MAPP' ? `Nível ${i.tipo}` : i.protocolo == 'PORTAGE' ? `Idade: ${i.tipo}` : '',
                     align: 'left',
                 }
             })
@@ -262,14 +236,14 @@ avaliacaoColumns.value = [
         field: 'name'
     },
     {
-        label: 'Níveis',
-        align: 'left',
-        field: 'nivel'
-    },
-    {
         label: 'Protocolo',
         align: 'left',
         field: 'protocolo'
+    },
+    {
+        label: '#',
+        align: 'left',
+        field: 'nivel'
     },
 ]
 
