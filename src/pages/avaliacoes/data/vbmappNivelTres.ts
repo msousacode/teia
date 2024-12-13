@@ -2,11 +2,231 @@ const avaliacaoNivelTres = {
   nivel: 3,
   avaliacoes: [
     {
+      titulo: 'Mando',
+      tipo: 1,
+      objetivos: [
+        {
+          id: 321,
+          cod: '11M',
+          descricao:
+            'Espontaneamente emite mandos diferentes para obter informações verbais usando questões ( o que, qual, quem, onde, quando, porque), ou faz uso de palavra em forma de pergunta por 5 vezes. ( ex. "Qual seu nome?" " Quem é voçê ?" " Posso? . (OC 60m).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança espontaneamente faz perguntas e por quais motivos. Especificamente, determinar se há uma operação motivadora (OM) forte para que a pergunta seja realizada (informação). Obter a resposta é reforçador para a criança? Ela realmente quer saber a resposta ou a pergunta acontece por outra razão, como ganho de atenção?',
+            materiais:
+              'Itens reforçadores e atividades encontradas no ambiente natural da criança...',
+            exemplo:
+              '“O que é isso?” “O que você esta fazendo?” “Onde nós estamos indo?” “Posso ir?” “Você tem?” “Quem esta vindo?” “Quando nós podemos ir?”',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela espontaneamente emitir mandos para obter informação verbal usando pelo menos duas formas diferentes de questão WH ou outra palavra em forma de pergunta por 5 vezes durante uma observação de 1 hora.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela espontaneamente emitir mandos para obter informação verbal usando pergunta WH ou com palavras em forma de pergunta por 2 vezes durante uma observação de 1 hora.',
+            },
+          },
+        },
+        {
+          id: 322,
+          cod: '12M',
+          descricao:
+            'Educadamente emite mandos para parar uma atividade indesejada ou remover qualquer OM aversiva em 5 circunstâncias diferentes (ex. "Por favor, para de me empurrar", " Não obrigada", " Voçe pode sair da frente?) (O/T).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue educadamente e de forma apropriada emitir mandos para remover itens e eventos aversivos com palavras e não com comportamento negativo.',
+            materiais:
+              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
+            exemplo:
+              '“Por favor, não faz isso” “Você pode me deixar em paz” “Não obrigado, eu não quero brincar” “Talvez depois” “Posso ir agora? ”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela apropriadamente (i.e., sem comportamento negativo) emitir mandos sem auxílio de dicas para interromper uma atividade indesejada, pedir para não participar em uma atividade ou ainda tentar remover de outra maneira algo aversivo sob 5 circunstâncias diferentes.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela apropriadamente “sem comporta- mento negativo” emitir mandos sem auxílio de dicas para Interromper uma atividade indesejada, não participar em uma atividade ou de outra maneira remover algo aversivo sob 2 circunstâncias diferentes.',
+            },
+          },
+        },
+        {
+          id: 323,
+          cod: '13M',
+          descricao:
+            'Emite mandos com 10 adjetivos , preposições ou advérbios diferentes . (ex." Meu giz de cera verde quebrou", " Não leva usso para fora", " Vai rapido") (Oc: 60min)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se o repertório de mando da criança contém múltiplos componentes e está indo além de apenas nomes e verbos de forma a incluir diferentes partes do discurso.',
+            materiais:
+              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
+            exemplo:
+              '“Eu quero o coração vermelho” “Põe ele dentro da casinha” “Você se esconde embaixo da mesa” “Vai em silêncio” “Este é meu pedaço de papel” “Eu quero um salgadinho grande”',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir 10 mandos diferentes contendo adjetivos, preposições ou advérbios durante uma observação ou testagem de 1 hora. Deve haver emissão de pelo menos 2 de cada grupo adjetivos, preposições, ou advérbios para receber a pontuação total.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir 5 mandos diferentes contendo adjetivos, preposições ou advérbios durante uma observação ou testagem de 1 hora.',
+            },
+          },
+        },
+        {
+          id: 324,
+          cod: '14M',
+          descricao:
+            'Fornece informações, instruções ou explicações de como fazer algo ou de como particupar de uma atividade, por 5 vezes. ( Você passa a cola primeiro, depois cola. Você senta aqui enquanto eu busco o livro.) (O).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se o repertório de mando da criança é funcional nas atividades diárias e com outras pessoas, especialmente crianças.',
+            materiais:
+              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
+            exemplo:
+              '“Eu vou primeiro depois vai você.” “Não coloca a cola na sua boca.” “Vem sentar aqui.” “É sua vez agora.” “Você vai se esconder que eu conto.”',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela der informações, instruções ou explicações de como fazer algo ou de como participar de uma atividade por 5 vezes. Faça anotações diárias em folha de registro para acompanhar essa habilidade',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela der informações, instruções, ou explicações de como fazer algo ou participar de uma atividade 2 vezes. Faça anotações diárias em folha de registro para acompanhar essa habilidade.',
+            },
+          },
+        },
+        {
+          id: 325,
+          cod: '15M',
+          descricao:
+            'Emite mandos para que os outros atendem para seu comportamento intraverbal por 5 vezes .( Ex. Me escuta...Vou te contar ... Aconteceu isso...Eu estou contando a história...). (O)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança emite mandos para que uma audiência atente ao seu comportamento verbal corrente.',
+            materiais:
+              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
+            exemplo:
+              '“Eu vou falar.” “Aí ela disse.” “Eu estou falando.” “É minha vez.” “Eu falei para ela.” “Você sabe o que ela disse?”',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir mandos para que outros atentem ao seu próprio comportamento intraverbal por 5 vezes durante qualquer número de observações. Geralmente, isto pode ser mensurado por um mando que precede ou esta embutido em alguma sequência intraverbal “a descrição de uma criança de como fazer panquecas”.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir mandos para que outros atentem ao seu próprio comportamento intraverbal 2 vezes durante as observações.',
+            },
+          },
+        },
+      ],
+    },
+    {
+      titulo: 'Tato',
+      tipo: 2,
+      objetivos: [
+        {
+          id: 326,
+          cod: '11M',
+          descricao:
+            'Emite tatos para cor, forma e função de 5 objetos (15 tentativas) quando cada objeto e pergunta são apresentados em ordem misturada. (Qual a cor da geladeira? Qual forma de um ovo? O que voce faz com a bola?) ( Isto é parte tato e parte instraverbal). (T).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue emitir tatos para qualquer uma de três características ou funções de um único objeto quando solicitada a fazê-lo. É importante misturar as perguntas e os objetos pois muitas crianças podem ser bem sucedidas se todas as questões de cores forem perguntadas e depois todas as questões de formas, etc e isso torna-se uma espécie de dica. Responder a perguntas misturadas e com objetos diferentes é uma tarefa mais difícil e revela se de fato a criança tem a habilidade ou não.',
+            materiais:
+              'Itens comuns encontrados no ambiente natural da criança que ela pode facilmente tatear e uma lista das possíveis características e funções destes itens.',
+            exemplo:
+              'Usando figuras de uma maçã verde redonda, uma lixeira quadrada marrom e uma geladeira retangular branca, mostra-se para a criança uma figura por vez perguntando “O que você faz com isso?”, depois outra figura “Que cor é essa?”, então a terceira figura “Que forma é essa?” e assim por diante (misture as perguntas e as figuras).',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir tatos para cor, forma e função de 5 objetos diferentes (15 testagens) quando cada questão é solicitada durante uma testagem com sequência misturada.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir tatos para características ou funções de 5 objetos diferentes (10 testagens) quando cada questão é solicitada durante uma testagem com sequência misturada.',
+            },
+          },
+        },
+        {
+          id: 327,
+          cod: '12M',
+          descricao:
+            'Emite tatos com 4 diferentes preposições .( Dentro, fora, sobre, embaixo) e 4 pronomes (Eu, você, meu, minha). (O/T).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue emitir tatos para as relações espaciais entre objetos do ambiente e se a criança consegue emitir tatos com pronomes quando solicitada.',
+            materiais:
+              'Itens comuns encontrados no ambiente natural da criança que ela pode facilmente emitir como tatos e selecionar discriminação de ouvinte e uma lista de possíveis preposições e pronomes.',
+            exemplo:
+              'Quando perguntam “Onde está o cachorro?” e a criança corretamente responde “embaixo da cadeira” e mais tarde, quando o cachorro estiver sentado na cadeira e a mesma pergunta for apresentada, ela responde “sobre a cadeira”. Quando perguntam “De quem é a vez?” e a criança responde corretamente “É a vez dele” e mais tarde quando a mesma questão for apresentada, “De quem é a vez?” ela diz “É minha vez”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir tatos com 4 preposições diferentes e 4 pronomes diferentes quando testada.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir tatos para um total de 4 preposições ou pronomes mas com exemplos nas duas categorias. Dê 1⁄2 ponto para a criança se ela emitir tatos para 4 diferentes preposições, mas não 4 pronomes, ou vice versa. Identifique o que ela é capaz de fazer e não fazer na seção de “Comentários/ notas” do formulário de registro.',
+            },
+          },
+        },
+        {
+          id: 328,
+          cod: '13M',
+          descricao:
+            'Emite tatos com 4 diferentes adjetivos, excluído cores e formas.( Grande, pequeno, comprido, curto) e 4 advérbios ( Rápido, devagar, gentilmente, discretamente.) (O/T).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue emitir tatos para as propriedades de objetos (e. g., tamanho, comprimento, peso, textura) e as propriedades de ações (e. g., velocidade, consistência, intensidade) e se consegue emitir tatos quando as propriedades de um objeto ou ação, comprido e curto, pesado e leve, velho e novo, são comparadas com outro objeto ou ação, mais rápido, mais devagar).',
+            materiais:
+              'Itens comuns encontrados no ambiente natural da criança que ela pode facilmente emitir como tatos e discriminar como ouvinte, além de uma lista de possíveis adjetivos e advérbios.',
+            exemplo:
+              'Quando apresentada a dois canudos com comprimentos diferentes e indagada “Você pode me dizer o comprimento deste aqui?” a criança diz “É mais comprido que o outro”. Depois, quando o mesmo canudo for mostrado, comparado a um canudo mais comprido, a mesma pergunta resulta em “É menor que o outro ou mais curto” Ao testar advérbios, mostrar um vídeo com dois carros disputando corrida e fazer a pergun- ta “Você pode me dizer a velocidade deste carro?”. a criança diz “está mais devagar que este aqui”. Depois ao mostrar o mesmo carro, mas em um arranjo de comparação com carros mais lentos, a mesma pergunta resultará em “está indo mais rápido que este outro”. veja que a resposta correta em ambos os exemplos é parte intraverbal e parte tato, sendo que a parte intraverbal afeta o que está sendo tateado, sendo por conseguinte um tipo de discriminação condicional).',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir tatos para 4 diferentes adjetivos excluindo cor e forma e 4 diferentes advérbios.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir tatos para um total de 4 adjetivos ou advérbios, com exemplos de cada categoria. Dê 1⁄2 ponto para a criança se ela emitir tatos para 4 adjetivos diferentes, mas não 4 advérbios, ou vice versa. Identifique o que ela foi capaz de fazer e não fazer na seção de “Comentários/ notas” do formulário de registro.',
+            },
+          },
+        },
+        {
+          id: 329,
+          cod: '14M',
+          descricao:
+            'Emite tatos com sentenças completas contendo 4 ou mais palavras, 20 vezes (O/T). (Ex. " Essa é uma grande casquinha de sorvete!).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está emitindo sentenças completas e que contenham pelo menos 4 palavras.',
+            materiais: 'Itens e ações comuns do ambiente natural da criança.',
+            exemplo:
+              '“Essa é uma grande casquinha de sorvete!” “Minha mãe está lá” “É esta a lancheira dele!” “Ele colou uma estrela no cader- no”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir tatos com sentenças completas contendo 4 ou mais palavras 20 vezes.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir tatos com sentenças completas contendo 3 palavras 20 vezes.',
+            },
+          },
+        },
+        {
+          id: 330,
+          cod: '15M',
+          descricao:
+            'Possui um vocabulário de tato de 1000 palavras( nomes, verbos, adjetivos, etc) que foram testados ou de uma lista acumulada de tatos conhecidos. (T)',
+          selected: null,
+          observacoes: {
+            objetivo: 'Determinar o tamanho do repertório de tato da criança.',
+            materiais:
+              'Use livros, dicionário de figuras, cenas, cartões de figuras e objetos, ações, propriedades comuns do ambiente, etc.',
+            exemplo:
+              'Facilmente emite tatos para muitos itens em cada página de um livro infantil de figuras.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir tatos para 1000 estímulos não verbais, nomes, verbos, adjetivos, advérbios, pronomes, etc... Ou uma lista acumulada dos registros das palavras conhecidas pela criança pode ser usada. Isso pode parecer muito,mas uma criança de 4 anos com desenvolvimento típico tem um vocabulário de falante de 1500 a 2000 palavras. Existem muitos livros infantis (e.g., dicionário de figuras) que contém mais de 1000 figuras. Esta avaliação pode ocorrer ao longo de um período de tempo maior se necessário (e.g., uma lista acumulada) ou por amostras do seu repertório. Se uma criança facilmente consegue emitir tatos para centenas de itens, ações, propriedades, etc, é improvável que ela precise de metas de tato no PEI.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir tatos para 750 estímulos não verbais/nomes, verbos/adjetivos, advérbios, pronomes, etc... Ou de uma lista acumulada dos registros das palavras conhecidas pela criança pode ser utilizada.',
+            },
+          },
+        },
+      ],
+    },
+    {
       titulo: 'Ouvinte',
       tipo: 3,
       objetivos: [
         {
-          id: 310,
+          id: 331,
           cod: 11,
           descricao:
             'Seleciona itens por cor e forma em um arranjo de 6 estímulos similares, para 4 cores e 4 formas ( Ex. " Encontre o carro vermelho", " Encontre o biscoito quadrado".) (T).',
@@ -27,7 +247,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 311,
+          id: 332,
           cod: 12,
           descricao:
             'Segue 2 instruções envolvendo 6 preposições diferentes (ex.: Fique atrás da cadeira.) e 4 pronomes diferentes (ex.: Toque minha orelha.) (T)',
@@ -48,7 +268,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 312,
+          id: 333,
           cod: 13,
           descricao:
             'Seleciona itens de um arranjo de estímulos similares baseado na relação entre 4 pares de adjetivos(ex.: grande pequeno, longo-curto) e demonstra ações baseado em 4 pares de advérbios (ex.: quieto, barulhento, rápido-devagar) (T)',
@@ -69,7 +289,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 313,
+          id: 334,
           cod: 14,
           descricao:
             'Segue instruções com 3 passos para 10 direções diferentes (ex.: "Pegue seu casaco, pendure e sente na cadeira".) (T)',
@@ -90,7 +310,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 314,
+          id: 335,
           cod: 15,
           descricao:
             'Tem um repertório de ouvinte total de 1200 palavras (nomes, verbos, adjetivos, etc.), testados ou de uma lista de registro acumulada de palavras conhecidas (T)',
@@ -118,7 +338,7 @@ const avaliacaoNivelTres = {
       tipo: 4,
       objetivos: [
         {
-          id: 215,
+          id: 336,
           cod: '11M',
           descricao:
             'Espontaneamente emparelha qualquer parte de uma atividade artística ou artesanato com o modelo de outra pessoa por 2 vezes, um colega colore um balão de vermelho e a criança copia a cor para seu balão. (O)',
@@ -138,7 +358,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 216,
+          id: 337,
           cod: '12M',
           descricao:
             'Demonstra emparelhamento generalizado não idêntico em um conjunto desordenado de 10 itens com 3 estímulos similares, para 25 itens, combina novos itens na primeira tentativa. (T)',
@@ -159,7 +379,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 217,
+          id: 338,
           cod: '13M',
           descricao:
             'Completa 20 estruturas diferentes com blocos, encaixes, quebra cabeças de formas ou atividades similares e com pelo menos 8 peças diferentes. (T)',
@@ -180,7 +400,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 218,
+          id: 339,
           cod: '14M',
           descricao:
             'Organiza 5 itens de 5 categorias diferentes sem necessidade de um modelo. Exemplo: animais, roupas, móveis. (T)',
@@ -201,7 +421,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 219,
+          id: 340,
           cod: '15M',
           descricao:
             'Continua 20 padrões de três passos, sequências ou tarefas seriadas. Exemplo: estrela, triângulo, coração, estrela, triângulo. (T)',
@@ -223,342 +443,12 @@ const avaliacaoNivelTres = {
         },
       ],
     },
-
     {
-      titulo: 'Pareamento',
-      tipo: 4,
-      objetivos: [
-        {
-          id: 315,
-          cod: 11,
-          descricao:
-            'Espontaneamente emparelha qualquer parte de uma atividade artística ou artesanato com o modelo de outra pessoa por 2 vezes ( Ex. um colega colore um balão de vermelho e a criança copia a cor para seu balão). (O)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 316,
-          cod: 12,
-          descricao:
-            'Demonstra empareamento generalizado não idêntico em um conjunto desordenado de 10 itens com 3 estímulos similares, para 25 itens (combina novos itens na primeira tentativa). (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 317,
-          cod: 13,
-          descricao:
-            'Completa 20 estruturas diferentes com blocos,encaixe, quebra-cabeças de formas ou atividades similares e com pelo menos 8 peças diferentes (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 318,
-          cod: 14,
-          descricao:
-            'Organiza 5 itens de 5 categorias diferentes sem necessidade de um modelo (ex: animais, roupas,) (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 319,
-          cod: 15,
-          descricao:
-            'Continua 20 padrões de três passos, sequências, ou tarefas de seriadas(ex. estrela, triângulo, coração, estrela, triângulo.) (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Mando',
+      titulo: 'Brincar',
       tipo: 5,
       objetivos: [
         {
-          id: 320,
-          cod: '11M',
-          descricao:
-            'Espontaneamente emite mandos diferentes para obter informações verbais usando questões ( o que, qual, quem, onde, quando, porque), ou faz uso de palavra em forma de pergunta por 5 vezes. ( ex. "Qual seu nome?" " Quem é voçê ?" " Posso? . (OC 60m).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança espontaneamente faz perguntas e por quais motivos. Especificamente, determinar se há uma operação motivadora (OM) forte para que a pergunta seja realizada (informação). Obter a resposta é reforçador para a criança? Ela realmente quer saber a resposta ou a pergunta acontece por outra razão, como ganho de atenção?',
-            materiais:
-              'Itens reforçadores e atividades encontradas no ambiente natural da criança...',
-            exemplo:
-              '“O que é isso?” “O que você esta fazendo?” “Onde nós estamos indo?” “Posso ir?” “Você tem?” “Quem esta vindo?” “Quando nós podemos ir?”',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela espontaneamente emitir mandos para obter informação verbal usando pelo menos duas formas diferentes de questão WH ou outra palavra em forma de pergunta por 5 vezes durante uma observação de 1 hora.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela espontaneamente emitir mandos para obter informação verbal usando pergunta WH ou com palavras em forma de pergunta por 2 vezes durante uma observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 321,
-          cod: '12M',
-          descricao:
-            'Educadamente emite mandos para parar uma atividade indesejada ou remover qualquer OM aversiva em 5 circunstâncias diferentes (ex. "Por favor, para de me empurrar", " Não obrigada", " Voçe pode sair da frente?) (O/T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança consegue educadamente e de forma apropriada emitir mandos para remover itens e eventos aversivos com palavras e não com comportamento negativo.',
-            materiais:
-              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
-            exemplo:
-              '“Por favor, não faz isso” “Você pode me deixar em paz” “Não obrigado, eu não quero brincar” “Talvez depois” “Posso ir agora? ”.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela apropriadamente (i.e., sem comportamento negativo) emitir mandos sem auxílio de dicas para interromper uma atividade indesejada, pedir para não participar em uma atividade ou ainda tentar remover de outra maneira algo aversivo sob 5 circunstâncias diferentes.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela apropriadamente “sem comporta- mento negativo” emitir mandos sem auxílio de dicas para Interromper uma atividade indesejada, não participar em uma atividade ou de outra maneira remover algo aversivo sob 2 circunstâncias diferentes.',
-            },
-          },
-        },
-        {
-          id: 322,
-          cod: '13M',
-          descricao:
-            'Emite mandos com 10 adjetivos , preposições ou advérbios diferentes . (ex." Meu giz de cera verde quebrou", " Não leva usso para fora", " Vai rapido") (Oc: 60min)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se o repertório de mando da criança contém múltiplos componentes e está indo além de apenas nomes e verbos de forma a incluir diferentes partes do discurso.',
-            materiais:
-              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
-            exemplo:
-              '“Eu quero o coração vermelho” “Põe ele dentro da casinha” “Você se esconde embaixo da mesa” “Vai em silêncio” “Este é meu pedaço de papel” “Eu quero um salgadinho grande”',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir 10 mandos diferentes contendo adjetivos, preposições ou advérbios durante uma observação ou testagem de 1 hora. Deve haver emissão de pelo menos 2 de cada grupo adjetivos, preposições, ou advérbios para receber a pontuação total.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir 5 mandos diferentes contendo adjetivos, preposições ou advérbios durante uma observação ou testagem de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 323,
-          cod: '14M',
-          descricao:
-            'Fornece informações, instruções ou explicações de como fazer algo ou de como particupar de uma atividade, por 5 vezes. ( Você passa a cola primeiro, depois cola. Você senta aqui enquanto eu busco o livro.) (O).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se o repertório de mando da criança é funcional nas atividades diárias e com outras pessoas, especialmente crianças.',
-            materiais:
-              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
-            exemplo:
-              '“Eu vou primeiro depois vai você.” “Não coloca a cola na sua boca.” “Vem sentar aqui.” “É sua vez agora.” “Você vai se esconder que eu conto.”',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela der informações, instruções ou explicações de como fazer algo ou de como participar de uma atividade por 5 vezes. Faça anotações diárias em folha de registro para acompanhar essa habilidade',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela der informações, instruções, ou explicações de como fazer algo ou participar de uma atividade 2 vezes. Faça anotações diárias em folha de registro para acompanhar essa habilidade.',
-            },
-          },
-        },
-        {
-          id: 324,
-          cod: '15M',
-          descricao:
-            'Emite mandos para que os outros atendem para seu comportamento intraverbal por 5 vezes .( Ex. Me escuta...Vou te contar ... Aconteceu isso...Eu estou contando a história...). (O)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite mandos para que uma audiência atente ao seu comportamento verbal corrente.',
-            materiais:
-              'Itens reforçadores e atividades encontradas no ambiente natural da criança.',
-            exemplo:
-              '“Eu vou falar.” “Aí ela disse.” “Eu estou falando.” “É minha vez.” “Eu falei para ela.” “Você sabe o que ela disse?”',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir mandos para que outros atentem ao seu próprio comportamento intraverbal por 5 vezes durante qualquer número de observações. Geralmente, isto pode ser mensurado por um mando que precede ou esta embutido em alguma sequência intraverbal “a descrição de uma criança de como fazer panquecas”.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir mandos para que outros atentem ao seu próprio comportamento intraverbal 2 vezes durante as observações.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Tato',
-      tipo: 6,
-      objetivos: [
-        {
-          id: 325,
-          cod: '11M',
-          descricao:
-            'Emite tatos para cor, forma e função de 5 objetos (15 tentativas) quando cada objeto e pergunta são apresentados em ordem misturada. (Qual a cor da geladeira? Qual forma de um ovo? O que voce faz com a bola?) ( Isto é parte tato e parte instraverbal). (T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança consegue emitir tatos para qualquer uma de três características ou funções de um único objeto quando solicitada a fazê-lo. É importante misturar as perguntas e os objetos pois muitas crianças podem ser bem sucedidas se todas as questões de cores forem perguntadas e depois todas as questões de formas, etc e isso torna-se uma espécie de dica. Responder a perguntas misturadas e com objetos diferentes é uma tarefa mais difícil e revela se de fato a criança tem a habilidade ou não.',
-            materiais:
-              'Itens comuns encontrados no ambiente natural da criança que ela pode facilmente tatear e uma lista das possíveis características e funções destes itens.',
-            exemplo:
-              'Usando figuras de uma maçã verde redonda, uma lixeira quadrada marrom e uma geladeira retangular branca, mostra-se para a criança uma figura por vez perguntando “O que você faz com isso?”, depois outra figura “Que cor é essa?”, então a terceira figura “Que forma é essa?” e assim por diante (misture as perguntas e as figuras).',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir tatos para cor, forma e função de 5 objetos diferentes (15 testagens) quando cada questão é solicitada durante uma testagem com sequência misturada.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir tatos para características ou funções de 5 objetos diferentes (10 testagens) quando cada questão é solicitada durante uma testagem com sequência misturada.',
-            },
-          },
-        },
-        {
-          id: 326,
-          cod: '12M',
-          descricao:
-            'Emite tatos com 4 diferentes preposições .( Dentro, fora, sobre, embaixo) e 4 pronomes (Eu, você, meu, minha). (O/T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança consegue emitir tatos para as relações espaciais entre objetos do ambiente e se a criança consegue emitir tatos com pronomes quando solicitada.',
-            materiais:
-              'Itens comuns encontrados no ambiente natural da criança que ela pode facilmente emitir como tatos e selecionar discriminação de ouvinte e uma lista de possíveis preposições e pronomes.',
-            exemplo:
-              'Quando perguntam “Onde está o cachorro?” e a criança corretamente responde “embaixo da cadeira” e mais tarde, quando o cachorro estiver sentado na cadeira e a mesma pergunta for apresentada, ela responde “sobre a cadeira”. Quando perguntam “De quem é a vez?” e a criança responde corretamente “É a vez dele” e mais tarde quando a mesma questão for apresentada, “De quem é a vez?” ela diz “É minha vez”.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir tatos com 4 preposições diferentes e 4 pronomes diferentes quando testada.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir tatos para um total de 4 preposições ou pronomes mas com exemplos nas duas categorias. Dê 1⁄2 ponto para a criança se ela emitir tatos para 4 diferentes preposições, mas não 4 pronomes, ou vice versa. Identifique o que ela é capaz de fazer e não fazer na seção de “Comentários/ notas” do formulário de registro.',
-            },
-          },
-        },
-        {
-          id: 327,
-          cod: '13M',
-          descricao:
-            'Emite tatos com 4 diferentes adjetivos, excluído cores e formas.( Grande, pequeno, comprido, curto) e 4 advérbios ( Rápido, devagar, gentilmente, discretamente.) (O/T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança consegue emitir tatos para as propriedades de objetos (e. g., tamanho, comprimento, peso, textura) e as propriedades de ações (e. g., velocidade, consistência, intensidade) e se consegue emitir tatos quando as propriedades de um objeto ou ação, comprido e curto, pesado e leve, velho e novo, são comparadas com outro objeto ou ação, mais rápido, mais devagar).',
-            materiais:
-              'Itens comuns encontrados no ambiente natural da criança que ela pode facilmente emitir como tatos e discriminar como ouvinte, além de uma lista de possíveis adjetivos e advérbios.',
-            exemplo:
-              'Quando apresentada a dois canudos com comprimentos diferentes e indagada “Você pode me dizer o comprimento deste aqui?” a criança diz “É mais comprido que o outro”. Depois, quando o mesmo canudo for mostrado, comparado a um canudo mais comprido, a mesma pergunta resulta em “É menor que o outro ou mais curto” Ao testar advérbios, mostrar um vídeo com dois carros disputando corrida e fazer a pergun- ta “Você pode me dizer a velocidade deste carro?”. a criança diz “está mais devagar que este aqui”. Depois ao mostrar o mesmo carro, mas em um arranjo de comparação com carros mais lentos, a mesma pergunta resultará em “está indo mais rápido que este outro”. veja que a resposta correta em ambos os exemplos é parte intraverbal e parte tato, sendo que a parte intraverbal afeta o que está sendo tateado, sendo por conseguinte um tipo de discriminação condicional).',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir tatos para 4 diferentes adjetivos excluindo cor e forma e 4 diferentes advérbios.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir tatos para um total de 4 adjetivos ou advérbios, com exemplos de cada categoria. Dê 1⁄2 ponto para a criança se ela emitir tatos para 4 adjetivos diferentes, mas não 4 advérbios, ou vice versa. Identifique o que ela foi capaz de fazer e não fazer na seção de “Comentários/ notas” do formulário de registro.',
-            },
-          },
-        },
-        {
-          id: 328,
-          cod: '14M',
-          descricao:
-            'Emite tatos com sentenças completas contendo 4 ou mais palavras, 20 vezes (O/T). (Ex. " Essa é uma grande casquinha de sorvete!).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está emitindo sentenças completas e que contenham pelo menos 4 palavras.',
-            materiais: 'Itens e ações comuns do ambiente natural da criança.',
-            exemplo:
-              '“Essa é uma grande casquinha de sorvete!” “Minha mãe está lá” “É esta a lancheira dele!” “Ele colou uma estrela no cader- no”.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir tatos com sentenças completas contendo 4 ou mais palavras 20 vezes.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir tatos com sentenças completas contendo 3 palavras 20 vezes.',
-            },
-          },
-        },
-        {
-          id: 329,
-          cod: '15M',
-          descricao:
-            'Possui um vocabulário de tato de 1000 palavras( nomes, verbos, adjetivos, etc) que foram testados ou de uma lista acumulada de tatos conhecidos. (T)',
-          selected: null,
-          observacoes: {
-            objetivo: 'Determinar o tamanho do repertório de tato da criança.',
-            materiais:
-              'Use livros, dicionário de figuras, cenas, cartões de figuras e objetos, ações, propriedades comuns do ambiente, etc.',
-            exemplo:
-              'Facilmente emite tatos para muitos itens em cada página de um livro infantil de figuras.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir tatos para 1000 estímulos não verbais, nomes, verbos, adjetivos, advérbios, pronomes, etc... Ou uma lista acumulada dos registros das palavras conhecidas pela criança pode ser usada. Isso pode parecer muito,mas uma criança de 4 anos com desenvolvimento típico tem um vocabulário de falante de 1500 a 2000 palavras. Existem muitos livros infantis (e.g., dicionário de figuras) que contém mais de 1000 figuras. Esta avaliação pode ocorrer ao longo de um período de tempo maior se necessário (e.g., uma lista acumulada) ou por amostras do seu repertório. Se uma criança facilmente consegue emitir tatos para centenas de itens, ações, propriedades, etc, é improvável que ela precise de metas de tato no PEI.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir tatos para 750 estímulos não verbais/nomes, verbos/adjetivos, advérbios, pronomes, etc... Ou de uma lista acumulada dos registros das palavras conhecidas pela criança pode ser utilizada.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Brincar',
-      tipo: 7,
-      objetivos: [
-        {
-          id: 330,
+          id: 341,
           cod: '11M',
           descricao:
             'Espontaneamente se envolve em brincadeira imaginária ou faz de conta em 5 ocasiões. (EX. Brincar de vertir, uma festa com bichos de pelúcia, fingir que está cozinhando) (O).',
@@ -579,7 +469,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 331,
+          id: 342,
           cod: '12M',
           descricao:
             'Repete uma brincadeira motora grossa para obter um resultado melhor em duas atividades diferentes( ex. jogar uma bola na cesta, acertar a bola no jogo de taco, bater o pé para lançar um foguete, se esforçar para balançar mais rápido no balanço). (O).',
@@ -599,7 +489,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 332,
+          id: 343,
           cod: '13M',
           descricao:
             'Engaja-se de forma independente em atividades do tipo artesanato por 5 minutos(ex. colorir, pintura, cortar, colar). (O).',
@@ -619,7 +509,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 333,
+          id: 344,
           cod: '14M',
           descricao:
             'De forma independente se envolve em atividades de brincadeiras contínua por 10 minutos sem a presença de dicas ou necessidade de reforçamento de um adulto.(brincando com uma lousa mágica, brincar de vestir roupas diferentes). (O).',
@@ -640,7 +530,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 334,
+          id: 345,
           cod: '15M',
           descricao:
             'De forma independente desenha ou escreve em livros de atividade pré- acadêmicas por 5 minutos(. Ex, ponto a ponto, jôgos de pareamento, labirintos, traçar letras e números). (O).',
@@ -661,13 +551,12 @@ const avaliacaoNivelTres = {
         },
       ],
     },
-
     {
       titulo: 'Social',
-      tipo: 8,
+      tipo: 6,
       objetivos: [
         {
-          id: 335,
+          id: 346,
           cod: '11M',
           descricao:
             'Coopera espontaneamente com um colega para alcançar um resultado específico por 5 vezes (.ex: uma criança segura um balde enquanto outra o enche de água). (O/T).',
@@ -688,7 +577,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 336,
+          id: 347,
           cod: '12M',
           descricao:
             'Espontaneamente emite mandos aos colegas utilizando uma pergunta WH por 5 vezes( Ex. " Onde você está indo?" " O que é isso? " Quem você está imitando?)(OC 60 min.)',
@@ -709,7 +598,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 337,
+          id: 348,
           cod: '13M',
           descricao:
             'Responde de forma intraverbalmente a 5 questões ou afirmações diferentes oriundas dos dos colegas (ex: verbalmente responde quando o colega pergunta " Do que você quer brincar?) (O/T)',
@@ -729,7 +618,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 338,
+          id: 349,
           cod: '14M',
           descricao:
             'Participa de atividades de faz de conta e brincadeira social com colegas por 5 minutos sem dicas de adulto(ex: brincandeira de vestir fantasia, encenar filmes, brincar de casinha). (O)',
@@ -749,7 +638,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 339,
+          id: 350,
           cod: '15M',
           descricao:
             'Participa de 4 trocas verbais sobre 1 tópico com colegas para 5 tópicos distintos.( ex. as crianças conversam entre elas como fazer um rio em uma caixa de areia). (O).',
@@ -770,346 +659,213 @@ const avaliacaoNivelTres = {
         },
       ],
     },
-
     {
-      titulo: 'Vocal',
-      tipo: 9,
+      titulo: 'Leitura',
+      tipo: 7,
       objetivos: [
-        {
-          id: 340,
-          cod: 11,
-          descricao:
-            'Seleciona o item correto de um arranjo de 10 itens que contenham 3 estímulos similares (Ex. cores, forma ou classe, embora eles não sejam as escolhas corretas), para 25 questões WH diferentes em tarefas LRFFC.(T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 341,
-          cod: 12,
-          descricao:
-            'Seleciona itens de um livro baseado em 2 componentes verbais: uma característica (ex. cor), função (ex. desenha com), ou classe (ex. roupa) para 25 tarefas LRFFC (ex. "Você vê um animal marrom?" "Você pode encontrar a roupa com botões?"). (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 342,
-          cod: 13,
-          descricao:
-            'Seleciona itens de uma página de livro ou no ambiente natural a partir de 3 componentes verbais (Ex. verbo, adjetivo, preposição, pronome) para 25 tarefas LRFFC iniciadas com perguntas WH.(Ex. Qual fruta cresce em árvore?) (T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 343,
-          cod: 14,
-          descricao:
-            'Seleciona os itens corretos de um livro ou no ambiente natural quando 4 diferentes perguntas LRFFC sobre um único assunto são realizadas de forma alternada.(ex. "Onde mora a vaca ? " O que a vaca come?" "Quem ordenha a vaca?") para 25 tópicos diferentes.(T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 344,
-          cod: 15,
-          descricao:
-            'Demonstra 1000 respostas LRFFC diferentes, testadas ou obtidas de uma lista acumulada de respostas conhecidas. (T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Resposta',
-      tipo: 10,
-      objetivos: [
-        {
-          id: 340,
-          cod: -1,
-          descricao: 'Sem critérios',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-      ],
-    },
-    {
-      titulo: 'Interverbal',
-      tipo: 11,
-      objetivos: [
-        {
-          id: 345,
-          cod: 11,
-          descricao:
-            'Espontaneamente emite 20 comentários intraverbais (podem ser parte mando) (ex. O pai diz " Eu vou até o carro" e a criança espontaneamente diz "Eu quero dar uma volta") (O).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 346,
-          cod: 12,
-          descricao:
-            'Demonstra 300 respostas intraverbais diferentes testadas ou obtidas de uma lista acumulada de intraverbais conhecidos. (T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 347,
-          cod: 13,
-          descricao:
-            'Responde 2 perguntas depois de ler ouvido a leitura de uma passagem curta (15 ou mais palavras) de um livro, para 25 passagens (ex. Quem soprou a casa até derrubá-la?).(T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 348,
-          cod: 14,
-          descricao:
-            'Descreve 25 eventos diferentes, vídeos, histórias, etc. com 8 ou mais palavras (ex: Me conte o que aconteceu... "O monstro grande assustou todo mundo e eles correram para dentro de casa)". (O/T).',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-        {
-          id: 349,
-          cod: 15,
-          descricao:
-            'Responde 4 diferentes questões com WH alternadassobre um único tópico para 10 tópicos diferentes (ex: Quem leva você para a escola? Que escola você vai? O que você leva para a escola?) (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Grupo',
-      tipo: 12,
-      objetivos: [
-        {
-          id: 350,
-          cod: 11,
-          descricao: 'Usa o vaso e lava as mãos apenas com dicas verbais. (O)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
         {
           id: 351,
-          cod: 12,
+          cod: '11M',
           descricao:
-            'Responde 5 diferentes perguntas ou instruções quando em grupo de 3 ou mais crianças sem necessitar de dicas diretas. (ex. "Todo mundo levantando !" " Alguém está usando uma camisa vermelha?)". (O).',
+            'A criança atenta a um livro quando uma história é lida para ela por 75% das vezes (OC. 3min)',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
+              'Determinar se a criança mostra interesse em livros e em ter adultos lendo para ela.',
+            materiais: 'Livros infantis.',
             exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+              'A criança senta ao lado de um adulto que está lendo uma história para ela e permanece olhando as páginas do livro sem dicas para atentar ao livro.',
             pontuacao: {
               umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1 ponto à criança se ela atentar ao livro quando um história for lida para ela por 75% do tempo em um período de 3 minutos, sem quaisquer dicas para atentar ao livro.',
               meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1 ponto à criança se ela atentar ao livro quando um história for lida para ela por 50% do tempo em um período de 3 minutos, sem quaisquer dicas para atentar ao livro. Lida para ela por 50% do tempo em um período de 3 minutos, sem quaisquer dicas para atentar ao livro.',
             },
           },
         },
         {
           id: 352,
-          cod: 13,
+          cod: '12M',
           descricao:
-            'Trabalha em grupo de forma independentemente por 5 minutos e permanece na tarefa por 50% do período. (O)',
+            'Seleciona (discriminação de ouvinte) a letras maiúscula corretas de um arranjo de 5 letras para 10 letras diferentes (T)',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
+              'Determinar se a criança discrimina como ouvinte entre letras maiúsculas.',
+            materiais: 'Uma coleção de letras maiúsculas.',
             exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+              'Quando um arranjo de pelo menos 5 letras diferentes é apresentado e a criança instruída “toque a letra R” a criança toca a letra R.',
             pontuacao: {
               umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1 ponto à criança se ela selecionar a letra maiúscula correta em um arranjo de 5 letras para 10 letras diferentes.',
               meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1⁄2 ponto à criança se ela selecionar a letra maiúscula correta em umarranjo de 5 letras para 5 letras diferentes.',
             },
           },
         },
         {
           id: 353,
-          cod: 14,
-          descricao:
-            'Adquire 2 comportamentos novos quando colocada por 15 minutos em uma tarefa de ensino de grupo que envolva 5 ou mais crianças. (T)',
+          cod: '13M',
+          descricao: 'Emite tatos 10 letras maiúsculas quando solicitada. (T)',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
+              'Determinar se a criança emite tatos para algumas letras maiúsculas.',
+            materiais: 'Uma coleção de letras maiúsculas.',
             exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+              'Quando a letra “R” é apresentada com dica verbal, “Que letra é essa?” a criança diz “R”.',
             pontuacao: {
               umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1 ponto à criança se ela emitir tatos para 10 letras maiúsculas.',
               meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1⁄2 ponto à criança se ela emitir tatos para 5 letras maiúsculas.',
             },
           },
         },
         {
           id: 354,
-          cod: 15,
+          cod: '14M',
+          descricao: 'Lê seu próprio nome (T)',
+          selected: null,
+          observacoes: {
+            objetivo: 'Determinar se a criança lê seu próprio nome.',
+            materiais:
+              'O nome da criança escrito em um cartão ou pedaço de papel',
+            exemplo:
+              'Quando a palavra escrita “MARIA” é apresentada, a criança diz “MARIA”, porém, não diz “MARIA” quando outras palavras distratoras são apresentadas.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela ler seu próprio nome apenas com a dica verbal “O que diz aqui?”. Tenha cuidado para não dizer algo como “Dê quem é esse nome?” pois este estímulo por si já pode evocar intraverbalmente o nome da criança (a menos que diversos nomes sejam utilizados). Também atente para que outras palavras não evoquem o nome dela e que não seja somente o seu cartão pessoal (como na escola) a evocar a resposta (algumas cores, padrões, etc., podem ser a fonte de controle para a resposta da criança).',
+              meioPonto: 'Nenhum.',
+            },
+          },
+        },
+        {
+          id: 355,
+          cod: '15M',
           descricao:
-            'Senta em uma sessão de grupo por 20 minutos com mais 5 crianças sem comportamentos disruptivo e responde 5 questões intraverbais (T)',
+            'Emparelha 5 palavras com os iténs ou figuras correspondentes em um arranjo de 5 e vice versa. (Ex. combina palavra escrita pássaro com a figura de um pássaro). (T)',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
+              'Determinar se a criança combina palavras escritas com os itens ou figuras correspondentes e vice versa (este é um exemplo de leitura compreensiva).',
+            materiais:
+              'Uma coletânea de palavras escritas e as figuras ou objetos relacionados. Exemplo: gato, carro, bebê, bola).',
             exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+              'Quando apresentada com a palavra escrita “carro” a criança consegue combinar a palavra com a figura em um arranjo com pelo menos 4 outros itens.',
             pontuacao: {
               umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1 ponto à criança se ela combinar 5 palavras com as figuras ou itens correspondentes em um arranjo de 5 e vice versa.',
               meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+                'Dê 1⁄2 ponto à criança se ela combinar 3 palavras com as figuras ou itens correspondentes em um arranjo de 3 e vice versa.',
+            },
+          },
+        },
+      ],
+    },
+    {
+      titulo: 'Escrita',
+      tipo: 8,
+      objetivos: [
+        {
+          id: 356,
+          cod: '11M',
+          descricao:
+            'Imita 5 ações diferentes de escrita com modelo fornecido por um adulto usando um instrumento de escrita e uma superfície de escrita. (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue segurar um instrumento de escrita e copiar de um adulto movimentos de desenho simples.',
+            materiais:
+              'Qualquer instrumento de escrita (e.g., giz de cera, marcador, giz, lápis), e superfície relacionada (e.g., papel, quadro branco).',
+            exemplo:
+              'A criança imita desenhar para frente e para trás, para cima e para baixo, em círculos e linhas curvas.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela imitar 5 ações diferentes de escrita com o modelo de um adulto.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela imitar 3 ações diferentes de escrita com o modelo de um adulto.',
+            },
+          },
+        },
+        {
+          id: 357,
+          cod: '12M',
+          descricao:
+            'De forma independente faz um traçado distante somente 0,5 cm das linhas já desenhadas, para 5 diferentes formas geométricas círculo, quadrado, triângulo, retângulo, estrela. (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue controlar suficientemente o instrumento de escrita a fim de traçar formas geométricas específicas dentro de um limite definido.',
+            materiais:
+              'Qualquer instrumento de escrita (e.g., giz de cera, marcador, giz, lápis), e superfície relacionada (e.g., papel, quadro branco).',
+            exemplo:
+              'A criança traça um círculo com uma diferença não maior que 0,5 cm do modelo.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela traçar de forma independente pelo menos 80% de uma figura com uma diferença não maior que 0,5 cm do modelo para 5 formas geométricas. Formas com múltiplos ângulos (e.g.,. uma estrela) podem ser difíceis, mas reconheça o esforço da criança se ela chegar perto.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela traçar de forma independente pelo menos 80% de uma figura com uma diferença não maior que 1,2 cm do modelo para 5 formas geométricas.',
+            },
+          },
+        },
+        {
+          id: 358,
+          cod: '13M',
+          descricao: 'Copia 10 letras ou números de forma legível. (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue copiar letras e números específicos.',
+            materiais:
+              'Qualquer instrumento de escrita (e.g., giz de cera, marcador, giz, lápis) e superfície relacionada (e.g., papel, quadro branco).',
+            exemplo: 'A criança copia as letras A, B e C e os números 1 e 2.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela copiar 10 letras ou números de qualquer tamanho de forma legível (e.g., um observador pode identificar a letra ou número sem ver o modelo).',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela copiar 5 letras ou números de qualquer tamanho de forma legível.',
+            },
+          },
+        },
+        {
+          id: 359,
+          cod: '14M',
+          descricao:
+            'Identifica como ouvinte 8 comparações diferentes que envolvam medidas(ex.: mais e menos, grande e pequeno, comprido e curto, cheio e vazio, alto e baixo.)(T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue escrever seu próprio nome e a escrita é legível para uma segunda pessoa.',
+            materiais:
+              'Qualquer tipo de instrumento de escrita (giz de cera, marcador, giz, lápis) e superfície relacionada (papel, quadro branco).',
+            exemplo:
+              'A criança escreve seu nome em um pedaço de papel com linha.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela, de forma independente e legível, escrever e soletrar corretamente seu próprio nome (“legível” não precisa ser perfeito, isso vem com a prática).',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela escrever de forma aproximada as letras do seu nome, embora não sejam claras o suficiente para serem lidas, e/ou escrever seu nome errado/pular letra (erros ortográficos).',
+            },
+          },
+        },
+        {
+          id: 360,
+          cod: '15M',
+          descricao:
+            'Copia todas as 26 letras maiúsculas e minúsculas de forma legível. (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar a habilidade da criança de copiar letras específicas.',
+            materiais:
+              'Qualquer tipo de instrumento de escrita (giz de cera, marcador, giz, lápis) e superfície relacionada (papel, quadro branco)',
+            exemplo: 'A criança copia qualquer letra quando mostrado o modelo.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela copiar de forma independente todas as 26 letras maiúsculas e minúsculas em cópias legíveis.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela copiar as letras de forma aproximada, embora não estejam claras o suficiente para serem lidas.',
             },
           },
         },
@@ -1118,10 +874,10 @@ const avaliacaoNivelTres = {
 
     {
       titulo: 'LRFFC',
-      tipo: 13,
+      tipo: 9,
       objetivos: [
         {
-          id: 355,
+          id: 361,
           cod: '11M',
           descricao:
             'Seleciona o item correto em um arranjo de 10 itens que contenham 3 estímulos similares (e.g., cor similar, forma ou classe, embora eles não sejam as escolhas corretas), para 25 questões WH diferentes em tarefas de LRFFC. (T)',
@@ -1142,7 +898,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 356,
+          id: 362,
           cod: '12M',
           descricao:
             'Seleciona itens de um livro baseado em 2 componentes verbais: uma característica (e.g., cor) ou função (e.g., desenha com) ou classe (e.g., roupa) para 25 tarefas LRFFC (e.g., “Você vê um animal marrom?” “Você consegue encontrar a roupa com botões?”). (T)',
@@ -1163,7 +919,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 357,
+          id: 363,
           cod: '13M',
           descricao:
             'Seleciona itens de uma página de livro ou no ambiente natural a partir de 3 componentes verbais (e.g., verbo, adjetivo, preposição, pronome), para 25 tarefas LRFFC iniciadas com perguntas WH (e.g., Qual fruta cresce em árvores?). (T)',
@@ -1184,7 +940,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 358,
+          id: 364,
           cod: '14M',
           descricao:
             'Seleciona os itens corretos de um livro ou do ambiente natural quando 4 diferentes perguntas LRFFC sobre um único assunto são realizadas de forma alternada (Onde mora a vaca? O que a vaca come? Quem ordenha a vaca? para 25 tópicos diferentes. (T)',
@@ -1205,7 +961,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 359,
+          id: 365,
           cod: '15M',
           descricao:
             'Demonstra 1000 respostas LRFFC diferentes, testadas ou obtidas de uma lista acumulada de respostas conhecidas. (T)',
@@ -1229,132 +985,27 @@ const avaliacaoNivelTres = {
     },
 
     {
-      titulo: 'Leitura',
-      tipo: 14,
-      objetivos: [
-        {
-          id: 360,
-          cod: '11M',
-          descricao:
-            'A criança atenta a um livro quando uma história é lida para ela por 75% das vezes (OC. 3min)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança mostra interesse em livros e em ter adultos lendo para ela.',
-            materiais: 'Livros infantis.',
-            exemplo:
-              'A criança senta ao lado de um adulto que está lendo uma história para ela e permanece olhando as páginas do livro sem dicas para atentar ao livro.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela atentar ao livro quando um história for lida para ela por 75% do tempo em um período de 3 minutos, sem quaisquer dicas para atentar ao livro.',
-              meioPonto:
-                'Dê 1 ponto à criança se ela atentar ao livro quando um história for lida para ela por 50% do tempo em um período de 3 minutos, sem quaisquer dicas para atentar ao livro. Lida para ela por 50% do tempo em um período de 3 minutos, sem quaisquer dicas para atentar ao livro.',
-            },
-          },
-        },
-        {
-          id: 361,
-          cod: '12M',
-          descricao:
-            'Seleciona (discriminação de ouvinte) a letras maiúscula corretas de um arranjo de 5 letras para 10 letras diferentes (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança discrimina como ouvinte entre letras maiúsculas.',
-            materiais: 'Uma coleção de letras maiúsculas.',
-            exemplo:
-              'Quando um arranjo de pelo menos 5 letras diferentes é apresentado e a criança instruída “toque a letra R” a criança toca a letra R.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela selecionar a letra maiúscula correta em um arranjo de 5 letras para 10 letras diferentes.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela selecionar a letra maiúscula correta em umarranjo de 5 letras para 5 letras diferentes.',
-            },
-          },
-        },
-        {
-          id: 362,
-          cod: '13M',
-          descricao: 'Emite tatos 10 letras maiúsculas quando solicitada. (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança emite tatos para algumas letras maiúsculas.',
-            materiais: 'Uma coleção de letras maiúsculas.',
-            exemplo:
-              'Quando a letra “R” é apresentada com dica verbal, “Que letra é essa?” a criança diz “R”.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela emitir tatos para 10 letras maiúsculas.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela emitir tatos para 5 letras maiúsculas.',
-            },
-          },
-        },
-        {
-          id: 363,
-          cod: '14M',
-          descricao: 'Lê seu próprio nome (T)',
-          selected: null,
-          observacoes: {
-            objetivo: 'Determinar se a criança lê seu próprio nome.',
-            materiais:
-              'O nome da criança escrito em um cartão ou pedaço de papel',
-            exemplo:
-              'Quando a palavra escrita “MARIA” é apresentada, a criança diz “MARIA”, porém, não diz “MARIA” quando outras palavras distratoras são apresentadas.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela ler seu próprio nome apenas com a dica verbal “O que diz aqui?”. Tenha cuidado para não dizer algo como “Dê quem é esse nome?” pois este estímulo por si já pode evocar intraverbalmente o nome da criança (a menos que diversos nomes sejam utilizados). Também atente para que outras palavras não evoquem o nome dela e que não seja somente o seu cartão pessoal (como na escola) a evocar a resposta (algumas cores, padrões, etc., podem ser a fonte de controle para a resposta da criança).',
-              meioPonto: 'Nenhum.',
-            },
-          },
-        },
-        {
-          id: 364,
-          cod: '15M',
-          descricao:
-            'Emparelha 5 palavras com os iténs ou figuras correspondentes em um arranjo de 5 e vice versa. (Ex. combina palavra escrita pássaro com a figura de um pássaro). (T)',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança combina palavras escritas com os itens ou figuras correspondentes e vice versa (este é um exemplo de leitura compreensiva).',
-            materiais:
-              'Uma coletânea de palavras escritas e as figuras ou objetos relacionados. Exemplo: gato, carro, bebê, bola).',
-            exemplo:
-              'Quando apresentada com a palavra escrita “carro” a criança consegue combinar a palavra com a figura em um arranjo com pelo menos 4 outros itens.',
-            pontuacao: {
-              umPonto:
-                'Dê 1 ponto à criança se ela combinar 5 palavras com as figuras ou itens correspondentes em um arranjo de 5 e vice versa.',
-              meioPonto:
-                'Dê 1⁄2 ponto à criança se ela combinar 3 palavras com as figuras ou itens correspondentes em um arranjo de 3 e vice versa.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      titulo: 'Escrita',
-      tipo: 15,
+      titulo: 'Interverbal',
+      tipo: 10,
       objetivos: [
         {
           id: 366,
           cod: '11M',
           descricao:
-            'Imita 5 ações diferentes de escrita com modelo fornecido por um adulto usando um instrumento de escrita e uma superfície de escrita. (T)',
+            'Espontaneamente emite 20 comentários intraverbais (podem ser parte mando) (e.g., O pai diz “Eu vou até o carro” e a criança espontaneamente diz “Eu quero dar uma volta”). (O) tais como um “tom de voz de tentativa discreta” ou menção do nome da criança. A resposta verbal pode também ser parte mando porque o estímulo verbal pode criar uma OM e, o estímulo verbal e a OM se combinarem para evocar a resposta. Este efeito é muito comum em crianças mais novas.',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança consegue segurar um instrumento de escrita e copiar de um adulto movimentos de desenho simples.',
+              'Determinar se a criança atenta e verbalmente responde aos conteúdo verbais de outras pessoas com as quais ela se depara em seu cotidiano sem o uso de dicas. O componente espontâneo deste marco é crítico. O estímulo verbal deve ocorrer naturalmente e não conter elementos que forneçam dicas para a resposta da criança,',
             materiais:
-              'Qualquer instrumento de escrita (e.g., giz de cera, marcador, giz, lápis), e superfície relacionada (e.g., papel, quadro branco).',
+              'Uma folha de registros. Nenhum outro material específico é necessário.',
             exemplo:
-              'A criança imita desenhar para frente e para trás, para cima e para baixo, em círculos e linhas curvas.',
+              'A criança escuta “Nós vamos para a casa da vovó hoje”, e esse comentário espontaneamente evoca “Vovó tem muitos brinquedos”. A criança escuta “Homem aranha ficou preso na teia gigante”, e isso evoca espontaneamente “Alguém precisa ajudar o homem aranha”. A criança escuta um colega dizer “estou construindo um castelo”, e espontaneamente diz “Estou construindo um barco”. A criança sentada em um grupo grande de crianças escuta “Quem pode me dizer o nome de uma fruta?” e ela diz “banana”. O estímulo verbal “Quem quer sorvete?” pode imediatamente aumentar o valor do sorvete e ao mesmo tempo reforçar intraverbalmente “eu quero chocolate”. A resposta “eu quero chocolate” é controlada em parte por uma OM por chocolate, mas também pelo estímulo verbal “sorvete”, portanto é parte mando e parte intraverbal.',
             pontuacao: {
               umPonto:
-                'Dê 1 ponto à criança se ela imitar 5 ações diferentes de escrita com o modelo de um adulto.',
+                'Dê 1 ponto à criança se ela espontaneamente emitir 20 respostas intraverbais em seu ambiente natural no curso de um único dia.',
               meioPonto:
-                'Dê 1⁄2 ponto à criança se ela imitar 3 ações diferentes de escrita com o modelo de um adulto.',
+                'Dê 1⁄2 ponto à criança se ela espontaneamente emitir 10 respostas intraverbais em um dia.',
             },
           },
         },
@@ -1362,39 +1013,40 @@ const avaliacaoNivelTres = {
           id: 367,
           cod: '12M',
           descricao:
-            'De forma independente faz um traçado distante somente 0,5 cm das linhas já desenhadas, para 5 diferentes formas geométricas círculo, quadrado, triângulo, retângulo, estrela. (T)',
+            'Demonstra 300 respostas intraverbais diferentes testadas ou obtidas de uma lista acumulada de intraverbais conhecidos. (T).',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança consegue controlar suficientemente o instrumento de escrita a fim de traçar formas geométricas específicas dentro de um limite definido.',
+              'Determinar se o tamanho do repertório intraverbal está aumentando. Esta medida é apenas uma amostra do repertório, uma vez que é quase impossível mensurar todas as relações intraverbais que a criança é capaz de emitir. O número de relações intraverbais deve chegar a milhares, a medida em que a criança progride para os próximos dois marcos intraverbais.',
             materiais:
-              'Qualquer instrumento de escrita (e.g., giz de cera, marcador, giz, lápis), e superfície relacionada (e.g., papel, quadro branco).',
+              'Uma folha de registro. Uma lista de potenciais questões e tarefas intraverbais.',
             exemplo:
-              'A criança traça um círculo com uma diferença não maior que 0,5 cm do modelo.',
+              '“Qual é o seu animal favorito?” “Você conhece algumas cores?”, “Onde mora o peixe?”, “Quem leva você para a escola?”, “O que você gosta de beber?”.',
             pontuacao: {
               umPonto:
-                'Dê 1 ponto à criança se ela traçar de forma independente pelo menos 80% de uma figura com uma diferença não maior que 0,5 cm do modelo para 5 formas geométricas. Formas com múltiplos ângulos (e.g.,. uma estrela) podem ser difíceis, mas reconheça o esforço da criança se ela chegar perto.',
+                'Dê 1 ponto à criança se ela demonstrar pelo menos 300 respostas intraverbais diferentes quando solicitada para faze-lo. Muitos programas mantém folhas de registro contendo respostas intraverbais conhecidas. Estas listas podem ser usadas.',
               meioPonto:
-                'Dê 1⁄2 ponto à criança se ela traçar de forma independente pelo menos 80% de uma figura com uma diferença não maior que 1,2 cm do modelo para 5 formas geométricas.',
+                'Dê 1⁄2 ponto à criança se ela demonstrar pelo menos 200 respostas intraverbais diferentes quando solicitada para fazê-lo.',
             },
           },
         },
         {
           id: 368,
           cod: '13M',
-          descricao: 'Copia 10 letras ou números de forma legível. (T)',
+          descricao:
+            'Responde 2 perguntas depois de ler ouvido a leitura de uma passagem curta (15 ou mais palavras) de um livro, para 25 passagens (ex. Quem soprou a casa até derrubá-la?).(T)',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança consegue copiar letras e números específicos.',
-            materiais:
-              'Qualquer instrumento de escrita (e.g., giz de cera, marcador, giz, lápis) e superfície relacionada (e.g., papel, quadro branco).',
-            exemplo: 'A criança copia as letras A, B e C e os números 1 e 2.',
+              'Determinar se a criança atenta à uma história que está sendo lida para ela e se isso fortalece seu comportamento intraver- bal de forma que seja capaz de emitir -lo após ouvir a história. Esta habilidade é um marco importante porque envolve muitas atividades linguísticas como compreensão, reconto e expansão de novos conteúdos verbais. Também constitui um importante formato de ensino para muitas salas de aulas do ensino elementar, visto que ler histórias e discuti-las pode estabelecer um comportamento verbal mais complexo para as crianças. Portanto é importante ensinar este repertório. A parte mais significativa para a pontuação deste marco é que a criança seja capaz de responder intraverbalmente às questões após ouvir uma história. Evite questões que conduzam ou contenham certas dicas (e.g., ecoicas, intraverbais) ou exijam apenas respostas de sim ou não.',
+            materiais: 'Uma variedade de livros infantis.',
+            exemplo:
+              'Depois de ler a seguinte passagem do Ursinho Pooh “ O porquinho vira a cabeça devagar e ele vê que Pooh está roncando! „Oh Ursinho Pooh!‟ diz o porquinho”. O adulto pergunta “O que Pooh está fazendo?” e a criança responde “ele estava roncando”. Depois de ler “Os três porquinhos”, o adulto pergunta algo do tipo “O que o Lobo Mau fez?” “Onde foram todos os porquinhos?”, “Do que eram feitas as casas dos porquinhos?”.',
             pontuacao: {
               umPonto:
-                'Dê 1 ponto à criança se ela copiar 10 letras ou números de qualquer tamanho de forma legível (e.g., um observador pode identificar a letra ou número sem ver o modelo).',
+                'Dê 1 ponto à criança se ela responder 2 questões para cada uma das 25 passagens curtas (15+ palavras) de um livro ou outro material escrito.',
               meioPonto:
-                'Dê 1⁄2 ponto à criança se ela copiar 5 letras ou números de qualquer tamanho de forma legível.',
+                'Dê 1⁄2 ponto à criança se ela responder 1 pergunta para cada uma das 25 passagens curtas (com 10 palavras ao menos).',
             },
           },
         },
@@ -1402,20 +1054,19 @@ const avaliacaoNivelTres = {
           id: 369,
           cod: '14M',
           descricao:
-            'Identifica como ouvinte 8 comparações diferentes que envolvam medidas(ex.: mais e menos, grande e pequeno, comprido e curto, cheio e vazio, alto e baixo.)(T)',
+            'Descreve 25 eventos diferentes, vídeos, histórias, etc. com 8 ou mais palavras (ex: Me conte o que aconteceu... "O monstro grande assustou todo mundo e eles correram para dentro de casa)". (O/T).',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar se a criança consegue escrever seu próprio nome e a escrita é legível para uma segunda pessoa.',
-            materiais:
-              'Qualquer tipo de instrumento de escrita (giz de cera, marcador, giz, lápis) e superfície relacionada (papel, quadro branco).',
+              'Determinar se a criança consegue falar sobre coisas que não estão fisicamente presentes e as descreve de maneira suficientemente coerente para que um ouvinte compreenda. Essa atividade exemplifica a importância das habilidades intraverbais pois o falante é capaz de contar sobre coisas e eventos, mesmo que eles tenham ocorrido no passado e não estejam fisicamente presentes. Observe que os eventos devem ser recentes e de interesse da criança.',
+            materiais: 'Nenhum material específico é exigido',
             exemplo:
-              'A criança escreve seu nome em um pedaço de papel com linha.',
+              'Perguntar para a criança sobre um evento do tipo “O que você fez na casa da vovó? a criança diz “Vovó e eu fizemos biscoitos e a gente comeu” ou, depois de assistir um seguimento do desenho “Rei Leão” o adulto pergunta “O que você assistiu?” e a criança diz “Scar é um leão malvado e fez Mufasa cair do penhasco”.',
             pontuacao: {
               umPonto:
-                'Dê 1 ponto à criança se ela, de forma independente e legível, escrever e soletrar corretamente seu próprio nome (“legível” não precisa ser perfeito, isso vem com a prática).',
+                'Dê 1 ponto à criança se ela descrever 25 eventos diferentes, vídeos, histórias, etc., com pelo menos 8 palavras. As respostas somente devem ser consideradas certas se elas ocorrerem sem dicas ecóicas. As descrições verbais da criança devem ainda ser evocadas por outras palavras e não por eventos visuais (isto faria da resposta parte tato).',
               meioPonto:
-                'Dê 1⁄2 ponto à criança se ela escrever de forma aproximada as letras do seu nome, embora não sejam claras o suficiente para serem lidas, e/ou escrever seu nome errado/pular letra (erros ortográficos).',
+                'Dê 1⁄2 ponto para a criança se ela descrever pelo menos 12 eventos diferentes, vídeos, histórias, etc., com ao menos 5 palavras.',
             },
           },
         },
@@ -1423,19 +1074,369 @@ const avaliacaoNivelTres = {
           id: 370,
           cod: '15M',
           descricao:
-            'Copia todas as 26 letras maiúsculas e minúsculas de forma legível. (T)',
+            'Responde 4 diferentes questões com WH alternadassobre um único tópico para 10 tópicos diferentes (ex: Quem leva você para a escola? Que escola você vai? O que você leva para a escola?) (T)',
           selected: null,
           observacoes: {
             objetivo:
-              'Determinar a habilidade da criança de copiar letras específicas.',
-            materiais:
-              'Qualquer tipo de instrumento de escrita (giz de cera, marcador, giz, lápis) e superfície relacionada (papel, quadro branco)',
-            exemplo: 'A criança copia qualquer letra quando mostrado o modelo.',
+              'Determinar se a criança consegue com sucesso responder de forma alternada as perguntas WH cujos conteúdos são similares ou sobre o mesmo tópico. Perguntas desse tipo são difíceis para muitas crianças porque elas envolvem discrimi- nações condicionais complexas onde uma palavra altera o efeito (“significado”) de outras palavras na sentença. A criança precisa cuidadosamente atentar para cada palavra da sentença para dar a resposta correta. Geralmente crianças em torno dos 4 anos conseguem com sucesso responder questões desse tipo, embora a ocorrência de erros permaneça por mais um ou dois anos dependendo do tópico e dos componentes da questão. Note que perguntas com “quando” envolvem conceito de tempo e muitas crianças de 4 anos com desenvolvimento típico não acertam estas pergun- tas.',
+            materiais: 'Uma lista de tópicos potenciais e perguntas.',
+            exemplo:
+              '“Onde foi sua festa de aniversário?” “Que presentes você ganhou na sua festa?” “Quem veio para sua festa?” “Do que era o bolo da festa de aniversário”',
             pontuacao: {
               umPonto:
-                'Dê 1 ponto à criança se ela copiar de forma independente todas as 26 letras maiúsculas e minúsculas em cópias legíveis.',
+                'Dê 1 ponto à criança se ela responder 4 questões WH diferentes sobre um único tópico para 10 tópicos. As questões ou perguntas devem ser feitas em sequência, uma imediatamente após a outra.',
               meioPonto:
-                'Dê 1⁄2 ponto à criança se ela copiar as letras de forma aproximada, embora não estejam claras o suficiente para serem lidas.',
+                'Dê 1⁄2 ponto à criança se ela responder 3 questões WH diferentes sobre um único tópico, para 5 tópicos.',
+            },
+          },
+        },
+      ],
+    },
+
+    {
+      titulo: 'Vocal',
+      tipo: 11,
+      objetivos: [
+        {
+          id: 371,
+          cod: 11,
+          descricao:
+            'Seleciona o item correto de um arranjo de 10 itens que contenham 3 estímulos similares (Ex. cores, forma ou classe, embora eles não sejam as escolhas corretas), para 25 questões WH diferentes em tarefas LRFFC.(T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
+            exemplo:
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+            pontuacao: {
+              umPonto:
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+            },
+          },
+        },
+        {
+          id: 372,
+          cod: 12,
+          descricao:
+            'Seleciona itens de um livro baseado em 2 componentes verbais: uma característica (ex. cor), função (ex. desenha com), ou classe (ex. roupa) para 25 tarefas LRFFC (ex. "Você vê um animal marrom?" "Você pode encontrar a roupa com botões?"). (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
+            exemplo:
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+            pontuacao: {
+              umPonto:
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+            },
+          },
+        },
+        {
+          id: 373,
+          cod: 13,
+          descricao:
+            'Seleciona itens de uma página de livro ou no ambiente natural a partir de 3 componentes verbais (Ex. verbo, adjetivo, preposição, pronome) para 25 tarefas LRFFC iniciadas com perguntas WH.(Ex. Qual fruta cresce em árvore?) (T).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
+            exemplo:
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+            pontuacao: {
+              umPonto:
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+            },
+          },
+        },
+        {
+          id: 374,
+          cod: 14,
+          descricao:
+            'Seleciona os itens corretos de um livro ou no ambiente natural quando 4 diferentes perguntas LRFFC sobre um único assunto são realizadas de forma alternada.(ex. "Onde mora a vaca ? " O que a vaca come?" "Quem ordenha a vaca?") para 25 tópicos diferentes.(T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
+            exemplo:
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+            pontuacao: {
+              umPonto:
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+            },
+          },
+        },
+        {
+          id: 375,
+          cod: 15,
+          descricao:
+            'Demonstra 1000 respostas LRFFC diferentes, testadas ou obtidas de uma lista acumulada de respostas conhecidas. (T).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
+            exemplo:
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+            pontuacao: {
+              umPonto:
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+            },
+          },
+        },
+      ],
+    },
+
+    {
+      titulo: 'Resposta',
+      tipo: 12,
+      objetivos: [
+        {
+          id: 376,
+          cod: -1,
+          descricao: 'Sem critérios',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
+            materiais: 'Nenhum.',
+            exemplo:
+              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
+            pontuacao: {
+              umPonto:
+                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+              meioPonto:
+                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
+            },
+          },
+        },
+      ],
+    },
+
+    {
+      titulo: 'Grupo',
+      tipo: 13,
+      objetivos: [
+        {
+          id: 377,
+          cod: '11M',
+          descricao: 'Usa o vaso e lava as mãos apenas com dicas verbais. (O)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue usar adequadamente o vaso e lavar as mãos quando solicitada sem precisar de dicas físicas.',
+            materiais:
+              'Vaso, pia, sabão, toalha e um banquinho para alcançar a pia.',
+            exemplo:
+              'Quando solicitada a usar o vaso sanitário, a criança se senta no vaso ou fica em pé se não receber dicas físicas.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela usar o vaso e lavar as mãos com dicas verbais somente.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela usar o vaso e lavar as mãos, mas precisar de assistência física.',
+            },
+          },
+        },
+        {
+          id: 378,
+          cod: '12M',
+          descricao:
+            'Responde 5 diferentes perguntas ou instruções quando em grupo de 3 ou mais crianças sem necessitar de dicas diretas. (ex. "Todo mundo levantando !" " Alguém está usando uma camisa vermelha?)". (O).',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue com sucesso responder à instruções verbais que não incluam seu nome ou qualquer dica verbal direta. Este tipo de instrução verbal é comumente chamado de “instruções de grupo” e é comum nas atividades de sala de aula envolvendo grupos pequenos e grandes.',
+            materiais: 'Nenhum material específico.',
+            exemplo:
+              'Quando um professor diz “Todos os meninos façam fila com os outros meninos”, a criança obedece. Quando o professor pergunta “Quem conhece algo que tem gosto azedo?” a criança responde “limão”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela responder a 5 instruções de grupo ou perguntas diferentes em um grupo de 3 ou mais crianças e sem dicas.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela responder a 2 instruções de grupo ou perguntas diferentes em um grupo de 3 ou mais crianças e sem dicas.',
+            },
+          },
+        },
+        {
+          id: 379,
+          cod: '13M',
+          descricao:
+            'Trabalha em grupo de forma independentemente por 5 minutos e permanece na tarefa por 50% do período. (O)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue trabalhar em uma dada tarefa designada quando em grupo por um período contínuo de tempo e sem dicas de adultos para que fique focada na tarefa.',
+            materiais:
+              'Uma folha de registros e materiais de sala de aula básicos.',
+            exemplo:
+              'A criança completa duas páginas de uma tarefa de matemática programada com apenas uma dica inicial do adulto para fazê-lo.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela trabalhar de forma independente por 5 minutos em uma atividade/sessão de grupo que envolva 3 ou mais crianças e permanecer focada na tarefa por 50% do tempo.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela trabalhar de forma independente por 2 minutos em uma atividade/sessão de grupo que envolva 3 ou mais crianças e ficar focada na tarefa por 50% do tempo.',
+            },
+          },
+        },
+        {
+          id: 380,
+          cod: '14M',
+          descricao:
+            'Adquire 2 comportamentos novos quando colocada por 15 minutos em uma tarefa de ensino de grupo que envolva 5 ou mais crianças. (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue aprender novas habilidades em um formato de ensino de grupo.',
+            materiais:
+              'Uma folha de registros e materiais de sala de aula básicos.',
+            exemplo:
+              'Ao acompanhar uma aula de grupo cujo tema discutido é a segurança em caso de incêndio, a criança é capaz de responder uma pergunta sobre o que fazer em caso de incêndio.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela apresentar 2 novos comportamentos quando colocada por 15 minutos em uma tarefa de ensino de grupo que envolva 5 ou mais crianças.',
+              meioPonto:
+                'Dê 1 ponto à criança se ela apresentar 1 novos comportamentos quando colocada por 15 minutos em uma tarefa de ensino de grupo que envolva 5 ou mais crianças.',
+            },
+          },
+        },
+        {
+          id: 381,
+          cod: '15M',
+          descricao:
+            'Senta em uma sessão de grupo por 20 minutos com mais 5 crianças sem comportamentos disruptivo e responde 5 questões intraverbais (T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue emitir habilidades de grupo apropriadas, manter comportamento apropriado de atentar e participação nas atividades verbais durante uma atividade acadêmica de ensino em grupo.',
+            materiais:
+              'Uma folha de registros e materiais de sala de aula básicos.',
+            exemplo:
+              'Durante uma discussão sobre plantas o professor pergunta “Quem sabe o que uma planta precisa para crescer?” a criança alvo, que está sentada apropriadamente, levanta a mão e depois de ser chamada responde “Sol e água”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela sentar apropriadamente e responder 5 questões intraverbais em um formato de ensino de grupo de 20 minutos que envolva 5 ou mais crianças.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela sentar apropriadamente e responder 2 questões intraverbais em um formato de ensino de grupo de 20 minutos que envolva 5 ou mais crianças.',
+            },
+          },
+        },
+      ],
+    },
+
+    {
+      titulo: 'Linguística',
+      tipo: 14,
+      objetivos: [
+        {
+          id: 382,
+          cod: '11M',
+          descricao:
+            'Emite inflexão 5 de nome ao combinar a raíz de 10 substantivos com sufixos para o plural (e.g., cachorro vs. cachorros) e 10 pronomes possessivos (e.g., dele, dela, meu, seu). (O/T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue apropriadamente emitir nomes no singular e no plural e fazer a concordância correta ao usar pronomes possessivos',
+            materiais: 'Itens comuns de casa ou de sala de aula.',
+            exemplo:
+              'Para nomes e plural, criança diz “Onde estão meus livros” para pronomes de posse “O carro é dela”',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir inflexão de substantivos em qualquer dos operantes verbais menos ecóico (e.g., mando, tato, ou intraverbal) ao combinar 10 substantivos com sufixos para plural e 10 possessivos.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir inflexão de substantivo para 10 combinações nomes plural, mas não 10 combinações para possessivos ou vice versa.',
+            },
+          },
+        },
+        {
+          id: 383,
+          cod: '12M',
+          descricao:
+            'Emite inflexões de verbo ao combinar 10 verbos com sufixo para passado simples (e.g., comeu) e 10 para futuro simples (e.g., comerá). (O/T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança consegue apropriadamente emitir sentenças com verbos no passado e no futuro.',
+            materiais: 'Itens comuns de casa ou de sala de aula.',
+            exemplo:
+              'Para sentenças com verbos no passado “Eu joguei bola com Maria”, para sentenças no futuro “ Eu jogarei bola com João”',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir inflexão de verbos com qualquer dos operantes verbais menos ecóico (mando, tato, ou intraverbal) para 10 verbos no passado e 10 verbos no futuro.',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir inflexão verbal com quaisquer dos operantes verbais, menos ecóico (mando, tato, intraverbal) para 10 verbos no passado, mas não para 10 verbos no futuro ou vice versa.',
+            },
+          },
+        },
+        {
+          id: 384,
+          cod: '13M',
+          descricao:
+            'Emite 10 frases diferentes com verbos que contenham pelo menos 3 palavras e modificadores (advérbio, preposição, pronome) (e.g., “Empurra com força” “Fique em cima dos degraus”). (O/T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança modifica verbos com advérbios, (e.g., cor, tamanho, forma, sabor), preposições (e.g.: localização espacial, ou em relação a outros itens) ou pronomes (e.g.: possessão, substituição da frase nominal).',
+            materiais: 'Itens comuns de casa ou de sala de aula.',
+            exemplo:
+              '“Eu quero o boné azul”, “Coloque o trem no túnel”, “O cachorro mastigou meu sapato".',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir 10 frases verbais diferentes com 3 palavras e 2 modificadores com qualquer dos operantes verbais exceto ecóico (mando, tato, ou intraverbal)',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir 5 frases verbais diferentes com 3 palavras e 2 modificadores com qualquer dos operantes verbais exceto ecóico (mando, tato, ou intraverbal)',
+            },
+          },
+        },
+        {
+          id: 385,
+          cod: '14M',
+          descricao:
+            'Emite 10 frases diferentes com verbos que contenham pelo menos 3 palavras e modificadores (advérbio, preposição, pronome) (e.g.,“Empurra com força” “Fique em cima dos degraus”). (O/T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança modifica verbos com advérbios, preposições ou pronomes',
+            materiais: 'Itens comuns de casa ou de sala de aula.',
+            exemplo:
+              '“Faça mais devagar”, “Eu chutei a bola com força”, “Você está sendo muito tonto”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela emitir 10 frases verbais diferentes com 3 palavras e 2 modificadores com qualquer dos operantes verbais exceto ecóico (mando, tato, ou intraverbal)',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela emitir 5 frases verbais diferentes com 3 palavras e 2 modificadores com qualquer dos operantes verbais exceto ecóico (mando, tato, ou intraverbal)',
+            },
+          },
+        },
+        {
+          id: 386,
+          cod: '15M',
+          descricao:
+            'Combina frases com substantivo e verbo para produzir 10 sentenças diferentes, sintaticamente corretas, contendo pelo menos 5 palavras (e.g., O cachorro lambeu minha cara”). (O/T)',
+          selected: null,
+          observacoes: {
+            objetivo:
+              'Determinar se a criança constrói frases com substantivo e verbo para formar sentenças mais completas e longas.',
+            materiais: 'Itens comuns de casa ou de sala de aula.',
+            exemplo:
+              'Comece uma conversa com a criança sobre um assunto do interesse dela, como um filme ou evento específico. Depois, faça perguntas do tipo “O que aconteceu com a bruxa no Mágico de Oz?” e a criança responde “Ela derreteu quando Dorothy jogou água nela”, ou, “Porque você parou de brincar lá fora?” e a criança responde “Minha bola vermelha rolou para a rua”.',
+            pontuacao: {
+              umPonto:
+                'Dê 1 ponto à criança se ela combinar frases com substantivo e verbo para produzir 10 sentenças diferentes, sintaticamente corretas, contendo pelo menos 5 palavras com qualquer dos operantes verbais exceto ecóico (mando, tato ou intraverbal).',
+              meioPonto:
+                'Dê 1⁄2 ponto à criança se ela combinar frases com substantivo e verbo para produzir 05 sentenças diferentes, sintaticamente corretas, contendo pelo menos 5 palavras com qualquer dos operantes verbais exceto ecóico (mando, tato ou intraverbal).',
             },
           },
         },
@@ -1447,7 +1448,7 @@ const avaliacaoNivelTres = {
       tipo: 15,
       objetivos: [
         {
-          id: 366,
+          id: 387,
           cod: '11M',
           descricao:
             'Identifica como ouvinte os números de 1 a 5 em um arranjo com 5 números diferentes. (T)',
@@ -1468,7 +1469,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 367,
+          id: 388,
           cod: '12M',
           descricao: 'Emite tatos para os números 1 a 5. (T)',
           selected: null,
@@ -1487,7 +1488,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 368,
+          id: 389,
           cod: '13M',
           descricao:
             'Retira a quantidade correta de itens entre 1 e 5 de um conjunto com quantidade maior quando solicitada a fazê-lo (e.g., “Pegue 4 carros”; “Agora me dê 2 carros”). (T)',
@@ -1507,7 +1508,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 369,
+          id: 390,
           cod: '14M',
           descricao:
             'Identifica como ouvinte 8 comparações diferentes que envolvam medidas (e.g., mais e menos, grande e pequeno, comprido e curto, cheio e vazio, alto e baixo). (T)',
@@ -1527,7 +1528,7 @@ const avaliacaoNivelTres = {
           },
         },
         {
-          id: 370,
+          id: 391,
           cod: '15M',
           descricao:
             'Corretamente combina um número escrito com a quantidade e a quantidade com um número escrito para os números de 1 a 5 (e.g., combina o número 3 com uma figura que mostra 3 caminhões). (T)',
