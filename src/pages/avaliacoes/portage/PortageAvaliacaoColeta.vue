@@ -238,9 +238,7 @@ async function configTela() {
             portageId.value = uuid;
             idades.value = idades_coleta.split(',') || [];
 
-            if (idades.value.length == 1) {
-                idadeSelecionada.value = idades.value[0]
-            }
+            idadeSelecionada.value = idades.value[0];
 
         } else {
             error('Erro ao tentar consultar o VBMAPP');
@@ -303,7 +301,7 @@ onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
     await configTela();
     titulosNivelUm.value = portageZeroHaUmAno.avaliacoes;//esse aqui fica porque é padrão não apagar.    
-    getTitulosAvaliacoes(1, '1');
+    getTitulosAvaliacoes(1, idadeSelecionada.value);
     getData('coletasRealizadas');
 });
 
