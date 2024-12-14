@@ -144,8 +144,9 @@
 
                 <q-separator />
 
+                <q-checkbox v-model="acceptTerms" label="Li e concordo com os termos" class="q-mt-md q-ml-md" />
+
                 <q-card-actions align="center" class="q-mt-md">
-                    <q-checkbox v-model="acceptTerms" label="Li e concordo com os termos" />
                     <q-btn :disable="!acceptTerms" label="Li e concordo com os termos" color="primary"
                         @click="handleAccept" class="q-mt-md q-mb-md" />
                 </q-card-actions>

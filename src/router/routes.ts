@@ -102,7 +102,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'avaliacoes-coleta/portage',
-        path: '/avaliacoes-coleta/portage/aprendiz/:aprendizUuid/avaliacao/:portageId?',
+        path: '/avaliacoes-coleta/portage/aprendiz/:aprendizUuid/avaliacao/:portageId',
         component: () =>
           import('pages/avaliacoes/portage/PortageAvaliacaoColeta.vue'),
         meta: { requiresAuth: true },

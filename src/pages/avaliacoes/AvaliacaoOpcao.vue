@@ -4,7 +4,6 @@
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
-
         <div class="q-mb-md" v-show="showOpcoes">
             <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name" class="my-sticky-column-table"
                 v-model:selected="selected" selection="single" :rows-per-page-options="[10]" :rows-per-page="10">
@@ -25,7 +24,7 @@
             <avaliacao-grafico v-bind="graficoDataProps"></avaliacao-grafico>
         </q-dialog>
 
-        <div v-if="isHabilitaProtocolos">
+        <div v-if="isHabilitaProtocolos && isVbmapp">
             <div class="text-teal text-h6">VB-MAPP</div>
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
                 :rows-per-page-options="[10]" :rows-per-page="10">
@@ -47,31 +46,28 @@
             </q-table>
         </div>
 
-        <!--
-        <div class="q-pa-sm"></div>
+        <div v-if="isHabilitaProtocolos && isPortage">
+            <div class="text-teal text-h6">Portage</div>
+            <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
+                :rows-per-page-options="[10]" :rows-per-page="10">
+                <template v-slot:body-cell-actions="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsx="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsy="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" />
+                    </q-td>
+                </template>
+            </q-table>
+        </div>
 
-        <q-list bordered v-show="false">
-            <q-expansion-item expand-separator label="ABLLS" :disable="!isHabilitaProtocolos">
-                <q-card>
-                    <q-card-section>
-                        EM BREVE
-                    </q-card-section>
-                </q-card>
-            </q-expansion-item>
-        </q-list>
-
-        <div class="q-pa-sm"></div>
-
-        <q-list bordered v-show="false">
-            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!isHabilitaProtocolos">
-                <q-card>
-                    <q-card-section>
-                        EM BREVE
-                    </q-card-section>
-                </q-card>
-            </q-expansion-item>
-        </q-list>
--->
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
@@ -90,7 +86,7 @@ import { useRouter } from 'vue-router';
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
-import { VbMappService } from 'src/services/VbMappService';
+import { AvaliacaoService } from 'src/services/AvaliacaoService';
 
 const aprendizService = new AprendizService();
 
@@ -103,6 +99,10 @@ const { error } = useNotify();
 const columns = ref<any[]>([]);
 
 const rows = ref<any[]>([]);
+
+const columnsPortage = ref<any[]>([]);
+
+const rowsPortage = ref<any[]>([]);
 
 const avaliacaoColumns = ref<any[]>([]);
 
@@ -129,7 +129,7 @@ const isHabilitaProtocolos = computed(() => {
     return selected.value.length > 0 && showOpcoes;
 });
 
-const vbmappService = new VbMappService();
+const avaliacaoService = new AvaliacaoService();
 
 const dialog = ref(false);
 
@@ -156,15 +156,15 @@ watch(form.value, async () => {
 
     try {
         $q.loading.show();
-        const { data } = await vbmappService.getVbMappAvaliacaoByAprendizId(form.value.aprendiz.value);
+        const { data } = await avaliacaoService.getAvaliacoes(form.value.aprendiz.value);
 
         if (data) {
             const response = data.map((i, idx) => {
                 return {
-                    id: i.vbMappId,
+                    id: i.id,
                     name: `Avaliação - ${idx + 1}`,
                     protocolo: i.protocolo,
-                    nivel: i.niveisColeta,
+                    nivel: i.protocolo == 'VB-MAPP' ? `Nível ${i.tipo}` : i.protocolo == 'PORTAGE' ? `Idade: ${i.tipo}` : '',
                     align: 'left',
                 }
             })
@@ -181,6 +181,14 @@ watch(form.value, async () => {
 watch(selected, () => {
     store.avaliacao = selected.value
 });
+
+const isVbmapp = computed(() => {
+    return selected.value[0].protocolo == 'VB-MAPP'
+})
+
+const isPortage = computed(() => {
+    return selected.value[0].protocolo == 'PORTAGE'
+})
 
 
 async function carregarSelectAprendizes() {
@@ -216,7 +224,13 @@ function ir(tipoAvaliacao: any) {
 
     const tipoColeta = avaliacaoEscolhida.name.toLocaleLowerCase();
 
-    router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
+    if (isPortage.value) {
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, portageId: obj.id } });
+    }
+
+    if (isVbmapp.value) {
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
+    }
 }
 
 onMounted(() => {
@@ -255,6 +269,24 @@ rows.value = [
     },*/
 ]
 
+columnsPortage.value = [
+    {
+        label: 'Avaliação',
+        align: 'center',
+        field: 'name'
+    },
+    { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
+    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
+    { name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
+]
+
+rowsPortage.value = [
+    {
+        name: 'Coleta',
+        path: 'avaliacoes-coleta/portage'
+    },
+]
+
 avaliacaoColumns.value = [
     {
         label: 'Avaliações',
@@ -262,14 +294,14 @@ avaliacaoColumns.value = [
         field: 'name'
     },
     {
-        label: 'Níveis',
-        align: 'left',
-        field: 'nivel'
-    },
-    {
         label: 'Protocolo',
         align: 'left',
         field: 'protocolo'
+    },
+    {
+        label: '#',
+        align: 'left',
+        field: 'nivel'
     },
 ]
 
