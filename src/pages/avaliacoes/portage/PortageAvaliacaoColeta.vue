@@ -1,6 +1,5 @@
 <template>
     <q-page padding>
-
         <div class="text-teal">{{ descritivoTitulo }}</div>
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
@@ -33,16 +32,16 @@
                         <div class="q-pa-md q-gutter-y-md flex justify-center">
                             <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
                                 <q-btn label="Não"
-                                    :class="item.selected === 1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 1)" />
                                 <q-btn label="As vezes"
-                                    :class="item.selected === 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    :class="item.selected == 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0.5)" />
                                 <q-btn label="Sim"
-                                    :class="item.selected === 0 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0)" />
                                 <q-btn label="NA"
-                                    :class="item.selected === -1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, -1)" />
                             </q-btn-group>
                         </div>
@@ -62,7 +61,7 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="save" color="green" @click="salvar" :disable="true" />
+            <q-btn fab icon="save" color="green" @click="salvar" />
         </q-page-sticky>
     </q-page>
 </template>
@@ -133,7 +132,7 @@ async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string) 
 
     cards.value = carregarAvaliacao();
 
-    //refresh();
+    refresh();
 }
 
 function carregarAvaliacao() {
@@ -158,41 +157,14 @@ function carregarAvaliacao() {
             .find(i => i)?.objetivos || [];
 
     }
-    //}
-    /*
-        } else if (nivelSelecionado.value == '2') {
-    
-            if (tipoAvaliacao.value == 'tarefas') {
-                objetivos = avaliacaoNivelDoisTarefas.avaliacoes
-                    .filter(i => i.tipo == tipoColeta)
-                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-            } else {
-                objetivos = avaliacaoNivelDois.avaliacoes
-                    .filter(i => i.tipo == tipoColeta)
-                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-            }
-    
-        } else if (nivelSelecionado.value == '3') {
-    
-            if (tipoAvaliacao.value == 'tarefas') {
-                objetivos = avaliacaoNivelDoisTarefas.avaliacoes
-                    .filter(i => i.tipo == tipoColeta)
-                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-            } else {
-                objetivos = avaliacaoNivelTres.avaliacoes
-                    .filter(i => i.tipo == tipoColeta)
-                    .find(i => i)?.objetivos || []; // Obtém os objetivos ou um array vazio  
-            }
-        }*/
-    /*
-            const newObjetivos = objetivos.map(obj => ({
-                ...obj, // Mantém as outras propriedades  
-                selected: null // Altera a propriedade 'selected' para null  
-            }));
-    */
 
-    console.log(objetivos)
-    return objetivos;
+    const newObjetivos = objetivos.map(obj => ({
+        ...obj, // Mantém as outras propriedades  
+        selected: null // Altera a propriedade 'selected' para null  
+    }));
+
+
+    return newObjetivos;
 }
 
 async function salvar() {
@@ -202,6 +174,10 @@ async function salvar() {
     const itens = coletas.get("coletasRealizadas");
 
     try {
+
+        if (itens.length == 0)
+            return;
+
         $q.loading.show();
         const { data } = await portageService.postColetaAvaliacao(itens);
 
@@ -237,7 +213,7 @@ async function refresh() {
             // Verificar se o card foi encontrado  
             if (card) {
                 // Atualizar a propriedade selected do card  
-                card.selected = row.pontuacao;
+                card.selected = row.resposta;
                 // Adicionar o card ao array cardsRespondidos  
 
                 // Usando map para substituir o objeto com o id específico  
@@ -253,7 +229,7 @@ async function refresh() {
 }
 
 async function configTela() {
-    debugger
+
     try {
         $q.loading.show();
         const { uuid, idades_coleta } = await portageService.getPortageAvaliacaoConfigTelaById(portageIdParam.value);
@@ -281,12 +257,12 @@ function coletar(item: any, pontuacao: number) {
     item.selected = pontuacao; // Atualiza a seleção do cartão  
 
     const novaColeta = {
-        vbmapp_uuid_fk: portageId.value,
+        portage_uuid_fk: portageId.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
-        nivel_coleta: 1,
+        idade_coleta: tituloSelecionado.value,
         tipo: tituloSelecionado.value,
-        pontuacao: pontuacao,
+        resposta: pontuacao,
     };
 
     // Usar toRaw para obter a versão reativa normal do estado  
@@ -305,8 +281,8 @@ function coletar(item: any, pontuacao: number) {
 
     if (coletaExistente) {
         // Se a coleta já existe, atualiza a pontuação  
-        coletaExistente.pontuacao = novaColeta.pontuacao; // Atualizando pontuação  
-        coletaExistente.selected = novaColeta.selected; // Verificando se deseja atualizar o selected  
+        coletaExistente.pontuacao = novaColeta.resposta; // Atualizando pontuação  
+        coletaExistente.selected = novaColeta.resposta; // Verificando se deseja atualizar o selected  
     } else {
         // Se a coleta não existe, adiciona a nova coleta  
         coletasRealizadas.push(novaColeta);
