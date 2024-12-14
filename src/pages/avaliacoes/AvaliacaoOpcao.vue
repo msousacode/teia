@@ -161,7 +161,7 @@ watch(form.value, async () => {
         if (data) {
             const response = data.map((i, idx) => {
                 return {
-                    id: i.vbMappId,
+                    id: i.id,
                     name: `Avaliação - ${idx + 1}`,
                     protocolo: i.protocolo,
                     nivel: i.protocolo == 'VB-MAPP' ? `Nível ${i.tipo}` : i.protocolo == 'PORTAGE' ? `Idade: ${i.tipo}` : '',
@@ -224,7 +224,13 @@ function ir(tipoAvaliacao: any) {
 
     const tipoColeta = avaliacaoEscolhida.name.toLocaleLowerCase();
 
-    router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
+    if (isPortage.value) {
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, portageId: obj.id } });
+    }
+
+    if (isVbmapp.value) {
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
+    }
 }
 
 onMounted(() => {
@@ -277,7 +283,7 @@ columnsPortage.value = [
 rowsPortage.value = [
     {
         name: 'Coleta',
-        path: 'avaliacoes-coleta/vbmapp'
+        path: 'avaliacoes-coleta/portage'
     },
 ]
 

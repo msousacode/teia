@@ -253,7 +253,7 @@ async function refresh() {
 }
 
 async function configTela() {
-
+    debugger
     try {
         $q.loading.show();
         const { uuid, idades_coleta } = await portageService.getPortageAvaliacaoConfigTelaById(portageIdParam.value);
