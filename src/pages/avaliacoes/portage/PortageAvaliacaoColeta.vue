@@ -6,9 +6,9 @@
             <q-tab name="1" label="0 - 1 ano" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
             <q-tab name="2" label="1 a 2 anos" v-if="showAba('2')" @click="getTitulosAvaliacoes(1, '2')" />
             <q-tab name="3" label="2 a 3 anos" v-if="showAba('3')" @click="getTitulosAvaliacoes(1, '3')" />
-            <q-tab name="3" label="3 a 4 anos" v-if="showAba('4')" @click="getTitulosAvaliacoes(1, '4')" />
-            <q-tab name="3" label="4 a 5 anos" v-if="showAba('5')" @click="getTitulosAvaliacoes(1, '5')" />
-            <q-tab name="3" label="5 a 6 anos" v-if="showAba('6')" @click="getTitulosAvaliacoes(1, '6')" />
+            <q-tab name="4" label="3 a 4 anos" v-if="showAba('4')" @click="getTitulosAvaliacoes(1, '4')" />
+            <q-tab name="5" label="4 a 5 anos" v-if="showAba('5')" @click="getTitulosAvaliacoes(1, '5')" />
+            <q-tab name="6" label="5 a 6 anos" v-if="showAba('6')" @click="getTitulosAvaliacoes(1, '6')" />
         </q-tabs>
         <div class="q-mt-sm"></div>
         <q-tabs v-model="tab2" class="text-teal" name="avaliacoes">
@@ -69,7 +69,8 @@
 import { portageZeroHaUmAno } from '../data/portage/portageZeroHaUmAno';
 import { portageUmHaDoisAno } from '../data/portage/portageUmHaDoisAno';
 import { portageDoisHaTresAno } from '../data/portage/portageDoisHaTresAno';
-import { portageTresHaQuatroAno } from '../data/portage/portageTresHaQuatro'
+import { portageTresHaQuatroAno } from '../data/portage/portageTresHaQuatro';
+import { portageQuatroHaCincoAno } from '../data/portage/portageQuatroHaCinco';
 import { onMounted } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
@@ -159,6 +160,11 @@ function carregarAvaliacao() {
 
     } else if (idadeSelecionada.value == '4') {
         objetivos = portageTresHaQuatroAno.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || [];
+
+    } else if (idadeSelecionada.value == '5') {
+        objetivos = portageQuatroHaCincoAno.avaliacoes
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || [];
 
