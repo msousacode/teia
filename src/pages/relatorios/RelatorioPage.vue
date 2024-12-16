@@ -14,8 +14,6 @@
                     <div class="q-pa-sm">
                         Última atualização: Novembro 2024<br><br>
 
-                        Bem-vindo(a)! ao aplicativo SysABA!<br><br>
-
                         Este Termo de Uso estabelece as condições para utilização do
                         aplicativo e dos serviços fornecidos. Ao utilizar o aplicativo, você concorda integralmente com
                         os
@@ -153,10 +151,26 @@
             </q-card>
         </q-dialog>
 
-        <q-dialog v-model="showGrafico">
-            <q-card class="my-card q-pa-md full-width">
-                <canvas id="meuGrafico" width="200" height="200"></canvas>
-                <div class="text-center text-body1 text-teal">Gráfico</div>
+        <q-dialog v-model="showUrlDownload">
+            <q-card>
+                <q-card-section class="q-pa-md">
+                    <div class="text-body1">Download do Relatório</div>
+                    <div class="q-mt-md">
+                        <q-input filled v-model="urlDownload" label="URL do Download" readonly dense icon="link" />
+                    </div>
+                </q-card-section>
+
+                <q-card-actions>
+                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile">
+                        <q-icon name="cloud_download" class="q-ml-sm" />
+                    </q-btn>
+
+                    <q-btn label="Copiar Link" color="secondary" @click="copyLink">
+                        <q-icon name="link" />
+                    </q-btn>
+
+                    <q-btn flat label="Fechar" @click="showUrlDownload = false" />
+                </q-card-actions>
             </q-card>
         </q-dialog>
 
@@ -170,11 +184,11 @@
 
             <div class="row q-gutter-md">
                 <div class="col">
-                    <q-input label="Data de Início" outlined stack-label v-model="form.dataInicial" mask="##/##/####">
+                    <q-input label="Data de Início" outlined stack-label v-model="form.dataInicio" mask="##/##/####">
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="form.dataInicial" :locale="{
+                                    <q-date v-model="form.dataInicio" :locale="{
                                         days: dias,
                                         months: meses,
                                         daysShort: diasAbreviados,
@@ -234,7 +248,7 @@
         <div ref="chartContainer"></div>
 
         <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps
-            :disabled="!exibirRelatorioBtn" />
+            :disabled="!exibirRelatorioBtn" @click="gerarRelatorio" />
 
     </q-page>
 
@@ -264,6 +278,7 @@ import {
     diasAbreviados,
     meses
 } from 'src/composables/utils';
+import { RelatorioService } from 'src/services/RelatorioService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -277,7 +292,9 @@ const aprendizService = new AprendizService();
 
 const $q = useQuasar();
 
-const showGrafico = ref(false);
+const showUrlDownload = ref(false);
+
+const urlDownload = ref<string>();
 
 const { error } = useNotify();
 
@@ -304,6 +321,8 @@ const termoService = new TermoService();
 const router = useRouter();
 
 const managerTokens = useManagerTokens();
+
+const relatorioService = new RelatorioService();
 
 async function handleAccept() {
 
@@ -353,132 +372,27 @@ async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) 
 
 const chartContainer = ref(null);
 
-//let myChart: Chart | null = null;
+async function gerarRelatorio() {
 
-/*
-async function gerarGrafico(itemId: string) {
+    const aprendizId = form.aprendiz.value;
+    const dataInicio = form.dataInicio.replaceAll('/', '-');
+    const dataFinal = form.dataFinal.replaceAll('/', '-');
 
-    showGrafico.value = true;
+    $q.loading.show();
+    const data = await relatorioService.gerarRelatorio(aprendizId, dataInicio, dataFinal);
+    $q.loading.hide();
 
-    setTimeout(async () => {
+    if (data.error != null) {
+        error("Erro ao gerar reltório contate o Suporte.");
+    }
 
-        const canvas = document.getElementById('meuGrafico') as HTMLCanvasElement;
+    if (data.data == 'Não foi localizado treinamentos para o aprendiz') {
+        error("Dentro do período especifícado não foi encontrado dados para gerar o relatório.");
+    }
 
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-
-            if (ctx) {
-                const uuidAprendiz = toRaw(form.value.aprendiz.value);
-
-                const treinamentos = await service.buscarTreinamentos(uuidAprendiz, periodo.value);
-
-                const graficos = treinamentos
-                    .filter(item => item.uuid == itemId)
-                    .map(i => i.chartData)[0];
-
-                // Antes de criar um novo gráfico, destrua o existente se houver
-                if (myChart) {
-                    myChart.destroy(); // Destroi o gráfico anterior
-                }
-
-                // Certifique-se de que graficos possui a estrutura correta de configuração para Chart.js
-                const config = {
-                    type: graficos.type || 'line', // Certifique-se de que o tipo do gráfico está presente
-                    data: graficos.data, // Dados do gráfico (labels e datasets)
-                    options: graficos.options || { // Opções do gráfico
-                        animation: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                };
-                // Cria o gráfico com as configurações apropriadas
-                myChart = new Chart(ctx, config);
-            } else {
-                console.error("Falha ao obter o contexto 2D do canvas.");
-            }
-        } else {
-            console.error("Canvas não encontrado.");
-        }
-
-    }, 800);
-}*/
-
-/*
-async function loadImageData(url: string): Promise<string> {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-}*/
-/**
-async function gerarGraficoPDF(treinamentoUUID: string): Promise<string | null> {
-
-    gerandoRelatorio.value = true;
-    return new Promise(async (resolve, reject) => {
-        const canvas = document.getElementById('graficoPDF') as HTMLCanvasElement;
-
-        if (!canvas) {
-            console.error("Canvas não encontrado.");
-            reject(null);
-            return;
-        }
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-            console.error("Falha ao obter o contexto 2D do canvas.");
-            reject(null);
-            return;
-        }
-
-        const uuidAprendiz = toRaw(form.value.aprendiz.value);
-        const treinamentos = await service.buscarTreinamentos(uuidAprendiz, periodo.value);
-
-        const graficos = treinamentos
-            .filter(item => item.uuid === treinamentoUUID)
-            .map(i => i.chartData)[0];
-
-        if (!graficos) {
-            console.error("Dados do gráfico não encontrados.");
-            reject(null);
-            return;
-        }
-
-        // Antes de criar um novo gráfico, destrua o existente se houver
-        if (myChart) {
-            myChart.destroy(); // Destroi o gráfico anterior
-        }
-
-        // Configuração do gráfico com `onComplete` para resolver após renderização
-        const config = {
-            type: graficos.type || 'line',
-            data: graficos.data,
-            options: {
-                ...graficos.options,
-                animation: {
-                    animation: false,
-                    onComplete: () => {
-                        // Converte o canvas para imagem base64 após a renderização
-                        const chartBase64 = canvas.toDataURL('image/png');
-                        resolve(chartBase64); // Retorna a imagem base64 após renderização completa
-                    }
-                },
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        };
-
-        // Cria o gráfico com as configurações apropriadas
-        myChart = new Chart(ctx, config);
-    });
-} */
+    urlDownload.value = data.data.url;
+    showUrlDownload.value = true;
+}
 
 const carregarSelectAprendiz = async () => {
 
@@ -528,6 +442,30 @@ async function criarContaStripe() {
         $q.loading.hide();
     }
 }
+
+function downloadFile() {
+    window.open(urlDownload.value, '_blank');
+    showUrlDownload.value = false;
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(urlDownload.value || '')
+        .then(() => {
+            $q.notify({
+                message: 'Link copiado para a área de transferência!',
+                color: 'green',
+                position: 'top'
+            });
+        })
+        .catch(() => {
+            $q.notify({
+                message: 'Falha ao copiar o link.',
+                color: 'red',
+                position: 'top'
+            });
+        });
+}
+
 
 onMounted(async () => {
     carregarSelectAprendiz();

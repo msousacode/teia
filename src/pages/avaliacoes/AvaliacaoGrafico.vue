@@ -114,13 +114,13 @@ onMounted(async () => {
     await getColetaPontuacoes();
 
     switch (props.nivel) {
-        case '1':
+        case 'Nível 1':
             colorGrafico.value = '#f2c037';
             break;
-        case '2':
+        case 'Nível 2':
             colorGrafico.value = '#228B22';
             break;
-        case '3':
+        case 'Nível 3':
             colorGrafico.value = '#00BFFF';
             break;
         default:

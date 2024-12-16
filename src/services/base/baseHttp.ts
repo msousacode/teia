@@ -76,6 +76,7 @@ export default function createHttp(base: string) {
         };
       } else if (res.status == 200) {
         return {
+          data: res.data,
           status: res.status,
           error: null,
         };
