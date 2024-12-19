@@ -61,6 +61,7 @@
                             </div>
                         </q-card-section>
                         <div v-if="_tipoColeta === 'ocorrencia'">
+
                             <q-input v-model="counts[index].count" dense placeholder="0"
                                 class="q-mb-md q-mr-xl q-ml-xl text-h6">
                                 <template v-slot:before>
@@ -69,7 +70,7 @@
                                 </template>
 
                                 <template v-slot:after>
-                                    <q-btn round dense color="info" icon="add" @click="counts[index].count++" />
+                                    <q-btn round dense color="teal" icon="add" @click="counts[index].count++" />
                                 </template>
                             </q-input>
                         </div>
@@ -232,38 +233,40 @@ async function salvarRespostas() {
     $q.loading.show();
 
     const _respostas = toRaw(respostas.value);
-    const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
-
-    if (_tipoColeta === 'ocorrencia') {
-        counts.value.map(async (item) => {
-
-            if (item.count === 0) {
-                return;
-            }
-
-            /* TODO fazer esse tmb
-            await db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) })
-                .catch((_error) => {
-                    error("Ocorreu um erro ao salvar as respostas: ", _error);
-                });*/
-            success("Respostas salvas com sucesso!");
-            setTimeout(() => router.go(0), 2000);//Esse código faz um redirect para a mesma página, atualizando os dados.
-        });
-    }
 
     try {
-        const { data, status } = await coletaService.putColetaResposta(arr);
+        if (_tipoColeta === 'ocorrencia') {
+            counts.value.map(async (item) => {
 
-        if (data != null || status == 200) {
-            success("Respostas salvas com sucesso!");
-            setTimeout(() => router.go(0), 1000);
+                if (item.count === 0) {
+                    return;
+                }
+
+                const coletasOcoorencias = counts.value.filter(i => i.count != 0).map(i => { return { uuid: i.identificador, resposta: i.count } });
+
+                const { data, status } = await coletaService.putColetaResposta(coletasOcoorencias);
+
+                if (data != null || status == 200) {
+                    success("Respostas salvas com sucesso!");
+                } else {
+                    error("Ocorreu um erro ao salvar as respostas");
+                }
+            });
         } else {
-            error("Ocorreu um erro ao salvar as respostas");
+            const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
+            const { data, status } = await coletaService.putColetaResposta(arr);
+
+            if (data != null || status == 200) {
+                success("Respostas salvas com sucesso!");
+            } else {
+                error("Ocorreu um erro ao salvar as respostas");
+            }
         }
     } catch (e) {
 
     } finally {
         $q.loading.hide();
+        setTimeout(() => router.go(0), 1000);
     }
 }
 
@@ -302,7 +305,7 @@ async function getColetas() {
 
                 if (dia === _diaColeta.toString()) {
                     alvosPendentes.value.push(coleta);
-                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
+                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: coleta.resposta != null ? coleta.resposta : 0 }));
                 }
             })
 
@@ -314,7 +317,6 @@ async function getColetas() {
 
                 if (dia === _diaColeta.toString()) {
                     alvosColetados.value.push(coleta);
-                    counts.value = alvosColetados.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
                 }
             });
 
