@@ -97,8 +97,11 @@ const aprendizUuidSelecionado = ref('');
 
 const diaColeta = ref('');
 
+const atendimentoId = ref('');
+
 function iniciarAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
+  atendimentoId.value = raw.uuid;
   aprendizUuidSelecionado.value = raw.aprendiz.value;
   treinamentos.value = raw.treinamentos
   visible.value = true;
@@ -107,7 +110,7 @@ function iniciarAtendimento(atendimento: any) {
 function redirecionaColetas(_uuidTreinamento: string, protocolo: string, _uuidAprendiz: string) {
   const diaPesquisa = diaColeta.value.split('$')[0];
   const _tipoColeta = protocolo === 'Protocolo ABC' ? 'abc' : 'ocorrencia';
-  router.push({ name: "coletas", params: { uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa, tipoColeta: _tipoColeta } });
+  router.push({ name: "coletas", params: { atendimentoId: atendimentoId.value, uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa, tipoColeta: _tipoColeta } });
 }
 
 function editarAtendimento(atendimento: any) {

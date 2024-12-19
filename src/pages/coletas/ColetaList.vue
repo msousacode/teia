@@ -150,27 +150,13 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                        }}</span>
+                                            }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
                                     <div class="text-subtitle1">{{ item.anotacao }}</div>
                                 </div>
                                 <div class="col-auto q-gutter-x-sm">
-                                    <!--q-btn color="grey-7" round flat icon="more_vert">
-                                        <q-menu cover auto-close>
-                                            <q-list>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="abreModalAnotacao(item, 'editar')">Editar</q-item-section>
-                                                </q-item>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="excluirAnotacao(item)">Excluir</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
-                                    </q-btn-->
                                     <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
                                         @click="abreModalAnotacao(item, 'editar')">
                                     </q-btn>
@@ -219,6 +205,8 @@ const _uuidAprendiz = routeLocation.params.uuidAprendiz;
 const _diaColeta = routeLocation.params.diaColeta;
 
 const _tipoColeta = routeLocation.params.tipoColeta;
+
+const atendimentoId = routeLocation.params.atendimentoId;
 
 const tab = ref('pendentes');
 
@@ -341,7 +329,7 @@ async function getAnotacoes() {
 
     try {
         $q.loading.show()
-        const { data, status } = await anotacaoService.getAnotacoes(_uuidTreinamento);
+        const { data, status } = await anotacaoService.getAnotacoes(atendimentoId);
 
         if (data != null || status == 200) {
             anotacoesFeitas.value = data;
@@ -369,7 +357,8 @@ async function salvarAnotacao(_podeImprimir: boolean) {
     } else {
 
         const object = {
-            treinamentoId: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
+
+            atendimentoId: atendimentoId,
             coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
             anotacao: anotacao.value,
             naoImprimir: _podeImprimir
@@ -389,7 +378,7 @@ async function salvarAnotacao(_podeImprimir: boolean) {
         } finally {
             visibleAnotacao.value = false;
             anotacao.value = '';
-            podeImprimir.value = true;
+            await getAnotacoes();;
             $q.loading.hide();
         }
     }

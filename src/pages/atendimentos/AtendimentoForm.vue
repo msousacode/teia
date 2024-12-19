@@ -125,7 +125,11 @@
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn color="grey-7" round flat icon="more_vert">
+                <div class="col-auto q-gutter-x-sm">
+                  <q-btn icon="settings" color="teal" dense size="md" @click="abrirConfiguracoes(item)">
+                  </q-btn>
+                </div>
+                <!--q-btn color="grey-7" round flat icon="more_vert">
                   <q-menu cover auto-close>
                     <q-list>
                       <q-item clickable v-if="!item.configuracoes">
@@ -136,7 +140,7 @@
                       </q-item>
                     </q-list>
                   </q-menu>
-                </q-btn>
+                </q-btn-->
               </q-item-section>
             </q-item>
           </q-list>
@@ -304,8 +308,6 @@ async function salvar() {
       $q.loading.show();
       const { data, status } = await atendimentoService.postAtendimento(object);
       if (data != null || status == 200) {
-        success();
-
         await gerarColetas(object).then(() => {
           reset();
         }).catch(() => {
@@ -494,7 +496,7 @@ function reset() {
   storeAprendiz.$reset();
   storeTreinamento.$reset();
 }
-
+/*
 function excluir(treinamento: any) {
   console.log(treinamento)
   $q.dialog({
@@ -518,9 +520,9 @@ function excluir(treinamento: any) {
           error('Ocorreu um erro ao tentar arquivar');
         });
         */
-    })
-    .onDismiss(() => { });
-}
+//})
+//.onDismiss(() => { });
+//}
 
 /**
 async function atualizaStatusTreinamentoParaInativo(atendimentoRaw: any, treinamentoRaw: any) {

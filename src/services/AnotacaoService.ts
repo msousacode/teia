@@ -11,8 +11,8 @@ export class AnotacaoService {
     return await http.put('/anotacoes', data);
   }
 
-  async getAnotacoes(treinamentoId: string | string[]) {
-    return await http.get(`/anotacoes/treinamento/${treinamentoId}`);
+  async getAnotacoes(atendimentoId: string | string[]) {
+    return await http.get(`/anotacoes/atendimento/${atendimentoId}`);
   }
 
   async getAnotacaoById(id: string | null) {
