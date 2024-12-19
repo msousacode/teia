@@ -352,17 +352,18 @@ function abreModalAnotacao(item: any, acao: string) {
 
 async function salvarAnotacao(_podeImprimir: boolean) {
 
+    const object = {
+        uuid: alvoSelecionadoToAnotacao?.value?.uuid,
+        atendimentoId: atendimentoId,
+        coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
+        anotacao: anotacao.value,
+        naoImprimir: _podeImprimir
+    }
+
     if (acaoAnotacao === 'editar') {
-        atualizarAnotacao()
+        atualizarAnotacao(object);
     } else {
 
-        const object = {
-
-            atendimentoId: atendimentoId,
-            coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
-            anotacao: anotacao.value,
-            naoImprimir: _podeImprimir
-        }
         try {
             $q.loading.show();
             const { data, status } = await anotacaoService.postAnotacao(object);
@@ -385,11 +386,11 @@ async function salvarAnotacao(_podeImprimir: boolean) {
 
 }
 
-async function atualizarAnotacao() {
+async function atualizarAnotacao(object: any) {
 
     try {
         $q.loading.show();
-        const { data, status } = await anotacaoService.putAnotacao(anotacao.value);
+        const { data, status } = await anotacaoService.putAnotacao(object);
 
         if (data != null || status == 200) {
             success("Anotação salva com sucesso!")
@@ -403,6 +404,7 @@ async function atualizarAnotacao() {
     } finally {
         visibleAnotacao.value = false;
         anotacao.value = '';
+        await getAnotacoes();
         $q.loading.hide();
     }
 }
