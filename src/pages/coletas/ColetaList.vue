@@ -331,7 +331,7 @@ async function getAnotacoes() {
 
     try {
         $q.loading.show()
-        const { data, status } = await anotacaoService.getAnotacoes(atendimentoId);
+        const { data, status } = await anotacaoService.getAnotacoes(atendimentoId, _uuidTreinamento);
 
         if (data != null || status == 200) {
             anotacoesFeitas.value = data;
@@ -357,6 +357,7 @@ async function salvarAnotacao(_podeImprimir: boolean) {
     const object = {
         uuid: alvoSelecionadoToAnotacao?.value?.uuid,
         atendimentoId: atendimentoId,
+        treinamentoId: _uuidTreinamento,
         coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
         anotacao: anotacao.value,
         naoImprimir: _podeImprimir

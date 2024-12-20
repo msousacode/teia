@@ -11,8 +11,13 @@ export class AnotacaoService {
     return await http.put('/anotacoes', data);
   }
 
-  async getAnotacoes(atendimentoId: string | string[]) {
-    return await http.get(`/anotacoes/atendimento/${atendimentoId}`);
+  async getAnotacoes(
+    atendimentoId: string | string[],
+    treinamentoId: string | string[]
+  ) {
+    return await http.get(
+      `/anotacoes/atendimento/${atendimentoId}/treinamento/${treinamentoId}`
+    );
   }
 
   async getAnotacaoById(id: string | null) {
