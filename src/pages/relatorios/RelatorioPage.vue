@@ -155,9 +155,9 @@
             <q-card>
                 <q-card-section class="q-pa-md">
                     <div class="text-body1">Download do Relatório</div>
-                    <div class="q-mt-md">
+                    <!--div class="q-mt-md">
                         <q-input filled v-model="urlDownload" label="URL do Download" readonly dense icon="link" />
-                    </div>
+                    </div-->
                 </q-card-section>
 
                 <q-card-actions>
@@ -231,7 +231,7 @@
 
         </div>
 
-        <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="exibirRelatorioBtn">Treinamentos em
+        <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="habilitarRelatorioBtn">Treinamentos em
             andamento:</div>
         <div v-for="(
               item, index
@@ -248,14 +248,14 @@
         <div ref="chartContainer"></div>
 
         <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps
-            :disabled="!exibirRelatorioBtn" @click="gerarRelatorio" />
+            :disabled="!habilitarRelatorioBtn" @click="gerarRelatorio" />
 
     </q-page>
 
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
 import {
@@ -308,7 +308,9 @@ const aprendizes = ref<any[]>([]);
 
 const treinamentos = ref<any[]>([]);
 
-const exibirRelatorioBtn = ref(false);
+const habilitarRelatorioBtn = computed(() => {
+    return form.aprendiz != "" && form.dataInicio != "" && form.dataFinal != "";
+})
 
 const usuarioSerive = new UsuarioService();
 
@@ -324,6 +326,8 @@ const managerTokens = useManagerTokens();
 
 const relatorioService = new RelatorioService();
 
+const chartContainer = ref(null);
+
 async function handleAccept() {
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -334,43 +338,6 @@ async function handleAccept() {
         showTermsDialog.value = !aceite;
     }
 }
-
-function pesquisar() {
-    //const raw = toRaw(form.value);
-
-    /* TODO fazer 
-    db.atendimentos.where({ aprendiz_uuid_fk: raw.aprendiz.value }).toArray().then(res => {
-        atendimentos.value = toRaw(res);
-
-        atendimentos.value.forEach((item) => {
-
-            item.treinamentos.forEach((treinamento: any) => {
-                calcularProgresso(treinamento.uuid, raw.aprendiz.value).then((progresso) => {
-                    treinamento.progresso = progresso;
-                });
-            });
-
-            treinamentos.value = toRaw(item.treinamentos)
-        });
-    });
-    */
-
-    exibirRelatorioBtn.value = true;
-}
-
-/*TODO fazer
-async function calcularProgresso(treinamentoUUid: string, aprendizUUid: string) {
-    let valor = 0;
-    await db.coletas.where({ aprendiz_uuid_fk: aprendizUUid, treinamento_uuid_fk: treinamentoUUid }).toArray((res) => {
-        const total = res.length;
-        const feitos = res.filter((item) => item.foi_respondido === true).length;
-        valor = feitos / total;
-    })
-
-    return valor;
-}**/
-
-const chartContainer = ref(null);
 
 async function gerarRelatorio() {
 
