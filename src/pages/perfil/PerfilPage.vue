@@ -2,7 +2,7 @@
     <q-page class="q-pa-sm">
         <title-custom title="Meu Perfil" />
         <div class="row justify-center">
-            <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="submit">
+            <q-form class="col-md-7 col-xs-12 col-sm-12">
                 <q-input outlined label="Nome Completo" v-model="form.full_name"
                     :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
@@ -16,7 +16,7 @@
         </div>
 
         <div class="fixed-bottom q-pa-md">
-            <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" type="submit"
+            <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" @click="submit"
                 :disable="!isSubmitted" />
         </div>
     </q-page>
@@ -25,8 +25,14 @@
 import { useQuasar } from 'quasar';
 import { computed, onMounted, ref } from 'vue';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { UsuarioService } from 'src/services/UsuarioService';
+import useNotify from 'src/composables/UseNotify';
 
 const $q = useQuasar();
+
+const notify = useNotify();
+
+const usuarioService = new UsuarioService();
 
 const isSubmitted = computed(() => {
     return form.value.full_name !== '' && form.value.email !== '';
@@ -38,38 +44,30 @@ const form = ref({
     documento: '',
 })
 
-function submit() {
-
-    if (navigator.onLine) {
+async function submit() {
+    try {
         $q.loading.show();
-
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-        console.log(user)
-        /*
-                supabase.put('usuarios', { id: user.id, full_name: form.value.full_name, documento: form.value.documento }).then(() => {
-                    $q.loading.hide();
-                    user.full_name = form.value.full_name;
-                    user.documento = form.value.documento;
-                    localStorage.setItem('user', user);
-                    success('Perfil atualizado com sucesso!');
-                }).catch(() => {
-                    $q.loading.hide();
-                    error('Erro ao atualizar configurações!');
-                });
-            } else {
-                error('Sem conexão com a internet!');
-            }
-                */
+        await usuarioService.putPerfil(form.value);
+        await loadUsuarioInfo();
+        notify.success('salvo com sucesso!');
+    } catch (e) {
+        notify.error('erro ao salvar!');
+        throw e;
+    } finally {
+        $q.loading.hide();
     }
 }
-onMounted(() => {
-    const storage = localStorage.getItem('user');
 
-    if (storage) {
-        const user = JSON.parse(storage);
-        form.value.full_name = user.full_name;
-        form.value.email = user.email;
-        form.value.documento = user.documento;
-    }
+async function loadUsuarioInfo() {
+    const user = await usuarioService.getUsuarioInfo();
+
+    form.value.full_name = user.fullName;
+    form.value.email = user.email;
+    form.value.documento = user.documento;
+
+}
+
+onMounted(async () => {
+    await loadUsuarioInfo();
 });
 </script>

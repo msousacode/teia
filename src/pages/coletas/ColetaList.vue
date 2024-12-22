@@ -352,7 +352,7 @@ function abreModalAnotacao(item: any, acao: string) {
     acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
-async function salvarAnotacao(_podeImprimir: boolean) {
+async function salvarAnotacao(isImprimirRelatorio: boolean) {
 
     const object = {
         uuid: alvoSelecionadoToAnotacao?.value?.uuid,
@@ -360,7 +360,7 @@ async function salvarAnotacao(_podeImprimir: boolean) {
         treinamentoId: _uuidTreinamento,
         coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
         anotacao: anotacao.value,
-        naoImprimir: _podeImprimir
+        imprimirRelatorio: !isImprimirRelatorio
     }
 
     if (acaoAnotacao === 'editar') {
