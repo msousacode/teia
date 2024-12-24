@@ -1201,34 +1201,8 @@ const avaliacaoNivelTres = {
     },
 
     {
-      titulo: 'Resposta',
-      tipo: 12,
-      objetivos: [
-        {
-          id: 376,
-          cod: -1,
-          descricao: 'Sem critérios',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
       titulo: 'Grupo',
-      tipo: 13,
+      tipo: 12,
       objetivos: [
         {
           id: 377,
@@ -1338,7 +1312,7 @@ const avaliacaoNivelTres = {
 
     {
       titulo: 'Linguística',
-      tipo: 14,
+      tipo: 13,
       objetivos: [
         {
           id: 382,
@@ -1445,7 +1419,7 @@ const avaliacaoNivelTres = {
 
     {
       titulo: 'Matemática',
-      tipo: 15,
+      tipo: 14,
       objetivos: [
         {
           id: 387,

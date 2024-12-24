@@ -64,7 +64,7 @@ function abrirGrafrico() {
                     }
 
                     // Definição dos dados  
-                    const labels = props.nivel == 'Nível 1' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'] : ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'LRFFC', 'Interverbal', 'Grupo', 'Linguística'];
+                    const labels = props.nivel == 'Nível 1' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'] : props.nivel == 'Nível 2' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'LRFFC', 'Interverbal', 'Grupo', 'Linguística'] : ['Mando', 'Tato', 'Ouvinte', 'VP/MTS', 'Brincar', 'Social', 'Leitura', 'Escrita', 'LRFFC', 'Interverbal', 'Vocal', 'Grupo', 'Linguística', 'Matemática'];
                     const data = {
                         labels: labels,
                         datasets: [
