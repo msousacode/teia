@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <title-custom title="Cadastrar Protocolo para Avaliação" />
+        <title-custom title="Protocolos" />
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
@@ -35,7 +35,8 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md"
+                            v-if="props.row.name == 'MILESTONES'" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
@@ -253,10 +254,10 @@ rows.value = [
         name: 'MILESTONES',
         path: 'avaliacoes-coleta/vbmapp'
     },
-    {
+    /*{
         name: 'TAREFAS',
         path: 'avaliacoes-coleta/vbmapp'
-    },
+    },*/
     {
         name: 'BARREIRAS',
         path: 'avaliacoes-coleta/vbmapp/barreiras'

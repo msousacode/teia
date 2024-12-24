@@ -1,7 +1,7 @@
 <template>
     <q-card class="my-card q-pa-md full-width">
         <canvas id="grafico" width="200" height="200"></canvas>
-        <div class="text-center text-body1 text-teal">Nível {{ nivel }}</div>
+        <div class="text-center text-body1 text-teal">{{ nivel }}</div>
     </q-card>
 </template>
 <script setup lang="ts">
