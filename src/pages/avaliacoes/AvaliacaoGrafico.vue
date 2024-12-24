@@ -64,7 +64,7 @@ function abrirGrafrico() {
                     }
 
                     // Definição dos dados  
-                    const labels = ['Imitação', 'Ecoico', 'Ouvinte', 'PV/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'];
+                    const labels = props.nivel == 'Nível 1' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'] : ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'LRFFC', 'Interverbal', 'Grupo', 'Linguística'];
                     const data = {
                         labels: labels,
                         datasets: [

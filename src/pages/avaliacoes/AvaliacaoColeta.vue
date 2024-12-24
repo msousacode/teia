@@ -44,14 +44,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                        }}</div>
+                                    }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                        }}
+                                    }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -355,7 +355,7 @@ function coletar(item: any, pontuacao: number) {
         vbmapp_uuid_fk: uuidVbmapp.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
-        nivel_coleta: 1,
+        nivel_coleta: nivelSelecionado.value,
         tipo: tituloSelecionado.value,
         pontuacao: pontuacao,
     };

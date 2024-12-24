@@ -878,34 +878,8 @@ const avaliacaoNivelDois = {
     },
 
     {
-      titulo: 'Vocal',
-      tipo: 9,
-      objetivos: [
-        {
-          id: 0,
-          cod: -1,
-          descricao: 'Sem objetivos',
-          selected: null,
-          observacoes: {
-            objetivo:
-              'Determinar se a criança está começando a emitir mais palavras inteiras na produção vocal, com entonação e ritmos adequados.',
-            materiais: 'Nenhum.',
-            exemplo:
-              'A criança emite “tatu”, “pato”, “pé” e “dá”. Também parece que a criança está “falando” mais, mas pode ser difícil ou impossível entender todas as palavras.',
-            pontuacao: {
-              umPonto:
-                'Dê à criança 1 ponto se ela emitir espontaneamente 15 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-              meioPonto:
-                'Dê à criança 1⁄2 ponto se ela emitir espontaneamente 8 diferentes aproximações de palavras identificáveis durante observação de 1 hora.',
-            },
-          },
-        },
-      ],
-    },
-
-    {
       titulo: 'Resposta - (LRFFC)',
-      tipo: 10,
+      tipo: 9,
       objetivos: [
         {
           id: 240,
@@ -1016,7 +990,7 @@ const avaliacaoNivelDois = {
     },
     {
       titulo: 'Interverbal',
-      tipo: 11,
+      tipo: 10,
       objetivos: [
         {
           id: 245,
@@ -1123,7 +1097,7 @@ const avaliacaoNivelDois = {
 
     {
       titulo: 'Grupo',
-      tipo: 12,
+      tipo: 11,
       objetivos: [
         {
           id: 250,
@@ -1232,7 +1206,7 @@ const avaliacaoNivelDois = {
 
     {
       titulo: 'Linguístisca',
-      tipo: 13,
+      tipo: 12,
       objetivos: [
         {
           id: 255,
