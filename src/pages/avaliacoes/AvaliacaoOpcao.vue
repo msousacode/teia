@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <title-custom title="Cadastrar Protocolo para Avaliação" />
+        <title-custom title="Protocolos" />
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
@@ -20,8 +20,12 @@
             </q-table>
         </div>
 
-        <q-dialog v-model="dialog">
+        <q-dialog v-model="dialogIsVbMapp">
             <avaliacao-grafico v-bind="graficoDataProps"></avaliacao-grafico>
+        </q-dialog>
+
+        <q-dialog v-model="dialogIsPortage">
+            <portage-avaliacao-grafico v-bind="graficoDataProps"></portage-avaliacao-grafico>
         </q-dialog>
 
         <div v-if="isHabilitaProtocolos && isVbmapp">
@@ -35,7 +39,8 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsVbMapp = true" dense size="md"
+                            v-if="props.row.name == 'MILESTONES'" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
@@ -57,7 +62,7 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialog = true" dense size="md" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
@@ -76,6 +81,7 @@
 <script setup lang="ts">
 import TitleCustom from 'src/components/TitleCustom.vue';
 import AvaliacaoGrafico, { GraficoProps } from './AvaliacaoGrafico.vue';
+import PortageAvaliacaoGrafico, { GraficoPortageProps } from './portage/PortageAvaliacaoGrafico.vue';
 import { reactive, ref } from 'vue';
 import { onMounted } from 'vue';
 import { watch } from 'vue';
@@ -87,6 +93,7 @@ import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { AvaliacaoService } from 'src/services/AvaliacaoService';
+import { useAprendizStore } from 'src/stores/aprendiz';
 
 const aprendizService = new AprendizService();
 
@@ -116,6 +123,8 @@ const showOpcoes = ref<boolean>(false)
 
 const store = useAvaliacaoStore();
 
+const aprendizInfoStore = useAprendizStore();
+
 const form = ref({
     uuid: '',
     aprendiz: '',
@@ -131,12 +140,15 @@ const isHabilitaProtocolos = computed(() => {
 
 const avaliacaoService = new AvaliacaoService();
 
-const dialog = ref(false);
+const dialogIsVbMapp = ref(false);
 
-const graficoDataProps: GraficoProps = reactive({
+const dialogIsPortage = ref(false);
+
+const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
     label: '',
     avaliacaoId: '',
     nivel: '',
+    idade: '3'//TODO colocar a data do aprendiz.
 })
 
 watch(store, () => {
@@ -151,8 +163,13 @@ watch(store, () => {
 watch(form.value, async () => {
     showOpcoes.value = form.value.aprendiz != null;
 
-    if (form.value != null)
+    if (form.value != null) {
         store.aprendizSelected = form.value.aprendiz;
+
+        const { data } = await aprendizService.getAprendizById(store.aprendizSelected.value);
+
+        aprendizInfoStore.setAprendizInfo({ uuid: data.uuid, nome_aprendiz: data.nome_aprendiz, nasc_aprendiz: data.nasc_aprendiz });
+    }
 
     try {
         $q.loading.show();
@@ -253,10 +270,10 @@ rows.value = [
         name: 'MILESTONES',
         path: 'avaliacoes-coleta/vbmapp'
     },
-    {
+    /*{
         name: 'TAREFAS',
         path: 'avaliacoes-coleta/vbmapp'
-    },
+    },*/
     {
         name: 'BARREIRAS',
         path: 'avaliacoes-coleta/vbmapp/barreiras'

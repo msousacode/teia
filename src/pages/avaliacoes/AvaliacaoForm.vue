@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <title-custom title="Criar Nova Avaliação" />
+        <title-custom title="Nova Avaliação" />
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
             <q-form>
                 <div class="q-mb-md">

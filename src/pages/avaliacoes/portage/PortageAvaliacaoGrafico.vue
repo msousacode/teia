@@ -16,7 +16,8 @@ import {
     Title,
     LineElement,
 } from 'chart.js/auto'
-import { VbMappService } from 'src/services/VbMappService';
+import { useAprendizStore } from 'src/stores/aprendiz';
+import { PortageService } from 'src/services/PortageService';
 
 // Registre as escalas e elementos que você pretende usar  
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
@@ -27,25 +28,27 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointE
     Tooltip,
     Legend);
 
-export interface GraficoProps {
+export interface GraficoPortageProps {
     label: string;
     avaliacaoId: string;
     nivel: string;
+    idade?: string;
 }
 
-const props = withDefaults(defineProps<GraficoProps>(), {
+const props = withDefaults(defineProps<GraficoPortageProps>(), {
     label: '',
     avaliacaoId: '',
     nivel: '',
+    idade: ''
 });
 
 const labelGrafico = props.label;
 
 const dataGrafico = ref<any[]>([]);
 
-const colorGrafico = ref('');
+const portageService = new PortageService();
 
-const vbmappService = new VbMappService();
+const idadeAprendiz = useAprendizStore().getAprendizInfo.idade;
 
 function abrirGrafrico() {
 
@@ -64,16 +67,28 @@ function abrirGrafrico() {
                     }
 
                     // Definição dos dados  
-                    const labels = props.nivel == 'Nível 1' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'] : props.nivel == 'Nível 2' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'LRFFC', 'Interverbal', 'Grupo', 'Linguística'] : ['Mando', 'Tato', 'Ouvinte', 'VP/MTS', 'Brincar', 'Social', 'Leitura', 'Escrita', 'LRFFC', 'Interverbal', 'Vocal', 'Grupo', 'Linguística', 'Matemática'];
+                    const labels = ['Socialização', 'Linguagem', 'Cognição', 'Autocuidados', 'Desenv. Motor'];
                     const data = {
                         labels: labels,
                         datasets: [
                             {
                                 label: labelGrafico,
                                 data: dataGrafico.value,
-                                backgroundColor: colorGrafico.value,
+                                backgroundColor: [
+                                    '#e78678', // Cor da barra 1  
+                                    '#fbe414', // Cor da barra 2  
+                                    '#aabc5b',  // Cor da barra 3  
+                                    '#ef4437',  // Cor da barra 3  
+                                    '#5b50f1'  // Cor da barra 3  
+                                ]
                             },
-                        ]
+                            {
+                                label: 'Idade Atual',
+                                data: [idadeAprendiz, idadeAprendiz, idadeAprendiz, idadeAprendiz, idadeAprendiz],
+                                borderColor: 'black',
+                                borderWidth: 1
+                            },
+                        ],
                     };
 
                     // Configurações do gráfico  
@@ -86,10 +101,13 @@ function abrirGrafrico() {
                                 y: {
                                     beginAtZero: true,
                                     ticks: {
-                                        stepSize: 0.5,
-                                    },
+                                        // Formatação dos ticks do eixo Y para mostrar uma casa decimal  
+                                        callback: function (value) {
+                                            return value.toFixed(1); // Exibe uma casa decimal  
+                                        }
+                                    }
                                 },
-                            }
+                            },
                         }
                     };
 
@@ -106,25 +124,13 @@ function abrirGrafrico() {
 }
 
 async function getColetaPontuacoes() {
-    dataGrafico.value = (await vbmappService.getColetaPontuacoes(props.avaliacaoId)).data;
+    const { data } = await portageService.getColetaPontuacoes(props.avaliacaoId);
+    const aa = data.map(i => i.toFixed(2));
+    dataGrafico.value = aa;
 }
 
 onMounted(async () => {
     abrirGrafrico();
     await getColetaPontuacoes();
-
-    switch (props.nivel) {
-        case 'Nível 1':
-            colorGrafico.value = '#f2c037';
-            break;
-        case 'Nível 2':
-            colorGrafico.value = '#228B22';
-            break;
-        case 'Nível 3':
-            colorGrafico.value = '#00BFFF';
-            break;
-        default:
-            return '';
-    }
 }) 
 </script>

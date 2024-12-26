@@ -61,6 +61,7 @@
                             </div>
                         </q-card-section>
                         <div v-if="_tipoColeta === 'ocorrencia'">
+
                             <q-input v-model="counts[index].count" dense placeholder="0"
                                 class="q-mb-md q-mr-xl q-ml-xl text-h6">
                                 <template v-slot:before>
@@ -69,7 +70,7 @@
                                 </template>
 
                                 <template v-slot:after>
-                                    <q-btn round dense color="info" icon="add" @click="counts[index].count++" />
+                                    <q-btn round dense color="teal" icon="add" @click="counts[index].count++" />
                                 </template>
                             </q-input>
                         </div>
@@ -150,27 +151,13 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                        }}</span>
+                                            }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
                                     <div class="text-subtitle1">{{ item.anotacao }}</div>
                                 </div>
                                 <div class="col-auto q-gutter-x-sm">
-                                    <!--q-btn color="grey-7" round flat icon="more_vert">
-                                        <q-menu cover auto-close>
-                                            <q-list>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="abreModalAnotacao(item, 'editar')">Editar</q-item-section>
-                                                </q-item>
-                                                <q-item clickable>
-                                                    <q-item-section
-                                                        @click="excluirAnotacao(item)">Excluir</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
-                                    </q-btn-->
                                     <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
                                         @click="abreModalAnotacao(item, 'editar')">
                                     </q-btn>
@@ -220,6 +207,8 @@ const _diaColeta = routeLocation.params.diaColeta;
 
 const _tipoColeta = routeLocation.params.tipoColeta;
 
+const atendimentoId = routeLocation.params.atendimentoId;
+
 const tab = ref('pendentes');
 
 const respostas = ref<any>({}); // um objeto para armazenar as respostas
@@ -244,38 +233,40 @@ async function salvarRespostas() {
     $q.loading.show();
 
     const _respostas = toRaw(respostas.value);
-    const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
-
-    if (_tipoColeta === 'ocorrencia') {
-        counts.value.map(async (item) => {
-
-            if (item.count === 0) {
-                return;
-            }
-
-            /* TODO fazer esse tmb
-            await db.coletas.update(item.identificador, { resposta: item.count, foi_respondido: true, data_coleta: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false }) })
-                .catch((_error) => {
-                    error("Ocorreu um erro ao salvar as respostas: ", _error);
-                });*/
-            success("Respostas salvas com sucesso!");
-            setTimeout(() => router.go(0), 2000);//Esse código faz um redirect para a mesma página, atualizando os dados.
-        });
-    }
 
     try {
-        const { data, status } = await coletaService.putColetaResposta(arr);
+        if (_tipoColeta === 'ocorrencia') {
+            counts.value.map(async (item) => {
 
-        if (data != null || status == 200) {
-            success("Respostas salvas com sucesso!");
-            setTimeout(() => router.go(0), 1000);
+                if (item.count === 0) {
+                    return;
+                }
+
+                const coletasOcoorencias = counts.value.filter(i => i.count != 0).map(i => { return { uuid: i.identificador, resposta: i.count } });
+
+                const { data, status } = await coletaService.putColetaResposta(coletasOcoorencias);
+
+                if (data != null || status == 200) {
+                    success("Respostas salvas com sucesso!");
+                } else {
+                    error("Ocorreu um erro ao salvar as respostas");
+                }
+            });
         } else {
-            error("Ocorreu um erro ao salvar as respostas");
+            const arr = Object.entries(_respostas).map(([uuid, resposta]) => ({ uuid, resposta }));
+            const { data, status } = await coletaService.putColetaResposta(arr);
+
+            if (data != null || status == 200) {
+                success("Respostas salvas com sucesso!");
+            } else {
+                error("Ocorreu um erro ao salvar as respostas");
+            }
         }
     } catch (e) {
 
     } finally {
         $q.loading.hide();
+        setTimeout(() => router.go(0), 1000);
     }
 }
 
@@ -314,7 +305,7 @@ async function getColetas() {
 
                 if (dia === _diaColeta.toString()) {
                     alvosPendentes.value.push(coleta);
-                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
+                    counts.value = alvosPendentes.value.map(coleta => ({ identificador: coleta.coletaId, count: coleta.resposta != null ? coleta.resposta : 0 }));
                 }
             })
 
@@ -326,7 +317,6 @@ async function getColetas() {
 
                 if (dia === _diaColeta.toString()) {
                     alvosColetados.value.push(coleta);
-                    counts.value = alvosColetados.value.map(coleta => ({ identificador: coleta.coletaId, count: 0 }));
                 }
             });
 
@@ -341,7 +331,7 @@ async function getAnotacoes() {
 
     try {
         $q.loading.show()
-        const { data, status } = await anotacaoService.getAnotacoes(_uuidTreinamento);
+        const { data, status } = await anotacaoService.getAnotacoes(atendimentoId, _uuidTreinamento);
 
         if (data != null || status == 200) {
             anotacoesFeitas.value = data;
@@ -362,18 +352,21 @@ function abreModalAnotacao(item: any, acao: string) {
     acaoAnotacao = acao === 'inserir' ? 'inserir' : 'editar';
 }
 
-async function salvarAnotacao(_podeImprimir: boolean) {
+async function salvarAnotacao(isImprimirRelatorio: boolean) {
+
+    const object = {
+        uuid: alvoSelecionadoToAnotacao?.value?.uuid,
+        atendimentoId: atendimentoId,
+        treinamentoId: _uuidTreinamento,
+        coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
+        anotacao: anotacao.value,
+        imprimirRelatorio: !isImprimirRelatorio
+    }
 
     if (acaoAnotacao === 'editar') {
-        atualizarAnotacao()
+        atualizarAnotacao(object);
     } else {
 
-        const object = {
-            treinamentoId: alvoSelecionadoToAnotacao?.value?.alvo.treinamento_uuid_fk,
-            coletaId: alvoSelecionadoToAnotacao?.value?.coletaId,
-            anotacao: anotacao.value,
-            naoImprimir: _podeImprimir
-        }
         try {
             $q.loading.show();
             const { data, status } = await anotacaoService.postAnotacao(object);
@@ -389,18 +382,18 @@ async function salvarAnotacao(_podeImprimir: boolean) {
         } finally {
             visibleAnotacao.value = false;
             anotacao.value = '';
-            podeImprimir.value = true;
+            await getAnotacoes();;
             $q.loading.hide();
         }
     }
 
 }
 
-async function atualizarAnotacao() {
+async function atualizarAnotacao(object: any) {
 
     try {
         $q.loading.show();
-        const { data, status } = await anotacaoService.putAnotacao(anotacao.value);
+        const { data, status } = await anotacaoService.putAnotacao(object);
 
         if (data != null || status == 200) {
             success("Anotação salva com sucesso!")
@@ -414,6 +407,7 @@ async function atualizarAnotacao() {
     } finally {
         visibleAnotacao.value = false;
         anotacao.value = '';
+        await getAnotacoes();
         $q.loading.hide();
     }
 }
