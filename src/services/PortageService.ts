@@ -42,6 +42,6 @@ export class PortageService {
   }
 
   async getColetaPontuacoes(avaliacaoId: string) {
-    return await http.get(`/chart/milestones/${avaliacaoId}`);
+    return await http.get(`/chart/pontuacoes/${avaliacaoId}`);
   }
 }

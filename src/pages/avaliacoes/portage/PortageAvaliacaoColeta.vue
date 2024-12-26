@@ -1,5 +1,6 @@
 <template>
     <q-page padding>
+
         <div class="text-teal">{{ descritivoTitulo }}</div>
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
@@ -31,13 +32,13 @@
 
                         <div class="q-pa-md q-gutter-y-md flex justify-center">
                             <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
-                                <q-btn label="Não"
+                                <q-btn label="Sim"
                                     :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 1)" />
                                 <q-btn label="As vezes"
                                     :class="item.selected == 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0.5)" />
-                                <q-btn label="Sim"
+                                <q-btn label="Não"
                                     :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0)" />
                                 <q-btn label="NA"
