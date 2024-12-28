@@ -1,10 +1,10 @@
 <template>
     <q-page padding>
 
-        <div class="text-teal">{{ descritivoTitulo }}</div>
+        <div class="text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
-            <q-tab name="1" label="0 - 1 ano" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
+            <q-tab name="1" label="0 a 1 ano" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
             <q-tab name="2" label="1 a 2 anos" v-if="showAba('2')" @click="getTitulosAvaliacoes(1, '2')" />
             <q-tab name="3" label="2 a 3 anos" v-if="showAba('3')" @click="getTitulosAvaliacoes(1, '3')" />
             <q-tab name="4" label="3 a 4 anos" v-if="showAba('4')" @click="getTitulosAvaliacoes(1, '4')" />
@@ -31,7 +31,7 @@
                         </q-card-section>
 
                         <div class="q-pa-md q-gutter-y-md flex justify-center">
-                            <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
+                            <q-btn-group style="border: 1px solid;" v-show="item.cod != '0'">
                                 <q-btn label="Sim"
                                     :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 1)" />
@@ -79,6 +79,7 @@ import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { PortageService } from 'src/services/PortageService';
+import { useAprendizStore } from 'src/stores/aprendiz';
 
 const { success, error } = useNotify();
 
@@ -122,7 +123,7 @@ const portageService = new PortageService();
 
 const $q = useQuasar();
 
-//const qtdCardsRespondidos = ref<number>(0);
+const aprendizStore = useAprendizStore().getAprendizInfo;
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string) {
 
@@ -196,7 +197,6 @@ async function salvar() {
 
         if (data) {
             success('Coletas salvas com sucesso!');
-            refresh();
         } else {
             error('Ocorreu um erro ao salvar as coletas');
         }
@@ -204,7 +204,8 @@ async function salvar() {
         error('Ocorreu um erro ao salvar as coletas');
         throw e;
     } finally {
-        //await refresh();
+        state.cache.clear();
+        await refresh();
         $q.loading.hide();
     }
 
@@ -271,7 +272,8 @@ function coletar(item: any, pontuacao: number) {
         portage_uuid_fk: portageId.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
-        idade_coleta: tituloSelecionado.value,
+        codigo: Number.parseInt(item.cod),
+        idade_coleta: idadeSelecionada.value,
         tipo: tituloSelecionado.value,
         resposta: pontuacao,
     };
@@ -302,20 +304,20 @@ function coletar(item: any, pontuacao: number) {
     // Opcional: atualizar o cache após as modificações  
     stateCache.set("coletasRealizadas", coletasRealizadas);
 }
-
+/*
 function getData(key: string) {
     if (state.cache.has(key)) {
         return state.cache.get(key);
     }
     state.cache.set(key, []);
-}
+}*/
 
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
     await configTela();
     titulosNivelUm.value = portageZeroHaUmAno.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, idadeSelecionada.value);
-    getData('coletasRealizadas');
+    //getData('coletasRealizadas');
 });
 
 </script>

@@ -7,72 +7,61 @@ const portageQuatroHaCincoAno = {
       objetivos: [
         {
           id: 5001,
-          cod: '73',
-          descricao: 'Manifesta seus sentimentos: raiva, felicidade, amor.',
+          cod: '64',
+          descricao:
+            'Pede ajuda quando está tendo dificuldades (Ex: ir ao banheiro ou para beber algo).',
           selected: null,
         },
         {
           id: 5002,
-          cod: '74',
-          descricao:
-            'Brinca com 4 a 5 crianças em uma atividade de cooperação, sem supervisão constante.',
+          cod: '65',
+          descricao: 'Contribui para a conversa de adultos.',
           selected: null,
         },
         {
           id: 5003,
-          cod: '75',
-          descricao: 'Explica aos outros regras do jogo ou atividade.',
+          cod: '66',
+          descricao: 'Repete rimas, canções ou dança para os adultos.',
           selected: null,
         },
         {
           id: 5004,
-          cod: '76',
-          descricao: 'Imita papéis de adultos.',
+          cod: '67',
+          descricao: 'Faz uma tarefa sozinho por 20 a 30 minutos.',
           selected: null,
         },
         {
           id: 5005,
-          cod: '77',
-          descricao: 'Colabora para a conversa durante as refeições.',
+          cod: '68',
+          descricao: 'Pede desculpas (sem ser lembrado) 75% das vezes.',
           selected: null,
         },
         {
           id: 5006,
-          cod: '78',
-          descricao: 'Segue regras de um jogo que envolva raciocínio verbal.',
+          cod: '69',
+          descricao:
+            'Espera sua vez numa brincadeira que envolve 8 ou 9 crianças.',
           selected: null,
         },
         {
           id: 5007,
-          cod: '79',
-          descricao: 'Conforta coletas quando estão tristes.',
+          cod: '70',
+          descricao:
+            'Brinca com 2 ou 3 crianças por 20 minutos, em atividade (projeto ou jogo) que envolve cooperação.',
           selected: null,
         },
         {
           id: 5008,
-          cod: '80',
-          descricao: 'Escolhe os próprios amigos.',
+          cod: '71',
+          descricao:
+            'Quando em público apresenta comportamento socialmente aceitável.',
           selected: null,
         },
         {
           id: 5009,
-          cod: '81',
+          cod: '72',
           descricao:
-            'Planeja e constrói usando ferramentas simples ( Ex: Plano inclinado, alavanca, roldana).',
-          selected: null,
-        },
-        {
-          id: 5010,
-          cod: '82',
-          descricao:
-            'Estabelece metas para si próprio e executa as atividades para atingi-las.',
-          selected: null,
-        },
-        {
-          id: 5011,
-          cod: '83',
-          descricao:
-            'Dramatiza trechos de estórias desempenhando papéis ou lidando com fantoches.',
+            'Pede permissão para usar objetos dos outros em 75% das vezes.',
           selected: null,
         },
       ],

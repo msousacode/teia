@@ -130,7 +130,7 @@ async function getColetaPontuacoes() {
 }
 
 onMounted(async () => {
-    abrirGrafrico();
     await getColetaPontuacoes();
+    abrirGrafrico();
 }) 
 </script>
