@@ -2,7 +2,7 @@
     <q-page padding>
 
 
-        <div class="rows">
+        <div class="q-ml-md">
             <div>
                 {{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}
 

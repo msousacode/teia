@@ -676,32 +676,32 @@ const portageQuatroHaCincoAno = {
           selected: null,
         },
         {
-          id: 5102,
+          id: 5103,
           cod: '107',
           descricao: 'Pedala um triciclo fazendo curvas.',
           selected: null,
         },
         {
-          id: 5103,
+          id: 5104,
           cod: '108',
           descricao: 'Salta em um só pé, 5 vezes consecutivas.',
           selected: null,
         },
         {
-          id: 5104,
+          id: 5105,
           cod: '109',
           descricao: 'Recorta um círculo de 5cm.',
           selected: null,
         },
         {
-          id: 5105,
+          id: 5106,
           cod: '110',
           descricao:
             'Desenha figuras simples, facilmente identificáveis como casa, homem,árvore.',
           selected: null,
         },
         {
-          id: 5106,
+          id: 5107,
           cod: '111',
           descricao: 'Recorta e cola formas simples.',
           selected: null,
