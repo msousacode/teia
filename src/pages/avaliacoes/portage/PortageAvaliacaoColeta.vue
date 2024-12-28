@@ -1,7 +1,18 @@
 <template>
     <q-page padding>
 
-        <div class="text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+
+        <div class="rows">
+            <div>
+                {{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}
+
+                <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
+                    v-model="showRespondidas" class="toggle-right" :class="`q-ml-xl`" />
+            </div>
+        </div>
+
+
+
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="1" label="0 a 1 ano" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
@@ -72,7 +83,7 @@ import { portageUmHaDoisAno } from '../data/portage/portageUmHaDoisAno';
 import { portageDoisHaTresAno } from '../data/portage/portageDoisHaTresAno';
 import { portageTresHaQuatroAno } from '../data/portage/portageTresHaQuatro';
 import { portageQuatroHaCincoAno } from '../data/portage/portageQuatroHaCinco';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { toRaw } from 'vue';
@@ -124,6 +135,10 @@ const portageService = new PortageService();
 const $q = useQuasar();
 
 const aprendizStore = useAprendizStore().getAprendizInfo;
+
+const showRespondidas = ref(true);
+
+const clonedCards = ref<any[]>([]);
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string) {
 
@@ -204,6 +219,7 @@ async function salvar() {
         error('Ocorreu um erro ao salvar as coletas');
         throw e;
     } finally {
+        showRespondidas.value = true;
         state.cache.clear();
         await refresh();
         $q.loading.hide();
@@ -304,20 +320,35 @@ function coletar(item: any, pontuacao: number) {
     // Opcional: atualizar o cache após as modificações  
     stateCache.set("coletasRealizadas", coletasRealizadas);
 }
-/*
+
 function getData(key: string) {
     if (state.cache.has(key)) {
         return state.cache.get(key);
     }
     state.cache.set(key, []);
-}*/
+}
+
+watch(showRespondidas, async () => {
+
+    clonedCards.value = cards.value.map(card => Object.assign({}, card));
+
+    if (!showRespondidas.value)
+        cards.value = cards.value.filter(i => i.selected == null);
+    else {
+        await refresh();
+    }
+})
+
+watch([idadeSelecionada, tituloSelecionado], () => {
+    showRespondidas.value = true;
+})
 
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
     await configTela();
     titulosNivelUm.value = portageZeroHaUmAno.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, idadeSelecionada.value);
-    //getData('coletasRealizadas');
+    getData('coletasRealizadas');
 });
 
 </script>
