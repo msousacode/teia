@@ -67,7 +67,8 @@
                 </template>
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" />
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                            @click="gerarRelatorioPortage(props.row)" />
                     </q-td>
                 </template>
             </q-table>
@@ -94,6 +95,7 @@ import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { AvaliacaoService } from 'src/services/AvaliacaoService';
 import { useAprendizStore } from 'src/stores/aprendiz';
+import { RelatorioService } from 'src/services/RelatorioService';
 
 const aprendizService = new AprendizService();
 
@@ -124,6 +126,8 @@ const showOpcoes = ref<boolean>(false)
 const store = useAvaliacaoStore();
 
 const aprendizInfoStore = useAprendizStore();
+
+const relatorioService = new RelatorioService();
 
 const form = ref({
     uuid: '',
@@ -248,6 +252,14 @@ function ir(tipoAvaliacao: any) {
     if (isVbmapp.value) {
         router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
     }
+}
+
+function gerarRelatorioPortage() {
+    const obj = toRaw(selected.value[0])
+    const portageId = obj.id;
+
+    const data = relatorioService.gerarRelatorioPortage(portageId);
+    console.log(data);
 }
 
 onMounted(() => {

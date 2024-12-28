@@ -8,4 +8,8 @@ export class RelatorioService {
       `/relatorios/aprendiz/${uuid}/dataInicio/${dataInicial}/dataFinal/${dataFinal}`
     );
   }
+
+  async gerarRelatorioPortage(portageId: string) {
+    return await http.get(`/relatorios/portage/${portageId}`);
+  }
 }
