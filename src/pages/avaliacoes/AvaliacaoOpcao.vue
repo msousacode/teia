@@ -1,5 +1,29 @@
 <template>
     <div class="q-pa-md">
+
+        <q-dialog v-model="showUrlDownload">
+            <q-card>
+                <q-card-section class="q-pa-md">
+                    <div class="text-body1">Download do Relatório</div>
+                    <!--div class="q-mt-md">
+                        <q-input filled v-model="urlDownload" label="URL do Download" readonly dense icon="link" />
+                    </div-->
+                </q-card-section>
+
+                <q-card-actions>
+                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile">
+                        <q-icon name="cloud_download" class="q-ml-sm" />
+                    </q-btn>
+
+                    <q-btn label="Copiar Link" color="secondary" @click="copyLink">
+                        <q-icon name="link" />
+                    </q-btn>
+
+                    <q-btn flat label="Fechar" @click="showUrlDownload = false" />
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
+
         <title-custom title="Protocolos" />
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
@@ -155,6 +179,10 @@ const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
     idade: '3'//TODO colocar a data do aprendiz.
 })
 
+const showUrlDownload = ref(false);
+
+const urlDownload = ref<string>();
+
 watch(store, () => {
     const avaliacao = store.$state.avaliacao[0];
     if (avaliacao) {
@@ -254,12 +282,21 @@ function ir(tipoAvaliacao: any) {
     }
 }
 
-function gerarRelatorioPortage() {
+async function gerarRelatorioPortage() {
     const obj = toRaw(selected.value[0])
     const portageId = obj.id;
 
-    const data = relatorioService.gerarRelatorioPortage(portageId);
-    console.log(data);
+    $q.loading.show();
+    const data = await relatorioService.gerarRelatorioPortage(portageId);
+    $q.loading.hideF();
+
+    urlDownload.value = data.data.url;
+    showUrlDownload.value = true;
+}
+
+function downloadFile() {
+    window.open(urlDownload.value, '_blank');
+    showUrlDownload.value = false;
 }
 
 onMounted(() => {
