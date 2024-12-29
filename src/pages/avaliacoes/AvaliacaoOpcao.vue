@@ -4,7 +4,7 @@
         <q-dialog v-model="showUrlDownload">
             <q-card>
                 <q-card-section class="q-pa-md">
-                    <div class="text-body1">Download do Relatório</div>
+                    <div class="text-body1 text-center text-green-8">Relatório gerado com Sucesso!</div>
                     <!--div class="q-mt-md">
                         <q-input filled v-model="urlDownload" label="URL do Download" readonly dense icon="link" />
                     </div-->
@@ -288,7 +288,7 @@ async function gerarRelatorioPortage() {
 
     $q.loading.show();
     const data = await relatorioService.gerarRelatorioPortage(portageId);
-    $q.loading.hideF();
+    $q.loading.hide();
 
     urlDownload.value = data.data.url;
     showUrlDownload.value = true;
