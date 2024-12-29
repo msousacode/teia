@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.1.20241213</div>
+        <div style="color: white;">v1.0.0.1.20241229</div>
       </q-toolbar>
     </q-header>
 
