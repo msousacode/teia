@@ -44,14 +44,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                    }}
+                                        }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -358,6 +358,8 @@ function coletar(item: any, pontuacao: number) {
         nivel_coleta: nivelSelecionado.value,
         tipo: tituloSelecionado.value,
         pontuacao: pontuacao,
+        codigo: item.cod,
+        descricao: item.descricao
     };
 
     // Usar toRaw para obter a versão reativa normal do estado  

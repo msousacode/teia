@@ -282,6 +282,7 @@ function coletar(item: any, pontuacao: number) {
         portage_uuid_fk: portageId.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
         coleta_id: item.id,
+        descricao: item.descricao,
         codigo: Number.parseInt(item.cod),
         idade_coleta: idadeSelecionada.value,
         tipo: tituloSelecionado.value,

@@ -12,4 +12,16 @@ export class RelatorioService {
   async gerarRelatorioPortage(portageId: string) {
     return await http.get(`/relatorios/portage/${portageId}`);
   }
+
+  async gerarRelatorioPortagePEI(portageId: string) {
+    return await http.get(`/relatorios/portage/${portageId}/pei`);
+  }
+
+  async gerarRelatorioVBMAPP(vbmappId: string) {
+    return await http.get(`/relatorios/vbmapp/${vbmappId}`);
+  }
+
+  async gerarRelatorioVBMAPPPEI(vbmappId: string) {
+    return await http.get(`/relatorios/vbmapp/${vbmappId}/pei`);
+  }
 }

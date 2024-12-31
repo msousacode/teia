@@ -58,7 +58,8 @@
                 :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md" />
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                            v-if="props.row.name == 'MILESTONES'" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsx="props">
@@ -69,7 +70,8 @@
                 </template>
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" />
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                            @click="gerarRelatorioVBMAPP(props.row.name)" />
                     </q-td>
                 </template>
             </q-table>
@@ -81,18 +83,20 @@
                 :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md" />
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                            v-if="props.row.name != 'PEI'" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md"
+                            v-if="props.row.name != 'PEI'" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioPortage(props.row)" />
+                            @click="gerarRelatorioPortage(props.row.name)" />
                     </q-td>
                 </template>
             </q-table>
@@ -282,12 +286,39 @@ function ir(tipoAvaliacao: any) {
     }
 }
 
-async function gerarRelatorioPortage() {
+async function gerarRelatorioPortage(relatorioName: string) {
     const obj = toRaw(selected.value[0])
     const portageId = obj.id;
 
     $q.loading.show();
-    const data = await relatorioService.gerarRelatorioPortage(portageId);
+
+    let data;
+
+    if (relatorioName == 'PEI') {
+        data = await relatorioService.gerarRelatorioPortagePEI(portageId);
+    } else {
+        data = await relatorioService.gerarRelatorioPortage(portageId);
+    }
+
+    $q.loading.hide();
+
+    urlDownload.value = data.data.url;
+    showUrlDownload.value = true;
+}
+
+async function gerarRelatorioVBMAPP(relatorioName: string) {
+    const aprendizId = store.aprendizSelected.value;
+
+    $q.loading.show();
+
+    let data;
+
+    if (relatorioName == 'PEI') {
+        data = await relatorioService.gerarRelatorioVBMAPPPEI(aprendizId);
+    } else {
+        data = await relatorioService.gerarRelatorioVBMAPP(aprendizId);
+    }
+
     $q.loading.hide();
 
     urlDownload.value = data.data.url;
@@ -329,10 +360,10 @@ rows.value = [
     },
     /*{
         name: 'TRANSIÇÃO',
-    },
+    },*/
     {
         name: 'PEI',
-    },*/
+    },
 ]
 
 columnsPortage.value = [
@@ -350,6 +381,9 @@ rowsPortage.value = [
     {
         name: 'Coleta',
         path: 'avaliacoes-coleta/portage'
+    },
+    {
+        name: 'PEI',
     },
 ]
 
