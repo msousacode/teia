@@ -3,7 +3,7 @@ import createHttp from '../base/baseHttp';
 const http = createHttp('/api/auth');
 
 export class StripeService {
-  async postAprendiz(data: any) {
+  async postCustomer(data: any) {
     return await http.post('/stripe', data);
   }
 

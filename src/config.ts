@@ -4,17 +4,8 @@ export const config = {
     secretKey: process.env.STRIPE_SECRET_KEY,
     //webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     plans: {
-      free: {
-        priceId: 'price_1QOe2bE7oRUy6lRCob0SknLw',
-        quota: {
-          TASKS: 7,
-        },
-      },
       pro: {
-        priceId: 'price_1QOe17E7oRUy6lRC6L0ju3ii',
-        quota: {
-          TASKS: -1,
-        },
+        priceId: 'price_1QcU4UE7oRUy6lRCy4M57z0W',
       },
     },
   },

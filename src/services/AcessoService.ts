@@ -23,17 +23,14 @@ const config = {
 };
 export class AcessoService {
   async criarNovoUsuario(usuario: Usuario) {
-    return http
-      .post('/auth/usuarios', usuario, config)
-      .then(() => {
-        return { status: 200 };
-      })
-      .catch(() => {
-        return { status: 500 };
-      });
+    return http.post('/auth/usuarios', usuario, config);
   }
 
   async login(auth: Auth) {
     return http.post('/auth/login', auth, config);
+  }
+
+  async subscriptionInfoByEmail(email: string) {
+    return http.get(`/auth/usuarios/subscription/${email}`);
   }
 }

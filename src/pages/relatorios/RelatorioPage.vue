@@ -269,7 +269,6 @@ import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { AprendizService } from 'src/services/AprendizService';
 import { UsuarioService } from 'src/services/UsuarioService';
-import { createStripeCustomer } from 'src/services/stripe';
 import { TermoService } from 'src/services/TermoService';
 import { useRouter } from 'vue-router';
 import { useManagerTokens } from 'src/composables/managerTokens';
@@ -386,30 +385,6 @@ const carregarSelectAprendiz = async () => {
     }
 }
 
-async function criarContaStripe() {
-    try {
-        $q.loading.show();
-
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        const input = {
-            name: user.fullName,
-            email: user.email,
-        }
-
-        const { id } = await createStripeCustomer(input);
-
-        if (!id) {
-            error('Erro ao criar customer Stripe!');
-        }
-    } catch (e) {
-        console.log(e);
-        error('Erro ao criar customer!');
-    } finally {
-        $q.loading.hide();
-    }
-}
-
 function downloadFile() {
     window.open(urlDownload.value, '_blank');
     showUrlDownload.value = false;
@@ -444,7 +419,5 @@ onMounted(async () => {
         showTermsDialog.value = !acceptTerms.value;
 
     });
-
-    await criarContaStripe();
 });
 </script>
