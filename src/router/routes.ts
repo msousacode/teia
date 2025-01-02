@@ -31,6 +31,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/acesso/NovaSenhaPage.vue'),
       },
       {
+        name: 'sucesso',
+        path: '/sucesso',
+        component: () => import('pages/acesso/PagamentoSucesso.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: 'expirada',
         name: 'expirada',
         component: () => import('pages/assinatura/AssinaturaExpiradaPage.vue'),

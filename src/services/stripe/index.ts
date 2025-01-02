@@ -54,8 +54,8 @@ export const createCheckoutSession = async (userEmail: string) => {
       payment_method_types: ['card'],
       mode: 'subscription',
       client_reference_id: customer.id,
-      success_url: `${process.env.API_URL}#/login`,
-      cancel_url: `${process.env.API_URL}#/login`,
+      success_url: `${process.env.API_URL}#/sucesso`,
+      cancel_url: `${process.env.API_URL}#/falha`,
       line_items: [
         {
           price: config.stripe.plans.pro.priceId,

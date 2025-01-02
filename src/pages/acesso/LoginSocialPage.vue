@@ -26,18 +26,21 @@
             <q-input outlined stack-label v-model="senha" label="Senha" type="password"
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
 
-            <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="ENTRAR" @click="entrar('normal')"
-              :disable="!isSubmitted" />
-            <div class="text-right text-blue text-body1 q-mt-md">
-              <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
-            </div>
+            <q-btn class="full-width bg-primary text-white q-pa-sm q-mb-xl" no-caps label="ENTRAR"
+              @click="entrar('normal')" :disable="!isSubmitted" />
 
+
+            <q-btn class="full-width bg-blue-9 text-white" unelevated to="/cadastrar" label="Criar Conta" />
+          </div>
+
+          <div class="text-right text-blue text-body1 q-mt-md">
+            <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
           </div>
         </div>
       </div>
 
-      <q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
-        label="Novo por aqui? Cadastrar-se" no-caps />
+
+
 
     </q-page-container>
   </q-layout>
@@ -78,11 +81,11 @@ async function entrar() {
     const { data } = await acessoService.subscriptionInfoByEmail(email.value.toLocaleLowerCase().trim());
 
     if (data == null || data == "") {
-      error('Erro ao logar. Verifique suas credenciais');
+      error('Não encontrado');
       return;
     }
 
-    if (data.assinatura.tipo_assinatura = 'NAO_ASSINANTE') {
+    if (data.assinatura.tipo_assinatura == 'NAO_ASSINANTE') {
       const { url } = await createCheckoutSession(data.email);
 
       if (url) {

@@ -1,9 +1,13 @@
 const stripe = require('stripe')(
   'sk_test_51QOdWGE7oRUy6lRCqHCvnwczwt60S3EiCUBK8qz91tvvtIzZ6DM80SBbNov5TQ9buFZaNxT86Eygo4q8TCuX40vm00fPyRedUn'
 );
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+const axios = require('axios');
 
 exports.handler = async (event) => {
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const backendUrl = process.env.SYSABA_BACKEND;
+
   // Verifique se o método HTTP é POST
   if (event.httpMethod !== 'POST') {
     return {
@@ -12,7 +16,6 @@ exports.handler = async (event) => {
     };
   }
 
-  // Obtenha a assinatura do Stripe
   const sig = event.headers['stripe-signature'];
 
   let eventStripe;
@@ -30,21 +33,22 @@ exports.handler = async (event) => {
     };
   }
 
-  switch (eventStripe.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntent = eventStripe.data.object;
-      console.log(`PaymentIntent was successful! ID: ${paymentIntent.id}`); // Inclua detalhes no log
-      break;
-    case 'customer.subscription.created':
-    case 'customer.subscription.updated':
-      await handleProcessWebhookUpdatedSubscription(event.data);
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+  if (eventStripe.type == 'invoice.payment_succeeded') {
+    const paymentIntent = eventStripe.data.object;
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ received: true }),
-  };
+    const payload = {
+      invoiceId: paymentIntent.id,
+      customerId: paymentIntent.customer,
+      email: paymentIntent.customer_email,
+    };
+
+    try {
+      await axios.post(
+        'http://localhost:8080/sysaba/api/auth/assinatura/pago',
+        payload
+      );
+    } catch (error) {
+      console.log('err', error);
+    }
+  }
 };
