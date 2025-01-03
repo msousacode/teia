@@ -67,13 +67,13 @@ module.exports = configure(function (ctx) {
         API_URL: ctx.dev
           ? 'http://localhost:9000/'
           : 'https://sysaba.netlify.app',
-        //BACKEND_URL: 'http://localhost:8080',
-        BACKEND_URL: 'https://sysaba.tech',
+        BACKEND_URL: 'http://localhost:8080',
+        //BACKEND_URL: 'https://sysaba.tech',
         STRIPE_PUBLISHABLE_KEY:
           'pk_test_51QOdWGE7oRUy6lRCzUrOMQmucN9hftFYGaF4GbYAgcDpQ0ILL3nx975cfJ1L7DiDRorpaeBZVAytvD60SAEjGvlY00NgxNJ056',
         STRIPE_SECRET_KEY:
-          'sk_test_51QOdWGE7oRUy6lRCqHCvnwczwt60S3EiCUBK8qz91tvvtIzZ6DM80SBbNov5TQ9buFZaNxT86Eygo4q8TCuX40vm00fPyRedUn',
-        STRIPE_WEBHOOK_SECRET: 'whsec_oZlDPIs4vRmudtIjkon5ouJFUduSMV56',
+          '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',
+        STRIPE_WEBHOOK_SECRET: 'whsec_sbjMTZAZ8nUqIrnMt2bxD5FszYMJ9usR',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
@@ -87,6 +87,7 @@ module.exports = configure(function (ctx) {
       // vitePlugins: [
       //   [ 'package-name', { ..options.. } ]
       // ]
+      devtool: 'source-map',
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
