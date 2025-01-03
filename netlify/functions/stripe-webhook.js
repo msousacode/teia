@@ -1,5 +1,5 @@
 const stripe = require('stripe')(
-  'sk_test_51QOdWGE7oRUy6lRCqHCvnwczwt60S3EiCUBK8qz91tvvtIzZ6DM80SBbNov5TQ9buFZaNxT86Eygo4q8TCuX40vm00fPyRedUn'
+  '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'
 );
 
 const axios = require('axios');
