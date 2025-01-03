@@ -5,7 +5,7 @@ export const config = {
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     plans: {
       pro: {
-        priceId: 'price_1QcU4UE7oRUy6lRCy4M57z0W',
+        priceId: 'price_1QcyDYE7oRUy6lRCI6iyzfOD',
       },
     },
   },
