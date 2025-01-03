@@ -1,8 +1,7 @@
 <template>
     <q-page padding>
-        <div class="q-ml-md text-teal">
-            {{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}
-
+        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+        <div class="text-teal">
             <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
                 v-model="showRespondidas" />
         </div>

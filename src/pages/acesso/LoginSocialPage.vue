@@ -34,7 +34,7 @@
           </div>
 
           <div class="text-right text-blue text-body1 q-mt-md">
-            <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
+            <q-btn text-color="blue-9" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
           </div>
         </div>
       </div>

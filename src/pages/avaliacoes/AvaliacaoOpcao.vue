@@ -103,7 +103,7 @@
         </div>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
-            <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
+            <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
     </div>
 </template>

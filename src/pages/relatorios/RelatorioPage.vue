@@ -278,6 +278,7 @@ import {
     meses
 } from 'src/composables/utils';
 import { RelatorioService } from 'src/services/RelatorioService';
+import { AcessoService } from 'src/services/AcessoService';
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, PointElement, CategoryScale,
     LinearScale,
@@ -324,6 +325,8 @@ const router = useRouter();
 const managerTokens = useManagerTokens();
 
 const relatorioService = new RelatorioService();
+
+const acessoService = new AcessoService();
 
 const chartContainer = ref(null);
 
@@ -419,5 +422,12 @@ onMounted(async () => {
         showTermsDialog.value = !acceptTerms.value;
 
     });
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    await acessoService.subscriptionInfoByEmail(user.email).then(data => {
+        localStorage.setItem("userInfo", JSON.stringify(data));
+    })
+
 });
 </script>
