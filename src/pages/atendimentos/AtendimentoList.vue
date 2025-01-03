@@ -38,7 +38,7 @@
                 </div>
               </q-item-section>
               <q-item-section side>
-                <q-btn sm label="Coletar" color="blue"
+                <q-btn sm label="Coletar" color="blue-9"
                   @click="redirecionaColetas(item.treinamentoId, item.protocolo, aprendizUuidSelecionado)" />
               </q-item-section>
             </q-item>
@@ -65,7 +65,7 @@
       </q-table>
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'atendimento-novo' }" />
+      <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'atendimento-novo' }" />
     </q-page-sticky>
   </div>
 </template>

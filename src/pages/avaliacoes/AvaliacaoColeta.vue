@@ -1,7 +1,10 @@
 <template>
     <q-page padding>
-
-        <div class="text-teal">{{ descritivoTitulo }}</div>
+        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+        <div class="text-teal">
+            <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
+                v-model="showRespondidas" />
+        </div>
         <!--TODO fazer depois essa contagem-->
         <!--div class="text-teal">{{ descritivoTitulo }} - Coletados {{ qtdCardsRespondidos }} de {{ qtdCards }}</div-->
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
@@ -44,14 +47,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                        }}</div>
+                                    }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                        }}
+                                    }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -114,7 +117,7 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { ref, reactive } from 'vue';
 import { avaliacaoNivelUm } from './data/vbmappNivelUm';
 import { avaliacaoNivelDois } from './data/vbmappNivelDois';
@@ -127,6 +130,7 @@ import useNotify from 'src/composables/UseNotify';
 import { computed } from 'vue';
 import { VbMappService } from 'src/services/VbMappService';
 import { useQuasar } from 'quasar';
+import { useAprendizStore } from 'src/stores/aprendiz';
 
 const { success, error } = useNotify();
 
@@ -177,6 +181,12 @@ const visible = ref([]);
 const qtdCards = ref<number>(0);
 
 //const qtdCardsRespondidos = ref<number>(0);
+
+const aprendizStore = useAprendizStore().getAprendizInfo;
+
+const showRespondidas = ref(true);
+
+const clonedCards = ref<any[]>([]);
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string) {
 
@@ -272,7 +282,9 @@ async function salvar() {
         error('Ocorreu um erro ao salvar as coletas');
         throw e;
     } finally {
-        //await refresh();
+        showRespondidas.value = true;
+        state.cache.clear();
+        await refresh();
         $q.loading.hide();
     }
 
@@ -403,6 +415,21 @@ function abrirModalAjuda(index: number) {
 function fecharModalAjuda(index: number) {
     visible.value[index] = false;
 }
+
+watch(showRespondidas, async () => {
+
+    clonedCards.value = cards.value.map(card => Object.assign({}, card));
+
+    if (!showRespondidas.value)
+        cards.value = cards.value.filter(i => i.selected == null);
+    else {
+        await refresh();
+    }
+})
+
+watch([nivelSelecionado, tituloSelecionado], () => {
+    showRespondidas.value = true;
+})
 
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid

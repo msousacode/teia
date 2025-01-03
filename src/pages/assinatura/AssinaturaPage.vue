@@ -1,8 +1,7 @@
 <template>
   <q-page class="q-pa-md bg-grey-1">
 
-    <div class="row justify-center">
-
+    <div class="row justify-center" v-if="!isAssinante">
       <div class="text-h6 text-teal">Usuário criado com sucesso!</div>
       <q-banner class="bg-blue-1 text-green-9 q-mt-md q-pa-sm text-center">
         <span class="text-h6">Para utilizar o sistema é necessário contratar um Plano.</span></q-banner>
@@ -10,7 +9,7 @@
 
     <div class="q-ma-md">
       <div class="text-h6 text-teal q-mb-md" v-if="!isAssinante"><b>Contrate:</b></div>
-      <div class="text-h6 q-mb-md" v-if="isAssinante"><b>Seu Plano Atual</b></div>
+      <div class="text-h6 q-mb-md text-teal" v-if="isAssinante"><b>Seu Plano Atual</b></div>
 
 
       <p class="q-pa-none text-body2" v-if="!isAssinante">
@@ -23,6 +22,7 @@
     <!-- Cartão: Plano Pro -->
     <q-card flat bordered class="my-card q-ma-md bg-grey-3">
       <q-card-section class="q-py-md">
+        <q-chip color="green-7" text-color="white">Ativo</q-chip>
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="text-h5 text-blue"><b>PLANO PROFISSIONAL INDIVIDUAL</b></div>
@@ -33,15 +33,16 @@
               Cobrado de modo recorrente a cada mês no cartão de crédito
             </div>
 
-            <div class="q-mt-md">
+            <div class="q-mt-md" v-if="!isAssinante">
               <q-btn label="Assinar" no-caps color="primary" size="md" class="full-width" @click="assinar()" />
             </div>
+
           </div>
         </div>
       </q-card-section>
     </q-card>
 
-    <q-card flat bordered class="my-card q-ma-md bg-grey-3 text-dark">
+    <q-card flat bordered class="my-card q-ma-md bg-grey-3 text-dark" v-if="!isAssinante">
       <!-- Cartão: Plano Atual -->
       <q-card-section class="q-py-md">
         <div class="row items-center no-wrap">
@@ -96,7 +97,7 @@ async function assinar() {
 }
 
 onMounted(() => {
-  const usuario: UsuarioAssinaturaInfo = localStorage.getItem("userInfo");
+  const usuario: UsuarioAssinaturaInfo = JSON.parse(localStorage.getItem("userInfo")).data;
   isAssinante.value = usuario.assinatura.tipo_assinatura == 'ASSINANTE';
 })
 
