@@ -74,7 +74,6 @@ async function criarContaStripe(name: string, email: string) {
       error('Erro ao criar customer Stripe!');
     }
   } catch (e) {
-    console.log(e);
     error('Erro ao criar customer!');
   } finally {
     $q.loading.hide();
