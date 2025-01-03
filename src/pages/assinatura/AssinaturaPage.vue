@@ -83,7 +83,7 @@ async function assinar() {
 
     const usuario: UsuarioAssinaturaInfo = JSON.parse(localStorage.getItem("userInfo") || '');
 
-    const { url } = await createCheckoutSession(usuario.email);
+    const { url } = await createCheckoutSession(usuario.email.toLocaleLowerCase().trim());
 
     if (url) {
       window.location.href = url;
