@@ -6,7 +6,6 @@ const axios = require('axios');
 
 exports.handler = async (event) => {
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const backendUrl = process.env.SYSABA_BACKEND;
 
   // Verifique se o método HTTP é POST
   if (event.httpMethod !== 'POST') {
@@ -44,7 +43,7 @@ exports.handler = async (event) => {
 
     try {
       await axios.post(
-        'http://localhost:8080/sysaba/api/auth/assinatura/pago',
+        'https://sysaba.tech/sysaba/api/auth/assinatura/pago',
         payload
       );
     } catch (error) {
