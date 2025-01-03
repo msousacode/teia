@@ -9,18 +9,10 @@ export const stripe = new Stripe(config.stripe.secretKey || '', {
   httpClient: Stripe.createFetchHttpClient(),
 });
 
-export const getStripeCustomerByEmail = async (email: string) => {
-  const customers = await stripe.customers.list({ email });
-  return customers.data[0];
-};
-
 export const createStripeCustomer = async (input: {
   name?: string;
   email: string;
 }) => {
-  const customer = await getStripeCustomerByEmail(input.email);
-  if (customer) return customer;
-
   const createdCustomer = await stripe.customers.create({
     email: input.email,
     name: input.name,
@@ -47,7 +39,7 @@ export const createStripeCustomer = async (input: {
 export const createCheckoutSession = async (userEmail: string) => {
   try {
     const customer = await createStripeCustomer({
-      email: userEmail,
+      email: userEmail.toLocaleLowerCase().trim(),
     });
 
     const session = await stripe.checkout.sessions.create({
