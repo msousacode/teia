@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.1.20241213</div>
+        <div style="color: white;">v1.0.0.1.20241229</div>
       </q-toolbar>
     </q-header>
 
@@ -32,19 +32,12 @@
               <q-btn text-color="blue" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
             </div>
 
-            <!--div class="col-md-4">
-              <div class="text-center text-body2 q-mb-md">Ou acesse com as redes sociais</div>
-
-              <div class="row">
-                <q-btn class="full-width google-btn" label="Google" icon="mdi-google" @click="entrar('google')" />
-              </div>
-            </div-->
           </div>
         </div>
       </div>
 
-      <!--q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
-        label="Novo por aqui? Cadastrar-se" no-caps /-->
+      <q-btn class="full-width text-left text-blue text-body1 q-mt-sm" color="white" unelevated to="/cadastrar"
+        label="Novo por aqui? Cadastrar-se" no-caps />
 
     </q-page-container>
   </q-layout>
@@ -57,6 +50,7 @@ import useNotify from 'src/composables/UseNotify';
 import { useManagerTokens } from 'src/composables/managerTokens';
 import { AcessoService, Auth } from 'src/services/AcessoService';
 import { useQuasar } from 'quasar';
+import { createCheckoutSession } from 'src/services/stripe';
 
 const { error } = useNotify();
 
@@ -77,25 +71,49 @@ let isSubmitted = computed(() => {
 });
 
 async function entrar() {
-  const auth: Auth = {
-    username: email.value.toLocaleLowerCase().trim(),
-    password: senha.value.trim()
-  }
 
-  $q.loading.show();
-  await acessoService.login(auth).then((data) => {
+  try {
+    $q.loading.show();
 
-    if (data.status == 401) {
+    const { data } = await acessoService.subscriptionInfoByEmail(email.value.toLocaleLowerCase().trim());
+
+    if (data == null || data == "") {
       error('Erro ao logar. Verifique suas credenciais');
       return;
     }
 
-    localStorage.setItem('_tsysaba', data.data);
-    router.push({ name: 'relatorios' })
-  }).catch(() => {
-    error('Erro ao logar. Verifique suas credenciais');
-  });
-  $q.loading.hide();
+    if (data.assinatura.tipo_assinatura = 'NAO_ASSINANTE') {
+      const { url } = await createCheckoutSession(data.email);
+
+      if (url) {
+        window.location.href = url;
+      }
+    } else {
+      const auth: Auth = {
+        username: email.value.toLocaleLowerCase().trim(),
+        password: senha.value.trim()
+      }
+
+      $q.loading.show();
+      await acessoService.login(auth).then((data) => {
+
+        if (data.status == 401) {
+          error('Erro ao logar. Verifique suas credenciais');
+          return;
+        }
+
+        localStorage.setItem('_tsysaba', data.data);
+        router.push({ name: 'relatorios' })
+      }).catch(() => {
+        error('Erro ao logar. Verifique suas credenciais');
+      });
+    }
+
+  } catch (e) {
+    throw Error("Erro ao confirmar assinatura.")
+  } finally {
+    $q.loading.hide();
+  }
 }
 
 onBeforeMount(() => {

@@ -39,48 +39,29 @@ export const createStripeCustomer = async (input: {
     email: createdCustomer.email,
   };
 
-  await stripeService.postAprendiz(object);
+  await stripeService.postCustomer(object);
 
   return createdCustomer;
 };
 
-export const createCheckoutSession = async (
-  userId: string,
-  userEmail: string,
-  userStripeSubscriptionId: string
-) => {
+export const createCheckoutSession = async (userEmail: string) => {
   try {
     const customer = await createStripeCustomer({
       email: userEmail,
     });
 
-    const subscription = await stripe.subscriptionItems.list({
-      subscription: userStripeSubscriptionId,
-      limit: 1,
-    });
-
-    const session = await stripe.billingPortal.sessions.create({
-      customer: customer.id,
-      return_url: `${process.env.API_URL}#/assinatura`,
-      flow_data: {
-        type: 'subscription_update_confirm',
-        after_completion: {
-          type: 'redirect',
-          redirect: {
-            return_url: `${process.env.API_URL}#/relatorios`,
-          },
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'subscription',
+      client_reference_id: customer.id,
+      success_url: `${process.env.API_URL}#/login`,
+      cancel_url: `${process.env.API_URL}#/login`,
+      line_items: [
+        {
+          price: config.stripe.plans.pro.priceId,
+          quantity: 1,
         },
-        subscription_update_confirm: {
-          subscription: userStripeSubscriptionId,
-          items: [
-            {
-              id: subscription.data[0].id,
-              price: config.stripe.plans.pro.priceId,
-              quantity: 1,
-            },
-          ],
-        },
-      },
+      ],
     });
 
     return {

@@ -67,7 +67,7 @@ function abrirGrafrico() {
                     }
 
                     // Definição dos dados  
-                    const labels = ['Socialização', 'Linguagem', 'Cognição', 'Autocuidados', 'Desenv. Motor'];
+                    const labels = ['Socialização', 'Cognição', 'Linguagem', 'Autocuidados', 'Desenv. Motor'];
                     const data = {
                         labels: labels,
                         datasets: [
@@ -130,7 +130,7 @@ async function getColetaPontuacoes() {
 }
 
 onMounted(async () => {
-    abrirGrafrico();
     await getColetaPontuacoes();
+    abrirGrafrico();
 }) 
 </script>

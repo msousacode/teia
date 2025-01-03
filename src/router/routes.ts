@@ -21,11 +21,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/acesso/CadastroPage.vue'),
       },
       {
-        name: 'confirmado',
-        path: '/confirmado',
-        component: () => import('pages/acesso/CadastroConfirmadoPage.vue'),
-      },
-      {
         name: 'esqueci',
         path: '/esqueci',
         component: () => import('pages/acesso/EsqueciSenhaPage.vue'),
@@ -39,6 +34,12 @@ const routes: RouteRecordRaw[] = [
         path: 'expirada',
         name: 'expirada',
         component: () => import('pages/assinatura/AssinaturaExpiradaPage.vue'),
+      },
+      {
+        name: 'assinatura',
+        path: '/assinatura',
+        component: () => import('pages/assinatura/AssinaturaPage.vue'),
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -132,12 +133,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/perfil/PerfilPage.vue'),
         meta: { requiresAuth: true },
       },
-      {
-        name: 'assinatura',
-        path: '/assinatura',
-        component: () => import('pages/assinatura/AssinaturaPage.vue'),
-        meta: { requiresAuth: true },
-      },
+
       {
         name: 'suporte',
         path: '/suporte',

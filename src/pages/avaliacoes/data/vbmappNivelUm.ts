@@ -7,7 +7,7 @@ const avaliacaoNivelUm = {
       objetivos: [
         {
           id: 100,
-          cod: 'M1',
+          cod: '1M',
           descricao:
             'Imita 2 movimentos motores grossos com dica “faça isso” (ex. bater palmas, levantar os braços). (T)',
           selected: null,
@@ -28,7 +28,7 @@ const avaliacaoNivelUm = {
         },
         {
           id: 101,
-          cod: 'M2',
+          cod: '2M',
           descricao:
             'Imita 4 movimentos motores grossos com dica “faça isso” (T)',
           selected: null,
@@ -49,7 +49,7 @@ const avaliacaoNivelUm = {
         },
         {
           id: 102,
-          cod: 'M3',
+          cod: '3M',
           descricao:
             'Imita 8 movimentos motores, 2 dos quais envolvendo objetos (e.g.,balançar um chocalho, bater pauzinhos). (T)',
           selected: null,
@@ -70,7 +70,7 @@ const avaliacaoNivelUm = {
         },
         {
           id: 103,
-          cod: 'M4',
+          cod: '4M',
           descricao:
             'Imita espontaneamente o comportamento motor de outros em 5 ocasiões. (O)',
           selected: null,
@@ -90,7 +90,7 @@ const avaliacaoNivelUm = {
         },
         {
           id: 104,
-          cod: 'M5',
+          cod: '5M',
           descricao: 'Pontuação de no mínimo 2 no sub-teste APCE',
           selected: null,
           observacoes: {

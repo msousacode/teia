@@ -42,6 +42,7 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRouter } from 'vue-router';
+import { createStripeCustomer } from 'src/services/stripe';
 
 const router = useRouter();
 
@@ -63,6 +64,22 @@ let isSubmitted = computed(() => {
   return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senhaConfirmada.length > 5 && formCadastro.senhaConfirmada !== '';
 });
 
+async function criarContaStripe(name: string, email: string) {
+  try {
+    $q.loading.show();
+
+    const { id } = await createStripeCustomer({ name: name, email: email });
+
+    if (!id) {
+      error('Erro ao criar customer Stripe!');
+    }
+  } catch (e) {
+    console.log(e);
+    error('Erro ao criar customer!');
+  } finally {
+    $q.loading.hide();
+  }
+}
 
 async function cadastrar() {
 
@@ -75,17 +92,20 @@ async function cadastrar() {
 
   try {
     $q.loading.show();
-    const { status } = await acessoService.criarNovoUsuario(novoUsurio);
+    const { data } = await acessoService.criarNovoUsuario(novoUsurio);
 
-    if (status == 200) {
-      router.push({ name: 'confirmado' });
-    } else {
-      error("Ocorreu um erro contate Suporte.")
+    if (data == null) {
+      throw Error("Erro ao cadastrar novo usuário.");
     }
+
+    await criarContaStripe(formCadastro.nome, formCadastro.email);
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    router.push({ name: 'assinatura' });
 
   } catch (e) {
     console.log(e);
-    error('Erro ao criar customer!');
+    error('Erro ao criar novo usuário. Contate o Suporte.');
   } finally {
     $q.loading.hide();
   }
