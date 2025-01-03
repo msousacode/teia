@@ -42,7 +42,7 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRouter } from 'vue-router';
-import { createStripeCustomer } from 'src/services/stripe';
+//import { createStripeCustomer } from 'src/services/stripe';
 
 const router = useRouter();
 
@@ -63,7 +63,7 @@ const formCadastro = reactive({
 let isSubmitted = computed(() => {
   return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senhaConfirmada.length > 5 && formCadastro.senhaConfirmada !== '';
 });
-
+/*
 async function criarContaStripe(name: string, email: string) {
   try {
     $q.loading.show();
@@ -78,7 +78,7 @@ async function criarContaStripe(name: string, email: string) {
   } finally {
     $q.loading.hide();
   }
-}
+}*/
 
 async function cadastrar() {
 
@@ -97,7 +97,7 @@ async function cadastrar() {
       throw Error("Erro ao cadastrar novo usuário.");
     }
 
-    await criarContaStripe(formCadastro.nome, formCadastro.email);
+    //await criarContaStripe(formCadastro.nome, formCadastro.email);
 
     localStorage.setItem("userInfo", JSON.stringify(data));
     router.push({ name: 'assinatura' });
