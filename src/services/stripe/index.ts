@@ -22,7 +22,7 @@ export const createStripeCustomer = async (input: {
   if (customer) return customer;
 
   const createdCustomer = await stripe.customers.create({
-    email: input.email,
+    email: input.email.toLowerCase().trim(),
     name: input.name,
   });
 
@@ -46,7 +46,9 @@ export const createStripeCustomer = async (input: {
 
 export const createCheckoutSession = async (userEmail: string) => {
   try {
-    const customer = await getStripeCustomerByEmail(userEmail);
+    const customer = await getStripeCustomerByEmail(
+      userEmail.toLowerCase().trim()
+    );
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
