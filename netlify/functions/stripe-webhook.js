@@ -5,7 +5,7 @@ const stripe = require('stripe')(
 const axios = require('axios');
 
 exports.handler = async (event) => {
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const endpointSecret = 'whsec_sbjMTZAZ8nUqIrnMt2bxD5FszYMJ9usR';
 
   // Verifique se o método HTTP é POST
   if (event.httpMethod !== 'POST') {

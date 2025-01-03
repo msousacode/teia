@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.3.20250103</div>
+        <div style="color: white;">v1.0.0.5.20250103</div>
       </q-toolbar>
     </q-header>
 
@@ -78,10 +78,10 @@ async function entrar() {
   try {
     $q.loading.show();
 
-    const { data } = await acessoService.subscriptionInfoByEmail(email.value.toLocaleLowerCase().trim());
+    const { data } = await acessoService.subscriptionInfoByEmail(email.value.toLowerCase().trim());
 
-    if (data == null) {
-      error('Não encontrado');
+    if (data == null || data == "") {
+      error('Não encontrado.');
       return;
     }
 

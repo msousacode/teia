@@ -68,7 +68,7 @@ async function criarContaStripe(name: string, email: string) {
   try {
     $q.loading.show();
 
-    const { id } = await createStripeCustomer({ name: name, email: email });
+    const { id } = await createStripeCustomer({ name: name, email: email.toLowerCase().trim() });
 
     if (!id) {
       error('Erro ao criar customer Stripe!');
@@ -87,7 +87,7 @@ async function cadastrar() {
     return;
   }
 
-  const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email.toLocaleLowerCase().trim(), banco_demonstracao: formCadastro.banco_demonstracao, senha: formCadastro.senhaConfirmada } as Usuario;
+  const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email.toLowerCase().trim(), banco_demonstracao: formCadastro.banco_demonstracao, senha: formCadastro.senhaConfirmada } as Usuario;
 
   try {
     $q.loading.show();
@@ -97,7 +97,7 @@ async function cadastrar() {
       throw Error("Erro ao cadastrar novo usuário.");
     }
 
-    await criarContaStripe(formCadastro.nome, formCadastro.email.toLocaleLowerCase().trim());
+    await criarContaStripe(formCadastro.nome, formCadastro.email.toLowerCase().trim());
 
     localStorage.setItem("userInfo", JSON.stringify(data));
     router.push({ name: 'assinatura' });
