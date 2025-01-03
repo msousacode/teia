@@ -28,14 +28,14 @@ export const createStripeCustomer = async (input: {
 
   const createdCustomerSubscription = await stripe.subscriptions.create({
     customer: createdCustomer.id,
-    items: [{ price: config.stripe.plans.free.priceId }],
+    items: [{ price: config.stripe.plans.pro.priceId }],
   });
 
   const object = {
     stripeCustomerId: createdCustomer.id,
     stripeSubscriptionId: createdCustomerSubscription.id,
     stripeSubscriptionStatus: createdCustomerSubscription.status,
-    stripePriceId: config.stripe.plans.free.priceId,
+    stripePriceId: config.stripe.plans.pro.priceId,
     email: createdCustomer.email,
   };
 
