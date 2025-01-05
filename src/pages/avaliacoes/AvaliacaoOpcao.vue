@@ -219,6 +219,8 @@ watch(form.value, async () => {
                     protocolo: i.protocolo,
                     nivel: i.protocolo == 'VB-MAPP' ? `Nível ${i.tipo}` : i.protocolo == 'PORTAGE' ? `Idade: ${i.tipo}` : '',
                     align: 'left',
+                    coleta: i.coleta,
+                    progresso: i.progresso
                 }
             })
             avaliacaoRows.value = response;
@@ -402,6 +404,16 @@ avaliacaoColumns.value = [
         label: '#',
         align: 'left',
         field: 'nivel'
+    },
+    {
+        label: 'Coletas',
+        align: 'left',
+        field: 'coleta'
+    },
+    {
+        label: 'Progresso',
+        align: 'left',
+        field: 'progresso'
     },
 ]
 
