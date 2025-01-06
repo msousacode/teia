@@ -448,7 +448,7 @@ const avaliacaoNivelUm = {
         },
         {
           id: 121,
-          cod: 2,
+          cod: '2M',
           descricao:
             'Emite 4 mandos diferentes sem dicas (exceto O que você quer?) - o item desejado pode estar presente (ex. música, comida, bola ) (O/T)',
           selected: null,
@@ -468,14 +468,14 @@ const avaliacaoNivelUm = {
         },
         {
           id: 122,
-          cod: 3,
+          cod: '3M',
           descricao:
             'Generaliza 6 mandos entre 2 pessoas, 2 ambientes e para 2 tipos diferentes de um reforçador (ex.Emite mandos para bolinhas de sabão tanto para a mãe quanto para o pai, um ambiente interno e externo e em um pote plástico vermelho e azul. (O/T).',
           selected: null,
         },
         {
           id: 123,
-          cod: 4,
+          cod: '4M',
           descricao:
             'Emite 5 mandos espontaneamente (sem dicas verbais). O item desejado pode estar presente. (OC: 60 min.)',
           selected: null,
@@ -495,7 +495,7 @@ const avaliacaoNivelUm = {
         },
         {
           id: 124,
-          cod: 5,
+          cod: '5M',
           descricao:
             'Emite 10 mandos diferentes sem dicas (exceto ,O que você quer?). O item desejado pode estar presente (ex. maçã, balanço, carrinho, suco). (O/T)',
           selected: null,
