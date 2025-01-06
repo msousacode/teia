@@ -71,7 +71,7 @@
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioVBMAPP(props.row.name)" />
+                            @click="gerarRelatorioVBMAPP(props.row.name)" v-if="(props.row.name == 'PEI')" />
                     </q-td>
                 </template>
             </q-table>
@@ -356,10 +356,10 @@ rows.value = [
         name: 'TAREFAS',
         path: 'avaliacoes-coleta/vbmapp'
     },*/
-    {
+    /*{
         name: 'BARREIRAS',
         path: 'avaliacoes-coleta/vbmapp/barreiras'
-    },
+    },*/
     /*{
         name: 'TRANSIÇÃO',
     },*/

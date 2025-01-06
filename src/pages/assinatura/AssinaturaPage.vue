@@ -1,6 +1,18 @@
 <template>
   <q-page class="q-pa-md bg-grey-1">
 
+    <q-dialog v-model="dialogIsCancel">
+      <q-card>
+        <q-card-section class="q-pa-md text-center">
+          <span class="text-body1">Para <b>Cancelar a Assinatura</b> envie um e-mail para:
+            sysaba.suporte@gmail.com</span>
+          <br />
+          <br />
+          <span class="text-body1">Adicione o assunto <b>CANCELAR ASSINATURA</b>.</span>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
     <div class="row justify-center" v-if="!isAssinante">
       <div class="text-h6 text-teal">Usuário criado com sucesso!</div>
       <q-banner class="bg-blue-1 text-green-9 q-mt-md q-pa-sm text-center">
@@ -60,7 +72,8 @@
     </q-card>
 
     <!-- Botão: Cancelar Assinatura -->
-    <q-btn label="Cancelar Assinatura" no-caps class="q-ma-sm full-width" color="red" flat dense v-if="isAssinante" />
+    <q-btn label="Cancelar Assinatura" no-caps class="q-ma-sm full-width" color="red" flat dense v-if="isAssinante"
+      @click="dialogIsCancel = true" />
   </q-page>
 </template>
 
@@ -76,6 +89,8 @@ const $q = useQuasar();
 const isAssinante = ref(false);
 
 const { error } = useNotify();
+
+const dialogIsCancel = ref(false);
 
 async function assinar() {
 
