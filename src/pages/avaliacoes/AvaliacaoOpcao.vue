@@ -71,7 +71,7 @@
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioVBMAPP(props.row.name)" />
+                            @click="gerarRelatorioVBMAPP(props.row.name)" v-if="(props.row.name == 'PEI')" />
                     </q-td>
                 </template>
             </q-table>
@@ -219,6 +219,8 @@ watch(form.value, async () => {
                     protocolo: i.protocolo,
                     nivel: i.protocolo == 'VB-MAPP' ? `Nível ${i.tipo}` : i.protocolo == 'PORTAGE' ? `Idade: ${i.tipo}` : '',
                     align: 'left',
+                    coleta: i.coleta,
+                    progresso: i.progresso
                 }
             })
             avaliacaoRows.value = response;
@@ -354,10 +356,10 @@ rows.value = [
         name: 'TAREFAS',
         path: 'avaliacoes-coleta/vbmapp'
     },*/
-    {
+    /*{
         name: 'BARREIRAS',
         path: 'avaliacoes-coleta/vbmapp/barreiras'
-    },
+    },*/
     /*{
         name: 'TRANSIÇÃO',
     },*/
@@ -402,6 +404,16 @@ avaliacaoColumns.value = [
         label: '#',
         align: 'left',
         field: 'nivel'
+    },
+    {
+        label: 'Coletas',
+        align: 'left',
+        field: 'coleta'
+    },
+    {
+        label: 'Progresso',
+        align: 'left',
+        field: 'progresso'
     },
 ]
 
