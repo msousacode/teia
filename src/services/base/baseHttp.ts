@@ -55,11 +55,13 @@ export default function createHttp(base: string) {
       return {
         data: null,
         error: 'Bad request',
+        status: res.status,
       };
     } else if (res.status >= 500) {
       return {
         data: null,
         error: 'Erro interno do servidor',
+        status: res.status,
       };
     }
     try {

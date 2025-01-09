@@ -352,13 +352,13 @@ rows.value = [
         name: 'MILESTONES',
         path: 'avaliacoes-coleta/vbmapp'
     },
+    {
+        name: 'BARREIRAS',
+        path: 'avaliacoes-coleta/vbmapp/barreiras'
+    },
     /*{
         name: 'TAREFAS',
         path: 'avaliacoes-coleta/vbmapp'
-    },*/
-    /*{
-        name: 'BARREIRAS',
-        path: 'avaliacoes-coleta/vbmapp/barreiras'
     },*/
     /*{
         name: 'TRANSIÇÃO',

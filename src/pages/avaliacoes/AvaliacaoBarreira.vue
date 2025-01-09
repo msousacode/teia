@@ -1,8 +1,9 @@
 <template>
+    <div class="q-ml-md text-teal">Barreiras - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
     <title-custom title="Barreiras" class="q-ml-md"></title-custom>
     <q-page class="q-pa-sm">
         <div class="q-pa-md">
-            <form @submit.prevent="">
+            <form @submit.prevent="salvar">
                 <div v-for="assessment in barreiras" :key="assessment.id" class="q-mb-xl">
                     <div class="text-h6">{{ assessment.question }}</div>
                     <q-select v-model="assessment.id" @update:model-value="coletaResposta(assessment)"
@@ -18,23 +19,67 @@
 <script setup lang="ts">
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { reactive } from 'vue';
+import { Barreira, BarreiraList } from './model/barreira.model';
+import useNotify from 'src/composables/UseNotify';
+import { useQuasar } from 'quasar';
+import { VbMappService } from 'src/services/VbMappService';
+import { useAprendizStore } from 'src/stores/aprendiz';
 
-const respostas = reactive<any[]>([]);
+const aprendizStore = useAprendizStore().getAprendizInfo;
+
+const barreiraList = reactive<BarreiraList>({
+    coletas: []
+});
+
+const { error, success } = useNotify();
+
+const $q = useQuasar();
+
+const service = new VbMappService();
 
 function coletaResposta(item: any) {
-    // Atualiza ou adiciona a resposta 
-    const index = respostas.findIndex(resposta => resposta.id === item.id);
 
-    if (index !== -1) {
-        respostas[index].selectedOption = item.options;
+    debugger
+    // Atualiza ou adiciona a resposta 
+    const index = barreiraList.coletas.findIndex(resposta => resposta.codigo == item.cod);
+
+    const coleta: Barreira = {
+        vbMappBarreiraId: null,
+        questao: item.question,//titulo da pergunta
+        descricao: item.id.label,//descricao do item selecinado
+        resposta: item.id.value,//resposta atribuída
+        codigo: item.cod
+    }
+
+    if (index == 0) {
+        barreiraList.coletas[index] = coleta;
     } else {
-        respostas.push({ id: item.id, selectedOption: item.value });
+        barreiraList.coletas.push(coleta);
+    }
+}
+
+async function salvar() {
+    $q.loading.show();
+    try {
+        const { status } = await service.postColetaBarreira(barreiraList, aprendizStore.uuid);
+
+        if (status == 200) {
+            success('Barreiras salvas com sucesso!');
+        } else {
+            error('Erro ao salvar barreiras');
+        }
+
+    } catch (e) {
+        console.log(e);
+        error('Erro ao salvar barreiras');
+    } finally {
+        $q.loading.hide();
     }
 }
 
 const barreiras = reactive([
     {
-
+        "cod": 1,
         "question": "1 - Comportamentos negativos que dificultam a aprendizagem",
         "options": [
             { "value": "SR", "label": "-" },
@@ -46,6 +91,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 2,
         "question": "2 - Controle instrucional fraco",
         "options": [
             { "value": "SR", "label": "-" },
@@ -57,6 +103,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 3,
         "question": "3 - Mando fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -68,6 +115,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 4,
         "question": "4 - Tato fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -79,6 +127,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 5,
         "question": "5 - Imitação motora ausente, fraca ou prejudicada",
         "options": [
             { "value": "SR", "label": "-" },
@@ -90,6 +139,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 6,
         "question": "6 - Ecoico ausente, fraco ou prejudicado.",
         "options": [
             { "value": "SR", "label": "-" },
@@ -101,6 +151,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 7,
         "question": "7 - MTS fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -112,6 +163,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 8,
         "question": "8 - Responder de ouvinte fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -123,6 +175,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 9,
         "question": "9 - Intraverbal ausente, fraco ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -134,6 +187,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 10,
         "question": "10 - Habilidades sociais ausentes, fracas ou prejudicadas",
         "options": [
             { "value": "SR", "label": "-" },
@@ -145,6 +199,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 11,
         "question": "11 - Dependente de dicas",
         "options": [
             { "value": "SR", "label": "-" },
@@ -156,6 +211,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 12,
         "question": "12 - Resposta de adivinhação",
         "options": [
             { "value": "SR", "label": "-" },
@@ -167,6 +223,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 13,
         "question": "13 - Rastreamento Comprometido",
         "options": [
             { "value": "SR", "label": "-" },
@@ -178,6 +235,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 14,
         "question": "14 - Discriminação condicional falha",
         "options": [
             { "value": "SR", "label": "-" },
@@ -189,6 +247,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 15,
         "question": "15 - Falha em generalizar",
         "options": [
             { "value": "SR", "label": "-" },
@@ -200,6 +259,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 16,
         "question": "16 - Operações motivadoras fracas ou atípicas",
         "options": [
             { "value": "SR", "label": "-" },
@@ -211,6 +271,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 17,
         "question": "17 - Custo de resposta enfraquece a OM",
         "options": [
             { "value": "SR", "label": "-" },
@@ -222,6 +283,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 18,
         "question": "18 - Dependência de reforço",
         "options": [
             { "value": "SR", "label": "-" },
@@ -233,6 +295,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 19,
         "question": "19 - Autoestimulação",
         "options": [
             { "value": "SR", "label": "-" },
@@ -244,6 +307,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 20,
         "question": "20 - Dificuldades articulatórias",
         "options": [
             { "value": "SR", "label": "-" },
@@ -255,6 +319,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 21,
         "question": "21 - Comportamento Obsessivo Compulsivo",
         "options": [
             { "value": "SR", "label": "-" },
@@ -266,6 +331,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 22,
         "question": "22 - Hiperatividade",
         "options": [
             { "value": "SR", "label": "-" },
@@ -277,6 +343,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 23,
         "question": "23 - Falha em manter o contato visual",
         "options": [
             { "value": "SR", "label": "-" },
@@ -288,6 +355,7 @@ const barreiras = reactive([
         ]
     },
     {
+        "cod": 24,
         "question": "24 - Defesa sensorial",
         "options": [
             { "value": "SR", "label": "-" },

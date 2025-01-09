@@ -1,3 +1,4 @@
+import { BarreiraList } from 'src/pages/avaliacoes/model/barreira.model';
 import createHttp from './base/baseHttp';
 
 const http = createHttp('/api/vbmapp');
@@ -22,6 +23,10 @@ export class VbMappService {
 
   async postColetaAvaliacao(object: any) {
     return await http.post('/coletas', object);
+  }
+
+  async postColetaBarreira(paylod: BarreiraList, aprendizId: string) {
+    return await http.post(`/aprendiz/${aprendizId}/barreiras/coletas`, paylod);
   }
 
   async getVbMappAvaliacaoConfigTelaById(id: string | null) {
