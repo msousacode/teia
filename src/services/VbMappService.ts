@@ -29,6 +29,10 @@ export class VbMappService {
     return await http.post(`/aprendiz/${aprendizId}/barreiras/coletas`, paylod);
   }
 
+  async getColetaBarreira(id: string | null) {
+    return await http.get(`/aprendiz/${id}/barreiras/coletas`);
+  }
+
   async getVbMappAvaliacaoConfigTelaById(id: string | null) {
     return await http.get(`/config-tela/${id}`).then((data) => {
       return {

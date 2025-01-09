@@ -1,6 +1,6 @@
 <template>
-    <div class="q-ml-md text-teal">Barreiras - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
-    <title-custom title="Barreiras" class="q-ml-md"></title-custom>
+    <div class="q-ml-md q-mt-md text-teal">Barreiras - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+    <title-custom title="Barreiras" class="q-ml-sm"></title-custom>
     <q-page class="q-pa-sm">
         <div class="q-pa-md">
             <form @submit.prevent="salvar">
@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { Barreira, BarreiraList } from './model/barreira.model';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
@@ -38,8 +38,6 @@ const $q = useQuasar();
 const service = new VbMappService();
 
 function coletaResposta(item: any) {
-
-    debugger
     // Atualiza ou adiciona a resposta 
     const index = barreiraList.coletas.findIndex(resposta => resposta.codigo == item.cod);
 
@@ -73,9 +71,37 @@ async function salvar() {
         console.log(e);
         error('Erro ao salvar barreiras');
     } finally {
+        await getBarreirasColetadas();
         $q.loading.hide();
     }
 }
+
+async function getBarreirasColetadas() {
+    $q.loading.show();
+    try {
+        const { data } = await service.getColetaBarreira(aprendizStore.uuid);
+
+        if (data && data.coletas) {
+            data.coletas.forEach((coleta: any) => {
+                const assessment = barreiras.find(b => b.cod === coleta.codigo);
+                if (assessment) {
+                    assessment.id = { value: coleta.resposta, label: coleta.descricao };
+
+                }
+            });
+        }
+
+    } catch (e) {
+        console.log(e);
+        error('Erro ao carregar barreiras');
+    } finally {
+        $q.loading.hide();
+    }
+}
+
+onMounted(async () => {
+    await getBarreirasColetadas();
+});
 
 const barreiras = reactive([
     {
