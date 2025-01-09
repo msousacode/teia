@@ -48,6 +48,10 @@
             <avaliacao-grafico v-bind="graficoDataProps"></avaliacao-grafico>
         </q-dialog>
 
+        <q-dialog v-model="dialogIsBarreiras">
+            <barreira-grafico v-bind="graficoDataProps"></barreira-grafico>
+        </q-dialog>
+
         <q-dialog v-model="dialogIsPortage">
             <portage-avaliacao-grafico v-bind="graficoDataProps"></portage-avaliacao-grafico>
         </q-dialog>
@@ -64,8 +68,9 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsVbMapp = true" dense size="md"
-                            v-if="!(props.row.name == 'PEI')" />
+                        <q-btn icon="mdi-chart-line" color="amber-8"
+                            @click="props.row.name == 'MILESTONES' ? dialogIsVbMapp = true : dialogIsBarreiras = true"
+                            dense size="md" v-if="!(props.row.name == 'PEI')" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
@@ -124,6 +129,7 @@ import useNotify from 'src/composables/UseNotify';
 import { AvaliacaoService } from 'src/services/AvaliacaoService';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { RelatorioService } from 'src/services/RelatorioService';
+import BarreiraGrafico from './BarreiraGrafico.vue';
 
 const aprendizService = new AprendizService();
 
@@ -176,7 +182,10 @@ const dialogIsVbMapp = ref(false);
 
 const dialogIsPortage = ref(false);
 
+const dialogIsBarreiras = ref(false);
+
 const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
+    aprendizId: '',
     label: '',
     avaliacaoId: '',
     nivel: '',
@@ -190,6 +199,7 @@ const urlDownload = ref<string>();
 watch(store, () => {
     const avaliacao = store.$state.avaliacao[0];
     if (avaliacao) {
+        graficoDataProps.aprendizId = aprendizInfoStore.getAprendizInfo.uuid;
         graficoDataProps.avaliacaoId = avaliacao.id;
         graficoDataProps.label = avaliacao.name;
         graficoDataProps.nivel = avaliacao.nivel;

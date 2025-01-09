@@ -53,4 +53,8 @@ export class VbMappService {
   async getColetaPontuacoes(avaliacaoId: string) {
     return await http.get(`/chart/milestones/${avaliacaoId}`);
   }
+
+  async getChartBarreiras(aprendizId: string) {
+    return await http.get(`/chart/aprendiz/${aprendizId}/barreiras`);
+  }
 }

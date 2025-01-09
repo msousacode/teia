@@ -1,7 +1,7 @@
 <template>
     <div class="q-ml-md q-mt-md text-teal">Barreiras - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
     <title-custom title="Barreiras" class="q-ml-sm"></title-custom>
-    <q-page class="q-pa-sm">
+    <q-page>
         <div class="q-pa-md">
             <form @submit.prevent="salvar">
                 <div v-for="assessment in barreiras" :key="assessment.id" class="q-mb-xl">
