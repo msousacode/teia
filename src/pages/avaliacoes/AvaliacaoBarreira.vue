@@ -59,6 +59,7 @@ function coletaResposta(item: any) {
 async function salvar() {
     $q.loading.show();
     try {
+
         const { status } = await service.postColetaBarreira(barreiraList, aprendizStore.uuid);
 
         if (status == 200) {
@@ -89,6 +90,7 @@ async function getBarreirasColetadas() {
 
                 }
             });
+            barreiraList.coletas = data.coletas;
         }
 
     } catch (e) {
@@ -105,7 +107,7 @@ onMounted(async () => {
 
 const barreiras = reactive([
     {
-        "cod": 1,
+        "cod": 0,
         "question": "1 - Comportamentos negativos que dificultam a aprendizagem",
         "options": [
             { "value": "SR", "label": "-" },
@@ -117,7 +119,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 2,
+        "cod": 1,
         "question": "2 - Controle instrucional fraco",
         "options": [
             { "value": "SR", "label": "-" },
@@ -129,7 +131,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 3,
+        "cod": 2,
         "question": "3 - Mando fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -141,7 +143,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 4,
+        "cod": 3,
         "question": "4 - Tato fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -153,7 +155,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 5,
+        "cod": 4,
         "question": "5 - Imitação motora ausente, fraca ou prejudicada",
         "options": [
             { "value": "SR", "label": "-" },
@@ -165,7 +167,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 6,
+        "cod": 5,
         "question": "6 - Ecoico ausente, fraco ou prejudicado.",
         "options": [
             { "value": "SR", "label": "-" },
@@ -177,7 +179,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 7,
+        "cod": 6,
         "question": "7 - MTS fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -189,7 +191,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 8,
+        "cod": 7,
         "question": "8 - Responder de ouvinte fraco, ausente ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -201,7 +203,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 9,
+        "cod": 8,
         "question": "9 - Intraverbal ausente, fraco ou prejudicado",
         "options": [
             { "value": "SR", "label": "-" },
@@ -213,7 +215,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 10,
+        "cod": 9,
         "question": "10 - Habilidades sociais ausentes, fracas ou prejudicadas",
         "options": [
             { "value": "SR", "label": "-" },
@@ -225,7 +227,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 11,
+        "cod": 10,
         "question": "11 - Dependente de dicas",
         "options": [
             { "value": "SR", "label": "-" },
@@ -237,7 +239,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 12,
+        "cod": 11,
         "question": "12 - Resposta de adivinhação",
         "options": [
             { "value": "SR", "label": "-" },
@@ -249,7 +251,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 13,
+        "cod": 12,
         "question": "13 - Rastreamento Comprometido",
         "options": [
             { "value": "SR", "label": "-" },
@@ -261,7 +263,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 14,
+        "cod": 13,
         "question": "14 - Discriminação condicional falha",
         "options": [
             { "value": "SR", "label": "-" },
@@ -273,7 +275,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 15,
+        "cod": 14,
         "question": "15 - Falha em generalizar",
         "options": [
             { "value": "SR", "label": "-" },
@@ -285,7 +287,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 16,
+        "cod": 15,
         "question": "16 - Operações motivadoras fracas ou atípicas",
         "options": [
             { "value": "SR", "label": "-" },
@@ -297,7 +299,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 17,
+        "cod": 16,
         "question": "17 - Custo de resposta enfraquece a OM",
         "options": [
             { "value": "SR", "label": "-" },
@@ -309,7 +311,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 18,
+        "cod": 17,
         "question": "18 - Dependência de reforço",
         "options": [
             { "value": "SR", "label": "-" },
@@ -321,7 +323,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 19,
+        "cod": 18,
         "question": "19 - Autoestimulação",
         "options": [
             { "value": "SR", "label": "-" },
@@ -333,7 +335,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 20,
+        "cod": 19,
         "question": "20 - Dificuldades articulatórias",
         "options": [
             { "value": "SR", "label": "-" },
@@ -345,7 +347,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 21,
+        "cod": 20,
         "question": "21 - Comportamento Obsessivo Compulsivo",
         "options": [
             { "value": "SR", "label": "-" },
@@ -357,7 +359,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 22,
+        "cod": 21,
         "question": "22 - Hiperatividade",
         "options": [
             { "value": "SR", "label": "-" },
@@ -369,7 +371,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 23,
+        "cod": 22,
         "question": "23 - Falha em manter o contato visual",
         "options": [
             { "value": "SR", "label": "-" },
@@ -381,7 +383,7 @@ const barreiras = reactive([
         ]
     },
     {
-        "cod": 24,
+        "cod": 23,
         "question": "24 - Defesa sensorial",
         "options": [
             { "value": "SR", "label": "-" },
