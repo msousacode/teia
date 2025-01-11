@@ -76,7 +76,8 @@
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioVBMAPP(props.row.name)" v-if="(props.row.name == 'PEI')" />
+                            @click="gerarRelatorioVBMAPP(props.row.name)"
+                            v-if="(props.row.name == 'PEI') || (props.row.name == 'BARREIRAS')" />
                     </q-td>
                 </template>
             </q-table>
@@ -327,6 +328,8 @@ async function gerarRelatorioVBMAPP(relatorioName: string) {
 
     if (relatorioName == 'PEI') {
         data = await relatorioService.gerarRelatorioVBMAPPPEI(aprendizId);
+    } else if (relatorioName == 'BARREIRAS') {
+        data = await relatorioService.gerarRelatorioVBMAPPBarreiras(aprendizId);
     } else {
         data = await relatorioService.gerarRelatorioVBMAPP(aprendizId);
     }
