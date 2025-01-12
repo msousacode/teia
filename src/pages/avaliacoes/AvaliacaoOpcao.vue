@@ -10,16 +10,17 @@
                     </div-->
                 </q-card-section>
 
-                <q-card-actions>
-                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile">
-                        <q-icon name="cloud_download" class="q-ml-sm" />
+                <q-card-actions class="button-stack">
+
+                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile" class="full-width">
+                        <q-icon name="cloud_download" />
                     </q-btn>
 
-                    <q-btn label="Copiar Link" color="secondary" @click="copyLink">
+                    <q-btn label="Copiar Link" color="secondary" @click="copyLink" class="full-width">
                         <q-icon name="link" />
                     </q-btn>
 
-                    <q-btn flat label="Fechar" @click="showUrlDownload = false" />
+                    <q-btn flat label="Fechar" @click="showUrlDownload = false" class="full-width" />
                 </q-card-actions>
             </q-card>
         </q-dialog>
@@ -345,6 +346,24 @@ function downloadFile() {
     showUrlDownload.value = false;
 }
 
+function copyLink() {
+    navigator.clipboard.writeText(urlDownload.value || '')
+        .then(() => {
+            $q.notify({
+                message: 'Link copiado para a área de transferência!',
+                color: 'green',
+                position: 'top'
+            });
+        })
+        .catch(() => {
+            $q.notify({
+                message: 'Falha ao copiar o link.',
+                color: 'red',
+                position: 'top'
+            });
+        });
+}
+
 onMounted(() => {
     carregarSelectAprendizes()
 });
@@ -450,4 +469,13 @@ avaliacaoColumns.value = [
     position: sticky
     left: 0
     z-index: 1
+</style>
+
+<style>
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    /* Empilha os botões verticalmente */
+    gap: 10px;
+}
 </style>
