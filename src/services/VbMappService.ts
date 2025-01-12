@@ -21,12 +21,19 @@ export class VbMappService {
       });
   }
 
-  async postColetaAvaliacao(object: any) {
-    return await http.post('/coletas', object);
+  async postColetaAvaliacao(object: any, usuarioId: string) {
+    return await http.post(`/usuario/${usuarioId}/coletas`, object);
   }
 
-  async postColetaBarreira(paylod: BarreiraList, aprendizId: string) {
-    return await http.post(`/aprendiz/${aprendizId}/barreiras/coletas`, paylod);
+  async postColetaBarreira(
+    paylod: BarreiraList,
+    aprendizId: string,
+    usuarioId: string
+  ) {
+    return await http.post(
+      `/aprendiz/${aprendizId}/profissional/${usuarioId}/barreiras/coletas`,
+      paylod
+    );
   }
 
   async getColetaBarreira(id: string | null) {

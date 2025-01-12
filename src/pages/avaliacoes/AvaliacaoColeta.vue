@@ -47,14 +47,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                    }}
+                                        }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -269,8 +269,16 @@ async function salvar() {
     const itens = coletas.get("coletasRealizadas");
 
     try {
+
+        const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+        if (!usuarioId) {
+            error('Não foi possível salvar barreiras');
+            return;
+        }
+
         $q.loading.show();
-        const { data } = await vbMappService.postColetaAvaliacao(itens);
+        const { data } = await vbMappService.postColetaAvaliacao(itens, usuarioId);
 
         if (data) {
             success('Coletas salvas com sucesso!');

@@ -109,7 +109,6 @@ function abrirGrafrico() {
 
 async function getColetaPontuacoes() {
     dataGrafico.value = (await vbmappService.getChartBarreiras(props.aprendizId)).data;
-    console.log(dataGrafico.value);
 }
 
 onMounted(async () => {
