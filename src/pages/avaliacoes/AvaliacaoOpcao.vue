@@ -10,16 +10,17 @@
                     </div-->
                 </q-card-section>
 
-                <q-card-actions>
-                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile">
-                        <q-icon name="cloud_download" class="q-ml-sm" />
+                <q-card-actions class="button-stack">
+
+                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile" class="full-width">
+                        <q-icon name="cloud_download" />
                     </q-btn>
 
-                    <q-btn label="Copiar Link" color="secondary" @click="copyLink">
+                    <q-btn label="Copiar Link" color="secondary" @click="copyLink" class="full-width">
                         <q-icon name="link" />
                     </q-btn>
 
-                    <q-btn flat label="Fechar" @click="showUrlDownload = false" />
+                    <q-btn flat label="Fechar" @click="showUrlDownload = false" class="full-width" />
                 </q-card-actions>
             </q-card>
         </q-dialog>
@@ -35,9 +36,10 @@
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
                 </template>
-                <template v-slot:body-cell-actions="props">
+                <template v-slot:body-cell-actionsz="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal">
+                        <q-btn icon="mdi-delete-outline" color="red-7" dense size="sm"
+                            @click="deletarAvaliacao(props.row)">
                         </q-btn>
                     </q-td>
                 </template>
@@ -46,6 +48,10 @@
 
         <q-dialog v-model="dialogIsVbMapp">
             <avaliacao-grafico v-bind="graficoDataProps"></avaliacao-grafico>
+        </q-dialog>
+
+        <q-dialog v-model="dialogIsBarreiras">
+            <barreira-grafico v-bind="graficoDataProps"></barreira-grafico>
         </q-dialog>
 
         <q-dialog v-model="dialogIsPortage">
@@ -64,14 +70,16 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsVbMapp = true" dense size="md"
-                            v-if="!(props.row.name == 'PEI')" />
+                        <q-btn icon="mdi-chart-line" color="amber-8"
+                            @click="props.row.name == 'MILESTONES' ? dialogIsVbMapp = true : dialogIsBarreiras = true"
+                            dense size="md" v-if="!(props.row.name == 'PEI')" />
                     </q-td>
                 </template>
                 <template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioVBMAPP(props.row.name)" v-if="(props.row.name == 'PEI')" />
+                            @click="gerarRelatorioVBMAPP(props.row.name)"
+                            v-if="(props.row.name == 'PEI') || (props.row.name == 'BARREIRAS')" />
                     </q-td>
                 </template>
             </q-table>
@@ -124,6 +132,7 @@ import useNotify from 'src/composables/UseNotify';
 import { AvaliacaoService } from 'src/services/AvaliacaoService';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { RelatorioService } from 'src/services/RelatorioService';
+import BarreiraGrafico from './BarreiraGrafico.vue';
 
 const aprendizService = new AprendizService();
 
@@ -131,7 +140,7 @@ const $q = useQuasar();
 
 const router = useRouter();
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const columns = ref<any[]>([]);
 
@@ -176,7 +185,10 @@ const dialogIsVbMapp = ref(false);
 
 const dialogIsPortage = ref(false);
 
+const dialogIsBarreiras = ref(false);
+
 const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
+    aprendizId: '',
     label: '',
     avaliacaoId: '',
     nivel: '',
@@ -190,6 +202,7 @@ const urlDownload = ref<string>();
 watch(store, () => {
     const avaliacao = store.$state.avaliacao[0];
     if (avaliacao) {
+        graficoDataProps.aprendizId = aprendizInfoStore.getAprendizInfo.uuid;
         graficoDataProps.avaliacaoId = avaliacao.id;
         graficoDataProps.label = avaliacao.name;
         graficoDataProps.nivel = avaliacao.nivel;
@@ -317,6 +330,8 @@ async function gerarRelatorioVBMAPP(relatorioName: string) {
 
     if (relatorioName == 'PEI') {
         data = await relatorioService.gerarRelatorioVBMAPPPEI(aprendizId);
+    } else if (relatorioName == 'BARREIRAS') {
+        data = await relatorioService.gerarRelatorioVBMAPPBarreiras(aprendizId);
     } else {
         data = await relatorioService.gerarRelatorioVBMAPP(aprendizId);
     }
@@ -330,6 +345,55 @@ async function gerarRelatorioVBMAPP(relatorioName: string) {
 function downloadFile() {
     window.open(urlDownload.value, '_blank');
     showUrlDownload.value = false;
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(urlDownload.value || '')
+        .then(() => {
+            $q.notify({
+                message: 'Link copiado para a área de transferência!',
+                color: 'green',
+                position: 'top'
+            });
+        })
+        .catch(() => {
+            $q.notify({
+                message: 'Falha ao copiar o link.',
+                color: 'red',
+                position: 'top'
+            });
+        });
+}
+
+async function deletarAvaliacao(avaliacao: any) {
+
+    $q.dialog({
+        title: 'Confirma a exclusão da Avaliação? Essa ação excluirá todas as coletas associadas a esta avaliação.',
+        ok: true,
+        cancel: true,
+    })
+        .onOk(async () => {
+
+            const obj = toRaw(avaliacao);
+            try {
+                $q.loading.show();
+
+                const protocolo = obj.protocolo == 'VB-MAPP' ? 'vbmapp' : 'portage';
+
+                const { status } = await avaliacaoService.deletarAvaliacao(obj.id, protocolo);
+                if (status == 200) {
+                    success('Avaliação deletada com sucesso.')
+                } else {
+                    error('Erro ao deletar avaliação.')
+                }
+            } catch (e) {
+                error('Erro ao deletar avaliação.')
+            } finally {
+                $q.loading.hide();
+            }
+
+        })
+        .onDismiss(() => { });
 }
 
 onMounted(() => {
@@ -352,13 +416,13 @@ rows.value = [
         name: 'MILESTONES',
         path: 'avaliacoes-coleta/vbmapp'
     },
+    {
+        name: 'BARREIRAS',
+        path: 'avaliacoes-coleta/vbmapp/barreiras'
+    },
     /*{
         name: 'TAREFAS',
         path: 'avaliacoes-coleta/vbmapp'
-    },*/
-    /*{
-        name: 'BARREIRAS',
-        path: 'avaliacoes-coleta/vbmapp/barreiras'
     },*/
     /*{
         name: 'TRANSIÇÃO',
@@ -415,6 +479,12 @@ avaliacaoColumns.value = [
         align: 'left',
         field: 'progresso'
     },
+    {
+        name: 'actionsz',
+        label: 'Ações',
+        align: 'left',
+        field: 'acao'
+    },
 ]
 
 </script>
@@ -437,4 +507,13 @@ avaliacaoColumns.value = [
     position: sticky
     left: 0
     z-index: 1
+</style>
+
+<style>
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    /* Empilha os botões verticalmente */
+    gap: 10px;
+}
 </style>

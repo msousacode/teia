@@ -1,7 +1,7 @@
 <template>
     <q-card class="my-card q-pa-md full-width">
-        <canvas id="grafico" width="200" height="200"></canvas>
-        <div class="text-center text-body1 text-teal">{{ nivel }}</div>
+        <canvas id="grafico" width="200" height="400"></canvas>
+        <div class="text-center text-body1 text-teal">Barreiras</div>
     </q-card>
 </template>
 <script setup lang="ts">
@@ -45,14 +45,10 @@ const labelGrafico = props.label;
 
 const dataGrafico = ref<any[]>([]);
 
-const colorGrafico = ref('');
-
 const vbmappService = new VbMappService();
 
 function abrirGrafrico() {
-
     setTimeout(async () => {
-
         nextTick(() => { // Espera o próximo tick para garantir que o canvas esteja no DOM  
             const canvas = document.getElementById("grafico") as HTMLCanvasElement;
 
@@ -66,30 +62,34 @@ function abrirGrafrico() {
                     }
 
                     // Definição dos dados  
-                    const labels = props.nivel == 'Nível 1' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'Vocal'] : props.nivel == 'Nível 2' ? ['Imitação', 'Ecoico', 'Ouvinte', 'VP/MTS', 'Mando', 'Tato', 'Brincar', 'Social', 'LRFFC', 'Interverbal', 'Grupo', 'Linguística'] : ['Mando', 'Tato', 'Ouvinte', 'VP/MTS', 'Brincar', 'Social', 'Leitura', 'Escrita', 'LRFFC', 'Interverbal', 'Vocal', 'Grupo', 'Linguística', 'Matemática'];
+                    const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
                     const data = {
                         labels: labels,
                         datasets: [
                             {
                                 label: labelGrafico,
                                 data: dataGrafico.value,
-                                backgroundColor: colorGrafico.value,
+                                backgroundColor: '#00BFFF',
                             },
                         ]
                     };
 
                     // Configurações do gráfico  
                     const config = {
-                        type: 'bar',
+                        type: 'bar', // Mantenha 'bar' para o Chart.js  
                         data: data,
                         options: {
                             animation: false,
+                            indexAxis: 'y', // Altera o eixo para horizontal  
                             scales: {
-                                y: {
+                                x: { // Eixo X para o gráfico horizontal  
                                     beginAtZero: true,
                                     ticks: {
                                         stepSize: 0.5,
                                     },
+                                },
+                                y: { // Eixo Y para o gráfico horizontal  
+                                    beginAtZero: true,
                                 },
                             }
                         }
@@ -108,25 +108,11 @@ function abrirGrafrico() {
 }
 
 async function getColetaPontuacoes() {
-    dataGrafico.value = (await vbmappService.getColetaPontuacoes(props.avaliacaoId)).data;
+    dataGrafico.value = (await vbmappService.getChartBarreiras(props.aprendizId)).data;
 }
 
 onMounted(async () => {
     abrirGrafrico();
     await getColetaPontuacoes();
-
-    switch (props.nivel) {
-        case 'Nível 1':
-            colorGrafico.value = '#f2c037';
-            break;
-        case 'Nível 2':
-            colorGrafico.value = '#228B22';
-            break;
-        case 'Nível 3':
-            colorGrafico.value = '#00BFFF';
-            break;
-        default:
-            return '';
-    }
 }) 
 </script>

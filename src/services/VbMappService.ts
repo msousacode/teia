@@ -1,3 +1,4 @@
+import { BarreiraList } from 'src/pages/avaliacoes/model/barreira.model';
 import createHttp from './base/baseHttp';
 
 const http = createHttp('/api/vbmapp');
@@ -20,8 +21,23 @@ export class VbMappService {
       });
   }
 
-  async postColetaAvaliacao(object: any) {
-    return await http.post('/coletas', object);
+  async postColetaAvaliacao(object: any, usuarioId: string) {
+    return await http.post(`/usuario/${usuarioId}/coletas`, object);
+  }
+
+  async postColetaBarreira(
+    paylod: BarreiraList,
+    aprendizId: string,
+    usuarioId: string
+  ) {
+    return await http.post(
+      `/aprendiz/${aprendizId}/profissional/${usuarioId}/barreiras/coletas`,
+      paylod
+    );
+  }
+
+  async getColetaBarreira(id: string | null) {
+    return await http.get(`/aprendiz/${id}/barreiras/coletas`);
   }
 
   async getVbMappAvaliacaoConfigTelaById(id: string | null) {
@@ -43,5 +59,9 @@ export class VbMappService {
 
   async getColetaPontuacoes(avaliacaoId: string) {
     return await http.get(`/chart/milestones/${avaliacaoId}`);
+  }
+
+  async getChartBarreiras(aprendizId: string) {
+    return await http.get(`/chart/aprendiz/${aprendizId}/barreiras`);
   }
 }

@@ -64,8 +64,7 @@ function editar(aprendiz: any) {
   router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
 }
 
-function remover(aprendiz: any) {
-  console.log(aprendiz)
+function remover() {
   $q.dialog({
     title: 'Confirma a exclusão do Aprendiz?',
     ok: true,

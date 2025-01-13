@@ -24,4 +24,10 @@ export class RelatorioService {
   async gerarRelatorioVBMAPPPEI(vbmappId: string) {
     return await http.get(`/relatorios/vbmapp/${vbmappId}/pei`);
   }
+
+  async gerarRelatorioVBMAPPBarreiras(aprendizId: any) {
+    return await http.get(
+      `/relatorios/vbmapp/aprendiz/${aprendizId}/barreiras`
+    );
+  }
 }

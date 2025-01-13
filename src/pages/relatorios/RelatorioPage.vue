@@ -160,16 +160,17 @@
                     </div-->
                 </q-card-section>
 
-                <q-card-actions>
-                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile">
-                        <q-icon name="cloud_download" class="q-ml-sm" />
+                <q-card-actions class="button-stack">
+
+                    <q-btn label="Baixar PDF" color="primary" @click="downloadFile" class="full-width">
+                        <q-icon name="cloud_download" />
                     </q-btn>
 
-                    <q-btn label="Copiar Link" color="secondary" @click="copyLink">
+                    <q-btn label="Copiar Link" color="secondary" @click="copyLink" class="full-width">
                         <q-icon name="link" />
                     </q-btn>
 
-                    <q-btn flat label="Fechar" @click="showUrlDownload = false" />
+                    <q-btn flat label="Fechar" @click="showUrlDownload = false" class="full-width" />
                 </q-card-actions>
             </q-card>
         </q-dialog>
@@ -431,3 +432,12 @@ onMounted(async () => {
 
 });
 </script>
+
+<style>
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    /* Empilha os botões verticalmente */
+    gap: 10px;
+}
+</style>
