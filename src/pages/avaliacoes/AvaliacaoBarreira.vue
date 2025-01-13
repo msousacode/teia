@@ -49,10 +49,10 @@ function coletaResposta(item: any) {
         codigo: item.cod
     }
 
-    if (index == 0) {
-        barreiraList.coletas[index] = coleta;
-    } else {
+    if (index < 0) {
         barreiraList.coletas.push(coleta);
+    } else {
+        barreiraList.coletas[index] = coleta;
     }
 }
 

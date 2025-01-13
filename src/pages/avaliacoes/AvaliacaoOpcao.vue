@@ -36,9 +36,10 @@
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
                 </template>
-                <template v-slot:body-cell-actions="props">
+                <template v-slot:body-cell-actionsz="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal">
+                        <q-btn icon="mdi-delete-outline" color="red-7" dense size="sm"
+                            @click="deletarAvaliacao(props.row)">
                         </q-btn>
                     </q-td>
                 </template>
@@ -139,7 +140,7 @@ const $q = useQuasar();
 
 const router = useRouter();
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const columns = ref<any[]>([]);
 
@@ -364,6 +365,37 @@ function copyLink() {
         });
 }
 
+async function deletarAvaliacao(avaliacao: any) {
+
+    $q.dialog({
+        title: 'Confirma a exclusão da Avaliação? Essa ação excluirá todas as coletas associadas a esta avaliação.',
+        ok: true,
+        cancel: true,
+    })
+        .onOk(async () => {
+
+            const obj = toRaw(avaliacao);
+            try {
+                $q.loading.show();
+
+                const protocolo = obj.protocolo == 'VB-MAPP' ? 'vbmapp' : 'portage';
+
+                const { status } = await avaliacaoService.deletarAvaliacao(obj.id, protocolo);
+                if (status == 200) {
+                    success('Avaliação deletada com sucesso.')
+                } else {
+                    error('Erro ao deletar avaliação.')
+                }
+            } catch (e) {
+                error('Erro ao deletar avaliação.')
+            } finally {
+                $q.loading.hide();
+            }
+
+        })
+        .onDismiss(() => { });
+}
+
 onMounted(() => {
     carregarSelectAprendizes()
 });
@@ -446,6 +478,12 @@ avaliacaoColumns.value = [
         label: 'Progresso',
         align: 'left',
         field: 'progresso'
+    },
+    {
+        name: 'actionsz',
+        label: 'Ações',
+        align: 'left',
+        field: 'acao'
     },
 ]
 

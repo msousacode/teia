@@ -65,7 +65,6 @@ function editar(aprendiz: any) {
 }
 
 function remover(aprendiz: any) {
-  console.log(aprendiz)
   $q.dialog({
     title: 'Confirma a exclusão do Aprendiz?',
     ok: true,
