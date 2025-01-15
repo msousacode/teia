@@ -84,6 +84,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'treinamento-import',
+        path: '/treinamento-import',
+        component: () => import('pages/treinamentos/TreinamentoImport.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'atendimentos',
         path: '/atendimentos',
         component: () => import('pages/atendimentos/AtendimentoList.vue'),

@@ -76,6 +76,7 @@ import { portageUmHaDoisAno } from '../data/portage/portageUmHaDoisAno';
 import { portageDoisHaTresAno } from '../data/portage/portageDoisHaTresAno';
 import { portageTresHaQuatroAno } from '../data/portage/portageTresHaQuatro';
 import { portageQuatroHaCincoAno } from '../data/portage/portageQuatroHaCinco';
+import { portageCincoHaSeis } from '../data/portage/portageCincoHaSeis';
 import { onMounted, watch } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
@@ -177,7 +178,10 @@ function carregarAvaliacao() {
         objetivos = portageQuatroHaCincoAno.avaliacoes
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || [];
-
+    } else if (idadeSelecionada.value == '6') {
+        objetivos = portageCincoHaSeis.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || [];
     }
 
     const newObjetivos = objetivos.map(obj => ({
