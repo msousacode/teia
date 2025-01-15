@@ -20,8 +20,8 @@ export class PortageService {
       });
   }
 
-  async postColetaAvaliacao(object: any) {
-    return await http.post('/coletas', object);
+  async postColetaAvaliacao(object: any, usuarioId: string) {
+    return await http.post(`/usuario/${usuarioId}/coletas`, object);
   }
 
   async getPortageAvaliacaoConfigTelaById(id: string | null) {

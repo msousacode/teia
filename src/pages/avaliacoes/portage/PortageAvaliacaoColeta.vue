@@ -199,13 +199,20 @@ async function salvar() {
 
     const itens = coletas.get("coletasRealizadas");
 
+
     try {
+        const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+        if (!usuarioId) {
+            error('Não foi possível salvar coletas sem um usuário logado');
+            return;
+        }
 
         if (itens.length == 0)
             return;
 
         $q.loading.show();
-        const { data } = await portageService.postColetaAvaliacao(itens);
+        const { data } = await portageService.postColetaAvaliacao(itens, usuarioId);
 
         if (data) {
             success('Coletas salvas com sucesso!');
