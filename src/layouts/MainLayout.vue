@@ -67,7 +67,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Atendimentos',
+    title: 'Intervenções',
     icon: 'mdi-view-dashboard',
     routeName: 'atendimentos',
     hide: true,
