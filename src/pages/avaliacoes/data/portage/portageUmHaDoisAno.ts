@@ -308,73 +308,79 @@ const portageUmHaDoisAno = {
         {
           id: 2044,
           cod: '14',
-          descricao: 'Suga e deglute líquidos.',
+          descricao: 'Come com colher de modo independente.',
           selected: null,
         },
         {
           id: 2045,
           cod: '15',
-          descricao: 'Toma mingau/sopinha.',
+          descricao: 'Segura a xícara com uma só mão e bebe.',
           selected: null,
         },
         {
           id: 2046,
           cod: '16',
-          descricao: 'Estende a mão em direção á mamadeira tentando pegá-la.',
+          descricao:
+            'Coloca a mão na água e dá tapinhas no rosto ( com as mãos molhadas) imitando alguém.',
           selected: null,
         },
         {
           id: 2047,
           cod: '17',
-          descricao: 'Come alimento peneirado (papinha) dado pelos pais.',
+          descricao:
+            'Senta-se em um piniquinho ou privada infantil por 5 minutos.',
           selected: null,
         },
         {
           id: 2048,
           cod: '18',
-          descricao: 'Segura mamadeira, sem ajuda, enquanto bebe.',
+          descricao: 'Coloca um chapéu na cabeça e o remove.',
           selected: null,
         },
         {
           id: 2049,
           cod: '19',
-          descricao: 'Leva a mamadeira até a boca ou a recusa, empurrando-a.',
+          descricao: 'Tira as meias.',
           selected: null,
         },
         {
           id: 2050,
           cod: '20',
-          descricao: 'Come alimentos amassados, dados pelos pais.',
+          descricao:
+            'Empurra os braços pelas mangas e os pés pelas pernas das calças.',
           selected: null,
         },
         {
           id: 2051,
           cod: '21',
-          descricao: 'Bebe em uma xícara, segurada pelos pais.',
+          descricao:
+            'Tira os sapatos quando os cordões estiverem desamarrados e frouxos.',
           selected: null,
         },
         {
           id: 2052,
           cod: '22',
-          descricao: 'Come alimentos semi-sólidos dados pelos pais.',
+          descricao: 'Tira o casaco quando desabotoado.',
           selected: null,
         },
         {
           id: 2053,
           cod: '23',
-          descricao: 'Alimenta-se sozinho, usando os dedos.',
+          descricao: 'Tira a calça quando desabotoada.',
           selected: null,
         },
         {
           id: 2054,
           cod: '24',
-          descricao: 'Segura a xícara com ambas as mãos e bebe.',
+          descricao:
+            'Puxa um zíper grande, para cima e para baixo, que já esteja encaixado.',
           selected: null,
         },
         {
           id: 2055,
           cod: '25',
-          descricao: 'Leva a colher cheia de comida até a boca com ajuda.',
+          descricao:
+            'Utiliza palavras e gestos indicando necessidade de ir ao banheiro.',
           selected: null,
         },
       ],
