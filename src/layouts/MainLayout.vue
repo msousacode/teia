@@ -74,7 +74,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Treinamentos',
+    title: 'Programas',
     icon: 'mdi-chart-line-variant',
     routeName: 'treinamentos',
     hide: true,

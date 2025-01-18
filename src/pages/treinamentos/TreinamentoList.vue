@@ -4,7 +4,7 @@
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
         row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
         <template v-slot:top>
-          <span class="text-h6 text-teal"> Treinamentos </span>
+          <span class="text-h6 text-teal"> Programas </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">

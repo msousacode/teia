@@ -1,5 +1,9 @@
 <template>
     <q-page padding>
+        <div class="q-my-sm justify-start">
+            <q-select stack-label outlined v-model="selected" :options="habilidades" label="Tipo de Habilidade" />
+        </div>
+
         <div class="q-my-sm flex justify-end">
             <q-btn label="Confirmar Importação" icon="upload" color="green" class="q-pa-sm" no-caps
                 @click="importarTreinamentos" />
@@ -17,7 +21,7 @@
                 <q-separator dark />
 
                 <q-card-actions>
-                    <q-checkbox v-model="item.isImportado" color="primary"
+                    <q-checkbox v-model="item.importado" color="primary"
                         @click="handleSelectTreinamentos(item.treinamentoBaseId)" label="Selecionar para impotação" />
                 </q-card-actions>
             </q-card>
@@ -25,10 +29,12 @@
     </q-page>
 </template>
 <script setup lang="ts">
+
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { TreinamentoService } from 'src/services/TreinamentoService';
-import { onMounted, ref } from 'vue';
+import { useTreinamentoStore } from 'src/stores/treinamento';
+import { onMounted, ref, watch } from 'vue';
 
 interface Treinamento {
     treinamentoBaseId: string;
@@ -48,6 +54,12 @@ const $q = useQuasar();
 const { success, error } = useNotify();
 
 const treinamentosSelecionados = ref<string[]>([]);
+
+const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
+
+const selected = ref<string>('');
+
+const store = useTreinamentoStore();
 
 function handleSelectTreinamentos(treinamentoBaseId: string) {
 
@@ -71,12 +83,25 @@ async function importarTreinamentos() {
     }
 }
 
+watch(selected, () => {
+    filtrar();
+});
+
+function filtrar() {
+    if (selected.value === '') {
+        treinamentos.value = store.getTreinamentosBase;
+        return;
+    }
+    treinamentos.value = store.getTreinamentosBase.filter((item) => item.habilidade === selected.value);
+}
+
 onMounted(async () => {
 
     $q.loading.show();
     try {
         await service.getTreinamentosBase().then((response) => {
-            treinamentos.value = response.data;
+            store.setTreinamentosBase(response.data);
+            treinamentos.value = store.getTreinamentosBase;
         });
     } catch (error) {
         console.error(error);
