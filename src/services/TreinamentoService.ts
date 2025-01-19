@@ -23,7 +23,7 @@ export class TreinamentoService {
     return await http.get('/treinamentos/base');
   }
 
-  async importarTreinamentos(data: string[]) {
-    return await http.post('/treinamentos', data);
+  async importarTreinamentos(data: string[], usuarioId: string) {
+    return await http.post(`/treinamentos/base/aprendiz/${usuarioId}`, data);
   }
 }

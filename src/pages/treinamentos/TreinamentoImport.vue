@@ -26,7 +26,12 @@
                 </q-card-actions>
             </q-card>
         </div>
+
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'treinamentos' }" />
+        </q-page-sticky>
     </q-page>
+
 </template>
 <script setup lang="ts">
 
@@ -74,7 +79,20 @@ function handleSelectTreinamentos(treinamentoBaseId: string) {
 async function importarTreinamentos() {
     $q.loading.show();
     try {
-        await service.importarTreinamentos(treinamentosSelecionados.value);
+
+        const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+        if (!usuarioId) {
+            error('Não foi possível salvar barreiras');
+            return;
+        }
+
+        const { status } = await service.importarTreinamentos(treinamentosSelecionados.value, usuarioId);
+
+        if (status != 200) {
+            error('Erro ao importar treinamentos');
+            return;
+        }
         success('Treinamentos importados com sucesso');
     } catch (e) {
         error('Erro ao importar treinamentos');
