@@ -84,7 +84,6 @@ import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { PortageService } from 'src/services/PortageService';
-import { useAprendizStore } from 'src/stores/aprendiz';
 
 const { success, error } = useNotify();
 
@@ -128,7 +127,7 @@ const portageService = new PortageService();
 
 const $q = useQuasar();
 
-const aprendizStore = useAprendizStore().getAprendizInfo;
+const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 const showRespondidas = ref(true);
 

@@ -227,7 +227,7 @@ const avaliacaoNivelTres = {
       objetivos: [
         {
           id: 331,
-          cod: 11,
+          cod: '11M',
           descricao:
             'Seleciona itens por cor e forma em um arranjo de 6 estímulos similares, para 4 cores e 4 formas ( Ex. " Encontre o carro vermelho", " Encontre o biscoito quadrado".) (T).',
           selected: null,
@@ -248,7 +248,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 332,
-          cod: 12,
+          cod: '12M',
           descricao:
             'Segue 2 instruções envolvendo 6 preposições diferentes (ex.: Fique atrás da cadeira.) e 4 pronomes diferentes (ex.: Toque minha orelha.) (T)',
           selected: null,
@@ -269,7 +269,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 333,
-          cod: 13,
+          cod: '13M',
           descricao:
             'Seleciona itens de um arranjo de estímulos similares baseado na relação entre 4 pares de adjetivos(ex.: grande pequeno, longo-curto) e demonstra ações baseado em 4 pares de advérbios (ex.: quieto, barulhento, rápido-devagar) (T)',
           selected: null,
@@ -290,7 +290,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 334,
-          cod: 14,
+          cod: '14M',
           descricao:
             'Segue instruções com 3 passos para 10 direções diferentes (ex.: "Pegue seu casaco, pendure e sente na cadeira".) (T)',
           selected: null,
@@ -311,7 +311,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 335,
-          cod: 15,
+          cod: '15M',
           descricao:
             'Tem um repertório de ouvinte total de 1200 palavras (nomes, verbos, adjetivos, etc.), testados ou de uma lista de registro acumulada de palavras conhecidas (T)',
           selected: null,
@@ -1099,7 +1099,7 @@ const avaliacaoNivelTres = {
       objetivos: [
         {
           id: 371,
-          cod: 11,
+          cod: '11M',
           descricao:
             'Seleciona o item correto de um arranjo de 10 itens que contenham 3 estímulos similares (Ex. cores, forma ou classe, embora eles não sejam as escolhas corretas), para 25 questões WH diferentes em tarefas LRFFC.(T)',
           selected: null,
@@ -1119,7 +1119,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 372,
-          cod: 12,
+          cod: '12M',
           descricao:
             'Seleciona itens de um livro baseado em 2 componentes verbais: uma característica (ex. cor), função (ex. desenha com), ou classe (ex. roupa) para 25 tarefas LRFFC (ex. "Você vê um animal marrom?" "Você pode encontrar a roupa com botões?"). (T)',
           selected: null,
@@ -1139,7 +1139,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 373,
-          cod: 13,
+          cod: '13M',
           descricao:
             'Seleciona itens de uma página de livro ou no ambiente natural a partir de 3 componentes verbais (Ex. verbo, adjetivo, preposição, pronome) para 25 tarefas LRFFC iniciadas com perguntas WH.(Ex. Qual fruta cresce em árvore?) (T).',
           selected: null,
@@ -1159,7 +1159,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 374,
-          cod: 14,
+          cod: '14M',
           descricao:
             'Seleciona os itens corretos de um livro ou no ambiente natural quando 4 diferentes perguntas LRFFC sobre um único assunto são realizadas de forma alternada.(ex. "Onde mora a vaca ? " O que a vaca come?" "Quem ordenha a vaca?") para 25 tópicos diferentes.(T)',
           selected: null,
@@ -1179,7 +1179,7 @@ const avaliacaoNivelTres = {
         },
         {
           id: 375,
-          cod: 15,
+          cod: '15M',
           descricao:
             'Demonstra 1000 respostas LRFFC diferentes, testadas ou obtidas de uma lista acumulada de respostas conhecidas. (T).',
           selected: null,

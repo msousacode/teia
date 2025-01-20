@@ -21,12 +21,10 @@
         @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup />
     </div>
 
-
-    <p class="q-mt-md text-body2">
-      (*) Você pode importar programas prontos do nosso banco de programas.
-    </p>
-
-    <div class="q-my-md flex justify-center">
+    <div class="q-my-md flex justify-center" v-show="!props.selecionarTreinamento">
+      <p class="q-mt-md text-body2">
+        (*) Você pode importar programas prontos do nosso banco de programas.
+      </p>
       <q-btn label="Acessar Banco de Programas" color="info" class="q-pa-sm" no-caps
         :to="{ name: 'treinamento-import' }" />
     </div>
