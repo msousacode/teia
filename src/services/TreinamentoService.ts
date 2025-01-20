@@ -19,11 +19,11 @@ export class TreinamentoService {
     return await http.get(`/treinamentos/${id}`);
   }
 
-  async getTreinamentosBase() {
-    return await http.get('/treinamentos/base');
+  async getTreinamentosBase(usuarioId: string) {
+    return await http.get(`/treinamentos/base/usuario/${usuarioId}`);
   }
 
   async importarTreinamentos(data: string[], usuarioId: string) {
-    return await http.post(`/treinamentos/base/aprendiz/${usuarioId}`, data);
+    return await http.post(`/treinamentos/base/usuario/${usuarioId}`, data);
   }
 }

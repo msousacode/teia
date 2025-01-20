@@ -6,7 +6,7 @@
 
         <div class="q-my-sm flex justify-end">
             <q-btn label="Confirmar Importação" icon="upload" color="green" class="q-pa-sm" no-caps
-                @click="importarTreinamentos" />
+                @click="importarTreinamentos" :disable="treinamentosSelecionados.length == 0" />
         </div>
         <div class="q-pa-md row items-start q-gutter-md">
             <q-card class="my-card bg-grey-2 full-width" v-for="item in treinamentos" :key="item.treinamentoBaseId">
@@ -21,7 +21,7 @@
                 <q-separator dark />
 
                 <q-card-actions>
-                    <q-checkbox v-model="item.importado" color="primary"
+                    <q-checkbox v-model="item.importado" :disable="item.importado" color="primary"
                         @click="handleSelectTreinamentos(item.treinamentoBaseId)" label="Selecionar para impotação" />
                 </q-card-actions>
             </q-card>
@@ -115,9 +115,18 @@ function filtrar() {
 
 onMounted(async () => {
 
+    treinamentosSelecionados.value = [];
+
+    const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+    if (!usuarioId) {
+        error('Não foi possível salvar barreiras');
+        return;
+    }
+
     $q.loading.show();
     try {
-        await service.getTreinamentosBase().then((response) => {
+        await service.getTreinamentosBase(usuarioId).then((response) => {
             store.setTreinamentosBase(response.data);
             treinamentos.value = store.getTreinamentosBase;
         });
