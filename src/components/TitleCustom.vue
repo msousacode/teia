@@ -1,5 +1,5 @@
 <template>
-    <div class="col-12 text-left q-pa-sm">
+    <div class="col-12 text-left">
         <p class="text-h6 text-teal">{{ title }}</p>
     </div>
 </template>

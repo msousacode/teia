@@ -5,7 +5,7 @@ const http = createHttp('/api');
 export interface Usuario {
   full_name: string;
   email: string;
-  banco_demonstracao: string;
+  perfil: string;
   senha: string;
 }
 
@@ -22,8 +22,8 @@ const config = {
   },
 };
 export class AcessoService {
-  async criarNovoUsuario(usuario: Usuario) {
-    return http.post('/auth/usuarios', usuario, config);
+  async criarNovoUsuario(usuario: Usuario, usuarioId: string) {
+    return http.post(`/auth/usuarios/tenant/${usuarioId}`, usuario, config);
   }
 
   async login(auth: Auth) {
