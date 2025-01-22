@@ -32,7 +32,7 @@
 
           <br />
 
-          <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="Cadastrar" @click="cadastrar()"
+          <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="Salvar" @click="cadastrar()"
             :disable="!isSubmitted" />
 
           <q-btn class="full-width text-teal text-blue-9 q-pa-sm" unelevated to="/profissionais" label="Voltar"
