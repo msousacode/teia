@@ -15,7 +15,7 @@
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
             <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]" />
+              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]" readonly />
 
             <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão" />
 
@@ -123,6 +123,11 @@ async function cadastrar() {
       return;
     }
 
+    if (routeLocation.params.email) {
+      atualizarUsuario(novoUsurio, routeLocation.params.email);
+      return;
+    }
+
     const { data } = await acessoService.criarNovoUsuario(novoUsurio, usuarioId);
 
     if (data == null) {
@@ -160,4 +165,30 @@ onMounted(async () => {
   }
 
 });
+
+async function atualizarUsuario(novoUsurio: Usuario, email: any) {
+
+  try {
+    $q.loading.show();
+
+    const { data } = await profissionalService.atualizar(novoUsurio, email);
+
+    if (data == null) {
+      throw Error("Erro ao atualizar usuário.");
+    } else {
+      formCadastro.nome = data.full_name;
+      formCadastro.email = data.email;
+      selected.value = data.perfil;
+      success('Usuário atualizado com sucesso!');
+    }
+
+  } catch (e) {
+    console.log(e);
+    error('Erro ao atualizar usuário. Contate o Suporte.');
+  } finally {
+    $q.loading.hide();
+  }
+
+
+}
 </script>
