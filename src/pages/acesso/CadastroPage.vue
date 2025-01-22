@@ -17,7 +17,7 @@
             <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]" />
 
-            <q-select stack-label outlined v-model="selected" :options="perfil" label="Tipo de Habilidade" />
+            <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão" />
 
             <section v-if="!(tipoPerfil == 'Administrador')">
               <q-input type="password" outlined v-model="formCadastro.senha" label="Senha" stack-label
@@ -35,7 +35,8 @@
           <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="Cadastrar" @click="cadastrar()"
             :disable="!isSubmitted" />
 
-          <q-btn class="full-width text-teal text-blue-9 q-pa-sm" unelevated to="/" label="Voltar" no-caps />
+          <q-btn class="full-width text-teal text-blue-9 q-pa-sm" unelevated to="/profissionais" label="Voltar"
+            no-caps />
         </div>
       </div>
     </q-page>
@@ -43,13 +44,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { createStripeCustomer } from 'src/services/stripe';
 import TitleCustom from 'src/components/TitleCustom.vue';
+import { ProfissionalService } from 'src/services/ProfissionalService';
 
 const tipoPerfil = "Administrador";
 
@@ -61,9 +63,13 @@ const { success, error } = useNotify();
 
 const acessoService = new AcessoService();
 
+const profissionalService = new ProfissionalService();
+
 const selected = ref<string>('');
 
 const perfil = ["Especialista", "AT"];
+
+const routeLocation = useRoute();
 
 const formCadastro = reactive({
   nome: '',
@@ -139,4 +145,19 @@ async function cadastrar() {
     $q.loading.hide();
   }
 };
+
+
+onMounted(async () => {
+
+  if (routeLocation.params.email) {
+    const { data } = await profissionalService.getByEmail(routeLocation.params.email);
+
+    if (data) {
+      formCadastro.nome = data.full_name;
+      formCadastro.email = data.email;
+      selected.value = data.perfil;
+    }
+  }
+
+});
 </script>

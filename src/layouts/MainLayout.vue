@@ -60,6 +60,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
+    title: 'Profissionais',
+    icon: 'mdi-account-multiple',
+    routeName: 'profissionais',
+    hide: true,
+    display: () => 'none',
+  },
+  {
     title: 'Protocolos',
     icon: 'mdi-chart-gantt',
     routeName: 'avaliacoes',

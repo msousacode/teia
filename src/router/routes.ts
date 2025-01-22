@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'cadastrar',
-        path: '/cadastrar',
+        path: '/cadastrar/:email?',
         component: () => import('pages/acesso/CadastroPage.vue'),
       },
       {
@@ -63,6 +63,12 @@ const routes: RouteRecordRaw[] = [
         name: 'aprendizes',
         path: '/aprendizes',
         component: () => import('pages/aprendizes/AprendizList.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'profissionais',
+        path: '/profissionais',
+        component: () => import('pages/profissionais/ProfissionaisList.vue'),
         meta: { requiresAuth: true },
       },
       {
