@@ -44,6 +44,8 @@ const router = useRouter();
 
 const manager = useManagerTokens();
 
+let perfil = JSON.parse(localStorage.getItem('user')).perfil;
+
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
     title: 'Relatórios',
@@ -63,7 +65,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
-    hide: true,
+    hide: perfil == 'ADMIN' ? true : false,
     display: () => 'none',
   },
   {
@@ -119,6 +121,7 @@ function toggleLeftDrawer() {
 const sair = async () => {
   manager.limparLocalStorage();
   router.replace({ name: 'login' });
+
 };
 
 </script>

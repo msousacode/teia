@@ -17,6 +17,7 @@ export class UsuarioService {
         email: res.data.email,
         termoAceite: res.data.termoAceite,
         documento: res.data.documento,
+        perfil: res.data.perfil,
       };
     });
   }
