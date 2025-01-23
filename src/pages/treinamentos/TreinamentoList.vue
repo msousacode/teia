@@ -22,9 +22,12 @@
     </div>
 
     <div class="q-my-md flex justify-center" v-show="!props.selecionarTreinamento">
-      <p class="q-mt-md text-body2">
+      <div class="q-mt-md text-body2">
         (*) Você pode importar programas prontos do nosso banco de programas.
-      </p>
+      </div>
+    </div>
+
+    <div class="q-pa-md q-gutter-md flex justify-center" v-if="!props.selecionarTreinamento">
       <q-btn label="Acessar Banco de Programas" color="info" class="q-pa-sm" no-caps
         :to="{ name: 'treinamento-import' }" />
     </div>

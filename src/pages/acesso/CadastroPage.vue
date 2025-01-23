@@ -15,7 +15,8 @@
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
             <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]" readonly />
+              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
+              :readonly="edit" />
 
             <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão" />
 
@@ -70,6 +71,8 @@ const selected = ref<string>('');
 const perfil = ["Especialista", "AT"];
 
 const routeLocation = useRoute();
+
+const edit = routeLocation.params.email ? true : false;
 
 const formCadastro = reactive({
   nome: '',

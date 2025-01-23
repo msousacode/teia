@@ -177,9 +177,9 @@
 
         <title-custom title="Gerar Relatório:" />
 
-        <div class="text-h6 text-teal-7">Preencha o período: <div class="text-overline">
+        <!--div class="text-h6 text-teal-7">Preencha o período: <div class="text-overline">
                 O período da pesquisa é limitado até 6 meses.</div>
-        </div>
+        </div-->
 
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
 
