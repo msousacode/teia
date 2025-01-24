@@ -33,18 +33,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
-import { useManagerTokens } from 'src/composables/managerTokens';
+import { UsuarioService } from 'src/services/UsuarioService';
 
 const router = useRouter();
 
-const manager = useManagerTokens();
-
-let perfil = JSON.parse(localStorage.getItem('user')).perfil;
+const perfil = ref();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
@@ -65,7 +63,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
-    hide: perfil == 'ADMIN' ? true : false,
+    hide: perfil.value == 'ADMIN' ? true : false,
     display: () => 'none',
   },
   {
@@ -114,14 +112,35 @@ const essentialLinks: EssentialLinkProps[] = reactive([
 
 const leftDrawerOpen = ref(false);
 
+const usuarioService = new UsuarioService();
+
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
 const sair = async () => {
-  manager.limparLocalStorage();
+  localStorage.clear();
   router.replace({ name: 'login' });
-
 };
+
+onMounted(async () => {
+
+  const storage = JSON.parse(localStorage.getItem('user'));
+
+  if (storage == null) {
+    await usuarioService.getUsuarioInfo().then(data => {
+
+      if (data.ativo == false) {
+        localStorage.clear();
+        router.push({ name: 'login' });
+      }
+
+      perfil.value = data.perfil;
+
+      localStorage.setItem("user", JSON.stringify(data));
+
+    });
+  }
+});
 
 </script>

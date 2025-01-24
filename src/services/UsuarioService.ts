@@ -18,6 +18,7 @@ export class UsuarioService {
         termoAceite: res.data.termoAceite,
         documento: res.data.documento,
         perfil: res.data.perfil,
+        ativo: res.data.ativo,
       };
     });
   }

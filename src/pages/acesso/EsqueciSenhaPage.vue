@@ -35,25 +35,36 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
+import { AcessoService } from 'src/services/AcessoService';
+import useNotify from 'src/composables/UseNotify';
 
 const $q = useQuasar();
 
+const { error } = useNotify();
 
 const email = ref('');
 
 const mostarMensagemSucesso = ref(false);
 
+const service = new AcessoService();
+
 async function recuperar() {
   $q.loading.show();
-  //TODO meter a lógica aqui.
-  /*try {
-    await auth.sendPasswordRestEmail(email.value.trim());
-    email.value = '';
-    mostarMensagemSucesso.value = true;
+
+  try {
+    const { data } = await service.esqueciMinhaSenha(email.value);
+
+    if (data == "Ok") {
+      mostarMensagemSucesso.value = true;
+    } else {
+      error('Erro ao recuperar a senha contate o Suporte.');
+    }
+
+  } catch (e) {
+    error('Erro ao recuperar a senha contate o Suporte.');
+  } finally {
     $q.loading.hide();
-  } catch (error) {
-    useNotify().error('Erro ao enviar e-mail', error);
-    $q.loading.hide();
-  }*/
+  }
+
 }
 </script>

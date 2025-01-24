@@ -417,6 +417,12 @@ onMounted(async () => {
     carregarSelectAprendiz();
 
     await usuarioSerive.getUsuarioInfo().then(data => {
+
+        if (data.ativo === false) {
+            localStorage.clear();
+            router.push({ name: 'login' });
+        }
+
         localStorage.setItem("user", JSON.stringify(data));
 
         acceptTerms.value = data.termoAceite;

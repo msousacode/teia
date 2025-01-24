@@ -33,4 +33,8 @@ export class AcessoService {
   async subscriptionInfoByEmail(email: string) {
     return http.get(`/auth/usuarios/subscription/${email}`);
   }
+
+  async esqueciMinhaSenha(email: string) {
+    return http.get(`/auth/esqueci/${email}`);
+  }
 }
