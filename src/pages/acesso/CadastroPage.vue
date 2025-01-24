@@ -134,7 +134,7 @@ async function cadastrar() {
         router.push({ name: 'assinatura' });
       }
 
-      success('Usuário cadastrado com sucesso!');
+      //success('Usuário cadastrado com sucesso!');
       return;
 
     }

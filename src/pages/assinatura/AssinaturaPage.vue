@@ -14,9 +14,10 @@
     </q-dialog>
 
     <div class="row justify-center" v-if="!isAssinante">
-
-      <span class="text-h6 text-teal text-center" style="width: 350px;">Contrate um dos plano e comece a utilizar o
-        sistema.</span>
+      <span class="text-h6 text-teal text-center" style="width: 350px;">Para acessar o sistema é necessário
+        contratar um dos planos.</span>
+      <span class="text-h6 text-teal text-center" style="width: 350px;">Após a contratação o seu acesso será
+        liberado.</span>
     </div>
 
     <div class="q-ma-md">
@@ -31,7 +32,7 @@
           <div class="col">
 
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
-              <div class="text-h5 text-blue-8"><b>STARTED</b></div>
+              <div class="text-h6 text-blue-8"><b>STARTED</b></div>
               <div class="text-h5" style="margin-left: 10px;"><b>R$ 49,90</b>/mês</div>
             </div>
 
@@ -60,7 +61,7 @@
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
-              <div class="text-h5 text-green-8"><b>PROFISSIONAL</b></div>
+              <div class="text-h6 text-green-8"><b>PROFISSIONAL</b></div>
               <div class="text-h5" style="margin-left: 10px;"><b>R$ 99,90</b>/mês</div>
             </div>
             <div class="text-body2 q-mt-sm">
@@ -89,7 +90,7 @@
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
-              <div class="text-h5 text-orange-8"><b>CLINIC</b></div>
+              <div class="text-h6 text-orange-8"><b>CLINIC</b></div>
               <div class="text-h5" style="margin-left: 10px;"><b>R$ 399,90</b>/mês</div>
             </div>
             <div class="text-body2 q-mt-sm">
