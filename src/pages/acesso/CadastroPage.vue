@@ -127,13 +127,11 @@ async function cadastrar() {
         throw Error("Erro ao cadastrar novo usuário.");
       }
 
-      if (false) {
-        if (tipoPerfil.value != 'ADMIN') {
-          await criarContaStripe(formCadastro.nome, formCadastro.email.toLowerCase().trim());
+      if (tipoPerfil.value != 'ADMIN') {
+        await criarContaStripe(formCadastro.nome, formCadastro.email.toLowerCase().trim());
 
-          localStorage.setItem("userInfo", JSON.stringify(data));
-          router.push({ name: 'assinatura' });
-        }
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        router.push({ name: 'assinatura' });
       }
 
       success('Usuário cadastrado com sucesso!');
