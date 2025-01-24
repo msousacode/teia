@@ -17,10 +17,10 @@
             <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
               :readonly="edit" />
+            <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão"
+              v-if="(tipoPerfil == 'ADMIN')" />
 
-            <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão" />
-
-            <section v-if="!(tipoPerfil == 'Administrador')">
+            <section v-if="!(tipoPerfil == 'ADMIN')">
               <q-input type="password" outlined v-model="formCadastro.senha" label="Senha" stack-label
                 :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
 
@@ -54,7 +54,7 @@ import { createStripeCustomer } from 'src/services/stripe';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { ProfissionalService } from 'src/services/ProfissionalService';
 
-const tipoPerfil = "Administrador";
+const tipoPerfil = ref();
 
 const router = useRouter();
 
@@ -83,7 +83,7 @@ const formCadastro = reactive({
 });
 
 let isSubmitted = computed(() => {
-  if (tipoPerfil == 'Administrador') {
+  if (tipoPerfil.value == 'ADMIN') {
     return formCadastro.email !== '' && formCadastro.nome !== '' && selected.value !== '';
   }
   return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senhaConfirmada.length > 5 && formCadastro.senhaConfirmada !== '';
@@ -107,44 +107,59 @@ async function criarContaStripe(name: string, email: string) {
 
 async function cadastrar() {
 
-  if (tipoPerfil != 'Administrador') {
+  if (tipoPerfil.value != 'ADMIN') {
     if (formCadastro.senha.trim() !== formCadastro.senhaConfirmada.trim()) {
       error('Senhas não conferem');
       return;
     }
   }
 
-  const novoUsurio = { full_name: formCadastro.nome, email: formCadastro.email.toLowerCase().trim(), senha: formCadastro.senhaConfirmada, perfil: selected.value } as Usuario;
+  const novoUsuario = { full_name: formCadastro.nome, email: formCadastro.email.toLowerCase().trim(), senha: formCadastro.senhaConfirmada, perfil: selected.value } as Usuario;
 
   try {
     $q.loading.show();
 
+
+    if (localStorage.getItem('user') == null) {//Significa que o usuário não está logado.
+      const { data } = await acessoService.criarNovoUsuario(novoUsuario);
+
+      if (data == null) {
+        throw Error("Erro ao cadastrar novo usuário.");
+      }
+
+      if (false) {
+        if (tipoPerfil.value != 'ADMIN') {
+          await criarContaStripe(formCadastro.nome, formCadastro.email.toLowerCase().trim());
+
+          localStorage.setItem("userInfo", JSON.stringify(data));
+          router.push({ name: 'assinatura' });
+        }
+      }
+
+      success('Usuário cadastrado com sucesso!');
+      return;
+
+    }
+
     const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
 
     if (!usuarioId) {
-      error('Não foi possível salvar barreiras');
+      error('Não foi possível localizar o usuário logado.');
       return;
     }
 
     if (routeLocation.params.email) {
-      atualizarUsuario(novoUsurio, routeLocation.params.email);
+      atualizarUsuario(novoUsuario, routeLocation.params.email);
       return;
     }
 
-    const { data } = await acessoService.criarNovoUsuario(novoUsurio, usuarioId);
+    const { data } = await acessoService.criarNovoUsuario(novoUsuario, usuarioId);
 
     if (data == null) {
       throw Error("Erro ao cadastrar novo usuário.");
     }
 
     success('Usuário cadastrado com sucesso!');
-
-    if (tipoPerfil != 'Administrador') {
-      await criarContaStripe(formCadastro.nome, formCadastro.email.toLowerCase().trim());
-
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      router.push({ name: 'assinatura' });
-    }
 
   } catch (e) {
     console.log(e);
@@ -156,6 +171,8 @@ async function cadastrar() {
 
 
 onMounted(async () => {
+
+  tipoPerfil.value = JSON.parse(localStorage.getItem('user') || '').perfil;
 
   if (routeLocation.params.email) {
     const { data } = await profissionalService.getByEmail(routeLocation.params.email);

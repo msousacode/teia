@@ -47,14 +47,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                    }}
+                                        }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -70,7 +70,12 @@
                             : nivelSelecionado === '3'
                                 ? 'bg-blue-1'
                                 : ''">
-                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
+
+                        <div class="flex justify-between">
+                            <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
+                            <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
+                                item.criadoNome }}</div>
+                        </div>
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -253,7 +258,8 @@ function carregarAvaliacao() {
 
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
-        selected: null // Altera a propriedade 'selected' para null  
+        selected: null, // Altera a propriedade 'selected' para null  
+        criadoNome: ''
     }));
 
     return newObjetivos;
@@ -312,6 +318,7 @@ async function refresh() {
             if (card) {
                 // Atualizar a propriedade selected do card  
                 card.selected = row.pontuacao;
+                card.criadoNome = row.criado_por_nome;
                 // Adicionar o card ao array cardsRespondidos  
 
                 // Usando map para substituir o objeto com o id específico  

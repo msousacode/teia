@@ -63,7 +63,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
-    hide: perfil.value == 'ADMIN' ? true : false,
+    hide: true,//perfil.value == 'ADMIN' ? true : false,
     display: () => 'none',
   },
   {
@@ -141,6 +141,8 @@ onMounted(async () => {
 
     });
   }
+
+  perfil.value = storage.perfil;
 });
 
 </script>

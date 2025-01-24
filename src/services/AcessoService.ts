@@ -22,8 +22,12 @@ const config = {
   },
 };
 export class AcessoService {
-  async criarNovoUsuario(usuario: Usuario, usuarioId: string) {
-    return http.post(`/auth/usuarios/tenant/${usuarioId}`, usuario, config);
+  async criarNovoUsuario(usuario: Usuario, usuarioId?: string) {
+    if (usuarioId != undefined) {
+      return http.post(`/auth/usuarios/tenant/${usuarioId}`, usuario, config);
+    } else {
+      return http.post('/auth/usuarios', usuario, config);
+    }
   }
 
   async login(auth: Auth) {
