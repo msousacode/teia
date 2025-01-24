@@ -11,7 +11,7 @@ export const config = {
         priceId: 'price_1QdGsHE7oRUy6lRCzLlA5ewd',
       },
       clinic: {
-        priceId: 'price_1QdGsHE7oRUy6lRCzLlA5ewd',
+        priceId: 'price_1Qj9qPE7oRUy6lRCQvSEDXKI',
       },
     },
   },
