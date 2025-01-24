@@ -5,7 +5,7 @@ const http = createHttp('/api');
 export interface Usuario {
   full_name: string;
   email: string;
-  banco_demonstracao: string;
+  perfil: string;
   senha: string;
 }
 
@@ -22,8 +22,12 @@ const config = {
   },
 };
 export class AcessoService {
-  async criarNovoUsuario(usuario: Usuario) {
-    return http.post('/auth/usuarios', usuario, config);
+  async criarNovoUsuario(usuario: Usuario, usuarioId?: string) {
+    if (usuarioId != undefined) {
+      return http.post(`/auth/usuarios/tenant/${usuarioId}`, usuario, config);
+    } else {
+      return http.post('/auth/usuarios', usuario, config);
+    }
   }
 
   async login(auth: Auth) {
@@ -32,5 +36,9 @@ export class AcessoService {
 
   async subscriptionInfoByEmail(email: string) {
     return http.get(`/auth/usuarios/subscription/${email}`);
+  }
+
+  async esqueciMinhaSenha(email: string) {
+    return http.get(`/auth/esqueci/${email}`);
   }
 }

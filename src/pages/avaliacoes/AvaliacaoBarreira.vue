@@ -1,5 +1,5 @@
 <template>
-    <div class="q-ml-md q-mt-md text-teal">Barreiras - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+    <div class="q-ml-md q-mt-md text-teal">Barreiras - Aprendiz: {{ aprendizStorage.nome_aprendiz }}</div>
     <title-custom title="Barreiras" class="q-ml-sm"></title-custom>
     <q-page>
         <div class="q-pa-md">
@@ -23,9 +23,8 @@ import { Barreira, BarreiraList } from './model/barreira.model';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { VbMappService } from 'src/services/VbMappService';
-import { useAprendizStore } from 'src/stores/aprendiz';
 
-const aprendizStore = useAprendizStore().getAprendizInfo;
+const aprendizStorage = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 const barreiraList = reactive<BarreiraList>({
     coletas: []
@@ -67,7 +66,7 @@ async function salvar() {
             return;
         }
 
-        const { status } = await service.postColetaBarreira(barreiraList, aprendizStore.uuid, usuarioId);
+        const { status } = await service.postColetaBarreira(barreiraList, aprendizStorage.uuid, usuarioId);
 
         if (status == 200) {
             success('Barreiras salvas com sucesso!');
@@ -87,7 +86,7 @@ async function salvar() {
 async function getBarreirasColetadas() {
     $q.loading.show();
     try {
-        const { data } = await service.getColetaBarreira(aprendizStore.uuid);
+        const { data } = await service.getColetaBarreira(aprendizStorage.uuid);
 
         if (data && data.coletas) {
             data.coletas.forEach((coleta: any) => {

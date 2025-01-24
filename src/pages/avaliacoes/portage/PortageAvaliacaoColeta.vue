@@ -76,6 +76,7 @@ import { portageUmHaDoisAno } from '../data/portage/portageUmHaDoisAno';
 import { portageDoisHaTresAno } from '../data/portage/portageDoisHaTresAno';
 import { portageTresHaQuatroAno } from '../data/portage/portageTresHaQuatro';
 import { portageQuatroHaCincoAno } from '../data/portage/portageQuatroHaCinco';
+import { portageCincoHaSeis } from '../data/portage/portageCincoHaSeis';
 import { onMounted, watch } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
@@ -83,7 +84,6 @@ import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { PortageService } from 'src/services/PortageService';
-import { useAprendizStore } from 'src/stores/aprendiz';
 
 const { success, error } = useNotify();
 
@@ -127,7 +127,7 @@ const portageService = new PortageService();
 
 const $q = useQuasar();
 
-const aprendizStore = useAprendizStore().getAprendizInfo;
+const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 const showRespondidas = ref(true);
 
@@ -177,7 +177,10 @@ function carregarAvaliacao() {
         objetivos = portageQuatroHaCincoAno.avaliacoes
             .filter(i => i.tipo == tipoColeta)
             .find(i => i)?.objetivos || [];
-
+    } else if (idadeSelecionada.value == '6') {
+        objetivos = portageCincoHaSeis.avaliacoes
+            .filter(i => i.tipo == tipoColeta)
+            .find(i => i)?.objetivos || [];
     }
 
     const newObjetivos = objetivos.map(obj => ({
@@ -195,13 +198,20 @@ async function salvar() {
 
     const itens = coletas.get("coletasRealizadas");
 
+
     try {
+        const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+        if (!usuarioId) {
+            error('Não foi possível salvar coletas sem um usuário logado');
+            return;
+        }
 
         if (itens.length == 0)
             return;
 
         $q.loading.show();
-        const { data } = await portageService.postColetaAvaliacao(itens);
+        const { data } = await portageService.postColetaAvaliacao(itens, usuarioId);
 
         if (data) {
             success('Coletas salvas com sucesso!');

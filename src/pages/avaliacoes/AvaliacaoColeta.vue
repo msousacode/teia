@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStorage.nome_aprendiz }}</div>
         <div class="text-teal">
             <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
                 v-model="showRespondidas" />
@@ -70,7 +70,12 @@
                             : nivelSelecionado === '3'
                                 ? 'bg-blue-1'
                                 : ''">
-                        <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
+
+                        <div class="flex justify-between">
+                            <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
+                            <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
+                                item.criadoNome }}</div>
+                        </div>
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -130,7 +135,6 @@ import useNotify from 'src/composables/UseNotify';
 import { computed } from 'vue';
 import { VbMappService } from 'src/services/VbMappService';
 import { useQuasar } from 'quasar';
-import { useAprendizStore } from 'src/stores/aprendiz';
 
 const { success, error } = useNotify();
 
@@ -180,9 +184,7 @@ const visible = ref([]);
 
 const qtdCards = ref<number>(0);
 
-//const qtdCardsRespondidos = ref<number>(0);
-
-const aprendizStore = useAprendizStore().getAprendizInfo;
+const aprendizStorage = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 const showRespondidas = ref(true);
 
@@ -256,7 +258,8 @@ function carregarAvaliacao() {
 
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
-        selected: null // Altera a propriedade 'selected' para null  
+        selected: null, // Altera a propriedade 'selected' para null  
+        criadoNome: ''
     }));
 
     return newObjetivos;
@@ -315,6 +318,7 @@ async function refresh() {
             if (card) {
                 // Atualizar a propriedade selected do card  
                 card.selected = row.pontuacao;
+                card.criadoNome = row.criado_por_nome;
                 // Adicionar o card ao array cardsRespondidos  
 
                 // Usando map para substituir o objeto com o id específico  

@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'cadastrar',
-        path: '/cadastrar',
+        path: '/cadastrar/:email?',
         component: () => import('pages/acesso/CadastroPage.vue'),
       },
       {
@@ -66,6 +66,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'profissionais',
+        path: '/profissionais',
+        component: () => import('pages/profissionais/ProfissionaisList.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'aprendiz-novo',
         path: '/aprendiz-novo/:action?',
         component: () => import('pages/aprendizes/AprendizForm.vue'),
@@ -81,6 +87,12 @@ const routes: RouteRecordRaw[] = [
         name: 'treinamento-novo',
         path: '/treinamento-novo/:action?',
         component: () => import('pages/treinamentos/TreinamentoForm.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'treinamento-import',
+        path: '/treinamento-import',
+        component: () => import('pages/treinamentos/TreinamentoImport.vue'),
         meta: { requiresAuth: true },
       },
       {

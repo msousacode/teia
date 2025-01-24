@@ -4,7 +4,7 @@
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
         row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
         <template v-slot:top>
-          <span class="text-h6 text-teal"> Treinamentos </span>
+          <span class="text-h6 text-teal"> Programas </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -17,13 +17,25 @@
           </q-td>
         </template>
       </q-table>
-
       <q-btn label="Confirmar" color="green" no-caps class="full-width q-mt-md q-pa-sm"
         @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup />
     </div>
+
+    <div class="q-my-md flex justify-center" v-show="!props.selecionarTreinamento">
+      <div class="q-mt-md text-body2">
+        (*) Você pode importar programas prontos do nosso banco de programas.
+      </div>
+    </div>
+
+    <div class="q-pa-md q-gutter-md flex justify-center" v-if="!props.selecionarTreinamento">
+      <q-btn label="Acessar Banco de Programas" color="info" class="q-pa-sm" no-caps
+        :to="{ name: 'treinamento-import' }" />
+    </div>
+
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
       <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'treinamento-novo' }" />
     </q-page-sticky>
+
   </div>
 </template>
 <script setup lang="ts">

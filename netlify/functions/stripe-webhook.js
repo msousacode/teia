@@ -49,5 +49,10 @@ exports.handler = async (event) => {
     } catch (error) {
       console.log('err', error);
     }
+
+    return {
+      statusCode: 200,
+      body: 'Sucesso.',
+    };
   }
 };

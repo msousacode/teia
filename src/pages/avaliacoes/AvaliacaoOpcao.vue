@@ -1,6 +1,5 @@
 <template>
     <div class="q-pa-md">
-
         <q-dialog v-model="showUrlDownload">
             <q-card>
                 <q-card-section class="q-pa-md">
@@ -25,7 +24,7 @@
             </q-card>
         </q-dialog>
 
-        <title-custom title="Protocolos" />
+        <div class="text-teal text-body1 q-mb-md">Selecione o aprendiz para pesquisar a avaliação:</div>
         <div class="q-mb-md">
             <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
         </div>
@@ -116,7 +115,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import TitleCustom from 'src/components/TitleCustom.vue';
 import AvaliacaoGrafico, { GraficoProps } from './AvaliacaoGrafico.vue';
 import PortageAvaliacaoGrafico, { GraficoPortageProps } from './portage/PortageAvaliacaoGrafico.vue';
 import { reactive, ref } from 'vue';
@@ -210,6 +208,9 @@ watch(store, () => {
 })
 
 watch(form.value, async () => {
+
+    selected.value = [];
+
     showOpcoes.value = form.value.aprendiz != null;
 
     if (form.value != null) {
@@ -218,6 +219,7 @@ watch(form.value, async () => {
         const { data } = await aprendizService.getAprendizById(store.aprendizSelected.value);
 
         aprendizInfoStore.setAprendizInfo({ uuid: data.uuid, nome_aprendiz: data.nome_aprendiz, nasc_aprendiz: data.nasc_aprendiz });
+        localStorage.setItem('aprendizInfo', JSON.stringify({ uuid: data.uuid, nome_aprendiz: data.nome_aprendiz, nasc_aprendiz: data.nasc_aprendiz }));
     }
 
     try {

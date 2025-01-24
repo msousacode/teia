@@ -44,29 +44,62 @@ export const createStripeCustomer = async (input: {
   return createdCustomer;
 };
 
-export const createCheckoutSession = async (userEmail: string) => {
+export const createCheckoutSession = async (
+  userEmail: string,
+  tipoPlano: 'started' | 'profissional' | 'clinic'
+) => {
   try {
     const customer = await getStripeCustomerByEmail(
       userEmail.toLowerCase().trim()
     );
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'subscription',
-      client_reference_id: customer.id,
-      success_url: `${process.env.API_URL}#/sucesso`,
-      cancel_url: `${process.env.API_URL}#/falha`,
-      line_items: [
-        {
-          price: config.stripe.plans.pro.priceId,
-          quantity: 1,
-        },
-      ],
-    });
+    let session;
 
-    return {
-      url: session.url,
-    };
+    if (tipoPlano === 'started') {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'subscription',
+        client_reference_id: customer.id,
+        success_url: `${process.env.API_URL}#/sucesso`,
+        cancel_url: `${process.env.API_URL}#/falha`,
+        line_items: [
+          {
+            price: config.stripe.plans.started.priceId,
+            quantity: 1,
+          },
+        ],
+      });
+    } else if (tipoPlano === 'profissional') {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'subscription',
+        client_reference_id: customer.id,
+        success_url: `${process.env.API_URL}#/sucesso`,
+        cancel_url: `${process.env.API_URL}#/falha`,
+        line_items: [
+          {
+            price: config.stripe.plans.profisional.priceId,
+            quantity: 1,
+          },
+        ],
+      });
+    } else if (tipoPlano === 'clinic') {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'subscription',
+        client_reference_id: customer.id,
+        success_url: `${process.env.API_URL}#/sucesso`,
+        cancel_url: `${process.env.API_URL}#/falha`,
+        line_items: [
+          {
+            price: config.stripe.plans.clinic.priceId,
+            quantity: 1,
+          },
+        ],
+      });
+    }
+
+    if (session) return { url: session.url };
   } catch (error) {
     console.error(error);
     throw new Error('Error to create checkout session');

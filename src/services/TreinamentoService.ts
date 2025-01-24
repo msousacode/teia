@@ -18,4 +18,12 @@ export class TreinamentoService {
   async getTreinamentoById(id: string | null) {
     return await http.get(`/treinamentos/${id}`);
   }
+
+  async getTreinamentosBase(usuarioId: string) {
+    return await http.get(`/treinamentos/base/usuario/${usuarioId}`);
+  }
+
+  async importarTreinamentos(data: string[], usuarioId: string) {
+    return await http.post(`/treinamentos/base/usuario/${usuarioId}`, data);
+  }
 }

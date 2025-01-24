@@ -14,39 +14,39 @@
     </q-dialog>
 
     <div class="row justify-center" v-if="!isAssinante">
-      <div class="text-h6 text-teal">Usuário criado com sucesso!</div>
-      <q-banner class="bg-blue-1 text-green-9 q-mt-md q-pa-sm text-center">
-        <span class="text-h6">Para utilizar o sistema é necessário contratar um Plano.</span></q-banner>
+
+      <span class="text-h6 text-teal text-center" style="width: 350px;">Contrate um dos plano e comece a utilizar o
+        sistema.</span>
     </div>
 
     <div class="q-ma-md">
-      <div class="text-h6 text-teal q-mb-md" v-if="!isAssinante"><b>Contrate:</b></div>
       <div class="text-h6 q-mb-md text-teal" v-if="isAssinante"><b>Seu Plano Atual</b></div>
-
-
-      <p class="q-pa-none text-body2" v-if="!isAssinante">
-        Você pode contratar sua assinatura por aqui. Caso precise de assistência ou tenha alguma dúvida, nossa equipe
-        está
-        à disposição para ajudar!
-      </p>
     </div>
 
     <!-- Cartão: Plano Pro -->
     <q-card flat bordered class="my-card q-ma-md bg-grey-3">
       <q-card-section class="q-py-md">
-        <q-chip color="green-7" text-color="white">Ativo</q-chip>
+        <q-chip color="green-7" text-color="white" v-if="isAssinante">Ativo</q-chip>
         <div class="row items-center no-wrap">
           <div class="col">
-            <div class="text-h5 text-blue"><b>PLANO PROFISSIONAL INDIVIDUAL</b></div>
-            <div class="text-h5"><b>R$ 99,90/mês</b></div>
+
+            <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
+              <div class="text-h5 text-blue-8"><b>STARTED</b></div>
+              <div class="text-h5" style="margin-left: 10px;"><b>R$ 49,90</b>/mês</div>
+            </div>
 
             <div class="text-body2 q-mt-sm">
-              <q-icon name="event" size="md" color="grey-8" class="q-mr-xs" />
-              Cobrado de modo recorrente a cada mês no cartão de crédito
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Cadastre
+                até 5 aprendizes</div>
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Acesse
+                todas as
+                funcionalidades</div>
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Suporte e
+                treinamento</div>
             </div>
 
             <div class="q-mt-md" v-if="!isAssinante">
-              <q-btn label="Assinar" no-caps color="primary" size="md" class="full-width" @click="assinar()" />
+              <q-btn label="Assinar" no-caps color="blue-9" size="md" class="full-width" @click="assinar('started')" />
             </div>
 
           </div>
@@ -54,18 +54,58 @@
       </q-card-section>
     </q-card>
 
-    <q-card flat bordered class="my-card q-ma-md bg-grey-3 text-dark" v-if="!isAssinante">
-      <!-- Cartão: Plano Atual -->
+    <q-card flat bordered class="my-card q-ma-md bg-grey-3">
       <q-card-section class="q-py-md">
+        <q-chip color="green-7" text-color="white" v-if="isAssinante">Ativo</q-chip>
         <div class="row items-center no-wrap">
           <div class="col">
-            <div class="text-h5 text-blue"><b>PLANO CLÍNICAS</b></div>
-            <div class="text-h5 text-primary"><b>SOB CONSULTA</b></div>
-
-            <div class="text-body2 q-mt-sm">
-              <q-icon name="event" size="md" color="grey-8" class="q-mr-xs" />
-              Cobrado de modo recorrente a cada mês no cartão de crédito, boleto ou pix.
+            <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
+              <div class="text-h5 text-green-8"><b>PROFISSIONAL</b></div>
+              <div class="text-h5" style="margin-left: 10px;"><b>R$ 99,90</b>/mês</div>
             </div>
+            <div class="text-body2 q-mt-sm">
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Cadastre
+                até 10 aprendizes</div>
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Acesse
+                todas as
+                funcionalidades</div>
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Suporte e
+                treinamento</div>
+            </div>
+
+            <div class="q-mt-md" v-if="!isAssinante">
+              <q-btn label="Assinar" no-caps color="blue-9" size="md" class="full-width"
+                @click="assinar('profissional')" />
+            </div>
+
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+
+    <q-card flat bordered class="my-card q-ma-md bg-grey-3">
+      <q-card-section class="q-py-md">
+        <q-chip color="green-7" text-color="white" v-if="isAssinante">Ativo</q-chip>
+        <div class="row items-center no-wrap">
+          <div class="col">
+            <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
+              <div class="text-h5 text-orange-8"><b>CLINIC</b></div>
+              <div class="text-h5" style="margin-left: 10px;"><b>R$ 399,90</b>/mês</div>
+            </div>
+            <div class="text-body2 q-mt-sm">
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Cadastre
+                até 20 aprendizes</div>
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Acesse
+                todas as
+                funcionalidades</div>
+              <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Suporte e
+                treinamento</div>
+            </div>
+
+            <div class="q-mt-md" v-if="!isAssinante">
+              <q-btn label="Assinar" no-caps color="blue-9" size="md" class="full-width" @click="assinar('clinic')" />
+            </div>
+
           </div>
         </div>
       </q-card-section>
@@ -92,18 +132,20 @@ const { error } = useNotify();
 
 const dialogIsCancel = ref(false);
 
-async function assinar() {
+async function assinar(tipoPlano: 'started' | 'profissional' | 'clinic') {
 
   try {
     $q.loading.show();
 
     const usuario: UsuarioAssinaturaInfo = JSON.parse(localStorage.getItem("userInfo") || '');
 
-    const { url } = await createCheckoutSession(usuario.email.toLocaleLowerCase().trim());
+    const { url } = await createCheckoutSession(usuario.email.toLocaleLowerCase().trim(), tipoPlano);
 
     if (url) {
       window.location.href = url;
     }
+
+
   } catch (e) {
     error('Erro stripeSubscription');
   } finally {
@@ -113,7 +155,7 @@ async function assinar() {
 
 onMounted(() => {
   const usuario: UsuarioAssinaturaInfo = JSON.parse(localStorage.getItem("userInfo")).data;
-  isAssinante.value = usuario.assinatura.tipo_assinatura == 'ASSINANTE';
+  isAssinante.value = !usuario.assinatura.tipo_assinatura == 'ASSINANTE';
 })
 
 </script>

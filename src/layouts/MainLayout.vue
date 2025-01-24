@@ -33,16 +33,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
 import { useRouter } from 'vue-router';
-import { useManagerTokens } from 'src/composables/managerTokens';
+import { UsuarioService } from 'src/services/UsuarioService';
 
 const router = useRouter();
 
-const manager = useManagerTokens();
+const perfil = ref();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
@@ -60,6 +60,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
+    title: 'Profissionais',
+    icon: 'mdi-account-multiple',
+    routeName: 'profissionais',
+    hide: true,//perfil.value == 'ADMIN' ? true : false,
+    display: () => 'none',
+  },
+  {
     title: 'Protocolos',
     icon: 'mdi-chart-gantt',
     routeName: 'avaliacoes',
@@ -67,14 +74,14 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Atendimentos',
+    title: 'Intervenções',
     icon: 'mdi-view-dashboard',
     routeName: 'atendimentos',
     hide: true,
     display: () => 'none',
   },
   {
-    title: 'Treinamentos',
+    title: 'Programas',
     icon: 'mdi-chart-line-variant',
     routeName: 'treinamentos',
     hide: true,
@@ -105,13 +112,37 @@ const essentialLinks: EssentialLinkProps[] = reactive([
 
 const leftDrawerOpen = ref(false);
 
+const usuarioService = new UsuarioService();
+
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
 const sair = async () => {
-  manager.limparLocalStorage();
+  localStorage.clear();
   router.replace({ name: 'login' });
 };
+
+onMounted(async () => {
+
+  const storage = JSON.parse(localStorage.getItem('user'));
+
+  if (storage == null) {
+    await usuarioService.getUsuarioInfo().then(data => {
+
+      if (data.ativo == false) {
+        localStorage.clear();
+        router.push({ name: 'login' });
+      }
+
+      perfil.value = data.perfil;
+
+      localStorage.setItem("user", JSON.stringify(data));
+
+    });
+  }
+
+  perfil.value = storage.perfil;
+});
 
 </script>

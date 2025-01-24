@@ -58,11 +58,11 @@ const avaliacaoPortageRows = [
     name: 'Idade (4 a 5 anos)',
     align: 'left',
   },
-  /*{
+  {
     id: 6,
     name: 'Idade (5 a 6 ano)',
     align: 'left',
-  },*/
+  },
 ];
 
 export {
