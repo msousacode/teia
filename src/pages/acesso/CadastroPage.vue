@@ -8,6 +8,7 @@
 
     <q-page>
       <div class="row justify-center q-mt-md">
+
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-xs">
           <title-custom title="Cadastrar novo Usuário" />
           <section>
@@ -36,8 +37,8 @@
           <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="Salvar" @click="cadastrar()"
             :disable="!isSubmitted" />
 
-          <q-btn class="full-width text-teal text-blue-9 q-pa-sm" unelevated to="/profissionais" label="Voltar"
-            no-caps />
+          <q-btn class="full-width text-teal text-blue-9 q-pa-sm" unelevated
+            :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'" label="Voltar" no-caps />
         </div>
       </div>
     </q-page>
@@ -222,22 +223,20 @@ async function atualizarUsuario(novoUsurio: Usuario, email: any) {
   } finally {
     $q.loading.hide();
   }
-
-  onMounted(async () => {
-
-    tipoPerfil.value = JSON.parse(localStorage.getItem('user') || '').perfil;
-
-    if (routeLocation.params.email) {
-      const { data } = await profissionalService.getByEmail(routeLocation.params.email);
-
-      if (data) {
-        formCadastro.nome = data.full_name;
-        formCadastro.email = data.email;
-        selected.value = data.perfil;
-      }
-    }
-
-  });
-
 }
+
+
+onMounted(async () => {
+  tipoPerfil.value = JSON.parse(localStorage.getItem('user') || '').perfil;
+  if (routeLocation.params.email) {
+    const { data } = await profissionalService.getByEmail(routeLocation.params.email);
+
+    if (data) {
+      formCadastro.nome = data.full_name;
+      formCadastro.email = data.email;
+      selected.value = data.perfil;
+    }
+  }
+
+});
 </script>
