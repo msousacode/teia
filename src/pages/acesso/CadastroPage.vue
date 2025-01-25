@@ -16,7 +16,7 @@
 
             <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
-              :readonly="edit" />
+              :readonly="edit" @update:model-value="verificarEmail" />
             <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão"
               v-if="(tipoPerfil == 'ADMIN')" />
 
@@ -53,6 +53,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { createStripeCustomer } from 'src/services/stripe';
 import TitleCustom from 'src/components/TitleCustom.vue';
 import { ProfissionalService } from 'src/services/ProfissionalService';
+import { AssinaturaService } from 'src/services/AssinaturaService';
 
 const tipoPerfil = ref();
 
@@ -65,6 +66,8 @@ const { success, error } = useNotify();
 const acessoService = new AcessoService();
 
 const profissionalService = new ProfissionalService();
+
+const assinaturaService = new AssinaturaService();
 
 const selected = ref<string>('');
 
@@ -167,22 +170,35 @@ async function cadastrar() {
   }
 };
 
+let count = 0;
 
-onMounted(async () => {
+async function verificarEmail() {
+  if (formCadastro.email.includes('@')) {
 
-  tipoPerfil.value = JSON.parse(localStorage.getItem('user') || '').perfil;
+    if (count > 0) {
+      return;
+    }
 
-  if (routeLocation.params.email) {
-    const { data } = await profissionalService.getByEmail(routeLocation.params.email);
+    try {
+      $q.loading.show();
 
-    if (data) {
-      formCadastro.nome = data.full_name;
-      formCadastro.email = data.email;
-      selected.value = data.perfil;
+      const { status } = await assinaturaService.verifyCheckout(formCadastro.email.toLowerCase().trim());
+
+      if (status == 200 || status == 404) {
+        count++;
+        return;
+      } else if (status == 403) {
+        router.push({ name: 'assinatura', params: { email: formCadastro.email.toLowerCase().trim() } });
+      }
+
+    } catch (e) {
+      console.log(e);
+    } finally {
+      $q.loading.hide();
     }
   }
 
-});
+}
 
 async function atualizarUsuario(novoUsurio: Usuario, email: any) {
 
@@ -207,6 +223,21 @@ async function atualizarUsuario(novoUsurio: Usuario, email: any) {
     $q.loading.hide();
   }
 
+  onMounted(async () => {
+
+    tipoPerfil.value = JSON.parse(localStorage.getItem('user') || '').perfil;
+
+    if (routeLocation.params.email) {
+      const { data } = await profissionalService.getByEmail(routeLocation.params.email);
+
+      if (data) {
+        formCadastro.nome = data.full_name;
+        formCadastro.email = data.email;
+        selected.value = data.perfil;
+      }
+    }
+
+  });
 
 }
 </script>

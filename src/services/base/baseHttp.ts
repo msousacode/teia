@@ -45,58 +45,49 @@ export default function createHttp(base: string) {
   };
 
   function handleResponse(res: AxiosResponse<any>) {
+    const result = {
+      data: null,
+      status: res.status,
+      error: '',
+    };
+
+    // Tratamento de status 401
     if (res.status === 401) {
-      return {
-        data: res.data,
-        error: null,
-        status: 401,
-      };
-    } else if (res.status === 400) {
-      return {
-        data: null,
-        error: 'Bad request',
-        status: res.status,
-      };
-    } else if (res.status >= 500) {
-      return {
-        data: null,
-        error: 'Erro interno do servidor',
-        status: res.status,
-      };
+      result.error = ''; // Pode ajustar conforme necessidade
+      return result;
     }
-    try {
-      // Response sem erro
+
+    // Tratamento de status 400
+    if (res.status === 400) {
+      result.error = 'Bad request';
+      return result;
+    }
+
+    // Tratamento de status >= 500
+    if (res.status >= 500) {
+      result.error = 'Erro interno do servidor';
+      return result;
+    }
+
+    // Tratamento para sucesso (status 200)
+    if (res.status === 200) {
       if (res.data.content) {
-        return {
-          data: res.data.content,
-          error: null,
-        };
+        result.data = res.data.content;
       } else if (res.data) {
-        return {
-          data: res.data,
-          error: null,
-        };
-      } else if (res.status == 200) {
-        return {
-          data: res.data,
-          status: res.status,
-          error: null,
-        };
-      } else {
-        // Tem error e é um objeto
-        if (res.data.error instanceof Object) {
-          throw res.data.error;
-        } else if (res.data.error === null) {
-          return { data: null, error: null };
-        }
-        // Tem erro mas n é o padrão que tá definido por APIError
-        else {
-          throw res.data;
-        }
+        result.data = res.data;
       }
-    } catch (error) {
-      return { data: null, error: error as any };
+      result.error = ''; // Sucesso não deve ter erro
+      return result;
     }
+
+    // Se a resposta contém erro e é um objeto
+    if (res.data && typeof res.data.error === 'object') {
+      result.error = res.data.error; // Pode incluir uma lógica específica para erros personalizados
+    } else if (res.data && res.data.error !== null) {
+      result.error = res.data.error || 'Erro desconhecido'; // Mensagem para erros não padronizados
+    }
+
+    return result; // Retorna o resultado padronizado
   }
 
   http.interceptors.request.use(onRequestSuccess, onRequestError);

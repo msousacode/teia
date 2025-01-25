@@ -124,6 +124,7 @@ import useNotify from 'src/composables/UseNotify';
 import { UsuarioAssinaturaInfo } from 'src/models/assinatura.model';
 import { createCheckoutSession } from 'src/services/stripe';
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const $q = useQuasar();
 
@@ -133,19 +134,32 @@ const { error } = useNotify();
 
 const dialogIsCancel = ref(false);
 
+const routeLocation = useRoute();
+
+const emailUsuario = routeLocation.params.email;
+
 async function assinar(tipoPlano: 'started' | 'profissional' | 'clinic') {
 
   try {
     $q.loading.show();
 
+    let email = '';
+
     const usuario: UsuarioAssinaturaInfo = JSON.parse(localStorage.getItem("userInfo") || '');
 
-    const { url } = await createCheckoutSession(usuario.email.toLocaleLowerCase().trim(), tipoPlano);
+    if (usuario != null) {
+      email = usuario.email;
+    } else if (emailUsuario) {
+      email = emailUsuario.toString();
+    }
+
+    const { url } = await createCheckoutSession(email.toLocaleLowerCase().trim(), tipoPlano);
 
     if (url) {
       window.location.href = url;
+    } else {
+      error('Erro ao criar sessão de assinatura.');
     }
-
 
   } catch (e) {
     error('Erro stripeSubscription');
