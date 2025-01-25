@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'assinatura',
-        path: '/assinatura',
+        path: '/assinatura/:email?',
         component: () => import('pages/assinatura/AssinaturaPage.vue'),
         meta: { requiresAuth: true },
       },

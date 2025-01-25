@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.1.20250124</div>
+        <div style="color: white;">v1.0.0.2.20250125</div>
       </q-toolbar>
     </q-header>
 
@@ -21,7 +21,8 @@
             <div class="text-center text-h6 q-mb-md q-mt-md">Faça o seu Login</div>
 
             <q-input outlined stack-label v-model="email" label="E-mail"
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
+              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]"
+              @update:model-value="verificarEmail" />
 
             <q-input outlined stack-label v-model="senha" label="Senha" type="password"
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
@@ -38,10 +39,6 @@
           </div>
         </div>
       </div>
-
-
-
-
     </q-page-container>
   </q-layout>
 </template>
@@ -54,6 +51,7 @@ import { useManagerTokens } from 'src/composables/managerTokens';
 import { AcessoService, Auth } from 'src/services/AcessoService';
 import { useQuasar } from 'quasar';
 import { createCheckoutSession } from 'src/services/stripe';
+import { AssinaturaService } from 'src/services/AssinaturaService';
 
 const { error } = useNotify();
 
@@ -72,6 +70,8 @@ const $q = useQuasar();
 let isSubmitted = computed(() => {
   return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
 });
+
+const assinaturaService = new AssinaturaService();
 
 async function entrar() {
 
@@ -117,6 +117,37 @@ async function entrar() {
   } finally {
     $q.loading.hide();
   }
+}
+
+let count = 0;
+
+async function verificarEmail() {
+
+  if (email.value.includes('@')) {
+
+    if (count > 0) {
+      return
+    }
+
+    try {
+      $q.loading.show();
+
+      const { status } = await assinaturaService.verifyCheckout(email.value.toLowerCase().trim());
+
+      if (status == 200 || status == 404) {
+        count++;
+        return;
+      } else if (status == 403) {
+        router.push({ name: 'assinatura', params: { email: email.value.toLowerCase().trim() } });
+      }
+
+    } catch (e) {
+      console.log(e);
+    } finally {
+      $q.loading.hide();
+    }
+  }
+
 }
 
 onBeforeMount(() => {
