@@ -38,10 +38,9 @@ export default route(function (/* { store, ssrContext } */) {
   const { getToken } = useManagerTokens();
 
   Router.beforeEach(async (to) => {
-    if (to.hash.includes('type=recovery') && to.name !== 'reset-password') {
-      const accessToken = to.hash.split('&')[0];
-      const token = accessToken.replace('#access_token=', '');
-      return { name: 'reset-password', query: { token } };
+    if (to.name !== 'reset-password') {
+      const { u, k } = to.query;
+      return { name: 'reset-password', query: { u, k } };
     } else if (to.hash.includes('access_token')) {
       if (to.meta.requiresAuth) {
         if (getToken('token') === null) {
