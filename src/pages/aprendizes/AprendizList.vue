@@ -40,7 +40,7 @@ const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const $q = useQuasar();
 
@@ -64,7 +64,7 @@ function editar(aprendiz: any) {
   router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
 }
 
-function remover() {
+function remover(aprendiz: any) {
   $q.dialog({
     title: 'Confirma a exclusão do Aprendiz?',
     ok: true,
@@ -72,18 +72,12 @@ function remover() {
   })
     .onOk(async () => {
 
+      const { status } = await aprendizService.deleteAprendizById(aprendiz.uuid);
 
-      //TODO fazer o update de aprendiz
-      /*
-      db.aprendizes.update(aprendiz.uuid, { ativo: false }).then(() => {
+      if (status == 200) {
+        success('Aprendiz excluído com sucesso!');
         listar();
-        success("Aprendiz excluído com sucesso");
-      }).catch(() => {
-        error("Ocorreu um erro ao excluir");
-      });
-      */
-
-
+      }
     })
     .onDismiss(() => { });
 }
