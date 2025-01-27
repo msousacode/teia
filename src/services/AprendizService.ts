@@ -18,4 +18,8 @@ export class AprendizService {
   async getAprendizById(id: string | null) {
     return await http.get(`/aprendizes/${id}`);
   }
+
+  async deleteAprendizById(id: string | null) {
+    return await http.delete(`/aprendizes/${id}`);
+  }
 }

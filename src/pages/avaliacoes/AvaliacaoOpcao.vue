@@ -385,6 +385,7 @@ async function deletarAvaliacao(avaliacao: any) {
                 const { status } = await avaliacaoService.deletarAvaliacao(obj.id, protocolo);
                 if (status == 200) {
                     success('Avaliação deletada com sucesso.')
+                    carregarSelectAprendizes()
                 } else {
                     error('Erro ao deletar avaliação.')
                 }

@@ -47,14 +47,14 @@
                                     <div class="text-h6">1 Ponto</div>
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.umPonto
-                                        }}</div>
+                                    }}</div>
 
                                     <div class="text-h6">0,5 Ponto</div>
 
                                     <q-separator />
                                     <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                         item.observacoes.pontuacao.meioPonto
-                                        }}
+                                    }}
                                     </div>
                                 </q-card-section>
                                 <q-card-actions>
@@ -270,6 +270,26 @@ async function salvar() {
     const coletas = toRaw(state.cache);
 
     const itens = coletas.get("coletasRealizadas");
+
+    if (itens == undefined) {
+        $q.notify({
+            message: 'Você tentou salvar sem alterar nenhuma coleta',
+            textColor: 'black',
+            color: 'yellow-7',
+            position: 'center',
+        });
+        return;
+    }
+
+    if (itens.length == 0) {
+        $q.notify({
+            message: 'Você tentou salvar sem alterar nenhuma coleta',
+            textColor: 'black',
+            color: 'yellow-7',
+            position: 'center',
+        });
+        return;
+    }
 
     try {
 

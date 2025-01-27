@@ -41,4 +41,12 @@ export class AcessoService {
   async esqueciMinhaSenha(email: string) {
     return http.get(`/auth/esqueci/${email}`);
   }
+
+  resetPassword(payload: {
+    senha: string;
+    userId: string | string[];
+    keyId: string | string[];
+  }): { status: any } | PromiseLike<{ status: any }> {
+    return http.post('/auth/nova-senha', payload, config);
+  }
 }
