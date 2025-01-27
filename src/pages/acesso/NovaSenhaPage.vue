@@ -6,7 +6,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-dialog v-model="showDialog">
+    <q-dialog v-model="showDialog" persistent>
       <q-card>
         <q-card-section class="q-pa-md text-center">
           <span class="text-body1 text-teal">Sua Senha foi Cadastrada com sucesso! <div class="q-mt-md text-black">
@@ -26,10 +26,10 @@
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
           <div class="text-h6 text-teal">Criar Senha</div>
           <q-input outlined v-model="novaSenha" label="Nova senha" stack-label
-            :rules="[val => (val && val.length >= 6) || 'Senha obrigatória']" />
+            :rules="[val => (val && val.length >= 6) || 'Senha obrigatória']" type="password" />
 
           <q-input outlined v-model="confirmarSenha" label="Confirmar senha" stack-label
-            :rules="[val => (val && val.length >= 6) || 'Confirmar senha é obrigatório']" />
+            :rules="[val => (val && val.length >= 6) || 'Confirmar senha é obrigatório']" type="password" />
 
           <q-btn class="full-width bg-primary text-white" no-caps label="Salvar Senha" @click="recuperar" />
         </div>
@@ -80,7 +80,7 @@ async function recuperar() {
 
     const { status } = await acessoService.resetPassword(payload);
 
-    if (status === 200) {
+    if (status == 200) {
       showDialog.value = true;
     }
 

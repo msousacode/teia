@@ -10,9 +10,7 @@
       <div class="row justify-center q-mt-lg">
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
           <q-banner v-if=mostarMensagemSucesso class="bg-blue-1 text-green-9 q-mb-md q-pa-sm">
-            <span class="text-body1">Verifique o seu email e siga as instruções para
-              recuperar a sua
-              senha.</span></q-banner>
+            <span class="text-body1">Confira seu email e siga as orientações para criar a senha.</span></q-banner>
           <div class="text-h6 text-teal">Recuperação de Senha</div>
           <q-input outlined v-model="email" label="E-mail" stack-label />
 
@@ -56,6 +54,7 @@ async function recuperar() {
 
     if (data == "Ok") {
       mostarMensagemSucesso.value = true;
+      email.value = '';
     } else {
       error('Erro ao recuperar a senha contate o Suporte.');
     }

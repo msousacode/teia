@@ -25,6 +25,10 @@
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
                     <q-card flat bordered class="my-card" :class="'bg-teal-1'">
+                        <div class="flex justify-end">
+                            <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
+                                item.criadoNome }}</div>
+                        </div>
                         <q-card-section>
                             <div class="row items-center no-wrap">
                                 <div class="col">
@@ -185,7 +189,8 @@ function carregarAvaliacao() {
 
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
-        selected: null // Altera a propriedade 'selected' para null  
+        selected: null, // Altera a propriedade 'selected' para null 
+        criadoNome: '', // Adiciona a propriedade 'criadoNome'
     }));
 
 
@@ -198,7 +203,6 @@ async function salvar() {
 
     const itens = coletas.get("coletasRealizadas");
 
-
     try {
         const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
 
@@ -207,8 +211,25 @@ async function salvar() {
             return;
         }
 
-        if (itens.length == 0)
+        if (itens == undefined) {
+            $q.notify({
+                message: 'Você tentou salvar sem alterar nenhuma coleta',
+                textColor: 'black',
+                color: 'yellow-7',
+                position: 'center',
+            });
             return;
+        }
+
+        if (itens.length == 0) {
+            $q.notify({
+                message: 'Você tentou salvar sem alterar nenhuma coleta',
+                textColor: 'black',
+                color: 'yellow-7',
+                position: 'center',
+            });
+            return;
+        }
 
         $q.loading.show();
         const { data } = await portageService.postColetaAvaliacao(itens, usuarioId);
@@ -216,10 +237,10 @@ async function salvar() {
         if (data) {
             success('Coletas salvas com sucesso!');
         } else {
-            error('Ocorreu um erro ao salvar as coletas');
+            error('Ocorreu um erro ao salvar as coletasx');
         }
     } catch (e) {
-        error('Ocorreu um erro ao salvar as coletas');
+        error('Ocorreu um erro ao salvar as coletasy' + e);
         throw e;
     } finally {
         showRespondidas.value = true;
@@ -247,6 +268,7 @@ async function refresh() {
             if (card) {
                 // Atualizar a propriedade selected do card  
                 card.selected = row.resposta;
+                card.criadoNome = row.criado_por_nome;
                 // Adicionar o card ao array cardsRespondidos  
 
                 // Usando map para substituir o objeto com o id específico  
@@ -311,6 +333,7 @@ function coletar(item: any, pontuacao: number) {
 
     // Verifica se a nova coleta já existe no cache  
     const coletaExistente = coletasRealizadas.find(cache => cache.coleta_id === novaColeta.coleta_id);
+
 
     if (coletaExistente) {
         // Se a coleta já existe, atualiza a pontuação  

@@ -155,11 +155,15 @@ async function cadastrar() {
       return;
     }
 
-    const { data } = await acessoService.criarNovoUsuario(novoUsuario, usuarioId);
+    const { status } = await acessoService.criarNovoUsuario(novoUsuario, usuarioId);
 
-    if (data == null) {
+    if (status != 200) {
       throw Error("Erro ao cadastrar novo usuário.");
     }
+
+    formCadastro.nome = '';
+    formCadastro.email = '';
+    selected.value = '';
 
     success('Usuário cadastrado com sucesso!');
 
