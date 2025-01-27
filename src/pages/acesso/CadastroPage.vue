@@ -17,7 +17,7 @@
 
             <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
-              :readonly="edit" @update:model-value="verificarEmail" />
+              :readonly="edit" @blur="verificarEmail" />
             <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão"
               v-if="(tipoPerfil == 'ADMIN')" />
 
@@ -175,34 +175,24 @@ async function cadastrar() {
   }
 };
 
-let count = 0;
-
 async function verificarEmail() {
-  if (formCadastro.email.includes('@')) {
 
-    if (count > 0) {
+  try {
+    $q.loading.show();
+
+    const { status } = await assinaturaService.verifyCheckout(formCadastro.email.toLowerCase().trim());
+
+    if (status == 200 || status == 404) {
       return;
+    } else if (status == 403) {
+      router.push({ name: 'assinatura', params: { email: formCadastro.email.toLowerCase().trim() } });
     }
 
-    try {
-      $q.loading.show();
-
-      const { status } = await assinaturaService.verifyCheckout(formCadastro.email.toLowerCase().trim());
-
-      if (status == 200 || status == 404) {
-        count++;
-        return;
-      } else if (status == 403) {
-        router.push({ name: 'assinatura', params: { email: formCadastro.email.toLowerCase().trim() } });
-      }
-
-    } catch (e) {
-      console.log(e);
-    } finally {
-      $q.loading.hide();
-    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    $q.loading.hide();
   }
-
 }
 
 async function atualizarUsuario(novoUsurio: Usuario, email: any) {
