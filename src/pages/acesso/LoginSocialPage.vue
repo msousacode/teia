@@ -22,7 +22,7 @@
 
             <q-input outlined stack-label v-model="email" label="E-mail"
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]"
-              @update:model-value="verificarEmail" />
+              @blur="verificarEmail" />
 
             <q-input outlined stack-label v-model="senha" label="Senha" type="password"
               :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
@@ -119,35 +119,24 @@ async function entrar() {
   }
 }
 
-let count = 0;
-
 async function verificarEmail() {
 
-  if (email.value.includes('@')) {
+  try {
+    $q.loading.show();
 
-    if (count > 0) {
-      return
+    const { status } = await assinaturaService.verifyCheckout(email.value.toLowerCase().trim());
+
+    if (status == 200 || status == 404) {
+      return;
+    } else if (status == 403) {
+      router.push({ name: 'assinatura', params: { email: email.value.toLowerCase().trim() } });
     }
 
-    try {
-      $q.loading.show();
-
-      const { status } = await assinaturaService.verifyCheckout(email.value.toLowerCase().trim());
-
-      if (status == 200 || status == 404) {
-        count++;
-        return;
-      } else if (status == 403) {
-        router.push({ name: 'assinatura', params: { email: email.value.toLowerCase().trim() } });
-      }
-
-    } catch (e) {
-      console.log(e);
-    } finally {
-      $q.loading.hide();
-    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    $q.loading.hide();
   }
-
 }
 
 onBeforeMount(() => {
