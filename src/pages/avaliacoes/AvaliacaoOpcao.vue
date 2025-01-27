@@ -46,32 +46,6 @@
                 </template>
             </q-table>
         </div>
-
-        <!--
-        <div class="q-pa-sm"></div>
-
-        <q-list bordered v-show="false">
-            <q-expansion-item expand-separator label="ABLLS" :disable="!isHabilitaProtocolos">
-                <q-card>
-                    <q-card-section>
-                        EM BREVE
-                    </q-card-section>
-                </q-card>
-            </q-expansion-item>
-        </q-list>
-
-        <div class="q-pa-sm"></div>
-
-        <q-list bordered v-show="false">
-            <q-expansion-item expand-separator label="Protocolo Portage" :disable="!isHabilitaProtocolos">
-                <q-card>
-                    <q-card-section>
-                        EM BREVE
-                    </q-card-section>
-                </q-card>
-            </q-expansion-item>
-        </q-list>
--->
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
