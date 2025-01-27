@@ -65,7 +65,7 @@ const avaliacaoPortageRows = [
   },
 ];
 
-const avaliacaoAbllsRows = [
+const avaliacaoAbllsColumns = [
   {
     label: 'Habilidades que serão avaliadas',
     align: 'left',
@@ -73,7 +73,7 @@ const avaliacaoAbllsRows = [
   },
 ];
 
-const avaliacaoAbllsColumns = [
+const avaliacaoAbllsRows = [
   {
     id: 1,
     name: 'Cooperação e Eficácia do Reforçador',
@@ -89,7 +89,6 @@ const avaliacaoAbllsColumns = [
     name: 'Linguagem Receptiva',
     align: 'left',
   },
-
   {
     id: 4,
     name: 'Imitação Motora',
@@ -105,7 +104,6 @@ const avaliacaoAbllsColumns = [
     name: 'Solicitações',
     align: 'left',
   },
-
   {
     id: 7,
     name: 'Nomeação',
@@ -121,7 +119,6 @@ const avaliacaoAbllsColumns = [
     name: 'Vocalizações Espontâneas',
     align: 'left',
   },
-
   {
     id: 10,
     name: 'Gramática e Sintaxe',
@@ -137,7 +134,6 @@ const avaliacaoAbllsColumns = [
     name: 'Interação Social',
     align: 'left',
   },
-
   {
     id: 13,
     name: 'Instruções em Grupo',
@@ -169,7 +165,6 @@ const avaliacaoAbllsColumns = [
     name: 'Ortografia',
     align: 'left',
   },
-
   {
     id: 19,
     name: 'Vestimenta',

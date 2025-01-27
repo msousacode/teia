@@ -109,6 +109,31 @@
             </q-table>
         </div>
 
+        <div v-if="isHabilitaProtocolos && isAblls">
+            <div class="text-teal text-h6">ABLLS-R</div>
+            <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
+                :rows-per-page-options="[14]" :rows-per-page="14">
+                <template v-slot:body-cell-actions="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                            v-if="props.row.name != 'PEI'" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsx="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md"
+                            v-if="props.row.name != 'PEI'" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsy="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                            @click="gerarRelatorioPortage(props.row.name)" />
+                    </q-td>
+                </template>
+            </q-table>
+        </div>
+
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
@@ -147,6 +172,10 @@ const rows = ref<any[]>([]);
 const columnsPortage = ref<any[]>([]);
 
 const rowsPortage = ref<any[]>([]);
+
+const columnsAblls = ref<any[]>([]);
+
+const rowsAblls = ref<any[]>([]);
 
 const avaliacaoColumns = ref<any[]>([]);
 
@@ -258,6 +287,10 @@ const isVbmapp = computed(() => {
 
 const isPortage = computed(() => {
     return selected.value[0].protocolo == 'PORTAGE'
+})
+
+const isAblls = computed(() => {
+    return selected.value[0].protocolo == 'ABLLS-R'
 })
 
 
@@ -449,6 +482,143 @@ columnsPortage.value = [
 rowsPortage.value = [
     {
         name: 'Coleta',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        name: 'PEI',
+    },
+]
+
+columnsAblls.value = [
+    {
+        label: 'Habilidade',
+        align: 'center',
+        field: 'name'
+    },
+    { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
+    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
+    { name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
+]
+
+rowsAblls.value = [
+    {
+        id: 1,
+        name: 'Cooperação e Eficácia do Reforçador',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 2,
+        name: 'Desempenho Visual',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 3,
+        name: 'Linguagem Receptiva',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 4,
+        name: 'Imitação Motora',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 5,
+        name: 'Imitação Vocal',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 6,
+        name: 'Solicitações',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 7,
+        name: 'Nomeação',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 8,
+        name: 'Intraverbal',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 9,
+        name: 'Vocalizações Espontâneas',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 10,
+        name: 'Gramática e Sintaxe',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 11,
+        name: 'Jogos e Lazer',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 12,
+        name: 'Interação Social',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 13,
+        name: 'Instruções em Grupo',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 14,
+        name: 'Respostas Generalizadas',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 15,
+        name: 'Leitura',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 16,
+        name: 'Matemática',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 17,
+        name: 'Escrita',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 18,
+        name: 'Ortografia',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 19,
+        name: 'Vestimenta',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 20,
+        name: 'Alimentação',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 21,
+        name: 'Preparação',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 22,
+        name: 'Uso do Banheiro',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 23,
+        name: 'Habilidades Motoras Grossas',
+        path: 'avaliacoes-coleta/portage'
+    },
+    {
+        id: 24,
+        name: 'Habilidades Motoras Finas',
         path: 'avaliacoes-coleta/portage'
     },
     {

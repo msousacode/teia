@@ -51,9 +51,9 @@
         </div>
 
         <div class="q-mb-md" v-show="isAblls">
-            <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
-                v-model:selected="idadeSelcionados" selection="multiple" :rows-per-page-options="[10]"
-                :rows-per-page="10">
+            <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
+                v-model:selected="habilidadesSelcionadas" selection="multiple" :rows-per-page-options="[25]"
+                :rows-per-page="25">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
@@ -89,6 +89,7 @@ import { computed, onMounted, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { avaliacaoColumns, avaliacaoRows, avaliacaoPortageColumns, avaliacaoPortageRows, avaliacaoAbllsRows, avaliacaoAbllsColumns } from './table';
 import { PortageService } from 'src/services/PortageService';
+import { AbllsService } from 'src/services/AbllsService';
 
 const aprendizService = new AprendizService();
 
@@ -113,6 +114,8 @@ const idadeSelcionados = ref([]);
 const columnsAblls = ref<any[]>(avaliacaoAbllsColumns);
 
 const rowsAblls = ref<any[]>(avaliacaoAbllsRows);
+
+const habilidadesSelcionadas = ref([]);
 
 const form = ref({
     uuid: '',
@@ -140,11 +143,13 @@ const isPortage = computed(() => form.value.protocolo.label === 'PORTAGE');
 
 const isAblls = computed(() => form.value.protocolo.label === 'ABLLS-R');
 
-const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || (!(niveisSelcionados.value.length > 0 || idadeSelcionados.value.length > 0)));
+const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || (!(niveisSelcionados.value.length > 0 || idadeSelcionados.value.length > 0 || habilidadesSelcionadas.value.length > 0)));
 
 const vbMappService = new VbMappService();
 
 const portageService = new PortageService();
+
+const abllsService = new AbllsService();
 
 async function avancar() {
 
@@ -152,6 +157,8 @@ async function avancar() {
         criarAvaliacaoVbMapp();
     else if (isPortage.value)
         criarAvaliacaoPortage();
+    else if (isAblls.value)
+        criarAvaliacaoAblls();
     else
         throw new Error('Nenhum protocolo selecionado.')
 }
@@ -192,8 +199,6 @@ async function criarAvaliacaoPortage() {
 
     const object = toRaw(form.value);
 
-    console.log(object);
-
     try {
         $q.loading.show();
         const { data, status } = await portageService.postAvaliacao(object);
@@ -210,7 +215,36 @@ async function criarAvaliacaoPortage() {
     } finally {
         $q.loading.hide();
     }
+}
 
+
+async function criarAvaliacaoAblls() {
+    const avaliacoes = habilidadesSelcionadas.value.map(i => i.id);
+
+    const payload = {
+        aprendizId: form.value.aprendiz.value,
+        habilidades: avaliacoes.toString(),
+        protocolo: form.value.protocolo.label,
+    }
+
+    try {
+        $q.loading.show();
+        const { data, status } = await abllsService.post(payload);
+
+        if (status == 200) {
+
+            console.log('salvou', data);
+            //const uuid = form.value.aprendiz_uuid_fk;
+            //router.push({ name: 'avaliacoes-coleta/portage', params: { aprendizUuid: uuid, portageId: data } });
+        } else {
+            error('erro ao criar avaliação.');
+        }
+
+    } catch (e) {
+        throw e;
+    } finally {
+        $q.loading.hide();
+    }
 }
 
 async function carregarSelectAprendizes() {
