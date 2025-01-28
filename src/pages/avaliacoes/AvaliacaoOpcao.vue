@@ -336,7 +336,7 @@ function ir(tipoAvaliacao: any) {
     }
 
     if (isAblls.value) {
-        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, abllsId: obj.id } });
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, abllsId: obj.id, habilidade: avaliacaoEscolhida.id } });
     }
 }
 

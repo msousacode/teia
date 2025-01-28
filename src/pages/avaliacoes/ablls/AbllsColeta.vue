@@ -88,6 +88,8 @@ const uuidAprendiz = ref();
 
 const abllsId = ref(routeLocation.params.abllsId);
 
+const habilidade = ref(routeLocation.params.habilidade);
+
 const idades = ref<string[]>([])
 
 const tab1 = ref('1');
@@ -149,7 +151,7 @@ function carregarAvaliacao() {
     let objetivos;
 
     //if (idadeSelecionada.value == '1') {
-    objetivos = coperacaoEficaciaReforcador
+    objetivos = getObjetivos(habilidade.value);
     //  .find(i => i)?.descricao || [];
     /* else if (idadeSelecionada.value == '2') {
         objetivos = portageUmHaDoisAno.avaliacoes
@@ -183,6 +185,17 @@ function carregarAvaliacao() {
 
 
     return newObjetivos;
+}
+
+function getObjetivos(habilidade: string | string[]) {
+
+    switch (habilidade) {
+        case '1':
+            titulo.value = 'Cooperação e Eficácia do Reforçador';
+            return coperacaoEficaciaReforcador;
+        case '2':
+            return coperacaoEficaciaReforcador
+    }
 }
 
 async function salvar() {
@@ -328,7 +341,6 @@ watch([idadeSelecionada, tituloSelecionado], () => {
 
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
-    titulo.value = 'Cooperação e Eficácia do Reforçador'
     getTitulosAvaliacoes(1, idadeSelecionada.value);
     getData('coletasRealizadas');
 });

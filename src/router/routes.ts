@@ -128,7 +128,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'avaliacoes-coleta/ablls',
-        path: '/avaliacoes-coleta/ablls/aprendiz/:aprendizUuid/avaliacao/:abllsId',
+        path: '/avaliacoes-coleta/ablls/aprendiz/:aprendizUuid/avaliacao/:abllsId/habilidade/:habilidade',
         component: () => import('pages/avaliacoes/ablls/AbllsColeta.vue'),
         meta: { requiresAuth: true },
       },
