@@ -334,6 +334,10 @@ function ir(tipoAvaliacao: any) {
     if (isVbmapp.value) {
         router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
     }
+
+    if (isAblls.value) {
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, abllsId: obj.id } });
+    }
 }
 
 async function gerarRelatorioPortage(relatorioName: string) {
@@ -504,122 +508,122 @@ rowsAblls.value = [
     {
         id: 1,
         name: 'Cooperação e Eficácia do Reforçador',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 2,
         name: 'Desempenho Visual',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 3,
         name: 'Linguagem Receptiva',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 4,
         name: 'Imitação Motora',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 5,
         name: 'Imitação Vocal',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 6,
         name: 'Solicitações',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 7,
         name: 'Nomeação',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 8,
         name: 'Intraverbal',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 9,
         name: 'Vocalizações Espontâneas',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 10,
         name: 'Gramática e Sintaxe',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 11,
         name: 'Jogos e Lazer',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 12,
         name: 'Interação Social',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 13,
         name: 'Instruções em Grupo',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 14,
         name: 'Respostas Generalizadas',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 15,
         name: 'Leitura',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 16,
         name: 'Matemática',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 17,
         name: 'Escrita',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 18,
         name: 'Ortografia',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 19,
         name: 'Vestimenta',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 20,
         name: 'Alimentação',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 21,
         name: 'Preparação',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 22,
         name: 'Uso do Banheiro',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 23,
         name: 'Habilidades Motoras Grossas',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         id: 24,
         name: 'Habilidades Motoras Finas',
-        path: 'avaliacoes-coleta/portage'
+        path: 'avaliacoes-coleta/ablls'
     },
     {
         name: 'PEI',

@@ -127,6 +127,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'avaliacoes-coleta/ablls',
+        path: '/avaliacoes-coleta/ablls/aprendiz/:aprendizUuid/avaliacao/:abllsId',
+        component: () => import('pages/avaliacoes/ablls/AbllsColeta.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'avaliacoes-coleta/vbmapp/barreiras',
         //path: '/avaliacoes-coleta/vbmapp/aprendiz/:aprendizUuid/tipoAvaliacao/:tipoAvaliacao?/avaliacao/:vbmappUuid?',
         path: '/avaliacoes-coleta/vbmapp/barreiras',
