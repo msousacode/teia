@@ -307,7 +307,7 @@ async function configTela() {
 }
 
 function coletar(item: any, pontuacao: number) {
-    item.selected = pontuacao; // Atualiza a seleção do cartão  
+    item.selected = pontuacao; // Atualiza a seleção do cartão
 
     const novaColeta = {
         portage_uuid_fk: portageId.value,
