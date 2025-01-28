@@ -82,6 +82,27 @@ import { AbllsService } from 'src/services/AbllsService';
 import { desempenhoVisual } from './data/desempenhoVisual';
 import { linguagemReceptiva } from './data/linguagemReceptiva';
 import { imitacaoMotora } from './data/imitacaoMotora';
+import { imitacaoVocal } from './data/imitacaoVocal';
+import { solicitacoes } from './data/solicitacoes';
+import { nomeacoes } from './data/nomeacoes';
+import { intraverbal } from './data/intraverbal';
+import { vocalizacoesEspontaneas } from './data/vocalizacoesEspontaneas';
+import { gramaticaSintaxe } from './data/gramaticaSintaxe';
+import { jogosLazer } from './data/jogosLazer';
+import { interacaoSocial } from './data/interacaoSocial';
+import { interacaoGrupo } from './data/interacaoGrupo';
+import { rotinaClasses } from './data/rotinasClasse';
+import { respostasGeneralizadas } from './data/respostasGeneralizadas';
+import { leitura } from './data/leitura';
+import { matematica } from './data/matematica';
+import { escrita } from './data/escrita';
+import { ortografia } from './data/ortografia';
+import { vestimenta } from './data/vestimenta';
+import { alimentacao } from './data/alimentacao';
+import { preparacao } from './data/preparacao';
+import { usoBanheiro } from './data/usoBanheiro';
+import { habilidadesMotorasGrossas } from './data/habilidadesMotorasGrossos';
+import { habilidadesMotorasFinas } from './data/habilidadesMotorasFinas';
 
 const { success, error } = useNotify();
 
@@ -206,8 +227,78 @@ function getObjetivos(habilidade: string | string[]) {
             titulo.value = 'Imitação Motora';
             return imitacaoMotora;
         case '5':
-            titulo.value = 'Imitação Motora';
-            return imitacaoMotora;
+            titulo.value = 'Imitação Vocal';
+            return imitacaoVocal;
+        case '6':
+            titulo.value = 'Solicitações';
+            return solicitacoes;
+        case '7':
+            titulo.value = 'Nomeações';
+            return nomeacoes;
+        case '8':
+            titulo.value = 'Intraverbal';
+            return intraverbal;
+        case '9':
+            titulo.value = 'Vocalizações Espontâneas';
+            return vocalizacoesEspontaneas;
+        case '10':
+            titulo.value = 'Gramática e Sintaxe';
+            return gramaticaSintaxe;
+        case '11':
+            titulo.value = 'Jogos e Lazer';
+            return jogosLazer;
+        case '12':
+            titulo.value = 'Interação Social';
+            return interacaoSocial;
+        case '13':
+            titulo.value = 'Interação em Grupo';
+            return interacaoGrupo;
+        case '14':
+            titulo.value = 'Seguir Rotinas de Classe';
+            return rotinaClasses;
+        case '15':
+            titulo.value = 'Respostas Generalizadas';
+            return respostasGeneralizadas;
+        case '16':
+            titulo.value = 'Respostas Generalizadas';
+            return respostasGeneralizadas;
+        case '17':
+            titulo.value = 'Respostas Generalizadas';
+            return leitura;
+        case '18':
+            titulo.value = 'Matemática';
+            return matematica;
+        case '19':
+            titulo.value = 'Escrita';
+            return escrita;
+        case '20':
+            titulo.value = 'Ortografia';
+            return ortografia;
+        case '21':
+            titulo.value = 'Vestimenta';
+            return vestimenta;
+        case '22':
+            titulo.value = 'Alimentação';
+            return alimentacao;
+        case '23':
+            titulo.value = 'Preparação';
+            return preparacao;
+        case '24':
+            titulo.value = 'Uso do Banheiro';
+            return usoBanheiro;
+        case '25':
+            titulo.value = 'Habilidades Motoras Grossas';
+            return habilidadesMotorasGrossas;
+        case '26':
+            titulo.value = 'Habilidades Motoras Finas';
+            return habilidadesMotorasFinas;
+
+
+
+
+
+
+
     }
 }
 
