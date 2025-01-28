@@ -79,6 +79,9 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { coperacaoEficaciaReforcador } from './data/cooperacaoEficaciaReforcador';
 import { AbllsService } from 'src/services/AbllsService';
+import { desempenhoVisual } from './data/desempenhoVisual';
+import { linguagemReceptiva } from './data/linguagemReceptiva';
+import { imitacaoMotora } from './data/imitacaoMotora';
 
 const { success, error } = useNotify();
 
@@ -194,7 +197,17 @@ function getObjetivos(habilidade: string | string[]) {
             titulo.value = 'Cooperação e Eficácia do Reforçador';
             return coperacaoEficaciaReforcador;
         case '2':
-            return coperacaoEficaciaReforcador
+            titulo.value = 'Desempenho Visual';
+            return desempenhoVisual;
+        case '3':
+            titulo.value = 'Linguagem Receptiva';
+            return linguagemReceptiva;
+        case '4':
+            titulo.value = 'Imitação Motora';
+            return imitacaoMotora;
+        case '5':
+            titulo.value = 'Imitação Motora';
+            return imitacaoMotora;
     }
 }
 

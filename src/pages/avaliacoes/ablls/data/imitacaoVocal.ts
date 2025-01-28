@@ -1,0 +1,3 @@
+const imitacaoVocal = [];
+
+export { imitacaoVocal };
