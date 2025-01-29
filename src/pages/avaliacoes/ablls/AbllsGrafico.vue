@@ -73,8 +73,8 @@ function abrirGrafrico() {
                                 label: labelGrafico,
                                 data: dataGrafico.value,
                                 backgroundColor: [
-                                    '#99e599', // Cor da barra 1  
-                                    '#87CEEB', // Cor da barra 2                                      
+                                    '#a4d8e1', // Cor da barra 1  
+                                    '#b3f0b3', // Cor da barra 2                                      
                                 ]
                             }
                         ],
