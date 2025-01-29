@@ -57,6 +57,10 @@
             <portage-avaliacao-grafico v-bind="graficoDataProps"></portage-avaliacao-grafico>
         </q-dialog>
 
+        <q-dialog v-model="dialogIsAblls">
+            <ablls-grafico v-bind="graficoDataProps"></ablls-grafico>
+        </q-dialog>
+
         <div v-if="isHabilitaProtocolos && isVbmapp">
             <div class="text-teal text-h6">VB-MAPP</div>
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
@@ -121,8 +125,8 @@
                 </template>
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md"
-                            v-if="props.row.name != 'PEI'" />
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="abrirGraficoAblls(props.row)" dense
+                            size="md" v-if="props.row.name != 'PEI'" />
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
                             @click="gerarRelatorioPortage(props.row.name)" v-else />
                     </q-td>
@@ -158,6 +162,7 @@ import { AvaliacaoService } from 'src/services/AvaliacaoService';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { RelatorioService } from 'src/services/RelatorioService';
 import BarreiraGrafico from './BarreiraGrafico.vue';
+import AbllsGrafico from './ablls/AbllsGrafico.vue';
 
 const aprendizService = new AprendizService();
 
@@ -214,6 +219,8 @@ const dialogIsVbMapp = ref(false);
 
 const dialogIsPortage = ref(false);
 
+const dialogIsAblls = ref(false);
+
 const dialogIsBarreiras = ref(false);
 
 const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
@@ -221,7 +228,8 @@ const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
     label: '',
     avaliacaoId: '',
     nivel: '',
-    idade: '3'//TODO colocar a data do aprendiz.
+    idade: '3',//TODO colocar a data do aprendiz.
+    habilidade: null
 })
 
 const showUrlDownload = ref(false);
@@ -437,6 +445,12 @@ async function deletarAvaliacao(avaliacao: any) {
 
         })
         .onDismiss(() => { });
+}
+
+function abrirGraficoAblls(props: any) {
+    const data = toRaw(props)
+    graficoDataProps.nivel = data.id
+    dialogIsAblls.value = true
 }
 
 onMounted(() => {

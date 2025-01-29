@@ -29,7 +29,7 @@
         <q-tab-panels v-model="objetivosTab">
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card" :class="'bg-blue-1'">
+                    <q-card flat bordered class="my-card" :class="'bg-brown-1'">
                         <div class="flex justify-end">
                             <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
                                 item.criadoNome }}</div>
@@ -53,13 +53,14 @@
                                     @click="coletar(item, 1)" />
                                 <q-btn label="2"
                                     :class="item.selected == 2 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 2)" />
+                                    @click="coletar(item, 2)" v-if="item.pontos >= 2" />
                                 <q-btn label="3"
                                     :class="item.selected == 3 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 3)" />
+                                    @click="coletar(item, 3)" v-if="item.pontos >= 3" />
                                 <q-btn label="4"
                                     :class="item.selected == 4 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 4)" />
+                                    @click="coletar(item, 4)" v-if="item.pontos == 4" />
+
                                 <q-btn label="NA"
                                     :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, -1)" />
@@ -138,7 +139,7 @@ const titulo = ref<string>('');
 
 const pontuacaoMax = ref<number>(0);
 
-const qtdRespondidas = ref<number>(1);
+const qtdRespondidas = ref<number>(0);
 
 const cards = ref<any[]>([]);
 
@@ -195,9 +196,8 @@ function carregarAvaliacao() {
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
         selected: null, // Altera a propriedade 'selected' para null 
-        criadoNome: '', // Adiciona a propriedade 'criadoNome'
+        criadoNome: '', // Adiciona a propriedade 'criadoNome'        
     }));
-
 
     return newObjetivos;
 }
@@ -343,7 +343,7 @@ async function salvar() {
         }
 
         $q.loading.show();
-        const { status } = await abllsService.postColetas(itens, uuidAprendiz.value, abllsId.value, 1);
+        const { status } = await abllsService.postColetas(itens, uuidAprendiz.value, abllsId.value, habilidade.value);
 
         if (status == 200) {
             success('Coletas salvas com sucesso!');

@@ -22,4 +22,10 @@ export class AbllsService {
   async getColetasRespondidas(abllsId: string | string[]) {
     return await http.get(`/coletas-respondidas/${abllsId}`);
   }
+
+  async getColetaPontuacoes(avaliacaoId: string, habilidade: number) {
+    return await http.get(
+      `/chart/pontuacoes/${avaliacaoId}/habilidade/${habilidade}`
+    );
+  }
 }
