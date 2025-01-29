@@ -1,7 +1,14 @@
 <template>
     <q-page padding>
 
-        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+        <div class="flex justify-between">
+            <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+
+            <div class="q-ml-md q-mr-md text-teal">Progresso: <b>{{ qtdRespondidas }}/{{ pontuacaoMax }} = {{
+                calculoPercentagem }}%</b>
+            </div>
+        </div>
+
 
         <div class="text-teal">
             <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
@@ -76,7 +83,7 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { toRaw } from 'vue';
@@ -129,6 +136,10 @@ const objetivosTab = ref('objetivos');
 
 const titulo = ref<string>('');
 
+const pontuacaoMax = ref<number>(0);
+
+const qtdRespondidas = ref<number>(1);
+
 const cards = ref<any[]>([]);
 
 const cardsColetaAtual = ref();
@@ -179,32 +190,7 @@ function carregarAvaliacao() {
 
     let objetivos;
 
-    //if (idadeSelecionada.value == '1') {
     objetivos = getObjetivos(habilidade.value);
-    //  .find(i => i)?.descricao || [];
-    /* else if (idadeSelecionada.value == '2') {
-        objetivos = portageUmHaDoisAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    } else if (idadeSelecionada.value == '3') {
-        objetivos = portageDoisHaTresAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-
-    } else if (idadeSelecionada.value == '4') {
-        objetivos = portageTresHaQuatroAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-
-    } else if (idadeSelecionada.value == '5') {
-        objetivos = portageQuatroHaCincoAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    } else if (idadeSelecionada.value == '6') {
-        objetivos = portageCincoHaSeis.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    } */
 
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
@@ -221,86 +207,104 @@ function getObjetivos(habilidade: string | string[]) {
     switch (habilidade) {
         case '1':
             titulo.value = 'Cooperação e Eficácia do Reforçador';
+            pontuacaoMax.value = 44;
             return coperacaoEficaciaReforcador;
         case '2':
             titulo.value = 'Desempenho Visual';
+            pontuacaoMax.value = 102;
             return desempenhoVisual;
         case '3':
             titulo.value = 'Linguagem Receptiva';
+            pontuacaoMax.value = 184;
             return linguagemReceptiva;
         case '4':
             titulo.value = 'Imitação Motora';
+            pontuacaoMax.value = 80;
             return imitacaoMotora;
         case '5':
             titulo.value = 'Imitação Vocal';
+            pontuacaoMax.value = 56;
             return imitacaoVocal;
         case '6':
             titulo.value = 'Solicitações';
+            pontuacaoMax.value = 72;
             return solicitacoes;
         case '7':
             titulo.value = 'Nomeações';
+            pontuacaoMax.value = 154;
             return nomeacoes;
         case '8':
             titulo.value = 'Intraverbal';
+            pontuacaoMax.value = 184;
             return intraverbal;
         case '9':
             titulo.value = 'Vocalizações Espontâneas';
+            pontuacaoMax.value = 28;
             return vocalizacoesEspontaneas;
         case '10':
             titulo.value = 'Gramática e Sintaxe';
+            pontuacaoMax.value = 44;
             return gramaticaSintaxe;
         case '11':
             titulo.value = 'Jogos e Lazer';
+            pontuacaoMax.value = 54;
             return jogosLazer;
         case '12':
             titulo.value = 'Interação Social';
+            pontuacaoMax.value = 80;
             return interacaoSocial;
         case '13':
             titulo.value = 'Instruções em Grupo';
+            pontuacaoMax.value = 36;
             return interacaoGrupo;
         case '14':
             titulo.value = 'Seguir Rotinas de Classe';
+            pontuacaoMax.value = 24;
             return rotinaClasses;
         case '15':
             titulo.value = 'Respostas Generalizadas';
+            pontuacaoMax.value = 12;
             return respostasGeneralizadas;
         case '16':
             titulo.value = 'Leitura';
+            pontuacaoMax.value = 52;
             return leitura;
         case '17':
             titulo.value = 'Matemática';
+            pontuacaoMax.value = 76;
             return matematica;
         case '18':
             titulo.value = 'Escrita';
+            pontuacaoMax.value = 34;
             return escrita;
         case '19':
             titulo.value = 'Ortografia';
+            pontuacaoMax.value = 18;
             return ortografia;
         case '20':
             titulo.value = 'Vestimenta';
+            pontuacaoMax.value = 32;
             return vestimenta;
         case '21':
             titulo.value = 'Alimentação';
+            pontuacaoMax.value = 20;
             return alimentacao;
         case '22':
             titulo.value = 'Preparação';
+            pontuacaoMax.value = 14;
             return preparacao;
         case '23':
             titulo.value = 'Uso do Banheiro';
+            pontuacaoMax.value = 24;
             return usoBanheiro;
         case '24':
             titulo.value = 'Habilidades Motoras Grossas';
+            pontuacaoMax.value = 30;
             return habilidadesMotorasGrossas;
         case '25':
             titulo.value = 'Habilidades Motoras Finas';
+            pontuacaoMax.value = 28;
             return habilidadesMotorasFinas;
-
-
-
-
-
-
-
     }
 }
 
@@ -367,6 +371,9 @@ async function refresh() {
     const { data } = await abllsService.getColetasRespondidas(abllsId.value);
 
     if (data) {
+
+        qtdRespondidas.value = data.length;
+
         data.forEach(row => {
             // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
             const card = cardsTela.find(card => card.id === row.id);
@@ -444,6 +451,8 @@ watch(showRespondidas, async () => {
 watch([idadeSelecionada, tituloSelecionado], () => {
     showRespondidas.value = true;
 })
+
+const calculoPercentagem = computed(() => { return (qtdRespondidas.value * 100 / pontuacaoMax.value).toFixed(0) });
 
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid

@@ -549,7 +549,7 @@ rowsAblls.value = [
     },
     {
         id: 7,
-        name: 'Nomeação',
+        name: 'Nomeações',
         path: 'avaliacoes-coleta/ablls',
         pontuacaoMax: 154,
         qtd: 19
