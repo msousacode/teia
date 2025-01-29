@@ -372,8 +372,6 @@ async function refresh() {
 
     if (data) {
 
-        qtdRespondidas.value = data.length;
-
         data.forEach(row => {
             // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
             const card = cardsTela.find(card => card.id === row.id);
@@ -392,6 +390,7 @@ async function refresh() {
 
                 //cards atualizados para exibir na tela.
                 cards.value = cardsAtualizados;
+                qtdRespondidas.value = cards.value.filter(i => i.selected != null).length
             }
         });
     }
@@ -426,7 +425,6 @@ function coletar(item: any, pontuacao: number) {
     if (!existeColeta) {
         coletasRealizadas.push(novaColeta);
     }
-
     // Opcional: atualizar o cache após as modificações  
     stateCache.set("coletasRealizadas", coletasRealizadas);
 }
