@@ -103,7 +103,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'avaliacoes',
-        path: '/avaliacoes',
+        path: '/avaliacoes/:label?/:value?',
         component: () => import('pages/avaliacoes/AvaliacaoOpcao.vue'),
         meta: { requiresAuth: true },
       },

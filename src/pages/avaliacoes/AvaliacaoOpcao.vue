@@ -123,14 +123,16 @@
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md"
                             v-if="props.row.name != 'PEI'" />
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                            @click="gerarRelatorioPortage(props.row.name)" v-else />
                     </q-td>
                 </template>
-                <template v-slot:body-cell-actionsy="props">
+                <!--template v-slot:body-cell-actionsy="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioPortage(props.row.name)" />
+                            @click="gerarRelatorioPortage(props.row.name)" v-if="props.row.name == 'PEI'" />
                     </q-td>
-                </template>
+                </template-->
             </q-table>
         </div>
 
@@ -148,7 +150,7 @@ import { watch } from 'vue';
 import { computed } from 'vue';
 import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
@@ -226,6 +228,8 @@ const showUrlDownload = ref(false);
 
 const urlDownload = ref<string>();
 
+const routeLocation = useRoute();
+
 watch(store, () => {
     const avaliacao = store.$state.avaliacao[0];
     if (avaliacao) {
@@ -292,7 +296,6 @@ const isPortage = computed(() => {
 const isAblls = computed(() => {
     return selected.value[0].protocolo == 'ABLLS-R'
 })
-
 
 async function carregarSelectAprendizes() {
     try {
@@ -437,7 +440,11 @@ async function deletarAvaliacao(avaliacao: any) {
 }
 
 onMounted(() => {
-    carregarSelectAprendizes()
+    carregarSelectAprendizes();
+
+    const label = routeLocation.params.label;
+    const value = routeLocation.params.value;
+    form.value.aprendiz = { "label": label, "value": value };
 });
 
 columns.value = [
@@ -460,13 +467,6 @@ rows.value = [
         name: 'BARREIRAS',
         path: 'avaliacoes-coleta/vbmapp/barreiras'
     },
-    /*{
-        name: 'TAREFAS',
-        path: 'avaliacoes-coleta/vbmapp'
-    },*/
-    /*{
-        name: 'TRANSIÇÃO',
-    },*/
     {
         name: 'PEI',
     },
@@ -501,129 +501,184 @@ columnsAblls.value = [
     },
     { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
     { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
-    { name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
+    //{ name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
 ]
 
 rowsAblls.value = [
     {
         id: 1,
         name: 'Cooperação e Eficácia do Reforçador',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 44,
+        qtd: 19
     },
     {
         id: 2,
         name: 'Desempenho Visual',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 102,
+        qtd: 19
     },
     {
         id: 3,
         name: 'Linguagem Receptiva',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 184,
+        qtd: 19
     },
     {
         id: 4,
         name: 'Imitação Motora',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 80,
+        qtd: 19
     },
     {
         id: 5,
         name: 'Imitação Vocal',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 56,
+        qtd: 19
     },
     {
         id: 6,
         name: 'Solicitações',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 72,
+        qtd: 19
     },
     {
         id: 7,
         name: 'Nomeação',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 154,
+        qtd: 19
     },
     {
         id: 8,
         name: 'Intraverbal',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 184,
+        qtd: 19
     },
     {
         id: 9,
         name: 'Vocalizações Espontâneas',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 28,
+        qtd: 19
     },
     {
         id: 10,
         name: 'Gramática e Sintaxe',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 44,
+        qtd: 19
     },
     {
         id: 11,
         name: 'Jogos e Lazer',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 54,
+        qtd: 19
     },
     {
         id: 12,
         name: 'Interação Social',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacoMax: 80,
+        qtd: 19
     },
     {
         id: 13,
         name: 'Instruções em Grupo',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 36,
+        qtd: 19
     },
     {
         id: 14,
-        name: 'Respostas Generalizadas',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Seguir Rotinas de Classe',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 24,
+        qtd: 19
     },
     {
         id: 15,
-        name: 'Leitura',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Respostas Generalizadas',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 12,
+        qtd: 19
     },
     {
         id: 16,
-        name: 'Matemática',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Leitura',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 52,
+        qtd: 19
     },
     {
         id: 17,
-        name: 'Escrita',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Matemática',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 76,
+        qtd: 19
     },
     {
         id: 18,
-        name: 'Ortografia',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Escrita',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 34,
+        qtd: 19
     },
     {
         id: 19,
-        name: 'Vestimenta',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Ortografia',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 18,
+        qtd: 19
     },
     {
         id: 20,
-        name: 'Alimentação',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Vestimenta',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 32,
+        qtd: 19
     },
     {
         id: 21,
-        name: 'Preparação',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Alimentação',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 20,
+        qtd: 19
     },
     {
         id: 22,
-        name: 'Uso do Banheiro',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Preparação',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 14,
+        qtd: 19
     },
     {
         id: 23,
-        name: 'Habilidades Motoras Grossas',
-        path: 'avaliacoes-coleta/ablls'
+        name: 'Uso do Banheiro',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 24,
+        qtd: 19
     },
     {
         id: 24,
+        name: 'Habilidades Motoras Grossas',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 30,
+        qtd: 19
+    },
+    {
+        id: 25,
         name: 'Habilidades Motoras Finas',
-        path: 'avaliacoes-coleta/ablls'
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 28,
+        qtd: 19
     },
     {
         name: 'PEI',

@@ -22,7 +22,7 @@
         <q-tab-panels v-model="objetivosTab">
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card" :class="'bg-teal-1'">
+                    <q-card flat bordered class="my-card" :class="'bg-blue-1'">
                         <div class="flex justify-end">
                             <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
                                 item.criadoNome }}</div>
@@ -67,6 +67,11 @@
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="save" color="green" @click="salvar" />
+        </q-page-sticky>
+
+        <q-page-sticky position="bottom-left" :offset="[18, 18]">
+            <q-btn fab icon="mdi-arrow-left" color="primary"
+                :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
         </q-page-sticky>
     </q-page>
 </template>
@@ -251,7 +256,7 @@ function getObjetivos(habilidade: string | string[]) {
             titulo.value = 'Interação Social';
             return interacaoSocial;
         case '13':
-            titulo.value = 'Interação em Grupo';
+            titulo.value = 'Instruções em Grupo';
             return interacaoGrupo;
         case '14':
             titulo.value = 'Seguir Rotinas de Classe';
@@ -260,36 +265,33 @@ function getObjetivos(habilidade: string | string[]) {
             titulo.value = 'Respostas Generalizadas';
             return respostasGeneralizadas;
         case '16':
-            titulo.value = 'Respostas Generalizadas';
-            return respostasGeneralizadas;
-        case '17':
-            titulo.value = 'Respostas Generalizadas';
+            titulo.value = 'Leitura';
             return leitura;
-        case '18':
+        case '17':
             titulo.value = 'Matemática';
             return matematica;
-        case '19':
+        case '18':
             titulo.value = 'Escrita';
             return escrita;
-        case '20':
+        case '19':
             titulo.value = 'Ortografia';
             return ortografia;
-        case '21':
+        case '20':
             titulo.value = 'Vestimenta';
             return vestimenta;
-        case '22':
+        case '21':
             titulo.value = 'Alimentação';
             return alimentacao;
-        case '23':
+        case '22':
             titulo.value = 'Preparação';
             return preparacao;
-        case '24':
+        case '23':
             titulo.value = 'Uso do Banheiro';
             return usoBanheiro;
-        case '25':
+        case '24':
             titulo.value = 'Habilidades Motoras Grossas';
             return habilidadesMotorasGrossas;
-        case '26':
+        case '25':
             titulo.value = 'Habilidades Motoras Finas';
             return habilidadesMotorasFinas;
 
