@@ -207,95 +207,95 @@ function getObjetivos(habilidade: string | string[]) {
     switch (habilidade) {
         case '1':
             titulo.value = 'Cooperação e Eficácia do Reforçador';
-            pontuacaoMax.value = 44;
+            pontuacaoMax.value = 19;
             return coperacaoEficaciaReforcador;
         case '2':
             titulo.value = 'Desempenho Visual';
-            pontuacaoMax.value = 102;
+            pontuacaoMax.value = 27;
             return desempenhoVisual;
         case '3':
             titulo.value = 'Linguagem Receptiva';
-            pontuacaoMax.value = 184;
+            pontuacaoMax.value = 57;
             return linguagemReceptiva;
         case '4':
             titulo.value = 'Imitação Motora';
-            pontuacaoMax.value = 80;
+            pontuacaoMax.value = 27;
             return imitacaoMotora;
         case '5':
             titulo.value = 'Imitação Vocal';
-            pontuacaoMax.value = 56;
+            pontuacaoMax.value = 20;
             return imitacaoVocal;
         case '6':
             titulo.value = 'Solicitações';
-            pontuacaoMax.value = 72;
+            pontuacaoMax.value = 28;
             return solicitacoes;
         case '7':
             titulo.value = 'Nomeações';
-            pontuacaoMax.value = 154;
+            pontuacaoMax.value = 47;
             return nomeacoes;
         case '8':
             titulo.value = 'Intraverbal';
-            pontuacaoMax.value = 184;
+            pontuacaoMax.value = 49;
             return intraverbal;
         case '9':
             titulo.value = 'Vocalizações Espontâneas';
-            pontuacaoMax.value = 28;
+            pontuacaoMax.value = 9;
             return vocalizacoesEspontaneas;
         case '10':
             titulo.value = 'Gramática e Sintaxe';
-            pontuacaoMax.value = 44;
+            pontuacaoMax.value = 20;
             return gramaticaSintaxe;
         case '11':
             titulo.value = 'Jogos e Lazer';
-            pontuacaoMax.value = 54;
+            pontuacaoMax.value = 15;
             return jogosLazer;
         case '12':
             titulo.value = 'Interação Social';
-            pontuacaoMax.value = 80;
+            pontuacaoMax.value = 34;
             return interacaoSocial;
         case '13':
             titulo.value = 'Instruções em Grupo';
-            pontuacaoMax.value = 36;
+            pontuacaoMax.value = 12;
             return interacaoGrupo;
         case '14':
             titulo.value = 'Seguir Rotinas de Classe';
-            pontuacaoMax.value = 24;
+            pontuacaoMax.value = 10;
             return rotinaClasses;
         case '15':
             titulo.value = 'Respostas Generalizadas';
-            pontuacaoMax.value = 12;
+            pontuacaoMax.value = 6;
             return respostasGeneralizadas;
         case '16':
             titulo.value = 'Leitura';
-            pontuacaoMax.value = 52;
+            pontuacaoMax.value = 17;
             return leitura;
         case '17':
             titulo.value = 'Matemática';
-            pontuacaoMax.value = 76;
+            pontuacaoMax.value = 29;
             return matematica;
         case '18':
             titulo.value = 'Escrita';
-            pontuacaoMax.value = 34;
+            pontuacaoMax.value = 10;
             return escrita;
         case '19':
             titulo.value = 'Ortografia';
-            pontuacaoMax.value = 18;
+            pontuacaoMax.value = 7;
             return ortografia;
         case '20':
             titulo.value = 'Vestimenta';
-            pontuacaoMax.value = 32;
+            pontuacaoMax.value = 15;
             return vestimenta;
         case '21':
             titulo.value = 'Alimentação';
-            pontuacaoMax.value = 20;
+            pontuacaoMax.value = 10;
             return alimentacao;
         case '22':
             titulo.value = 'Preparação';
-            pontuacaoMax.value = 14;
+            pontuacaoMax.value = 7;
             return preparacao;
         case '23':
             titulo.value = 'Uso do Banheiro';
-            pontuacaoMax.value = 24;
+            pontuacaoMax.value = 10;
             return usoBanheiro;
         case '24':
             titulo.value = 'Habilidades Motoras Grossas';
@@ -407,6 +407,7 @@ function coletar(item: any, pontuacao: number) {
         id: item.id,
         habilidade_coleta: idadeSelecionada.value,
         resposta: pontuacao,
+        pontos: item.pontos
     };
 
     const stateCache = toRaw(state.cache);

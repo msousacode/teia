@@ -127,16 +127,10 @@
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-chart-line" color="amber-8" @click="abrirGraficoAblls(props.row)" dense
                             size="md" v-if="props.row.name != 'PEI'" />
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioPortage(props.row.name)" v-else />
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" @click="gerarRelatorioAbllsPEI"
+                            v-else />
                     </q-td>
                 </template>
-                <!--template v-slot:body-cell-actionsy="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioPortage(props.row.name)" v-if="props.row.name == 'PEI'" />
-                    </q-td>
-                </template-->
             </q-table>
         </div>
 
@@ -349,6 +343,20 @@ function ir(tipoAvaliacao: any) {
     if (isAblls.value) {
         router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, abllsId: obj.id, habilidade: avaliacaoEscolhida.id } });
     }
+}
+
+async function gerarRelatorioAbllsPEI() {
+    const obj = toRaw(selected.value[0])
+    const abllsId = obj.id;
+
+    $q.loading.show();
+
+    const data = await relatorioService.gerarRelatorioAbllsPPEI(abllsId);
+
+    $q.loading.hide();
+
+    urlDownload.value = data.data.url;
+    showUrlDownload.value = true;
 }
 
 async function gerarRelatorioPortage(relatorioName: string) {
