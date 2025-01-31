@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStorage.nome_aprendiz }}</div>
+        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
         <div class="text-teal">
             <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
                 v-model="showRespondidas" />
@@ -119,6 +119,11 @@
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
         </q-page-sticky>
+
+        <q-page-sticky position="bottom-left" :offset="[18, 18]">
+            <q-btn fab icon="mdi-arrow-left" color="primary"
+                :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
+        </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
@@ -184,11 +189,11 @@ const visible = ref([]);
 
 const qtdCards = ref<number>(0);
 
-const aprendizStorage = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
-
 const showRespondidas = ref(true);
 
 const clonedCards = ref<any[]>([]);
+
+const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 async function getTitulosAvaliacoes(tipoColeta: number, abaSelecionada: string) {
 

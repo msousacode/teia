@@ -85,7 +85,7 @@ import TitleCustom from 'src/components/TitleCustom.vue';
 import useNotify from 'src/composables/UseNotify';
 import { AprendizService } from 'src/services/AprendizService';
 import { VbMappService } from 'src/services/VbMappService';
-import { computed, onMounted, ref, toRaw } from 'vue';
+import { computed, onMounted, reactive, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { avaliacaoColumns, avaliacaoRows, avaliacaoPortageColumns, avaliacaoPortageRows, avaliacaoAbllsRows, avaliacaoAbllsColumns } from './table';
 import { PortageService } from 'src/services/PortageService';
@@ -95,7 +95,7 @@ const aprendizService = new AprendizService();
 
 const $q = useQuasar();
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const router = useRouter()
 
@@ -150,6 +150,8 @@ const vbMappService = new VbMappService();
 const portageService = new PortageService();
 
 const abllsService = new AbllsService();
+
+const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 async function avancar() {
 
@@ -217,7 +219,6 @@ async function criarAvaliacaoPortage() {
     }
 }
 
-
 async function criarAvaliacaoAblls() {
     const avaliacoes = habilidadesSelcionadas.value.map(i => i.id);
 
@@ -229,13 +230,13 @@ async function criarAvaliacaoAblls() {
 
     try {
         $q.loading.show();
-        const { data, status } = await abllsService.post(payload);
+        const { status } = await abllsService.post(payload);
 
         if (status == 200) {
 
-            console.log('salvou', data);
-            //const uuid = form.value.aprendiz_uuid_fk;
-            //router.push({ name: 'avaliacoes-coleta/portage', params: { aprendizUuid: uuid, portageId: data } });
+            success('Avaliação criada com sucesso!')
+
+            router.push({ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } });
         } else {
             error('erro ao criar avaliação.');
         }

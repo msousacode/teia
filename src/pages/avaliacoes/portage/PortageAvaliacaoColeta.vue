@@ -72,6 +72,11 @@
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="save" color="green" @click="salvar" />
         </q-page-sticky>
+
+        <q-page-sticky position="bottom-left" :offset="[18, 18]">
+            <q-btn fab icon="mdi-arrow-left" color="primary"
+                :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
+        </q-page-sticky>
     </q-page>
 </template>
 <script setup lang="ts">
