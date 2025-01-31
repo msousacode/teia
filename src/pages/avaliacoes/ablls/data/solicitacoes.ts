@@ -1,0 +1,173 @@
+const solicitacoes = [
+  {
+    id: 500,
+    cod: 'E1',
+    descricao: 'Pedir indicando',
+    ptos: 2,
+  },
+  {
+    id: 501,
+    cod: 'E2',
+    descricao: 'Múltiplos Pedidos controlados',
+    ptos: 4,
+  },
+  {
+    id: 502,
+    cod: 'E3',
+    descricao:
+      'Pedir com o reforçador presente e quando perguntado "O que você quer?”',
+    ptos: 4,
+  },
+  {
+    id: 503,
+    cod: 'E4',
+    descricao: 'Solicitar quando perguntado "O que você quer?”',
+    ptos: 4,
+  },
+  {
+    id: 504,
+    cod: 'E5',
+    descricao: 'Pedidos espontâneos com itens presentes (sem ajuda)',
+    ptos: 4,
+  },
+  {
+    id: 505,
+    cod: 'E6',
+    descricao: 'Pedidos espontâneos com itens não estão presentes (sem ajuda)',
+    ptos: 4,
+  },
+  {
+    id: 506,
+    cod: 'E7',
+    descricao: 'Pedidos com contato visual',
+    ptos: 2,
+  },
+  {
+    id: 507,
+    cod: 'E8',
+    descricao: 'Pedir que outros executem uma ação',
+    ptos: 4,
+  },
+  {
+    id: 508,
+    cod: 'E9',
+    descricao: 'Pedir itens que estão faltando para uma tarefa',
+    ptos: 4,
+  },
+  {
+    id: 509,
+    cod: 'E10',
+    descricao: 'Pedir usando movimentos com a cabeça ou dizendo Sim / Não',
+    ptos: 2,
+  },
+  {
+    id: 510,
+    cod: 'E11',
+    descricao: 'Pedir usando frases',
+    ptos: 2,
+  },
+  {
+    id: 511,
+    cod: 'E12',
+    descricao: 'Pedir ajuda',
+    ptos: 2,
+  },
+  {
+    id: 512,
+    cod: 'E13',
+    descricao: 'Adquirir novos pedidos sem treinamento intensivo',
+    ptos: 2,
+  },
+  {
+    id: 513,
+    cod: 'E14',
+    descricao: 'Pedir atenção',
+    ptos: 4,
+  },
+  {
+    id: 514,
+    cod: 'E15',
+    descricao: 'Pedir que outros retirem um descricao ou parem uma atividade',
+    ptos: 2,
+  },
+  {
+    id: 515,
+    cod: 'E16',
+    descricao: 'Pedir usando adjetivos',
+    ptos: 2,
+  },
+  {
+    id: 516,
+    cod: 'E17',
+    descricao: 'Pedir usando preposições',
+    ptos: 2,
+  },
+  {
+    id: 517,
+    cod: 'E18',
+    descricao: 'Pedir eventos ou itens futuros',
+    ptos: 2,
+  },
+  {
+    id: 518,
+    cod: 'E19',
+    descricao: 'Obter informações usando "O que"',
+    ptos: 2,
+  },
+  {
+    id: 519,
+    cod: 'E20',
+    descricao: 'Solicitar informações usando "Onde"',
+    ptos: 2,
+  },
+  {
+    id: 520,
+    cod: 'E21',
+    descricao: 'Pedir informação usando "Quem/De Quem"',
+    ptos: 2,
+  },
+  {
+    id: 521,
+    cod: 'E22',
+    descricao: 'Pedir usando advérbios',
+    ptos: 2,
+  },
+  {
+    id: 522,
+    cod: 'E23',
+    descricao: 'Pedir usando pronomes',
+    ptos: 2,
+  },
+  {
+    id: 523,
+    cod: 'E24',
+    descricao: 'Pedir informação usando "O que/Qual"',
+    ptos: 2,
+  },
+  {
+    id: 524,
+    cod: 'E25',
+    descricao: 'Pedir informação usando "Quando"',
+    ptos: 2,
+  },
+  {
+    id: 525,
+    cod: 'E26',
+    descricao: 'Pedir informação usando "Como"',
+    ptos: 2,
+  },
+  {
+    id: 526,
+    cod: 'E27',
+    descricao: 'Pedir informação usando “Posso”, (can, do, does, will)',
+    ptos: 2,
+  },
+  {
+    id: 527,
+    cod: 'E28',
+    descricao: 'Pedir informação usando "Porque"',
+    ptos: 2,
+  },
+];
+
+export { solicitacoes };

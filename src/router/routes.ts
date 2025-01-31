@@ -103,7 +103,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'avaliacoes',
-        path: '/avaliacoes',
+        path: '/avaliacoes/:label?/:value?',
         component: () => import('pages/avaliacoes/AvaliacaoOpcao.vue'),
         meta: { requiresAuth: true },
       },
@@ -124,6 +124,12 @@ const routes: RouteRecordRaw[] = [
         path: '/avaliacoes-coleta/portage/aprendiz/:aprendizUuid/avaliacao/:portageId',
         component: () =>
           import('pages/avaliacoes/portage/PortageAvaliacaoColeta.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'avaliacoes-coleta/ablls',
+        path: '/avaliacoes-coleta/ablls/aprendiz/:aprendizUuid/avaliacao/:abllsId/habilidade/:habilidade',
+        component: () => import('pages/avaliacoes/ablls/AbllsColeta.vue'),
         meta: { requiresAuth: true },
       },
       {

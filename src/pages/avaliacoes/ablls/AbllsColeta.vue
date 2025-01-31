@@ -1,6 +1,15 @@
 <template>
     <q-page padding>
-        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+
+        <div class="flex justify-between">
+            <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
+
+            <div class="q-ml-md q-mr-md text-teal">Progresso: <b>{{ qtdRespondidas }}/{{ pontuacaoMax }} = {{
+                calculoPercentagem }}%</b>
+            </div>
+        </div>
+
+
         <div class="text-teal">
             <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
                 v-model="showRespondidas" />
@@ -9,22 +18,18 @@
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
             narrow-indicator>
             <q-tab name="1" label="0 a 1 ano" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
-            <q-tab name="2" label="1 a 2 anos" v-if="showAba('2')" @click="getTitulosAvaliacoes(1, '2')" />
-            <q-tab name="3" label="2 a 3 anos" v-if="showAba('3')" @click="getTitulosAvaliacoes(1, '3')" />
-            <q-tab name="4" label="3 a 4 anos" v-if="showAba('4')" @click="getTitulosAvaliacoes(1, '4')" />
-            <q-tab name="5" label="4 a 5 anos" v-if="showAba('5')" @click="getTitulosAvaliacoes(1, '5')" />
-            <q-tab name="6" label="5 a 6 anos" v-if="showAba('6')" @click="getTitulosAvaliacoes(1, '6')" />
         </q-tabs>
+
         <div class="q-mt-sm"></div>
+
         <q-tabs v-model="tab2" class="text-teal" name="avaliacoes">
-            <div v-for="(item, index) in titulosNivelUm" :key="index">
-                <q-tab :name=item.tipo :label=item.titulo @click="getTitulosAvaliacoes(item.tipo)" />
-            </div>
+            <q-tab :name=titulo :label=titulo />
         </q-tabs>
-        <q-tab-panels v-model="tab3">
+
+        <q-tab-panels v-model="objetivosTab">
             <q-tab-panel name="objetivos">
                 <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card" :class="'bg-teal-1'">
+                    <q-card flat bordered class="my-card" :class="'bg-brown-1'">
                         <div class="flex justify-end">
                             <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
                                 item.criadoNome }}</div>
@@ -40,15 +45,22 @@
 
                         <div class="q-pa-md q-gutter-y-md flex justify-center">
                             <q-btn-group style="border: 1px solid;" v-show="item.cod != '0'">
-                                <q-btn label="Sim"
-                                    :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 1)" />
-                                <q-btn label="As vezes"
-                                    :class="item.selected == 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 0.5)" />
-                                <q-btn label="Não"
+                                <q-btn label="0"
                                     :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, 0)" />
+                                <q-btn label="1"
+                                    :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    @click="coletar(item, 1)" />
+                                <q-btn label="2"
+                                    :class="item.selected == 2 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    @click="coletar(item, 2)" v-if="item.pontos >= 2" />
+                                <q-btn label="3"
+                                    :class="item.selected == 3 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    @click="coletar(item, 3)" v-if="item.pontos >= 3" />
+                                <q-btn label="4"
+                                    :class="item.selected == 4 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                    @click="coletar(item, 4)" v-if="item.pontos == 4" />
+
                                 <q-btn label="NA"
                                     :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
                                     @click="coletar(item, -1)" />
@@ -58,14 +70,6 @@
 
                     <div class="q-mt-sm"></div>
                 </div>
-            </q-tab-panel>
-
-            <q-tab-panel name="nivel2">
-                Teste 2
-            </q-tab-panel>
-
-            <q-tab-panel name="nivel3">
-                Test3
             </q-tab-panel>
         </q-tab-panels>
 
@@ -80,19 +84,38 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { portageZeroHaUmAno } from '../data/portage/portageZeroHaUmAno';
-import { portageUmHaDoisAno } from '../data/portage/portageUmHaDoisAno';
-import { portageDoisHaTresAno } from '../data/portage/portageDoisHaTresAno';
-import { portageTresHaQuatroAno } from '../data/portage/portageTresHaQuatro';
-import { portageQuatroHaCincoAno } from '../data/portage/portageQuatroHaCinco';
-import { portageCincoHaSeis } from '../data/portage/portageCincoHaSeis';
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { toRaw } from 'vue';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
-import { PortageService } from 'src/services/PortageService';
+import { coperacaoEficaciaReforcador } from './data/cooperacaoEficaciaReforcador';
+import { AbllsService } from 'src/services/AbllsService';
+import { desempenhoVisual } from './data/desempenhoVisual';
+import { linguagemReceptiva } from './data/linguagemReceptiva';
+import { imitacaoMotora } from './data/imitacaoMotora';
+import { imitacaoVocal } from './data/imitacaoVocal';
+import { solicitacoes } from './data/solicitacoes';
+import { nomeacoes } from './data/nomeacoes';
+import { intraverbal } from './data/intraverbal';
+import { vocalizacoesEspontaneas } from './data/vocalizacoesEspontaneas';
+import { gramaticaSintaxe } from './data/gramaticaSintaxe';
+import { jogosLazer } from './data/jogosLazer';
+import { interacaoSocial } from './data/interacaoSocial';
+import { interacaoGrupo } from './data/interacaoGrupo';
+import { rotinaClasses } from './data/rotinasClasse';
+import { respostasGeneralizadas } from './data/respostasGeneralizadas';
+import { leitura } from './data/leitura';
+import { matematica } from './data/matematica';
+import { escrita } from './data/escrita';
+import { ortografia } from './data/ortografia';
+import { vestimenta } from './data/vestimenta';
+import { alimentacao } from './data/alimentacao';
+import { preparacao } from './data/preparacao';
+import { usoBanheiro } from './data/usoBanheiro';
+import { habilidadesMotorasGrossas } from './data/habilidadesMotorasGrossos';
+import { habilidadesMotorasFinas } from './data/habilidadesMotorasFinas';
 
 const { success, error } = useNotify();
 
@@ -100,9 +123,9 @@ const routeLocation = useRoute();
 
 const uuidAprendiz = ref();
 
-const portageIdParam = ref(routeLocation.params.portageId);
+const abllsId = ref(routeLocation.params.abllsId);
 
-const portageId = ref();
+const habilidade = ref(routeLocation.params.habilidade);
 
 const idades = ref<string[]>([])
 
@@ -110,9 +133,13 @@ const tab1 = ref('1');
 
 const tab2 = ref(1);
 
-const tab3 = ref('objetivos');
+const objetivosTab = ref('objetivos');
 
-const titulosNivelUm = ref<any[]>([]);
+const titulo = ref<string>('');
+
+const pontuacaoMax = ref<number>(0);
+
+const qtdRespondidas = ref<number>(0);
 
 const cards = ref<any[]>([]);
 
@@ -132,7 +159,7 @@ const state = reactive({
     cache: new Map()
 });
 
-const portageService = new PortageService();
+const abllsService = new AbllsService();
 
 const $q = useQuasar();
 
@@ -164,42 +191,121 @@ function carregarAvaliacao() {
 
     let objetivos;
 
-    if (idadeSelecionada.value == '1') {
-        objetivos = portageZeroHaUmAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    } else if (idadeSelecionada.value == '2') {
-        objetivos = portageUmHaDoisAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    } else if (idadeSelecionada.value == '3') {
-        objetivos = portageDoisHaTresAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-
-    } else if (idadeSelecionada.value == '4') {
-        objetivos = portageTresHaQuatroAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-
-    } else if (idadeSelecionada.value == '5') {
-        objetivos = portageQuatroHaCincoAno.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    } else if (idadeSelecionada.value == '6') {
-        objetivos = portageCincoHaSeis.avaliacoes
-            .filter(i => i.tipo == tipoColeta)
-            .find(i => i)?.objetivos || [];
-    }
+    objetivos = getObjetivos(habilidade.value);
 
     const newObjetivos = objetivos.map(obj => ({
         ...obj, // Mantém as outras propriedades  
         selected: null, // Altera a propriedade 'selected' para null 
-        criadoNome: '', // Adiciona a propriedade 'criadoNome'
+        criadoNome: '', // Adiciona a propriedade 'criadoNome'        
     }));
 
-
     return newObjetivos;
+}
+
+function getObjetivos(habilidade: string | string[]) {
+
+    switch (habilidade) {
+        case '1':
+            titulo.value = 'Cooperação e Eficácia do Reforçador';
+            pontuacaoMax.value = 19;
+            return coperacaoEficaciaReforcador;
+        case '2':
+            titulo.value = 'Desempenho Visual';
+            pontuacaoMax.value = 27;
+            return desempenhoVisual;
+        case '3':
+            titulo.value = 'Linguagem Receptiva';
+            pontuacaoMax.value = 57;
+            return linguagemReceptiva;
+        case '4':
+            titulo.value = 'Imitação Motora';
+            pontuacaoMax.value = 27;
+            return imitacaoMotora;
+        case '5':
+            titulo.value = 'Imitação Vocal';
+            pontuacaoMax.value = 20;
+            return imitacaoVocal;
+        case '6':
+            titulo.value = 'Solicitações';
+            pontuacaoMax.value = 28;
+            return solicitacoes;
+        case '7':
+            titulo.value = 'Nomeações';
+            pontuacaoMax.value = 47;
+            return nomeacoes;
+        case '8':
+            titulo.value = 'Intraverbal';
+            pontuacaoMax.value = 49;
+            return intraverbal;
+        case '9':
+            titulo.value = 'Vocalizações Espontâneas';
+            pontuacaoMax.value = 9;
+            return vocalizacoesEspontaneas;
+        case '10':
+            titulo.value = 'Gramática e Sintaxe';
+            pontuacaoMax.value = 20;
+            return gramaticaSintaxe;
+        case '11':
+            titulo.value = 'Jogos e Lazer';
+            pontuacaoMax.value = 15;
+            return jogosLazer;
+        case '12':
+            titulo.value = 'Interação Social';
+            pontuacaoMax.value = 34;
+            return interacaoSocial;
+        case '13':
+            titulo.value = 'Instruções em Grupo';
+            pontuacaoMax.value = 12;
+            return interacaoGrupo;
+        case '14':
+            titulo.value = 'Seguir Rotinas de Classe';
+            pontuacaoMax.value = 10;
+            return rotinaClasses;
+        case '15':
+            titulo.value = 'Respostas Generalizadas';
+            pontuacaoMax.value = 6;
+            return respostasGeneralizadas;
+        case '16':
+            titulo.value = 'Leitura';
+            pontuacaoMax.value = 17;
+            return leitura;
+        case '17':
+            titulo.value = 'Matemática';
+            pontuacaoMax.value = 29;
+            return matematica;
+        case '18':
+            titulo.value = 'Escrita';
+            pontuacaoMax.value = 10;
+            return escrita;
+        case '19':
+            titulo.value = 'Ortografia';
+            pontuacaoMax.value = 7;
+            return ortografia;
+        case '20':
+            titulo.value = 'Vestimenta';
+            pontuacaoMax.value = 15;
+            return vestimenta;
+        case '21':
+            titulo.value = 'Alimentação';
+            pontuacaoMax.value = 10;
+            return alimentacao;
+        case '22':
+            titulo.value = 'Preparação';
+            pontuacaoMax.value = 7;
+            return preparacao;
+        case '23':
+            titulo.value = 'Uso do Banheiro';
+            pontuacaoMax.value = 10;
+            return usoBanheiro;
+        case '24':
+            titulo.value = 'Habilidades Motoras Grossas';
+            pontuacaoMax.value = 30;
+            return habilidadesMotorasGrossas;
+        case '25':
+            titulo.value = 'Habilidades Motoras Finas';
+            pontuacaoMax.value = 28;
+            return habilidadesMotorasFinas;
+    }
 }
 
 async function salvar() {
@@ -237,12 +343,12 @@ async function salvar() {
         }
 
         $q.loading.show();
-        const { data } = await portageService.postColetaAvaliacao(itens, usuarioId);
+        const { status } = await abllsService.postColetas(itens, uuidAprendiz.value, abllsId.value, habilidade.value);
 
-        if (data) {
+        if (status == 200) {
             success('Coletas salvas com sucesso!');
         } else {
-            error('Ocorreu um erro ao salvar as coletasx');
+            error('Ocorreu um erro ao salvar as coletas');
         }
     } catch (e) {
         error('Ocorreu um erro ao salvar as coletasy' + e);
@@ -262,12 +368,13 @@ async function refresh() {
 
     let cardsTela = toRaw(cards.value);
 
-    const { data } = await portageService.getColetasRespondidas(portageIdParam.value);
+    const { data } = await abllsService.getColetasRespondidas(abllsId.value);
 
     if (data) {
+
         data.forEach(row => {
             // Filtrar os cards que têm o mesmo id que o coleta_id da linha do banco  
-            const card = cardsTela.find(card => card.id === row.coleta_id);
+            const card = cardsTela.find(card => card.id === row.id);
 
             // Verificar se o card foi encontrado  
             if (card) {
@@ -283,49 +390,26 @@ async function refresh() {
 
                 //cards atualizados para exibir na tela.
                 cards.value = cardsAtualizados;
+                qtdRespondidas.value = cards.value.filter(i => i.selected != null).length
             }
         });
     }
 }
 
-async function configTela() {
-
-    try {
-        $q.loading.show();
-        const { uuid, idades_coleta } = await portageService.getPortageAvaliacaoConfigTelaById(portageIdParam.value);
-
-        if (uuid != null && idades_coleta != null) {
-            portageId.value = uuid;
-            idades.value = idades_coleta.split(',') || [];
-
-            idadeSelecionada.value = idades.value[0];
-
-        } else {
-            error('Erro ao tentar consultar o VBMAPP');
-        }
-    } catch (e) {
-        error('Erro ao tentar consultar o VBMAPP');
-        throw e;
-    } finally {
-        $q.loading.hide();
-    }
-}
-
 function coletar(item: any, pontuacao: number) {
+
     item.selected = pontuacao; // Atualiza a seleção do cartão
 
     const novaColeta = {
-        portage_uuid_fk: portageId.value,
         aprendiz_uuid_fk: uuidAprendiz.value.toString(),
-        coleta_id: item.id,
+        codigo: item.cod,
         descricao: item.descricao,
-        codigo: Number.parseInt(item.cod),
-        idade_coleta: idadeSelecionada.value,
-        tipo: tituloSelecionado.value,
+        id: item.id,
+        habilidade_coleta: idadeSelecionada.value,
         resposta: pontuacao,
+        pontos: item.pontos
     };
 
-    // Usar toRaw para obter a versão reativa normal do estado  
     const stateCache = toRaw(state.cache);
 
     // Verifica se já existe a lista de coletas realizadas no cache  
@@ -337,18 +421,11 @@ function coletar(item: any, pontuacao: number) {
     const coletasRealizadas = stateCache.get("coletasRealizadas");
 
     // Verifica se a nova coleta já existe no cache  
-    const coletaExistente = coletasRealizadas.find(cache => cache.coleta_id === novaColeta.coleta_id);
+    const existeColeta = coletasRealizadas.find(cache => cache.id === novaColeta.id);
 
-
-    if (coletaExistente) {
-        // Se a coleta já existe, atualiza a pontuação  
-        coletaExistente.pontuacao = novaColeta.resposta; // Atualizando pontuação  
-        coletaExistente.selected = novaColeta.resposta; // Verificando se deseja atualizar o selected  
-    } else {
-        // Se a coleta não existe, adiciona a nova coleta  
+    if (!existeColeta) {
         coletasRealizadas.push(novaColeta);
     }
-
     // Opcional: atualizar o cache após as modificações  
     stateCache.set("coletasRealizadas", coletasRealizadas);
 }
@@ -361,7 +438,6 @@ function getData(key: string) {
 }
 
 watch(showRespondidas, async () => {
-
     clonedCards.value = cards.value.map(card => Object.assign({}, card));
 
     if (!showRespondidas.value)
@@ -375,10 +451,10 @@ watch([idadeSelecionada, tituloSelecionado], () => {
     showRespondidas.value = true;
 })
 
+const calculoPercentagem = computed(() => { return (qtdRespondidas.value * 100 / pontuacaoMax.value).toFixed(0) });
+
 onMounted(async () => {
     uuidAprendiz.value = routeLocation.params.aprendizUuid
-    await configTela();
-    titulosNivelUm.value = portageZeroHaUmAno.avaliacoes;//esse aqui fica porque é padrão não apagar.    
     getTitulosAvaliacoes(1, idadeSelecionada.value);
     getData('coletasRealizadas');
 });

@@ -65,9 +65,143 @@ const avaliacaoPortageRows = [
   },
 ];
 
+const avaliacaoAbllsColumns = [
+  {
+    label: 'Habilidades que serão avaliadas',
+    align: 'left',
+    field: 'name',
+  },
+];
+
+const avaliacaoAbllsRows = [
+  {
+    id: 1,
+    name: 'Cooperação e Eficácia do Reforçador',
+    align: 'left',
+  },
+  {
+    id: 2,
+    name: 'Desempenho Visual',
+    align: 'left',
+  },
+  {
+    id: 3,
+    name: 'Linguagem Receptiva',
+    align: 'left',
+  },
+  {
+    id: 4,
+    name: 'Imitação Motora',
+    align: 'left',
+  },
+  {
+    id: 5,
+    name: 'Imitação Vocal',
+    align: 'left',
+  },
+  {
+    id: 6,
+    name: 'Solicitações',
+    align: 'left',
+  },
+  {
+    id: 7,
+    name: 'Nomeação',
+    align: 'left',
+  },
+  {
+    id: 8,
+    name: 'Intraverbal',
+    align: 'left',
+  },
+  {
+    id: 9,
+    name: 'Vocalizações Espontâneas',
+    align: 'left',
+  },
+  {
+    id: 10,
+    name: 'Gramática e Sintaxe',
+    align: 'left',
+  },
+  {
+    id: 11,
+    name: 'Jogos e Lazer',
+    align: 'left',
+  },
+  {
+    id: 12,
+    name: 'Interação Social',
+    align: 'left',
+  },
+  {
+    id: 13,
+    name: 'Instruções em Grupo',
+    align: 'left',
+  },
+  {
+    id: 14,
+    name: 'Respostas Generalizadas',
+    align: 'left',
+  },
+  {
+    id: 15,
+    name: 'Leitura',
+    align: 'left',
+  },
+
+  {
+    id: 16,
+    name: 'Matemática',
+    align: 'left',
+  },
+  {
+    id: 17,
+    name: 'Escrita',
+    align: 'left',
+  },
+  {
+    id: 18,
+    name: 'Ortografia',
+    align: 'left',
+  },
+  {
+    id: 19,
+    name: 'Vestimenta',
+    align: 'left',
+  },
+  {
+    id: 20,
+    name: 'Alimentação',
+    align: 'left',
+  },
+  {
+    id: 21,
+    name: 'Preparação',
+    align: 'left',
+  },
+  {
+    id: 22,
+    name: 'Uso do Banheiro',
+    align: 'left',
+  },
+  {
+    id: 23,
+    name: 'Habilidades Motoras Grossas',
+    align: 'left',
+  },
+  {
+    id: 24,
+    name: 'Habilidades Motoras Finas',
+    align: 'left',
+  },
+];
+
 export {
   avaliacaoColumns,
   avaliacaoRows,
   avaliacaoPortageColumns,
   avaliacaoPortageRows,
+  avaliacaoAbllsRows,
+  avaliacaoAbllsColumns,
 };

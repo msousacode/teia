@@ -57,6 +57,10 @@
             <portage-avaliacao-grafico v-bind="graficoDataProps"></portage-avaliacao-grafico>
         </q-dialog>
 
+        <q-dialog v-model="dialogIsAblls">
+            <ablls-grafico v-bind="graficoDataProps"></ablls-grafico>
+        </q-dialog>
+
         <div v-if="isHabilitaProtocolos && isVbmapp">
             <div class="text-teal text-h6">VB-MAPP</div>
             <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
@@ -109,6 +113,27 @@
             </q-table>
         </div>
 
+        <div v-if="isHabilitaProtocolos && isAblls">
+            <div class="text-teal text-h6">ABLLS-R</div>
+            <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
+                :rows-per-page-options="[30]" :rows-per-page="30">
+                <template v-slot:body-cell-actions="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                            v-if="props.row.name != 'PEI'" />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-actionsx="props">
+                    <q-td :props="props" class="q-gutter-x-sm">
+                        <q-btn icon="mdi-chart-line" color="amber-8" @click="abrirGraficoAblls(props.row)" dense
+                            size="md" v-if="props.row.name != 'PEI'" />
+                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" @click="gerarRelatorioAbllsPEI"
+                            v-else />
+                    </q-td>
+                </template>
+            </q-table>
+        </div>
+
         <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
             <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'avaliacoes-novo' }" />
         </q-page-sticky>
@@ -123,7 +148,7 @@ import { watch } from 'vue';
 import { computed } from 'vue';
 import { useAvaliacaoStore } from 'src/stores/avaliacao';
 import { toRaw } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
@@ -131,6 +156,7 @@ import { AvaliacaoService } from 'src/services/AvaliacaoService';
 import { useAprendizStore } from 'src/stores/aprendiz';
 import { RelatorioService } from 'src/services/RelatorioService';
 import BarreiraGrafico from './BarreiraGrafico.vue';
+import AbllsGrafico from './ablls/AbllsGrafico.vue';
 
 const aprendizService = new AprendizService();
 
@@ -147,6 +173,10 @@ const rows = ref<any[]>([]);
 const columnsPortage = ref<any[]>([]);
 
 const rowsPortage = ref<any[]>([]);
+
+const columnsAblls = ref<any[]>([]);
+
+const rowsAblls = ref<any[]>([]);
 
 const avaliacaoColumns = ref<any[]>([]);
 
@@ -183,6 +213,8 @@ const dialogIsVbMapp = ref(false);
 
 const dialogIsPortage = ref(false);
 
+const dialogIsAblls = ref(false);
+
 const dialogIsBarreiras = ref(false);
 
 const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
@@ -190,12 +222,15 @@ const graficoDataProps: GraficoProps | GraficoPortageProps = reactive({
     label: '',
     avaliacaoId: '',
     nivel: '',
-    idade: '3'//TODO colocar a data do aprendiz.
+    idade: '3',//TODO colocar a data do aprendiz.
+    habilidade: null
 })
 
 const showUrlDownload = ref(false);
 
 const urlDownload = ref<string>();
+
+const routeLocation = useRoute();
 
 watch(store, () => {
     const avaliacao = store.$state.avaliacao[0];
@@ -260,6 +295,9 @@ const isPortage = computed(() => {
     return selected.value[0].protocolo == 'PORTAGE'
 })
 
+const isAblls = computed(() => {
+    return selected.value[0].protocolo == 'ABLLS-R'
+})
 
 async function carregarSelectAprendizes() {
     try {
@@ -301,6 +339,24 @@ function ir(tipoAvaliacao: any) {
     if (isVbmapp.value) {
         router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, tipoAvaliacao: tipoColeta, vbmappUuid: obj.id } });
     }
+
+    if (isAblls.value) {
+        router.push({ name: avaliacaoEscolhida.path, params: { aprendizUuid: form.value.aprendiz.value, abllsId: obj.id, habilidade: avaliacaoEscolhida.id } });
+    }
+}
+
+async function gerarRelatorioAbllsPEI() {
+    const obj = toRaw(selected.value[0])
+    const abllsId = obj.id;
+
+    $q.loading.show();
+
+    const data = await relatorioService.gerarRelatorioAbllsPPEI(abllsId);
+
+    $q.loading.hide();
+
+    urlDownload.value = data.data.url;
+    showUrlDownload.value = true;
 }
 
 async function gerarRelatorioPortage(relatorioName: string) {
@@ -399,8 +455,18 @@ async function deletarAvaliacao(avaliacao: any) {
         .onDismiss(() => { });
 }
 
+function abrirGraficoAblls(props: any) {
+    const data = toRaw(props)
+    graficoDataProps.nivel = data.id
+    dialogIsAblls.value = true
+}
+
 onMounted(() => {
-    carregarSelectAprendizes()
+    carregarSelectAprendizes();
+
+    const label = routeLocation.params.label;
+    const value = routeLocation.params.value;
+    form.value.aprendiz = { "label": label, "value": value };
 });
 
 columns.value = [
@@ -423,13 +489,6 @@ rows.value = [
         name: 'BARREIRAS',
         path: 'avaliacoes-coleta/vbmapp/barreiras'
     },
-    /*{
-        name: 'TAREFAS',
-        path: 'avaliacoes-coleta/vbmapp'
-    },*/
-    /*{
-        name: 'TRANSIÇÃO',
-    },*/
     {
         name: 'PEI',
     },
@@ -450,6 +509,198 @@ rowsPortage.value = [
     {
         name: 'Coleta',
         path: 'avaliacoes-coleta/portage'
+    },
+    {
+        name: 'PEI',
+    },
+]
+
+columnsAblls.value = [
+    {
+        label: 'Habilidade',
+        align: 'center',
+        field: 'name'
+    },
+    { name: 'actions', align: 'center', label: 'Coleta', field: 'actions' },
+    { name: 'actionsx', align: 'center', label: 'Gráfico', field: 'actions' },
+    //{ name: 'actionsy', align: 'center', label: 'PDF', field: 'actions' }
+]
+
+rowsAblls.value = [
+    {
+        id: 1,
+        name: 'Cooperação e Eficácia do Reforçador',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 44,
+        qtd: 19
+    },
+    {
+        id: 2,
+        name: 'Desempenho Visual',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 102,
+        qtd: 19
+    },
+    {
+        id: 3,
+        name: 'Linguagem Receptiva',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 184,
+        qtd: 19
+    },
+    {
+        id: 4,
+        name: 'Imitação Motora',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 80,
+        qtd: 19
+    },
+    {
+        id: 5,
+        name: 'Imitação Vocal',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 56,
+        qtd: 19
+    },
+    {
+        id: 6,
+        name: 'Solicitações',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 72,
+        qtd: 19
+    },
+    {
+        id: 7,
+        name: 'Nomeações',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 154,
+        qtd: 19
+    },
+    {
+        id: 8,
+        name: 'Intraverbal',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 184,
+        qtd: 19
+    },
+    {
+        id: 9,
+        name: 'Vocalizações Espontâneas',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 28,
+        qtd: 19
+    },
+    {
+        id: 10,
+        name: 'Gramática e Sintaxe',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 44,
+        qtd: 19
+    },
+    {
+        id: 11,
+        name: 'Jogos e Lazer',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 54,
+        qtd: 19
+    },
+    {
+        id: 12,
+        name: 'Interação Social',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacoMax: 80,
+        qtd: 19
+    },
+    {
+        id: 13,
+        name: 'Instruções em Grupo',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 36,
+        qtd: 19
+    },
+    {
+        id: 14,
+        name: 'Seguir Rotinas de Classe',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 24,
+        qtd: 19
+    },
+    {
+        id: 15,
+        name: 'Respostas Generalizadas',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 12,
+        qtd: 19
+    },
+    {
+        id: 16,
+        name: 'Leitura',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 52,
+        qtd: 19
+    },
+    {
+        id: 17,
+        name: 'Matemática',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 76,
+        qtd: 19
+    },
+    {
+        id: 18,
+        name: 'Escrita',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 34,
+        qtd: 19
+    },
+    {
+        id: 19,
+        name: 'Ortografia',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 18,
+        qtd: 19
+    },
+    {
+        id: 20,
+        name: 'Vestimenta',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 32,
+        qtd: 19
+    },
+    {
+        id: 21,
+        name: 'Alimentação',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 20,
+        qtd: 19
+    },
+    {
+        id: 22,
+        name: 'Preparação',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 14,
+        qtd: 19
+    },
+    {
+        id: 23,
+        name: 'Uso do Banheiro',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 24,
+        qtd: 19
+    },
+    {
+        id: 24,
+        name: 'Habilidades Motoras Grossas',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 30,
+        qtd: 19
+    },
+    {
+        id: 25,
+        name: 'Habilidades Motoras Finas',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 28,
+        qtd: 19
     },
     {
         name: 'PEI',
