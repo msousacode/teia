@@ -116,7 +116,7 @@
         <div v-if="isHabilitaProtocolos && isAblls">
             <div class="text-teal text-h6">ABLLS-R</div>
             <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
-                :rows-per-page-options="[14]" :rows-per-page="14">
+                :rows-per-page-options="[30]" :rows-per-page="30">
                 <template v-slot:body-cell-actions="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                         <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
