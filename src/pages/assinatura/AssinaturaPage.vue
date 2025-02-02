@@ -33,7 +33,7 @@
 
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
               <div class="text-h6 text-blue-8"><b>STARTED</b></div>
-              <div class="text-h5" style="margin-left: 10px;"><b>R$ 49,90</b>/mês</div>
+              <div class="text-h6" style="margin-left: 10px;"><b>R$ 49,90</b>/mês</div>
             </div>
 
             <div class="text-body2 q-mt-sm">
@@ -62,7 +62,7 @@
           <div class="col">
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
               <div class="text-h6 text-green-8"><b>PROFISSIONAL</b></div>
-              <div class="text-h5" style="margin-left: 10px;"><b>R$ 99,90</b>/mês</div>
+              <div class="text-h6" style="margin-left: 10px;"><b>R$ 99,90</b>/mês</div>
             </div>
             <div class="text-body2 q-mt-sm">
               <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Cadastre
@@ -91,7 +91,7 @@
           <div class="col">
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
               <div class="text-h6 text-orange-8"><b>CLINIC</b></div>
-              <div class="text-h5" style="margin-left: 10px;"><b>R$ 399,90</b>/mês</div>
+              <div class="text-h6" style="margin-left: 10px;"><b>R$ 399,90</b>/mês</div>
             </div>
             <div class="text-body2 q-mt-sm">
               <div class="text-body1"><q-icon name="mdi-arrow-right" size="sm" color="green" class="q-mr-xs" />Cadastre
