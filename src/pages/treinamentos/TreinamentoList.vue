@@ -141,7 +141,6 @@ async function filtrar() {
   return treinamentos.value
 }
 
-
 onMounted(() => {
   getTreinamentos();
   store.getTreinamentosSelecionados.forEach((treinamento) => {
