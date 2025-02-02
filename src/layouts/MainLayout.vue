@@ -21,7 +21,6 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> Menu </q-item-label>
-
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" @click="link.display" />
       </q-list>
     </q-drawer>
@@ -33,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
@@ -63,7 +62,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
-    hide: true,//perfil.value == 'ADMIN' ? true : false,
+    hide: perfil.value == 'ADMIN' ? true : false,
     display: () => 'none',
   },
   {
@@ -109,6 +108,14 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   }
 ]);
+
+const restricoesEspecialista = ['Profissionais', 'Aprendizes', 'Assinatura'];
+
+watch(perfil, (newValue) => {
+  restricoesEspecialista.forEach(link => {
+    essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+  });
+});
 
 const leftDrawerOpen = ref(false);
 

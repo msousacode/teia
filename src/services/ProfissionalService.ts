@@ -10,8 +10,15 @@ const config = {
     'content-type': 'application/json',
   },
 };
+
+interface Profissional {
+  usuario_id: string;
+  perfil: string;
+  full_name: string;
+  email: string;
+}
 export class ProfissionalService {
-  async getProfissionais(usuarioId: string) {
+  async getProfissionais(usuarioId: string): Promise<Profissional[]> {
     return await http.get(`/profissionais/tenant/${usuarioId}`);
   }
 

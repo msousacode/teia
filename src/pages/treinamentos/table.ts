@@ -7,6 +7,13 @@ const columns = [
     sortable: true,
   },
   {
+    name: 'habilidade',
+    align: 'left',
+    label: 'Habilidade',
+    field: 'habilidade',
+    sortable: true,
+  },
+  {
     name: 'protocolo',
     align: 'left',
     label: 'Protocolo',

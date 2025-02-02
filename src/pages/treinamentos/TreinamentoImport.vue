@@ -21,7 +21,7 @@
                 <q-separator dark />
 
                 <q-card-actions>
-                    <q-checkbox v-model="item.importado" :disable="item.importado" color="primary"
+                    <q-checkbox v-model="item.importado" color="primary"
                         @click="handleSelectTreinamentos(item.treinamentoBaseId)" label="Selecionar para impotação" />
                 </q-card-actions>
             </q-card>
@@ -62,7 +62,7 @@ const treinamentosSelecionados = ref<string[]>([]);
 
 const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
 
-const selected = ref<string>('');
+const selected = ref<string>('ATENCAO');
 
 const store = useTreinamentoStore();
 
@@ -98,6 +98,7 @@ async function importarTreinamentos() {
         error('Erro ao importar treinamentos');
     } finally {
         $q.loading.hide();
+        carregarTreinamentosBase();
     }
 }
 
@@ -113,8 +114,7 @@ function filtrar() {
     treinamentos.value = store.getTreinamentosBase.filter((item) => item.habilidade === selected.value);
 }
 
-onMounted(async () => {
-
+async function carregarTreinamentosBase() {
     treinamentosSelecionados.value = [];
 
     const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
@@ -127,7 +127,8 @@ onMounted(async () => {
     $q.loading.show();
     try {
         await service.getTreinamentosBase(usuarioId).then((response) => {
-            store.setTreinamentosBase(response.data);
+            const treinos = response.data.filter((item) => item.importado == false);
+            store.setTreinamentosBase(treinos);
             treinamentos.value = store.getTreinamentosBase;
         });
     } catch (error) {
@@ -135,6 +136,10 @@ onMounted(async () => {
     } finally {
         $q.loading.hide();
     }
+}
+
+onMounted(async () => {
+    await carregarTreinamentosBase()
 });
 
 </script>
