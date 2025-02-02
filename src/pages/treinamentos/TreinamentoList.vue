@@ -74,7 +74,7 @@ function deletar(treinamento: any) {
   console.log(treinamento)
 
   $q.dialog({
-    title: 'Confirma a exclusão da Anotação?',
+    title: 'Confirma a exclusão do Treinamento?',
     ok: true,
     cancel: true,
   })
