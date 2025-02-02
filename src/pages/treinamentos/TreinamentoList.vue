@@ -1,5 +1,10 @@
 <template>
   <div class="q-pa-sm">
+
+    <div class="q-my-sm justify-start">
+      <q-select stack-label outlined v-model="habilidadeFiltro" :options="habilidades" label="Tipo de Habilidade" />
+    </div>
+
     <div class="row">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
         row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
@@ -39,13 +44,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw, watch } from 'vue';
 import { columns, visibleColumns } from './table';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { TreinamentoService } from 'src/services/TreinamentoService';
+
+const habilidades = ["TODOS", "ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
+
+const habilidadeFiltro = ref<string>('');
 
 const { error } = useNotify();
 
@@ -110,6 +119,7 @@ async function getTreinamentos() {
     $q.loading.show();
     const { data } = await treinamentoService.getTreinamentos();
     treinamentos.value = data;
+    store.$state.treinamentos = data;
   } catch (e) {
     error('');
     throw e;
@@ -117,6 +127,20 @@ async function getTreinamentos() {
     $q.loading.hide();
   }
 }
+
+watch(habilidadeFiltro, () => {
+  filtrar();
+});
+
+async function filtrar() {
+  if (habilidadeFiltro.value == 'TODOS') {
+    treinamentos.value = await store.$state.treinamentos;
+  } else {
+    treinamentos.value = treinamentos.value.filter((item) => item.habilidade == habilidadeFiltro.value);
+  }
+  return treinamentos.value
+}
+
 
 onMounted(() => {
   getTreinamentos();

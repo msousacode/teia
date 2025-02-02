@@ -6,6 +6,7 @@ export const useTreinamentoStore = defineStore('treinamento', {
     treinamentosSelecionados: [] as any[],
     treinamentoConfig: {} as any,
     treinamentosBase: [] as any[],
+    treinamentos: [] as any[],
   }),
 
   getters: {
@@ -32,6 +33,9 @@ export const useTreinamentoStore = defineStore('treinamento', {
     },
     setTreinamentosBase(treinamentos: []) {
       this.treinamentosBase = treinamentos;
+    },
+    setTreinamentos(treinamentos: []) {
+      this.treinamentos = treinamentos;
     },
   },
 });
