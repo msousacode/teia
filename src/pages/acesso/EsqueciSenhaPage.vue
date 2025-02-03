@@ -50,7 +50,7 @@ async function recuperar() {
   $q.loading.show();
 
   try {
-    const { data } = await service.esqueciMinhaSenha(email.value);
+    const { data } = await service.esqueciMinhaSenha(email.value.toLocaleLowerCase().trim()); data
 
     if (data == "Ok") {
       mostarMensagemSucesso.value = true;
