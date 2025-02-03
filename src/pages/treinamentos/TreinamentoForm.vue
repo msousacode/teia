@@ -73,7 +73,7 @@ const form = ref({
   treinamento: '',
   protocolo: '',
   descricao: '',
-  habilidade: selected.value,
+  habilidade: '',
   sync: false,
   ativo: true,
 });
@@ -88,6 +88,8 @@ async function salvar() {
 
   form.value.uuid = uuid();
   const object = toRaw(form.value);
+
+  object.habilidade = selected.value;
 
   $q.loading.show();
 
@@ -111,6 +113,8 @@ async function salvar() {
 async function handleUpdate() {
 
   const object = toRaw(form.value);
+
+  object.habilidade = selected.value;
 
   try {
     $q.loading.show();
