@@ -115,7 +115,7 @@ const columnsAblls = ref<any[]>(avaliacaoAbllsColumns);
 
 const rowsAblls = ref<any[]>(avaliacaoAbllsRows);
 
-const habilidadesSelcionadas = ref([]);
+const habilidadesSelcionadas = ref(avaliacaoAbllsRows);
 
 const form = ref({
     uuid: '',
