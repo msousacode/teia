@@ -16,22 +16,22 @@
                   <q-item-label><b>Repete:</b> {{ item.configuracoes.repetir }}</q-item-label>
                   <q-item-label>
 
-                    <q-radio class="text-body2" v-model="diaColeta" :val="'seg$' + item.uuid" label="SEG" color="teal"
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'seg$' + index" label="SEG" color="teal"
                       v-if="item.configuracoes.seg" />
 
-                    <q-radio class="text-body2" v-model="diaColeta" :val="'ter$' + item.uuid" label="TER" color="teal"
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'ter$' + index" label="TER" color="teal"
                       v-if="item.configuracoes.ter" />
 
-                    <q-radio class="text-body2" v-model="diaColeta" :val="'qua$' + item.uuid" label="QUA" color="teal"
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'qua$' + index" label="QUA" color="teal"
                       v-if="item.configuracoes.qua" />
 
-                    <q-radio class="text-body2" v-model="diaColeta" :val="'qui$' + item.uuid" label="QUI" color="teal"
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'qui$' + index" label="QUI" color="teal"
                       v-if="item.configuracoes.qui" />
 
-                    <q-radio class="text-body2" v-model="diaColeta" :val="'sex$' + item.uuid" label="SEX" color="teal"
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'sex$' + index" label="SEX" color="teal"
                       v-if="item.configuracoes.sex" />
 
-                    <q-radio class="text-body2" v-model="diaColeta" :val="'sab$' + item.uuid" label="SAB" color="teal"
+                    <q-radio class="text-body2" v-model="diaColeta" :val="'sab$' + index" label="SAB" color="teal"
                       v-if="item.configuracoes.sab" />
 
                   </q-item-label>
