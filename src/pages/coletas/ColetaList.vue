@@ -60,6 +60,7 @@
                                 </div>
                             </div>
                         </q-card-section>
+
                         <div v-if="_tipoColeta === 'ocorrencia'">
 
                             <q-input v-model="counts[index].count" dense placeholder="0"
@@ -151,7 +152,7 @@
                                     <div class="text-subtitle2 text-teal">Data da anotação:
                                         <span class="text-subtitle1" style="color:black !important">{{
                                             item.data_anotacao
-                                            }}</span>
+                                        }}</span>
                                     </div>
 
                                     <span class="text-subtitle2 text-teal">Anotação: </span>
