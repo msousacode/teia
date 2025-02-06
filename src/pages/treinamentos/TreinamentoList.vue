@@ -23,7 +23,7 @@
         </template>
       </q-table>
       <q-btn label="Confirmar" color="green" no-caps class="full-width q-mt-md q-pa-sm"
-        @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup />
+        @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup :disable=isConfirm />
     </div>
 
     <div class="q-my-md flex justify-center" v-show="!props.selecionarTreinamento">
@@ -69,6 +69,8 @@ const store = useTreinamentoStore();
 let treinamentos = ref<any[]>([]);
 
 const selected = ref<any[]>([]);
+
+const isConfirm = ref<boolean>(true);
 
 const props = defineProps<{
   selecionarTreinamento: boolean;
@@ -130,11 +132,34 @@ watch(habilidadeFiltro, () => {
   filtrar();
 });
 
+watch(selected, (newValue) => {
+
+  const qtdSelecionados = toRaw(newValue).length;
+
+  if (qtdSelecionados == 0) {
+    isConfirm.value = true;
+    return;
+  }
+
+  if (qtdSelecionados > 3) {
+    $q.notify({
+      message: 'Só é permitido adicionar no máximo 3 treinamentos por programa.',
+      textColor: 'black',
+      color: 'yellow-7',
+      position: 'center',
+    });
+    isConfirm.value = true;
+  } else {
+    isConfirm.value = false;
+  }
+
+});
+
 async function filtrar() {
   if (habilidadeFiltro.value == 'TODOS') {
     treinamentos.value = await store.$state.treinamentos;
   } else {
-    treinamentos.value = treinamentos.value.filter((item) => item.habilidade == habilidadeFiltro.value);
+    treinamentos.value = store.$state.treinamentos.filter((item) => item.habilidade == habilidadeFiltro.value);
   }
   return treinamentos.value
 }
