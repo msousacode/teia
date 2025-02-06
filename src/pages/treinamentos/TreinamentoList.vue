@@ -56,7 +56,7 @@ const habilidades = ["TODOS", "ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LIN
 
 const habilidadeFiltro = ref<string>('');
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const router = useRouter();
 
@@ -80,8 +80,6 @@ function handleEdit(treinamento: any) {
 }
 
 function deletar(treinamento: any) {
-  console.log(treinamento)
-
   $q.dialog({
     title: 'Confirma a exclusão do Treinamento?',
     ok: true,
@@ -90,19 +88,19 @@ function deletar(treinamento: any) {
     .onOk(async () => {
       $q.loading.show();
 
-      /* TODO fazer esse 
-      await db.treinamentos.delete(treinamento.uuid).then(() => {
-        treinamentos.value = treinamentos.value.filter((item) => item.uuid !== treinamento.uuid);
-        success('Deletado com sucesso!');
-      }).catch((_error) => {
-        error(_error);
-      });
+      try {
+        const { status } = await treinamentoService.deleteTreinamento(treinamento.treinamentoId);
 
-      await db.alvos.where({ treinamento_uuid_fk: treinamento.uuid }).delete()
-        .then(() => $q.loading.hide())
-        .catch((_error) => {
-          error(_error);
-        });*/
+        if (status == 200) {
+          success('Deletado com sucesso!');
+          getTreinamentos();
+          $q.loading.show();
+        } else {
+          error('Não foi possível excluir o Treinamento.');
+        }
+      } catch (e) {
+        throw e;
+      }
     })
     .onDismiss(() => { });
 }

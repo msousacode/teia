@@ -129,7 +129,7 @@ async function carregarTreinamentosBase() {
         await service.getTreinamentosBase(usuarioId).then((response) => {
             const treinos = response.data.filter((item) => item.importado == false);
             store.setTreinamentosBase(treinos);
-            treinamentos.value = store.getTreinamentosBase;
+            treinamentos.value = store.getTreinamentosBase.filter((item) => item.habilidade === selected.value);
         });
     } catch (error) {
         console.error(error);
