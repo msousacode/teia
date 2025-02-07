@@ -111,10 +111,29 @@ const essentialLinks: EssentialLinkProps[] = reactive([
 
 const restricoesEspecialista = ['Profissionais', 'Aprendizes', 'Assinatura'];
 
+const restricoesAt = ['Profissionais', 'Aprendizes', 'Assinatura', 'Protocolos', 'Programas'];
+
 watch(perfil, (newValue) => {
-  restricoesEspecialista.forEach(link => {
-    essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
-  });
+
+  if (newValue == 'ESPECIALISTA') {
+    restricoesEspecialista.forEach(link => {
+      essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+    });
+    return;
+  }
+
+  if (newValue == 'AT') {
+    restricoesAt.forEach(link => {
+      essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+    });
+    return;
+  }
+
+  if (newValue == 'ADMIN') {
+    restricoesEspecialista.forEach(link => {
+      essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+    });
+  }
 });
 
 const leftDrawerOpen = ref(false);

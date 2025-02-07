@@ -64,7 +64,7 @@
         </template>
       </q-table>
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="perfil != 'AT'">
       <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'atendimento-novo' }" />
     </q-page-sticky>
   </div>
@@ -99,6 +99,8 @@ const diaColeta = ref('');
 
 const atendimentoId = ref('');
 
+const perfil = ref('');
+
 function iniciarAtendimento(atendimento: any) {
   const raw = toRaw(atendimento);
   atendimentoId.value = raw.uuid;
@@ -120,6 +122,9 @@ function editarAtendimento(atendimento: any) {
 
 onMounted(async () => {
   loading.value = true;
+
+  const storage = JSON.parse(localStorage.getItem('user'));
+  perfil.value = storage.perfil;
 
   try {
     $q.loading.show();

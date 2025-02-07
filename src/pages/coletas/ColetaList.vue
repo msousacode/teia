@@ -149,6 +149,8 @@
                         <q-card-section>
                             <div class="row items-center justify-between">
                                 <div>
+                                    <div class="text-subtitle2 text-teal">Anotado por:</div>
+                                    <div class="text-body1 text-dark">{{ item.criadoNome }}</div>
                                     <div class="text-subtitle2 text-teal">Data da Anotação:</div>
                                     <div class="text-body1 text-dark">{{ item.data_anotacao }}</div>
                                     <div class="text-subtitle2 text-teal">Anotação:</div>

@@ -116,10 +116,6 @@ async function submit() {
 
   form.value.uuid = uuid();
 
-  const object = toRaw(form.value);
-
-  object.profissionais = profissionaisSelecionados.value;
-
   try {
     $q.loading.show();
     const { status } = await aprendizeService.postAprendiz(object);
@@ -144,7 +140,8 @@ async function atualizar() {
     const object = toRaw(form.value);
 
     if (profissionaisSelecionados.value.length > 0) {
-      object.profissionais = profissionaisSelecionados.value.map(i => i.usuario_id);
+      const profissionais = toRaw(profissionaisSelecionados.value)
+      object.profissionais = profissionais.map(i => i.email);
     }
 
     const { data } = await aprendizeService.putAprendiz(object);
