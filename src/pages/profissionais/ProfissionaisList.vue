@@ -28,10 +28,10 @@
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { ProfissionalService } from 'src/services/ProfissionalService';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const $q = useQuasar();
 
@@ -42,7 +42,22 @@ const service = new ProfissionalService();
 const list = ref<any[]>([]);
 
 function excluir(row: any) {
-    console.log('Excluir', row);
+
+    $q.dialog({
+        title: 'Confirma a exclusão do Profissional?',
+        ok: true,
+        cancel: true,
+    })
+        .onOk(async () => {
+
+            const { status } = await service.delete(toRaw(row).email);
+
+            if (status == 200) {
+                success('Profissional excluído com sucesso!');
+                await getProfissionais();
+            }
+        })
+        .onDismiss(() => { });
 }
 
 function editar(row: any) {
@@ -50,22 +65,23 @@ function editar(row: any) {
     router.push({ name: 'cadastrar', params: { email } });
 }
 
+async function getProfissionais() {
+    const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+    if (!usuarioId) {
+        error('Erro ao recuperar userId');
+        return;
+    }
+
+    const { data } = await service.getProfissionais(usuarioId);
+    list.value = data;
+}
+
 onMounted(async () => {
 
     try {
         $q.loading.show();
-
-        const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
-
-        if (!usuarioId) {
-            error('Erro ao recuperar userId');
-            return;
-        }
-
-        const { data } = await service.getProfissionais(usuarioId);
-
-        list.value = data;
-
+        await getProfissionais();
     } catch (e) {
         error('Erro ao recuperar profissionais');
     } finally {

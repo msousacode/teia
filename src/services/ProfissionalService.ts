@@ -29,4 +29,8 @@ export class ProfissionalService {
   async atualizar(usuario: Usuario, email: string) {
     return http.put(`/profissionais/${email}`, usuario, config);
   }
+
+  async delete(email: any) {
+    return http.delete(`/profissionais/${email}`, config);
+  }
 }
