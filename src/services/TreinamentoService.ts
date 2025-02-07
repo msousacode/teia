@@ -26,4 +26,8 @@ export class TreinamentoService {
   async importarTreinamentos(data: string[], usuarioId: string) {
     return await http.post(`/treinamentos/base/usuario/${usuarioId}`, data);
   }
+
+  async deleteTreinamento(treinamentoId: string) {
+    return await http.delete(`/treinamentos/${treinamentoId}`);
+  }
 }
