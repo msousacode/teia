@@ -111,7 +111,7 @@ function iniciarAtendimento(atendimento: any) {
 
 function redirecionaColetas(_uuidTreinamento: string, protocolo: string, _uuidAprendiz: string) {
   const diaPesquisa = diaColeta.value.split('$')[0];
-  const _tipoColeta = protocolo === 'ABC' ? 'abc' : 'ocorrencia';
+  const _tipoColeta = protocolo.toLocaleLowerCase().includes("abc") ? 'abc' : 'ocorrencia';
   router.push({ name: "coletas", params: { atendimentoId: atendimentoId.value, uuidTreinamento: _uuidTreinamento, uuidAprendiz: _uuidAprendiz, diaColeta: diaPesquisa, tipoColeta: _tipoColeta } });
 }
 
