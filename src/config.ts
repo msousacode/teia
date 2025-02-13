@@ -5,13 +5,13 @@ export const config = {
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     plans: {
       started: {
-        priceId: 'price_1Qj9pME7oRUy6lRCyKuGL427',
+        priceId: 'price_1Qs6byE7oRUy6lRCx5nJEb6S',
       },
       profisional: {
-        priceId: 'price_1QdGsHE7oRUy6lRCzLlA5ewd',
+        priceId: 'price_1Qs6cFE7oRUy6lRCn8S6Ml1i',
       },
       clinic: {
-        priceId: 'price_1Qj9qPE7oRUy6lRCQvSEDXKI',
+        priceId: 'price_1Qs6cQE7oRUy6lRCPlACzaQQ',
       },
     },
   },
