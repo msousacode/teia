@@ -349,7 +349,18 @@ async function gerarRelatorio() {
     const dataFinal = form.dataFinal.replaceAll('/', '-');
 
     $q.loading.show();
-    const data = await relatorioService.gerarRelatorio(aprendizId, dataInicio, dataFinal);
+    const { data, status } = await relatorioService.gerarRelatorio(aprendizId, dataInicio, dataFinal);
+
+    if (status == 404) {
+        $q.notify({
+            message: 'Não foram encontrados dados para gerar relatório.',
+            textColor: 'black',
+            color: 'yellow-7',
+            position: 'center',
+        });
+    }
+
+
     $q.loading.hide();
 
     if (data.error != null) {
