@@ -19,6 +19,10 @@ export class AprendizService {
     return await http.get(`/aprendizes/${id}`);
   }
 
+  async getProfissionaisVinculados(id: string | null) {
+    return await http.get(`/aprendizes/${id}/profissionais`);
+  }
+
   async deleteAprendizById(id: string | null) {
     return await http.delete(`/aprendizes/${id}`);
   }

@@ -16,6 +16,10 @@
           <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
             :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode" />
 
+
+          <q-select stack-label outlined v-model="selected" :options="habilidades" label="Tipo de Habilidade"
+            class="q-mb-md" />
+
           <q-input stack-label outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
             class="q-mb-md" :rows="18" />
 
@@ -60,11 +64,16 @@ const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
 
 const tab = ref('treinamento');
 
+const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
+
+const selected = ref<string>('ATENCAO');
+
 const form = ref({
   uuid: '',
   treinamento: '',
   protocolo: '',
   descricao: '',
+  habilidade: '',
   sync: false,
   ativo: true,
 });
@@ -79,6 +88,8 @@ async function salvar() {
 
   form.value.uuid = uuid();
   const object = toRaw(form.value);
+
+  object.habilidade = selected.value;
 
   $q.loading.show();
 
@@ -102,6 +113,8 @@ async function salvar() {
 async function handleUpdate() {
 
   const object = toRaw(form.value);
+
+  object.habilidade = selected.value;
 
   try {
     $q.loading.show();

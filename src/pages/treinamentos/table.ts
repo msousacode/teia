@@ -7,6 +7,13 @@ const columns = [
     sortable: true,
   },
   {
+    name: 'habilidade',
+    align: 'left',
+    label: 'Habilidade',
+    field: 'habilidade',
+    sortable: true,
+  },
+  {
     name: 'protocolo',
     align: 'left',
     label: 'Protocolo',
@@ -28,6 +35,13 @@ const visibleColumns = [
     align: 'left',
     label: 'Treinamento',
     field: 'treinamento',
+    sortable: true,
+  },
+  {
+    name: 'habilidade',
+    align: 'left',
+    label: 'Habilidade',
+    field: 'habilidade',
     sortable: true,
   },
   {

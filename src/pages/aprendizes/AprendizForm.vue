@@ -35,14 +35,23 @@
 
         <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
 
-        <div class="fixed-bottom q-pa-md">
-          <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit"
-            :disable="!isSubmitted" />
+        <div v-if="routeLocation.params.action == 'edit'">
+          <div class="text-teal text-h6 q-mt-sm">Profissionais vínculados</div>
 
-          <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-sm" no-caps flat
-            :to="{ name: 'aprendizes' }" />
+          <q-table :rows="rows" :columns="columns" row-key="full_name" class="my-sticky-column-table"
+            v-model:selected="profissionaisSelecionados" selection="multiple" :rows-per-page-options="[10]"
+            :rows-per-page="10">
+          </q-table>
         </div>
       </q-form>
+
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="save" color="green" @click="submit" />
+      </q-page-sticky>
+
+      <q-page-sticky position="bottom-left" :offset="[18, 18]">
+        <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'aprendizes' }" />
+      </q-page-sticky>
     </div>
 
   </q-page>
@@ -61,8 +70,11 @@ import {
 } from 'src/composables/utils';
 import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
+import { ProfissionalService } from 'src/services/ProfissionalService';
 
 const aprendizeService = new AprendizService();
+
+const profissionalService = new ProfissionalService();
 
 const store = useAprendizStore();
 
@@ -72,10 +84,15 @@ const $q = useQuasar();
 
 const routeLocation = useRoute();
 
+const columns = ref<any[]>([]);
+
+const rows = ref<any[]>([]);
+
+const profissionaisSelecionados = ref([]);
+
 let isSubmitted = computed(() => {
   return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '';
 });
-
 
 const form = ref({
   uuid: '',
@@ -86,6 +103,7 @@ const form = ref({
   nome_responsavel: '',
   observacao: '',
   ativo: true,
+  profissionais: []
 });
 
 async function submit() {
@@ -97,8 +115,6 @@ async function submit() {
   }
 
   form.value.uuid = uuid();
-
-  const object = toRaw(form.value);
 
   try {
     $q.loading.show();
@@ -120,7 +136,15 @@ async function submit() {
 async function atualizar() {
   try {
     $q.loading.show();
-    const { data } = await aprendizeService.putAprendiz(toRaw(form.value));
+
+    const object = toRaw(form.value);
+
+    if (profissionaisSelecionados.value.length > 0) {
+      const profissionais = toRaw(profissionaisSelecionados.value)
+      object.profissionais = profissionais.map(i => i.email);
+    }
+
+    const { data } = await aprendizeService.putAprendiz(object);
 
     if (data) {
       success('Atualizado com sucesso!');
@@ -145,9 +169,31 @@ function reset() {
   store.$reset();
 }
 
+async function carregarProfissionais() {
+  try {
+    const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
+
+    if (!usuarioId) {
+      error('Não foi possível localizar o usuário logado.');
+      return;
+    }
+
+    $q.loading.show();
+    const data = await profissionalService.getProfissionais(usuarioId);
+
+    if (data) {
+      rows.value = data.data;
+    }
+  } catch (e) {
+    error('Erro ao carregar profissionais');
+    throw e;
+  } finally {
+    $q.loading.hide();
+  }
+}
+
 onMounted(async () => {
   if (routeLocation.params.action === 'edit') {
-
     try {
       $q.loading.show();
       const { data } = await aprendizeService.getAprendizById(store.getAprendizUuid);
@@ -159,8 +205,11 @@ onMounted(async () => {
         form.value.nome_mae = data.nome_mae;
         form.value.nome_pai = data.nome_pai;
         form.value.nome_responsavel = data.nome_responsavel;
-        form.value.observacao = data.observacao;
+        form.value.observacao = data.observacao;;
       }
+
+
+      profissionaisSelecionados.value = await buscarProfissionaisVinculados();
 
     } catch (e) {
       error('')
@@ -169,5 +218,25 @@ onMounted(async () => {
       $q.loading.hide();
     }
   }
+
+  await carregarProfissionais();
 });
+
+async function buscarProfissionaisVinculados() {
+  const { data } = await aprendizeService.getProfissionaisVinculados(store.getAprendizUuid);
+  return data;
+
+}
+
+columns.value = [
+  {
+    label: 'Profissional',
+    align: 'center',
+    field: 'full_name'
+  },
+  { name: 'actions', align: 'center', label: 'E-mail', field: 'email' },
+]
+
+rows.value = [
+]
 </script>
