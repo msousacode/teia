@@ -63,7 +63,7 @@
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
-              <div class="text-h6 text-green-8"><b>PROFISSIONAL</b></div>
+              <div class="text-h6 text-green-8"><b>PLUS</b></div>
 
               <div class="text-h5" style="margin-left: 10px;"><b>R$ 200,00</b>/mês</div>
 
@@ -94,7 +94,7 @@
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%;">
-              <div class="text-h6 text-orange-8"><b>CLINIC</b></div>
+              <div class="text-h6 text-orange-8"><b>PRO</b></div>
 
               <div class="text-h5" style="margin-left: 10px;"><b>R$ 400,00</b>/mês</div>
 
