@@ -33,7 +33,7 @@
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
                                 item.semana }}ª
-                            SEMANA</q-chip>
+                            GRUPO</q-chip>
                     </div>
 
                     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
@@ -95,7 +95,7 @@
                         <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                             v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
                                 item.semana }}ª
-                            SEMANA</q-chip>
+                            GRUPO</q-chip>
                     </div>
 
                     <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
