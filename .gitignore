@@ -39,3 +39,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# quasar.config files
+quasar.config.js
