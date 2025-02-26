@@ -14,9 +14,9 @@
     </q-dialog>
 
     <div class="row justify-center" v-if="!isAssinante">
-      <span class="text-h6 text-teal text-center" style="width: 350px;">Para acessar o sistema é necessário
-        contratar um dos planos.</span>
-      <span class="text-h6 text-teal text-center" style="width: 350px;">Após a contratação o seu acesso será
+      <span class="text-h6 text-center text-teal q-mt-md" style="width: 700px;">Contrate um plano para acessar o
+        Sistema.
+        <br /> Após a contratação o seu acesso será
         liberado.</span>
     </div>
 

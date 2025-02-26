@@ -3,14 +3,13 @@
 
         <q-dialog v-model="visibleAnotacao" persistent>
             <q-card class="my-card q-pa-md full-width">
-                <div class="text-h6 text-teal">Anotação</div>
-                <q-card-section>
-                    <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
-                        :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
-                        placeholder="Digite sua anotação aqui..." />
-                    <q-checkbox v-model="podeImprimir" label="Marque para não exibir essa anotação no relatório."
-                        class="q-mt-md" />
-                </q-card-section>
+                <div class="text-h6 text-teal q-mb-sm">Anotação</div>
+
+                <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
+                    :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
+                    placeholder="Digite sua anotação aqui..." />
+                <q-checkbox v-model="podeImprimir" label="Marque para não exibir essa anotação no relatório." />
+
                 <q-card-actions align="around">
                     <q-btn label="Salvar" color="green" no-caps @click="salvarAnotacao(podeImprimir)"
                         class="full-width" />
@@ -50,11 +49,11 @@
                                         <div class="text-subtitle2 text-teal q-mt-md">Descrição do Alvo:</div>
                                     </div>
 
-                                    <div class="text-body2">{{ item.alvo.descricao_alvo }}</div>
+                                    <div class="text-body2 q-mt-sm">{{ item.alvo.descricao_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
                                     </span>
-                                    <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
+                                    <div class="text-subtitle1 q-mt-md">{{ item.alvo.pergunta }}</div>
                                 </div>
 
                             </div>

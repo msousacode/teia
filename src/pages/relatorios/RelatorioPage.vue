@@ -175,11 +175,7 @@
             </q-card>
         </q-dialog>
 
-        <title-custom title="Gerar Relatório:" />
-
-        <!--div class="text-h6 text-teal-7">Preencha o período: <div class="text-overline">
-                O período da pesquisa é limitado até 6 meses.</div>
-        </div-->
+        <div class="text-body1 q-mt-md">Selecione o período para gerar o relatório</div>
 
         <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
 
@@ -235,7 +231,7 @@
         <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="habilitarRelatorioBtn">Treinamentos em
             andamento:</div>
         <div v-for="(
-              item, index
+item, index
             ) in treinamentos" :key="index">
             <card-custom :item="{
                 id: item.uuid,
@@ -257,7 +253,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue';
-import TitleCustom from 'src/components/TitleCustom.vue';
 import CardCustom from 'src/components/CardCustom.vue';
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
