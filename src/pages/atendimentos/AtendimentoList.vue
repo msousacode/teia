@@ -5,7 +5,7 @@
         <div class="q-pa-md">
           <div class="text-body1 q-mb-sm">Selecione o dia para coleta:</div>
           <q-list bordered separator v-for="(
-              item, index
+item, index
             ) in treinamentos" :key="index">
             <q-item clickable v-ripple>
               <q-item-section>
@@ -56,10 +56,9 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editarAtendimento(props.row)">
-            </q-btn>
-            <q-btn icon="mdi-play-outline" color="teal" dense size="sm" @click="iniciarAtendimento(props.row)">
-            </q-btn>
+            <q-btn icon="mdi-eye-outline" color="info" @click="editarAtendimento(props.row)" label="visualizar"
+              size="md" />
+            <q-btn icon="mdi-play-outline" color="green-9" @click="iniciarAtendimento(props.row)" label="Coletar" />
           </q-td>
         </template>
       </q-table>

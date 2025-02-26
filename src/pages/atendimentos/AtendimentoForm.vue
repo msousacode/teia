@@ -85,7 +85,7 @@
           @click="visible = true" v-if="!editMode" />
         <div class="q-gutter-y-md">
           <q-list bordered separator v-for="(
-              item, index
+item, index
             ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
 
             <q-item clickable v-ripple :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
@@ -99,7 +99,7 @@
                 <div v-if="item.configuracoes">
                   <div><b class="text-teal">Período:</b></div>
                   <q-item-label>{{ `${form.data_inicio} até ${item.configuracoes.data_final}`
-                    }}</q-item-label>
+                  }}</q-item-label>
                   <div><b class="text-teal">Repetir:</b></div>
                   <q-item-label>{{ item.configuracoes.repetir }} por sessão</q-item-label>
                   <q-item-label>
@@ -126,21 +126,10 @@
               </q-item-section>
               <q-item-section side>
                 <div class="col-auto q-gutter-x-sm">
-                  <q-btn icon="settings" color="teal" dense size="md" @click="abrirConfiguracoes(item)">
+                  <q-btn icon="settings" color="teal" dense size="md" @click="abrirConfiguracoes(item)"
+                    v-if="!editMode">
                   </q-btn>
                 </div>
-                <!--q-btn color="grey-7" round flat icon="more_vert">
-                  <q-menu cover auto-close>
-                    <q-list>
-                      <q-item clickable v-if="!item.configuracoes">
-                        <q-item-section @click="abrirConfiguracoes(item)">Configurar</q-item-section>
-                      </q-item>
-                      <q-item clickable v-if="item.configuracoes">
-                        <q-item-section @click="excluir(item)">Excluir</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn-->
               </q-item-section>
             </q-item>
           </q-list>
@@ -152,6 +141,9 @@
         <q-btn fab icon="save" color="green" @click="salvar" :disable="!isSubmitted" v-if="!editMode" />
       </q-page-sticky>
 
+      <q-page-sticky position="bottom-left" :offset="[18, 18]">
+        <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'atendimentos' }" />
+      </q-page-sticky>
     </div>
   </q-page>
 </template>
