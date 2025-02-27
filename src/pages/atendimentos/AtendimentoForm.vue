@@ -99,7 +99,7 @@ item, index
                 <div v-if="item.configuracoes">
                   <div><b class="text-teal">Período:</b></div>
                   <q-item-label>{{ `${form.data_inicio} até ${item.configuracoes.data_final}`
-                  }}</q-item-label>
+                    }}</q-item-label>
                   <div><b class="text-teal">Repetir:</b></div>
                   <q-item-label>{{ item.configuracoes.repetir }} por sessão</q-item-label>
                   <q-item-label>
