@@ -355,6 +355,12 @@ async function gerarRelatorio() {
         });
     }
 
+    if (status == 200) {
+        urlDownload.value = data.url;
+        showUrlDownload.value = true;
+        $q.loading.hide
+    }
+
 
     $q.loading.hide();
 
@@ -365,9 +371,6 @@ async function gerarRelatorio() {
     if (data.data == 'Não foi localizado treinamentos para o aprendiz') {
         error("Dentro do período especifícado não foi encontrado dados para gerar o relatório.");
     }
-
-    urlDownload.value = data.data.url;
-    showUrlDownload.value = true;
 }
 
 const carregarSelectAprendiz = async () => {
