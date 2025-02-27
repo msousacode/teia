@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.1.2002</div><!--v1.major.melhoria.bug.mes e ano-->
+        <div style="color: white;">v1.0.0.1.2602</div><!--v1.major.melhoria.bug.mes e ano-->
       </q-toolbar>
     </q-header>
 
