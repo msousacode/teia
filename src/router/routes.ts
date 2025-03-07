@@ -84,6 +84,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        name: 'treinamentos-view',
+        path: '/treinamentos-view/:id',
+        component: () => import('pages/treinamentos/TreinamentoView.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         name: 'treinamento-novo',
         path: '/treinamento-novo/:action?',
         component: () => import('pages/treinamentos/TreinamentoForm.vue'),

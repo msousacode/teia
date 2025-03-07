@@ -24,6 +24,8 @@
                     <q-checkbox v-model="item.importado" color="primary"
                         @click="handleSelectTreinamentos(item.treinamentoBaseId)" label="Selecionar para impotação" />
                 </q-card-actions>
+
+                <q-btn @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
             </q-card>
         </div>
 
@@ -40,6 +42,7 @@ import useNotify from 'src/composables/UseNotify';
 import { TreinamentoService } from 'src/services/TreinamentoService';
 import { useTreinamentoStore } from 'src/stores/treinamento';
 import { onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 interface Treinamento {
     treinamentoBaseId: string;
@@ -49,6 +52,8 @@ interface Treinamento {
     procololo: string // "ABC" | "Ocorrência de Resposta",    
     isImportado: boolean;
 }
+
+const router = useRouter();
 
 const service = new TreinamentoService();
 
@@ -65,6 +70,10 @@ const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EX
 const selected = ref<string>('ATENCAO');
 
 const store = useTreinamentoStore();
+
+function redirecionar(id: string) {
+    router.push({ name: 'treinamentos-view', params: { id: id } });
+}
 
 function handleSelectTreinamentos(treinamentoBaseId: string) {
 

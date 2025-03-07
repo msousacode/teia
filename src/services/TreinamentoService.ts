@@ -30,4 +30,8 @@ export class TreinamentoService {
   async deleteTreinamento(treinamentoId: string) {
     return await http.delete(`/treinamentos/${treinamentoId}`);
   }
+
+  async getTreinamentoBaseById(id: string | null) {
+    return await http.get(`/treinamentos/base/view/${id}`);
+  }
 }
