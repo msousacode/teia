@@ -13,6 +13,8 @@
                 <q-card-section>
                     <q-chip color="blue-9" class="text-white" dense>{{ item.habilidade }}</q-chip>
                     <q-chip color="orange-10" class="text-white" dense>Protocolo ABC</q-chip>
+                    <q-btn dense flat icon="mdi-eye" color="blue-8"
+                        @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
                     <div class="text-body1 q-mb-md q-mt-md"><b>{{ item.titulo }}</b></div>
 
                     <div class="text-body2 text-justify">{{ item.descricao }}</div>
@@ -24,8 +26,6 @@
                     <q-checkbox v-model="item.importado" color="primary"
                         @click="handleSelectTreinamentos(item.treinamentoBaseId)" label="Selecionar para impotação" />
                 </q-card-actions>
-
-                <q-btn @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
             </q-card>
         </div>
 

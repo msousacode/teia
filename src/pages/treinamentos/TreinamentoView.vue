@@ -2,14 +2,15 @@
     <div v-for="(item, index) in list" :key="index" class="q-pa-sm">
 
         <q-card>
-            <q-card-section>
+            <q-card-section :class="'bg-grey-2'">
 
                 <div class="col">
-                    <div class="text-subtitle2 text-teal q-mt-md">Título do objetivo:</div>
+                    <div class="text-subtitle2 text-teal">Título do objetivo:</div>
                     <div class="text-subtitle1">{{ item.nomeAlvo }}</div>
 
-                    <div class="text-subtitle2 text-teal q-mt-md">Descrição do Alvo:</div>
-                    <div class="text-body2 q-mt-sm">{{ item.descricao }}</div>
+                    <div class="text-subtitle2 text-teal">Descrição do Alvo:
+                    </div>
+                    <div class="text-body2 q-mt-sm" style="white-space: pre-line;">{{ item.descricao }}</div>
 
                 </div>
             </q-card-section>
