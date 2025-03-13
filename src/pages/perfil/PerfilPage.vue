@@ -1,8 +1,8 @@
 <template>
     <q-page class="q-pa-sm">
-        <title-custom title="Meu Perfil" />
         <div class="row justify-center">
             <q-form class="col-md-7 col-xs-12 col-sm-12">
+                <title-custom title="Meu Perfil" />
                 <q-input outlined label="Nome Completo" v-model="form.full_name"
                     :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 

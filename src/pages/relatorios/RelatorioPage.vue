@@ -175,61 +175,68 @@
             </q-card>
         </q-dialog>
 
-        <div class="text-body1 q-mt-md">Selecione o período para gerar o relatório</div>
 
-        <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
+        <div class="row justify-center">
 
-            <div class="row q-gutter-md">
-                <div class="col">
-                    <q-input label="Data de Início" outlined stack-label v-model="form.dataInicio" mask="##/##/####">
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="form.dataInicio" :locale="{
-                                        days: dias,
-                                        months: meses,
-                                        daysShort: diasAbreviados,
-                                        monthsShort: meses,
-                                    }" mask="DD/MM/YYYY">
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-date>
-                                </q-popup-proxy>
-                            </q-icon>
-                        </template>
-                    </q-input>
+
+            <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
+
+                <div class="text-body1 q-mt-xl text-teal">Selecione o período para gerar o relatório:</div>
+
+                <div class="row q-gutter-md">
+                    <div class="col">
+                        <q-input label="Data de Início" outlined stack-label v-model="form.dataInicio"
+                            mask="##/##/####">
+                            <template v-slot:append>
+                                <q-icon name="event" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                        <q-date v-model="form.dataInicio" :locale="{
+                                            days: dias,
+                                            months: meses,
+                                            daysShort: diasAbreviados,
+                                            monthsShort: meses,
+                                        }" mask="DD/MM/YYYY">
+                                            <div class="row items-center justify-end">
+                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                        </q-date>
+                                    </q-popup-proxy>
+                                </q-icon>
+                            </template>
+                        </q-input>
+                    </div>
+
+                    <div class="col">
+                        <q-input label="Data de Final" outlined stack-label v-model="form.dataFinal" mask="##/##/####">
+                            <template v-slot:append>
+                                <q-icon name="event" class="cursor-pointer">
+                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                        <q-date v-model="form.dataFinal" :locale="{
+                                            days: dias,
+                                            months: meses,
+                                            daysShort: diasAbreviados,
+                                            monthsShort: meses,
+                                        }" mask="DD/MM/YYYY">
+                                            <div class="row items-center justify-end">
+                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                            </div>
+                                        </q-date>
+                                    </q-popup-proxy>
+                                </q-icon>
+                            </template>
+                        </q-input>
+                    </div>
                 </div>
 
-                <div class="col">
-                    <q-input label="Data de Final" outlined stack-label v-model="form.dataFinal" mask="##/##/####">
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="form.dataFinal" :locale="{
-                                        days: dias,
-                                        months: meses,
-                                        daysShort: diasAbreviados,
-                                        monthsShort: meses,
-                                    }" mask="DD/MM/YYYY">
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                    </q-date>
-                                </q-popup-proxy>
-                            </q-icon>
-                        </template>
-                    </q-input>
-                </div>
+                <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
+                    @update:model-value="pesquisar" />
+
+                <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps
+                    :disabled="!habilitarRelatorioBtn" @click="gerarRelatorio" />
+
             </div>
-
-            <q-select outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-                @update:model-value="pesquisar" />
-
         </div>
 
-        <div class="text-body1 q-mb-sm q-mt-md text-teal-7 text-uppercase" v-if="habilitarRelatorioBtn">Treinamentos em
-            andamento:</div>
         <div v-for="(
 item, index
             ) in treinamentos" :key="index">
@@ -244,8 +251,6 @@ item, index
 
         <div ref="chartContainer"></div>
 
-        <q-btn label="Gerar Relatório" color="info" class="full-width q-pa-sm q-mt-md" no-caps
-            :disabled="!habilitarRelatorioBtn" @click="gerarRelatorio" />
 
     </q-page>
 

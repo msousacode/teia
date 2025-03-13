@@ -28,13 +28,6 @@
       </q-card>
     </q-dialog>
 
-    <div class="q-ma-md">
-      <div class="text-body1 q-mb-md text-teal text-center" v-if="isAssinante"><b>Sua Assinatura encontra-se
-          ativa e você pode cancelar a
-          qualquer
-          momento.</b></div>
-    </div>
-
     <!-- Cartão: Plano Pro -->
     <q-card flat bordered class="my-card q-ma-md bg-grey-3" v-if="!isAssinante">
       <q-card-section class="q-py-md">
@@ -127,9 +120,20 @@
       </q-card-section>
     </q-card>
 
-    <!-- Botão: Cancelar Assinatura -->
-    <q-btn label="DESEJO CANCELAR A MINHA ASSINATURA" icon="cancel" class="q-ma-sm full-width" color="pink-5"
-      @click="dialogIsCancel = true" v-if="isAssinante" />
+    <div class="row justify-center">
+      <div class="col-md-7 col-xs-12 col-sm-12">
+        <div class="q-ma-md">
+          <div class="text-body1 q-mb-md text-teal text-center" v-if="isAssinante"><b>Sua Assinatura encontra-se
+              ativa e você pode cancelar a
+              qualquer
+              momento.</b></div>
+        </div>
+        <!-- Botão: Cancelar Assinatura -->
+        <q-btn label="DESEJO CANCELAR A MINHA ASSINATURA" icon="cancel" class="q-ma-md full-width" color="pink-5"
+          @click="dialogIsCancel = true" v-if="isAssinante" />
+      </div>
+
+    </div>
 
     <q-page-sticky position="bottom-left" :offset="[18, 18]" v-if="isAssinante">
       <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'relatorios' }" />

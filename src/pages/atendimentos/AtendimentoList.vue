@@ -51,7 +51,7 @@ item, index
       <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
-          <span class="text-h6 text-teal"> Intervenções </span>
+          <span class="text-h6 text-teal"> Atendimentos </span>
           <q-space />
         </template>
         <template v-slot:body-cell-actions="props">

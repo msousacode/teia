@@ -1,8 +1,9 @@
 <template>
   <q-page class="q-pa-sm">
-    <title-custom title="Aprendiz" />
-    <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
-      <q-form @submit.prevent="submit">
+
+    <div class="row justify-center">
+      <q-form @submit.prevent="submit" class="col-md-7 col-xs-12 col-sm-12">
+        <title-custom title="Aprendiz" />
 
         <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
           :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />

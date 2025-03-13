@@ -53,9 +53,9 @@
   </q-dialog>
 
   <q-page class="q-pa-sm">
-    <title-custom title="Intervenção" />
     <div class="row justify-center">
       <q-form class="col-md-7 col-xs-12 col-sm-12">
+        <title-custom title="Atendimentos" />
         <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
           :rules="[(val) => isSubmitted && !editMode ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
           :readonly="editMode" />

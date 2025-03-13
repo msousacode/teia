@@ -49,7 +49,8 @@
                                         <div class="text-subtitle2 text-teal q-mt-md">Descrição do Alvo:</div>
                                     </div>
 
-                                    <div class="text-body2 q-mt-sm">{{ item.alvo.descricao_alvo }}</div>
+                                    <div class="text-body2 q-mt-sm" style="white-space: pre-line;">{{
+                                        item.alvo.descricao_alvo }}</div>
 
                                     <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
                                     </span>
