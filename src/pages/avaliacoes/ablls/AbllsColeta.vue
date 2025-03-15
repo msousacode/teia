@@ -39,6 +39,11 @@
                                 <div class="col">
                                     <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao }}
                                     </div>
+                                    <div class="text-body2 q-mt-md" style="white-space: pre-line; ">
+                                        {{
+                                            item.pontuacao
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                         </q-card-section>
