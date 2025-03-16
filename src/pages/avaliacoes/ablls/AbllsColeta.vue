@@ -28,52 +28,55 @@
 
         <q-tab-panels v-model="objetivosTab">
             <q-tab-panel name="objetivos">
-                <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card" :class="'bg-brown-1'">
-                        <div class="flex justify-end">
-                            <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
-                                item.criadoNome }}</div>
-                        </div>
-                        <q-card-section>
-                            <div class="row items-center no-wrap">
-                                <div class="col">
-                                    <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao }}
-                                    </div>
-                                    <div class="text-body2 q-mt-md" style="white-space: pre-line; ">
-                                        {{
-                                            item.pontuacao
-                                        }}
+                <div class="row justify-center">
+                    <div v-for="(item, index) in cards" :key="index" class="col-md-7 col-xs-12 col-sm-12">
+                        <q-card flat bordered class="my-card" :class="'bg-brown-1'">
+                            <div class="flex justify-end">
+                                <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
+                                    item.criadoNome }}</div>
+                            </div>
+                            <q-card-section>
+                                <div class="row items-center no-wrap">
+                                    <div class="col">
+                                        <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao
+                                            }}
+                                        </div>
+                                        <div class="text-body2 q-mt-md" style="white-space: pre-line; ">
+                                            {{
+                                                item.pontuacao
+                                            }}
+                                        </div>
                                     </div>
                                 </div>
+                            </q-card-section>
+
+                            <div class="q-pa-md q-gutter-y-md flex justify-center">
+                                <q-btn-group style="border: 1px solid;" v-show="item.cod != '0'">
+                                    <q-btn label="0"
+                                        :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 0)" />
+                                    <q-btn label="1"
+                                        :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 1)" />
+                                    <q-btn label="2"
+                                        :class="item.selected == 2 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 2)" v-if="item.pontos >= 2" />
+                                    <q-btn label="3"
+                                        :class="item.selected == 3 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 3)" v-if="item.pontos >= 3" />
+                                    <q-btn label="4"
+                                        :class="item.selected == 4 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 4)" v-if="item.pontos == 4" />
+
+                                    <q-btn label="NA"
+                                        :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, -1)" />
+                                </q-btn-group>
                             </div>
-                        </q-card-section>
+                        </q-card>
 
-                        <div class="q-pa-md q-gutter-y-md flex justify-center">
-                            <q-btn-group style="border: 1px solid;" v-show="item.cod != '0'">
-                                <q-btn label="0"
-                                    :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 0)" />
-                                <q-btn label="1"
-                                    :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 1)" />
-                                <q-btn label="2"
-                                    :class="item.selected == 2 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 2)" v-if="item.pontos >= 2" />
-                                <q-btn label="3"
-                                    :class="item.selected == 3 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 3)" v-if="item.pontos >= 3" />
-                                <q-btn label="4"
-                                    :class="item.selected == 4 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 4)" v-if="item.pontos == 4" />
-
-                                <q-btn label="NA"
-                                    :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, -1)" />
-                            </q-btn-group>
-                        </div>
-                    </q-card>
-
-                    <div class="q-mt-sm"></div>
+                        <div class="q-mt-sm"></div>
+                    </div>
                 </div>
             </q-tab-panel>
         </q-tab-panels>

@@ -23,40 +23,43 @@
         </q-tabs>
         <q-tab-panels v-model="tab3">
             <q-tab-panel name="objetivos">
-                <div v-for="(item, index) in cards" :key="index">
-                    <q-card flat bordered class="my-card" :class="'bg-teal-1'">
-                        <div class="flex justify-end">
-                            <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
-                                item.criadoNome }}</div>
-                        </div>
-                        <q-card-section>
-                            <div class="row items-center no-wrap">
-                                <div class="col">
-                                    <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao }}
+                <div class="row justify-center">
+                    <div v-for="(item, index) in cards" :key="index" class="col-md-7 col-xs-12 col-sm-12">
+                        <q-card flat bordered class="my-card" :class="'bg-teal-1'">
+                            <div class="flex justify-end">
+                                <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
+                                    item.criadoNome }}</div>
+                            </div>
+                            <q-card-section>
+                                <div class="row items-center no-wrap">
+                                    <div class="col">
+                                        <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao
+                                        }}
+                                        </div>
                                     </div>
                                 </div>
+                            </q-card-section>
+
+                            <div class="q-pa-md q-gutter-y-md flex justify-center">
+                                <q-btn-group style="border: 1px solid;" v-show="item.cod != '0'">
+                                    <q-btn label="Sim"
+                                        :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 1)" />
+                                    <q-btn label="As vezes"
+                                        :class="item.selected == 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 0.5)" />
+                                    <q-btn label="Não"
+                                        :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 0)" />
+                                    <q-btn label="NA"
+                                        :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, -1)" />
+                                </q-btn-group>
                             </div>
-                        </q-card-section>
+                        </q-card>
 
-                        <div class="q-pa-md q-gutter-y-md flex justify-center">
-                            <q-btn-group style="border: 1px solid;" v-show="item.cod != '0'">
-                                <q-btn label="Sim"
-                                    :class="item.selected == 1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 1)" />
-                                <q-btn label="As vezes"
-                                    :class="item.selected == 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 0.5)" />
-                                <q-btn label="Não"
-                                    :class="item.selected == 0 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 0)" />
-                                <q-btn label="NA"
-                                    :class="item.selected == -1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, -1)" />
-                            </q-btn-group>
-                        </div>
-                    </q-card>
-
-                    <div class="q-mt-sm"></div>
+                        <div class="q-mt-sm"></div>
+                    </div>
                 </div>
             </q-tab-panel>
 

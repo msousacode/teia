@@ -21,89 +21,95 @@
         </q-tabs>
         <q-tab-panels v-model="tab3">
             <q-tab-panel name="objetivos">
-                <div v-for="(item, index) in cards" :key="index">
-                    <div>
-                        <q-dialog persistent :key="index" v-model="visible[index]">
-                            <q-card class="my-card q-px-md q-py-md" style="max-width: 90vw; width: auto;">
-                                <q-card-section>
-                                    <div class="text-h6">Objetivo</div>
-                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.objetivo }}
-                                    </div>
+                <div class="row justify-center">
+                    <div v-for="(item, index) in cards" :key="index" class="col-md-7 col-xs-12 col-sm-12">
+                        <div>
+                            <q-dialog persistent :key="index" v-model="visible[index]">
+                                <q-card class="my-card q-px-md q-py-md" style="width: auto;">
+                                    <q-card-section>
+                                        <div class="text-h6">Objetivo</div>
+                                        <div class="text-body1 text-justify q-mt-md q-mb-md">{{
+                                            item.observacoes.objetivo }}
+                                        </div>
 
-                                    <q-separator />
+                                        <q-separator />
 
-                                    <div class="text-h6">Materiais</div>
-                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.materiais
-                                        }}</div>
+                                        <div class="text-h6">Materiais</div>
+                                        <div class="text-body1 text-justify q-mt-md q-mb-md">{{
+                                            item.observacoes.materiais
+                                            }}</div>
 
-                                    <q-separator />
+                                        <q-separator />
 
-                                    <div class="text-h6">Exemplo</div>
-                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.exemplo }}
-                                    </div>
+                                        <div class="text-h6">Exemplo</div>
+                                        <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.exemplo
+                                            }}
+                                        </div>
 
-                                    <q-separator />
+                                        <q-separator />
 
-                                    <div class="text-h6">1 Ponto</div>
-                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{
-                                        item.observacoes.pontuacao.umPonto
-                                    }}</div>
+                                        <div class="text-h6">1 Ponto</div>
+                                        <div class="text-body1 text-justify q-mt-md q-mb-md">{{
+                                            item.observacoes.pontuacao.umPonto
+                                            }}</div>
 
-                                    <div class="text-h6">0,5 Ponto</div>
+                                        <div class="text-h6">0,5 Ponto</div>
 
-                                    <q-separator />
-                                    <div class="text-body1 text-justify q-mt-md q-mb-md">{{
-                                        item.observacoes.pontuacao.meioPonto
-                                    }}
-                                    </div>
-                                </q-card-section>
-                                <q-card-actions>
-                                    <q-btn label="Fechar" color="primary" @click="fecharModalAjuda(index)" />
-                                </q-card-actions>
-                            </q-card>
-                        </q-dialog>
-                    </div>
-                    <q-card flat bordered class="my-card" :class="nivelSelecionado === '1'
-                        ? 'bg-orange-1'
-                        : nivelSelecionado === '2'
-                            ? 'bg-green-1'
-                            : nivelSelecionado === '3'
-                                ? 'bg-blue-1'
-                                : ''">
-
-                        <div class="flex justify-between">
-                            <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
-                            <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
-                                item.criadoNome }}</div>
+                                        <q-separator />
+                                        <div class="text-body1 text-justify q-mt-md q-mb-md">{{
+                                            item.observacoes.pontuacao.meioPonto
+                                            }}
+                                        </div>
+                                    </q-card-section>
+                                    <q-card-actions>
+                                        <q-btn label="Fechar" color="primary" @click="fecharModalAjuda(index)" />
+                                    </q-card-actions>
+                                </q-card>
+                            </q-dialog>
                         </div>
-                        <q-card-section>
-                            <div class="row items-center no-wrap">
-                                <div class="col">
-                                    <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao }}
+                        <q-card flat bordered class="my-card" :class="nivelSelecionado === '1'
+                            ? 'bg-orange-1'
+                            : nivelSelecionado === '2'
+                                ? 'bg-green-1'
+                                : nivelSelecionado === '3'
+                                    ? 'bg-blue-1'
+                                    : ''">
+
+                            <div class="flex justify-between">
+                                <q-btn unelevated :icon="'help'" @click="abrirModalAjuda(index)" />
+                                <div class="q-mr-md q-mt-md text-body2" v-if="item.criadoNome != ''">respondido por: {{
+                                    item.criadoNome }}</div>
+                            </div>
+                            <q-card-section>
+                                <div class="row items-center no-wrap">
+                                    <div class="col">
+                                        <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao
+                                            }}
+                                        </div>
                                     </div>
                                 </div>
+                            </q-card-section>
+
+                            <div class="q-pa-md q-gutter-y-md flex justify-center">
+                                <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
+                                    <q-btn label="1 Ponto"
+                                        :class="item.selected === 1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 1)" />
+                                    <q-btn label="0,5 Ponto"
+                                        :class="item.selected === 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 0.5)" />
+                                    <q-btn label="0 Ponto"
+                                        :class="item.selected === 0 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, 0)" />
+                                    <q-btn label="NA"
+                                        :class="item.selected === -1 ? 'bg-teal text-white' : 'bg-white text-black'"
+                                        @click="coletar(item, -1)" />
+                                </q-btn-group>
                             </div>
-                        </q-card-section>
+                        </q-card>
 
-                        <div class="q-pa-md q-gutter-y-md flex justify-center">
-                            <q-btn-group style="border: 1px solid;" v-show="item.id != 0">
-                                <q-btn label="1 Ponto"
-                                    :class="item.selected === 1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 1)" />
-                                <q-btn label="0,5 Ponto"
-                                    :class="item.selected === 0.5 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 0.5)" />
-                                <q-btn label="0 Ponto"
-                                    :class="item.selected === 0 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, 0)" />
-                                <q-btn label="NA"
-                                    :class="item.selected === -1 ? 'bg-teal text-white' : 'bg-white text-black'"
-                                    @click="coletar(item, -1)" />
-                            </q-btn-group>
-                        </div>
-                    </q-card>
-
-                    <div class="q-mt-sm"></div>
+                        <div class="q-mt-sm"></div>
+                    </div>
                 </div>
             </q-tab-panel>
 
