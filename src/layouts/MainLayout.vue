@@ -111,27 +111,39 @@ const essentialLinks: EssentialLinkProps[] = reactive([
 
 const restricoesEspecialista = ['Profissionais', 'Aprendizes', 'Assinatura'];
 
-const restricoesAt = ['Profissionais', 'Aprendizes', 'Assinatura', 'Protocolos', 'Programas'];
+const restricoesAt = ['Profissionais', 'Aprendizes', 'Assinatura', 'Avaliações', 'Programas'];
 
 watch(perfil, (newValue) => {
 
   if (newValue == 'ESPECIALISTA') {
     restricoesEspecialista.forEach(link => {
-      essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+      try {
+        essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+      } catch (e) {
+        console.debug(e);
+      }
     });
     return;
   }
 
   if (newValue == 'AT') {
     restricoesAt.forEach(link => {
-      essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+      try {
+        essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+      } catch (e) {
+        console.debug(e);
+      }
     });
     return;
   }
 
   if (newValue == 'ADMIN') {
     restricoesEspecialista.forEach(link => {
-      essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+      try {
+        essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
+      } catch (e) {
+        console.debug(e);
+      }
     });
   }
 });

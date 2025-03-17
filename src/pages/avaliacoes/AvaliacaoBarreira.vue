@@ -1,16 +1,25 @@
 <template>
     <div class="q-ml-md q-mt-md text-teal">Barreiras - Aprendiz: {{ aprendizStorage.nome_aprendiz }}</div>
-    <title-custom title="Barreiras" class="q-ml-sm"></title-custom>
     <q-page>
-        <div class="q-pa-md">
-            <form @submit.prevent="salvar">
+        <div class="row justify-center">
+            <form @submit.prevent="salvar" class="col-md-7 col-xs-12 col-sm-12">
+                <title-custom title="Barreiras" class="q-ml-sm"></title-custom>
                 <div v-for="assessment in barreiras" :key="assessment.id" class="q-mb-xl">
                     <div class="text-h6">{{ assessment.question }}</div>
                     <q-select v-model="assessment.id" @update:model-value="coletaResposta(assessment)"
                         :options="assessment.options" label="Resposta" />
                 </div>
 
-                <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit" />
+
+
+                <q-page-sticky position="bottom-right" :offset="[18, 18]">
+                    <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
+                </q-page-sticky>
+
+                <q-page-sticky position="bottom-left" :offset="[18, 18]">
+                    <q-btn fab icon="mdi-arrow-left" color="primary"
+                        :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
+                </q-page-sticky>
             </form>
         </div>
     </q-page>
@@ -36,6 +45,7 @@ const $q = useQuasar();
 
 const service = new VbMappService();
 
+const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 function coletaResposta(item: any) {
     // Atualiza ou adiciona a resposta 
     const index = barreiraList.coletas.findIndex(resposta => resposta.codigo == item.cod);
