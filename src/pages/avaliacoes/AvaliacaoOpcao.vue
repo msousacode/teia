@@ -529,6 +529,16 @@ columnsAblls.value = [
 rowsAblls.value = [
     {
         id: 1,
+        name: 'A1 - Nomeações',
+        path: 'avaliacoes-coleta/ablls',
+        pontuacaoMax: 154,
+        qtd: 19
+    },
+
+
+
+    {
+        id: 1,
         name: 'Cooperação e Eficácia do Reforçador',
         path: 'avaliacoes-coleta/ablls',
         pontuacaoMax: 44,
@@ -567,13 +577,6 @@ rowsAblls.value = [
         name: 'Solicitações',
         path: 'avaliacoes-coleta/ablls',
         pontuacaoMax: 72,
-        qtd: 19
-    },
-    {
-        id: 7,
-        name: 'Nomeações',
-        path: 'avaliacoes-coleta/ablls',
-        pontuacaoMax: 154,
         qtd: 19
     },
     {
