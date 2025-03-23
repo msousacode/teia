@@ -1,34 +1,42 @@
 <template>
     <q-page padding>
-        <div class="q-my-sm justify-start">
-            <q-select stack-label outlined v-model="selected" :options="habilidades" label="Tipo de Habilidade" />
+
+        <div class="row justify-center">
+            <div class="col-md-7 col-xs-12 col-sm-12">
+                <div class="q-my-sm justify-start">
+                    <q-select stack-label outlined v-model="selected" :options="habilidades"
+                        label="Tipo de Habilidade" />
+                </div>
+
+                <div class="q-my-sm flex justify-end">
+                    <q-btn label="Confirmar Importação" icon="upload" color="green" class="q-pa-sm" no-caps
+                        @click="importarTreinamentos" :disable="treinamentosSelecionados.length == 0" />
+                </div>
+                <div class="q-pa-md row items-start q-gutter-md">
+                    <q-card class="my-card bg-grey-2 full-width" v-for="item in treinamentos"
+                        :key="item.treinamentoBaseId">
+                        <q-card-section>
+                            <q-chip color="blue-9" class="text-white" dense>{{ item.habilidade }}</q-chip>
+                            <q-chip color="orange-10" class="text-white" dense>Protocolo ABC</q-chip>
+                            <q-btn dense flat icon="mdi-eye" color="blue-8"
+                                @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
+                            <div class="text-body1 q-mb-md q-mt-md"><b>{{ item.titulo }}</b></div>
+
+                            <div class="text-body2 text-justify">{{ item.descricao }}</div>
+                        </q-card-section>
+
+                        <q-separator dark />
+
+                        <q-card-actions>
+                            <q-checkbox v-model="item.importado" color="primary"
+                                @click="handleSelectTreinamentos(item.treinamentoBaseId)"
+                                label="Selecionar para impotação" />
+                        </q-card-actions>
+                    </q-card>
+                </div>
+
+            </div>
         </div>
-
-        <div class="q-my-sm flex justify-end">
-            <q-btn label="Confirmar Importação" icon="upload" color="green" class="q-pa-sm" no-caps
-                @click="importarTreinamentos" :disable="treinamentosSelecionados.length == 0" />
-        </div>
-        <div class="q-pa-md row items-start q-gutter-md">
-            <q-card class="my-card bg-grey-2 full-width" v-for="item in treinamentos" :key="item.treinamentoBaseId">
-                <q-card-section>
-                    <q-chip color="blue-9" class="text-white" dense>{{ item.habilidade }}</q-chip>
-                    <q-chip color="orange-10" class="text-white" dense>Protocolo ABC</q-chip>
-                    <q-btn dense flat icon="mdi-eye" color="blue-8"
-                        @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
-                    <div class="text-body1 q-mb-md q-mt-md"><b>{{ item.titulo }}</b></div>
-
-                    <div class="text-body2 text-justify">{{ item.descricao }}</div>
-                </q-card-section>
-
-                <q-separator dark />
-
-                <q-card-actions>
-                    <q-checkbox v-model="item.importado" color="primary"
-                        @click="handleSelectTreinamentos(item.treinamentoBaseId)" label="Selecionar para impotação" />
-                </q-card-actions>
-            </q-card>
-        </div>
-
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'treinamentos' }" />
         </q-page-sticky>
