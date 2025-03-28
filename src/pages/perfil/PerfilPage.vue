@@ -12,12 +12,9 @@
 
                 <q-input outlined label="Registro Profissional:" v-model="form.documento" class="q-mb-md" />
 
+                <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" @click="submit"
+                    :disable="!isSubmitted" />
             </q-form>
-        </div>
-
-        <div class="fixed-bottom q-pa-md">
-            <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" @click="submit"
-                :disable="!isSubmitted" />
         </div>
     </q-page>
 </template>

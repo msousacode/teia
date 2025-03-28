@@ -56,9 +56,8 @@ item, index
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-eye-outline" color="info" @click="editarAtendimento(props.row)" label="visualizar"
-              size="md" />
-            <q-btn icon="mdi-play-outline" color="green-9" @click="iniciarAtendimento(props.row)" label="Coletar" />
+            <q-btn icon="mdi-eye-outline" color="info" @click="editarAtendimento(props.row)" size="sm" />
+            <q-btn icon="mdi-play-outline" color="green-9" @click="iniciarAtendimento(props.row)" size="sm" />
           </q-td>
         </template>
       </q-table>
@@ -132,7 +131,12 @@ onMounted(async () => {
     if (data != null) {
       atendimentos.value = data
     } else {
-      error('Erro ao carregar atendimentos.')
+      $q.notify({
+        message: 'Não foram encontrados atendimentos.',
+        textColor: 'black',
+        color: 'yellow-7',
+        position: 'center',
+      });
     }
   } catch (e) {
     error('Erro ao carregar atendimentos.')

@@ -158,12 +158,13 @@
                                     <div>
                                         <div class="text-subtitle2 text-teal">Anotado por:</div>
                                         <div class="text-body1 text-dark">{{ item.criadoNome }}</div>
-                                        <div class="text-subtitle2 text-teal">Data da Anotação:</div>
+                                        <div class="text-subtitle2 text-teal q-mt-md">Data da Anotação:</div>
                                         <div class="text-body1 text-dark">{{ item.data_anotacao }}</div>
-                                        <div class="text-subtitle2 text-teal">Anotação:</div>
-                                        <div class="text-body1 text-dark">{{ item.anotacao }}</div>
+                                        <div class="text-subtitle2 text-teal q-mt-md">Anotação:</div>
+                                        <div class="text-body1 text-dark" style="white-space: pre-line;">{{
+                                            item.anotacao }}</div>
                                     </div>
-                                    <div class="row items-center q-gutter-x-sm">
+                                    <div class="row items-center q-gutter-x-sm q-mt-md">
                                         <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
                                             @click="abreModalAnotacao(item, 'editar')" />
                                         <q-btn icon="mdi-delete-outline" color="negative" dense size="md"

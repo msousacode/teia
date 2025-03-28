@@ -18,7 +18,7 @@
                         <q-card-section>
                             <q-chip color="blue-9" class="text-white" dense>{{ item.habilidade }}</q-chip>
                             <q-chip color="orange-10" class="text-white" dense>Protocolo ABC</q-chip>
-                            <q-btn dense flat icon="mdi-eye" color="blue-8"
+                            <q-btn dense flat icon="mdi-eye" color="blue-8" class="float-right"
                                 @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
                             <div class="text-body1 q-mb-md q-mt-md"><b>{{ item.titulo }}</b></div>
 
