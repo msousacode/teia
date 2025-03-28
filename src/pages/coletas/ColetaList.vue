@@ -32,26 +32,20 @@
                         class="col-md-7 col-xs-12 col-sm-12 q-mb-md">
                         <div class=" shadow-4">
 
-                            <div class="flex justify-center">
-                                <q-chip color="primary" text-color="white text-body2 q-mb-sm"
-                                    v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
-                                        item.semana }}ª
-                                    GRUPO</q-chip>
-                            </div>
-
                             <q-card flat bordered class="my-card">
-
                                 <q-card-section>
+                                    <q-chip color="info" text-color="white text-body2">{{ item.semana }}ª
+                                        SEMANA</q-chip>
                                     <div class="row items-center no-wrap">
                                         <div class="col">
                                             <div class="row items-center justify-between">
-                                                <div class="text-h6 text-teal">{{ item.alvo.nome_alvo }}</div>
+                                                <div class="text-h6 text-uppercase">{{ item.alvo.nome_alvo }}</div>
                                                 <div><q-btn icon="mdi-pencil-outline" color="info" dense size="md"
                                                         @click="abreModalAnotacao(item, 'inserir')" /></div>
                                             </div>
                                             <div class="row items-center q-gutter-sm"
                                                 v-if="item.alvo.descricao_alvo.length > 0">
-                                                <div class="text-subtitle2 text-teal q-mt-md">Descrição do Alvo:</div>
+                                                <div class="text-subtitle1 text-teal q-mt-md">Descrição do Alvo:</div>
                                             </div>
 
                                             <div class="text-body2 q-mt-sm" style="white-space: pre-line;">{{
@@ -101,11 +95,12 @@
                 <div class="row justify-center">
                     <div v-for="(item, index) in alvosColetados" :key="index"
                         class="q-mb-sm col-md-7 col-xs-12 col-sm-12">
+
                         <div class="flex justify-center">
                             <q-chip color="primary" text-color="white text-body2 q-mb-sm"
                                 v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
                                     item.semana }}ª
-                                GRUPO</q-chip>
+                                SEMANA</q-chip>
                         </div>
 
                         <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
