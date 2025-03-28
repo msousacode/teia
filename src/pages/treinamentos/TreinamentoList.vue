@@ -5,11 +5,10 @@
       <q-select stack-label outlined v-model="habilidadeFiltro" :options="habilidades" label="Tipo de Habilidade" />
     </div>
 
-    <div class="row">
+    <div class="row justify-end">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
         row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
         <template v-slot:top>
-          <span class="text-h6 text-teal"> Programas </span>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -22,8 +21,12 @@
           </q-td>
         </template>
       </q-table>
-      <q-btn label="Confirmar" color="green" no-caps class="full-width q-mt-md q-pa-sm"
-        @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento" v-close-popup :disable=isConfirm />
+
+      <div class="q-gutter-x-md row justify-end q-mt-md">
+        <q-btn color="secondary" @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento"
+          :disable=isConfirm>Salvar</q-btn>
+      </div>
+
     </div>
 
     <div class="q-my-md flex justify-center" v-show="!props.selecionarTreinamento">
