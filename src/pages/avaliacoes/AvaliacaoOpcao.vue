@@ -24,13 +24,19 @@
             </q-card>
         </q-dialog>
 
-        <div class="text-teal text-body1 q-mb-md">Selecione o aprendiz para pesquisar a avaliação:</div>
-        <div class="q-mb-md">
-            <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz" />
+        <div class="row justify-center">
+            <q-card class="q-pa-md col-md-7 col-xs-12 col-sm-12">
+                <title-custom title="Avaliações" />
+                <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes"
+                    label="Selecione o Aprendiz" />
+            </q-card>
         </div>
-        <div class="q-mb-md" v-show="showOpcoes">
-            <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name" class="my-sticky-column-table"
-                v-model:selected="selected" selection="single" :rows-per-page-options="[10]" :rows-per-page="10">
+
+
+        <div class="row justify-center q-mt-sm" v-show="showOpcoes">
+            <q-table :rows="avaliacaoRows" :columns="avaliacaoColumns" row-key="name"
+                class="my-sticky-column-table col-md-7 col-xs-12 col-sm-12" v-model:selected="selected"
+                selection="single" :rows-per-page-options="[10]" :rows-per-page="10">
                 <template v-slot:body-cell-actionsx="props">
                     <q-td :props="props" class="q-gutter-x-sm">
                     </q-td>
@@ -61,82 +67,91 @@
             <ablls-grafico v-bind="graficoDataProps"></ablls-grafico>
         </q-dialog>
 
-        <div v-if="isHabilitaProtocolos && isVbmapp">
-            <div class="text-teal text-h6">VB-MAPP</div>
-            <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                :rows-per-page-options="[10]" :rows-per-page="10">
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
-                            v-if="!(props.row.name == 'PEI')" />
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actionsx="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8"
-                            @click="props.row.name == 'MILESTONES' ? dialogIsVbMapp = true : dialogIsBarreiras = true"
-                            dense size="md" v-if="!(props.row.name == 'PEI')" />
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actionsy="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioVBMAPP(props.row.name)"
-                            v-if="(props.row.name == 'PEI') || (props.row.name == 'BARREIRAS')" />
-                    </q-td>
-                </template>
-            </q-table>
+        <div class="row justify-center q-mt-sm" v-if="isHabilitaProtocolos">
+            <q-card class="q-pa-md col-md-7 col-xs-12 col-sm-12">
+                <div v-if="isHabilitaProtocolos && isVbmapp">
+                    <div class="text-h6 q-mb-sm">VB-MAPP</div>
+                    <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
+                        :rows-per-page-options="[10]" :rows-per-page="10">
+                        <template v-slot:body-cell-actions="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                                    v-if="!(props.row.name == 'PEI')" />
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actionsx="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-chart-line" color="amber-8"
+                                    @click="props.row.name == 'MILESTONES' ? dialogIsVbMapp = true : dialogIsBarreiras = true"
+                                    dense size="md" v-if="!(props.row.name == 'PEI')" />
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actionsy="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                                    @click="gerarRelatorioVBMAPP(props.row.name)"
+                                    v-if="(props.row.name == 'PEI') || (props.row.name == 'BARREIRAS')" />
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+
+                <div v-if="isHabilitaProtocolos && isPortage">
+                    <div class="text-h6 q-mb-sm">Portage</div>
+                    <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
+                        :rows-per-page-options="[10]" :rows-per-page="10">
+                        <template v-slot:body-cell-actions="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                                    v-if="props.row.name != 'PEI'" />
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actionsx="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense
+                                    size="md" v-if="props.row.name != 'PEI'" />
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actionsy="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                                    @click="gerarRelatorioPortage(props.row.name)" />
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+
+                <div v-if="isHabilitaProtocolos && isAblls">
+                    <div class="text-h6 q-mb-sm">ABLLS-R</div>
+                    <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
+                        :rows-per-page-options="[30]" :rows-per-page="30">
+                        <template v-slot:body-cell-actions="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                                    v-if="props.row.name != 'PEI'" />
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actionsx="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-chart-line" color="amber-8" @click="abrirGraficoAblls(props.row)" dense
+                                    size="md" v-if="props.row.name != 'PEI'" />
+                                <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" @click="gerarRelatorioAbllsPEI"
+                                    v-else />
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+
+            </q-card>
         </div>
 
-        <div v-if="isHabilitaProtocolos && isPortage">
-            <div class="text-teal text-h6">Portage</div>
-            <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
-                :rows-per-page-options="[10]" :rows-per-page="10">
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
-                            v-if="props.row.name != 'PEI'" />
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actionsx="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense size="md"
-                            v-if="props.row.name != 'PEI'" />
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actionsy="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
-                            @click="gerarRelatorioPortage(props.row.name)" />
-                    </q-td>
-                </template>
-            </q-table>
+        <div class="row justify-center" v-if="!isHabilitaProtocolos">
+            <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+                <div class="q-gutter-x-md row justify-end">
+                    <q-btn color="secondary" :to="{ name: 'avaliacoes-novo' }">Incluir</q-btn>
+                </div>
+            </q-card>
         </div>
-
-        <div v-if="isHabilitaProtocolos && isAblls">
-            <div class="text-teal text-h6">ABLLS-R</div>
-            <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
-                :rows-per-page-options="[30]" :rows-per-page="30">
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
-                            v-if="props.row.name != 'PEI'" />
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actionsx="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-chart-line" color="amber-8" @click="abrirGraficoAblls(props.row)" dense
-                            size="md" v-if="props.row.name != 'PEI'" />
-                        <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" @click="gerarRelatorioAbllsPEI"
-                            v-else />
-                    </q-td>
-                </template>
-            </q-table>
-        </div>
-
-        <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="!isHabilitaProtocolos">
-            <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'avaliacoes-novo' }" />
-        </q-page-sticky>
     </div>
 </template>
 <script setup lang="ts">
@@ -157,6 +172,7 @@ import { useAprendizStore } from 'src/stores/aprendiz';
 import { RelatorioService } from 'src/services/RelatorioService';
 import BarreiraGrafico from './BarreiraGrafico.vue';
 import AbllsGrafico from './ablls/AbllsGrafico.vue';
+import TitleCustom from 'src/components/TitleCustom.vue';
 
 const aprendizService = new AprendizService();
 
