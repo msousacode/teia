@@ -2,57 +2,59 @@
   <q-page class="q-pa-sm">
 
     <div class="row justify-center">
+
+
       <q-form @submit.prevent="submit" class="col-md-7 col-xs-12 col-sm-12">
-        <title-custom title="Aprendiz" />
+        <q-card class="q-pa-md">
+          <title-custom title="Aprendiz" />
 
-        <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
-          :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
+          <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
+            :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
 
-        <q-input label="Data de Nasimento" outlined stack-label v-model="form.nasc_aprendiz" mask="##/##/####"
-          :rules="[val => isSubmitted ? (val && val.length > 0) || 'Data de nascimento é obrigatório' : true]">
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-date v-model="form.nasc_aprendiz" :locale="{
-                  days: dias,
-                  months: meses,
-                  daysShort: diasAbreviados,
-                  monthsShort: meses,
-                }" mask="DD/MM/YYYY">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
+          <q-input label="Data de Nasimento" outlined stack-label v-model="form.nasc_aprendiz" mask="##/##/####"
+            :rules="[val => isSubmitted ? (val && val.length > 0) || 'Data de nascimento é obrigatório' : true]">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="form.nasc_aprendiz" :locale="{
+                    days: dias,
+                    months: meses,
+                    daysShort: diasAbreviados,
+                    monthsShort: meses,
+                  }" mask="DD/MM/YYYY">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
 
-        <q-input outlined stack-label label="Nome da Mãe" v-model="form.nome_mae" class="q-mb-md" />
+          <q-input outlined stack-label label="Nome da Mãe" v-model="form.nome_mae" class="q-mb-md" />
 
-        <q-input outlined stack-label label="Nome do Pai" v-model="form.nome_pai" class="q-mb-md" />
+          <q-input outlined stack-label label="Nome do Pai" v-model="form.nome_pai" class="q-mb-md" />
 
-        <q-input outlined stack-label label="Nome do Responsável" v-model="form.nome_responsavel" class="q-mb-md" />
+          <q-input outlined stack-label label="Nome do Responsável" v-model="form.nome_responsavel" class="q-mb-md" />
 
-        <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
+          <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
 
-        <div v-if="routeLocation.params.action == 'edit'">
-          <div class="text-teal text-h6 q-mt-sm">Profissionais vínculados</div>
+          <div v-if="routeLocation.params.action == 'edit'">
+            <div class="text-body1 q-mt-md q-mb-md">Profissionais vínculados</div>
 
-          <q-table :rows="rows" :columns="columns" row-key="full_name" class="my-sticky-column-table"
-            v-model:selected="profissionaisSelecionados" selection="multiple" :rows-per-page-options="[10]"
-            :rows-per-page="10">
-          </q-table>
-        </div>
+            <q-table :rows="rows" :columns="columns" row-key="full_name" class="my-sticky-column-table"
+              v-model:selected="profissionaisSelecionados" selection="multiple" :rows-per-page-options="[10]"
+              :rows-per-page="10">
+            </q-table>
+          </div>
+
+          <div class="q-mt-md q-gutter-x-md row justify-end">
+            <q-btn color="info" :to="{ name: 'aprendizes' }">Voltar</q-btn>
+            <q-btn color="positive" @click="submit">Salvar</q-btn>
+          </div>
+
+        </q-card>
       </q-form>
-
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="save" color="green" @click="submit" />
-      </q-page-sticky>
-
-      <q-page-sticky position="bottom-left" :offset="[18, 18]">
-        <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'aprendizes' }" />
-      </q-page-sticky>
     </div>
 
   </q-page>

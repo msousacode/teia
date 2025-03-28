@@ -1,11 +1,11 @@
 <template>
   <q-page class="q-pa-sm">
 
-    <div class="row">
-      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12"
+    <div class="row justify-center">
+      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-md-7 col-xs-12 col-sm-12"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
-          <div class="text-h6 text-teal">Aprendizes</div>
+          <div class="text-h6">Aprendizes</div>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -17,12 +17,19 @@
             </q-btn>
           </q-td>
         </template>
+
       </q-table>
+
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn v-if="$q.platform.is.mobile || $q.platform.is.desktop" fab icon="mdi-plus" color="blue-9"
-        :to="{ name: 'aprendiz-novo' }" />
-    </q-page-sticky>
+
+    <div class="row justify-center">
+      <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+        <div class="q-gutter-x-md row justify-end">
+          <q-btn color="secondary" :to="{ name: 'aprendiz-novo' }">Incluir</q-btn>
+        </div>
+      </q-card>
+    </div>
+
   </q-page>
 </template>
 <script setup lang="ts">
