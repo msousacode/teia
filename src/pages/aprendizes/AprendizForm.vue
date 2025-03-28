@@ -2,8 +2,6 @@
   <q-page class="q-pa-sm">
 
     <div class="row justify-center">
-
-
       <q-form @submit.prevent="submit" class="col-md-7 col-xs-12 col-sm-12">
         <q-card class="q-pa-md">
           <title-custom title="Aprendiz" />

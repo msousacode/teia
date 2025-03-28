@@ -6,39 +6,37 @@
       </q-toolbar>
     </q-header>
 
-    <q-page>
-      <div class="row justify-center q-mt-md">
+    <q-page class="q-pa-sm">
+      <div class="row justify-center">
 
-        <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-xs">
-          <title-custom title="Cadastrar novo Usuário" />
-          <section>
-            <q-input outlined v-model="formCadastro.nome" label="Nome Completo" stack-label
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
+        <div class="col-md-7 col-xs-12 col-sm-12">
+          <q-card class="q-pa-md">
+            <title-custom title="Usuários" />
+            <section>
+              <q-input outlined v-model="formCadastro.nome" label="Nome Completo" stack-label
+                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
-            <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
-              :readonly="edit" @blur="verificarEmail" />
-            <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão"
-              v-if="(tipoPerfil == 'ADMIN')" />
+              <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
+                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
+                :readonly="edit" @blur="verificarEmail" />
+              <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão"
+                v-if="(tipoPerfil == 'ADMIN')" />
 
-            <section v-if="!(tipoPerfil == 'ADMIN')">
-              <q-input type="password" outlined v-model="formCadastro.senha" label="Senha" stack-label
-                :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
+              <section v-if="!(tipoPerfil == 'ADMIN')">
+                <q-input type="password" outlined v-model="formCadastro.senha" label="Senha" stack-label
+                  :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
 
-              <q-input type="password" outlined v-model="formCadastro.senhaConfirmada" label="Confirme a senha"
-                stack-label
-                :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
+                <q-input type="password" outlined v-model="formCadastro.senhaConfirmada" label="Confirme a senha"
+                  stack-label
+                  :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
+              </section>
+
             </section>
-
-          </section>
-
-          <br />
-
-          <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="Salvar" @click="cadastrar()"
-            :disable="!isSubmitted" />
-
-          <q-btn class="full-width text-teal text-blue-9 q-pa-sm" unelevated
-            :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'" label="Voltar" no-caps />
+            <div class="q-mt-md q-gutter-x-md row justify-end">
+              <q-btn color="info" :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'">Voltar</q-btn>
+              <q-btn color="positive" @click="cadastrar()" :disable="!isSubmitted">Salvar</q-btn>
+            </div>
+          </q-card>
         </div>
       </div>
     </q-page>

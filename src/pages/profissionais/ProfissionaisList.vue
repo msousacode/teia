@@ -1,27 +1,34 @@
 <template>
     <q-page class="q-pa-sm">
-
-        <div class="row">
-            <q-table :rows="list" :columns="columns" row-key="id" class="col-12"
-                :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
-                <template v-slot:top>
-                    <div class="text-h6 text-teal">Profissionais</div>
-                </template>
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editar(props.row)">
-                            <q-tooltip> Edit </q-tooltip>
-                        </q-btn>
-                        <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="excluir(props.row)">
-                            <q-tooltip> Delete </q-tooltip>
-                        </q-btn>
-                    </q-td>
-                </template>
-            </q-table>
+        <div class="row justify-center">
+            <div class="row col-md-7 col-xs-12 col-sm-12">
+                <q-table :rows="list" :columns="columns" row-key="id" class="col-12"
+                    :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
+                    <template v-slot:top>
+                        <div class="text-h6">Profissionais</div>
+                    </template>
+                    <template v-slot:body-cell-actions="props">
+                        <q-td :props="props" class="q-gutter-x-sm">
+                            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editar(props.row)">
+                                <q-tooltip> Edit </q-tooltip>
+                            </q-btn>
+                            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm"
+                                @click="excluir(props.row)">
+                                <q-tooltip> Delete </q-tooltip>
+                            </q-btn>
+                        </q-td>
+                    </template>
+                </q-table>
+            </div>
         </div>
-        <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'cadastrar' }" />
-        </q-page-sticky>
+
+        <div class="row justify-center">
+            <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+                <div class="q-gutter-x-md row justify-end">
+                    <q-btn color="secondary" :to="{ name: 'cadastrar' }">Incluir</q-btn>
+                </div>
+            </q-card>
+        </div>
     </q-page>
 </template>
 <script setup lang="ts">
