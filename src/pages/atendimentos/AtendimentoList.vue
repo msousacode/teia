@@ -47,11 +47,11 @@ item, index
       </q-card>
     </q-dialog>
 
-    <div class="row">
-      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-12"
+    <div class="row justify-center">
+      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-md-7 col-xs-12 col-sm-12"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
-          <span class="text-h6 text-teal"> Atendimentos </span>
+          <span class="text-h6"> Atendimentos </span>
           <q-space />
         </template>
         <template v-slot:body-cell-actions="props">
@@ -61,10 +61,17 @@ item, index
           </q-td>
         </template>
       </q-table>
+
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="perfil != 'AT'">
-      <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'atendimento-novo' }" />
-    </q-page-sticky>
+
+    <div class="row justify-center" v-if="perfil != 'AT'">
+      <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+        <div class="q-gutter-x-md row justify-end">
+          <q-btn color="secondary" :to="{ name: 'atendimento-novo' }">Incluir</q-btn>
+        </div>
+      </q-card>
+    </div>
+
   </div>
 </template>
 <script setup lang="ts">

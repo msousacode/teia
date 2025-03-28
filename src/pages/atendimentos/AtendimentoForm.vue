@@ -54,96 +54,101 @@
 
   <q-page class="q-pa-sm">
     <div class="row justify-center">
-      <q-form class="col-md-7 col-xs-12 col-sm-12">
-        <title-custom title="Atendimentos" />
-        <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
-          :rules="[(val) => isSubmitted && !editMode ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
-          :readonly="editMode" />
-        <q-input stack-label label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
-          v-show="!editMode"
-          :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-date v-model="form.data_inicio" :locale="{
-                  days: dias,
-                  months: meses,
-                  daysShort: diasAbreviados,
-                  monthsShort: meses,
-                }" mask="DD/MM/YYYY">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
+      <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+        <q-form>
+          <title-custom title="Atendimentos" />
+          <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes" label="Selecione o Aprendiz"
+            :rules="[(val) => isSubmitted && !editMode ? (val && val.length > 0) || 'Aprendiz é obrigatório' : true]"
+            :readonly="editMode" />
+          <q-input stack-label label="Data início do treinamento" outlined v-model="form.data_inicio" mask="##/##/####"
+            v-show="!editMode"
+            :rules="[val => isSubmitted ? (val && val.length > 0) || 'Início do treinamento é obrigatório' : true]">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="form.data_inicio" :locale="{
+                    days: dias,
+                    months: meses,
+                    daysShort: diasAbreviados,
+                    monthsShort: meses,
+                  }" mask="DD/MM/YYYY">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
 
-        <title-custom title="Treinamentos do Aprendiz" v-if="!editMode" />
-        <q-btn label="Selecionar Treinamentos" no-caps color="info" class="full-width q-pa-sm q-mb-md"
-          @click="visible = true" v-if="!editMode" />
-        <div class="q-gutter-y-md">
-          <q-list bordered separator v-for="(
+          <div class="q-gutter-x-md row justify-end q-mb-md">
+            <q-btn color="secondary" @click="visible = true" v-if="!editMode">Escolher Treinamentos</q-btn>
+          </div>
+
+          <div class="q-gutter-y-md">
+            <q-list bordered separator v-for="(
 item, index
             ) in storeTreinamento.getTreinamentosSelecionados" :key="index">
 
-            <q-item clickable v-ripple :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
-              <q-item-section>
-                <div><b class="text-teal">Treinamento:</b></div>
-                <q-item-label>{{ item.treinamento }}</q-item-label>
+              <q-item clickable v-ripple :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                <q-item-section>
+                  <div><b class="text-teal">Treinamento:</b></div>
+                  <q-item-label>{{ item.treinamento }}</q-item-label>
 
-                <div><b class="text-teal">Protocolo:</b></div>
-                <q-item-label>{{ item.protocolo }}</q-item-label>
+                  <div><b class="text-teal">Protocolo:</b></div>
+                  <q-item-label>{{ item.protocolo }}</q-item-label>
 
-                <div v-if="item.configuracoes">
-                  <div><b class="text-teal">Período:</b></div>
-                  <q-item-label>{{ `${form.data_inicio} até ${item.configuracoes.data_final}`
-                    }}</q-item-label>
-                  <div><b class="text-teal">Repetir:</b></div>
-                  <q-item-label>{{ item.configuracoes.repetir }} por sessão</q-item-label>
-                  <q-item-label>
-                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.seg">
-                      {{ item.configuracoes.seg ? 'SEG' : '' }}
-                    </q-chip>
-                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.ter">
-                      {{ item.configuracoes.ter ? 'TER' : '' }}
-                    </q-chip>
-                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.qua">
-                      {{ item.configuracoes.qua ? 'QUA' : '' }}
-                    </q-chip>
-                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.qui">
-                      {{ item.configuracoes.qui ? 'QUI' : '' }}
-                    </q-chip>
-                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.sex">
-                      {{ item.configuracoes.sex ? 'SEX' : '' }}
-                    </q-chip>
-                    <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.sab">
-                      {{ item.configuracoes.sab ? 'SAB' : '' }}
-                    </q-chip>
-                  </q-item-label>
-                </div>
-              </q-item-section>
-              <q-item-section side>
-                <div class="col-auto q-gutter-x-sm">
-                  <q-btn icon="settings" color="teal" dense size="md" @click="abrirConfiguracoes(item)"
-                    v-if="!editMode">
-                  </q-btn>
-                </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
+                  <div v-if="item.configuracoes">
+                    <div><b class="text-teal">Período:</b></div>
+                    <q-item-label>{{ `${form.data_inicio} até ${item.configuracoes.data_final}`
+                      }}</q-item-label>
+                    <div><b class="text-teal">Repetir:</b></div>
+                    <q-item-label>{{ item.configuracoes.repetir }} por sessão</q-item-label>
+                    <q-item-label>
+                      <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.seg">
+                        {{ item.configuracoes.seg ? 'SEG' : '' }}
+                      </q-chip>
+                      <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.ter">
+                        {{ item.configuracoes.ter ? 'TER' : '' }}
+                      </q-chip>
+                      <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.qua">
+                        {{ item.configuracoes.qua ? 'QUA' : '' }}
+                      </q-chip>
+                      <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.qui">
+                        {{ item.configuracoes.qui ? 'QUI' : '' }}
+                      </q-chip>
+                      <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.sex">
+                        {{ item.configuracoes.sex ? 'SEX' : '' }}
+                      </q-chip>
+                      <q-chip color="pink-4" text-color="white" v-if="item.configuracoes.sab">
+                        {{ item.configuracoes.sab ? 'SAB' : '' }}
+                      </q-chip>
+                    </q-item-label>
+                  </div>
+                </q-item-section>
+                <q-item-section side>
+                  <div class="col-auto q-gutter-x-sm">
+                    <q-btn icon="settings" color="teal" dense size="md" @click="abrirConfiguracoes(item)"
+                      v-if="!editMode">
+                    </q-btn>
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+
+        </q-form>
+
+      </q-card>
+    </div>
+
+    <div class="row justify-center">
+      <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+        <div class="q-gutter-x-md row justify-end">
+          <q-btn color="info" :to="{ name: 'atendimentos' }">Voltar</q-btn>
+          <q-btn color="positive" @click="salvar" :disable="!isSubmitted" v-if="!editMode">Salvar</q-btn>
         </div>
-
-      </q-form>
-
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="save" color="green" @click="salvar" :disable="!isSubmitted" v-if="!editMode" />
-      </q-page-sticky>
-
-      <q-page-sticky position="bottom-left" :offset="[18, 18]">
-        <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'atendimentos' }" />
-      </q-page-sticky>
+      </q-card>
     </div>
   </q-page>
 </template>

@@ -68,11 +68,10 @@
         </q-dialog>
 
         <div class="row justify-center q-mt-sm" v-if="isHabilitaProtocolos">
-            <q-card class="q-pa-md col-md-7 col-xs-12 col-sm-12">
+            <div class="col-md-7 col-xs-12 col-sm-12">
                 <div v-if="isHabilitaProtocolos && isVbmapp">
-                    <div class="text-h6 q-mb-sm">VB-MAPP</div>
                     <q-table :rows="rows" :columns="columns" row-key="name" class="my-sticky-column-table"
-                        :rows-per-page-options="[10]" :rows-per-page="10">
+                        :rows-per-page-options="[10]" :rows-per-page="10" title="VB-MAPP">
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props" class="q-gutter-x-sm">
                                 <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
@@ -97,9 +96,8 @@
                 </div>
 
                 <div v-if="isHabilitaProtocolos && isPortage">
-                    <div class="text-h6 q-mb-sm">Portage</div>
                     <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
-                        :rows-per-page-options="[10]" :rows-per-page="10">
+                        :rows-per-page-options="[10]" :rows-per-page="10" title="Portage">
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props" class="q-gutter-x-sm">
                                 <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
@@ -122,9 +120,8 @@
                 </div>
 
                 <div v-if="isHabilitaProtocolos && isAblls">
-                    <div class="text-h6 q-mb-sm">ABLLS-R</div>
                     <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
-                        :rows-per-page-options="[30]" :rows-per-page="30">
+                        :rows-per-page-options="[30]" :rows-per-page="30" title="ABLLS-R">
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props" class="q-gutter-x-sm">
                                 <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
@@ -141,8 +138,7 @@
                         </template>
                     </q-table>
                 </div>
-
-            </q-card>
+            </div>
         </div>
 
         <div class="row justify-center" v-if="!isHabilitaProtocolos">
