@@ -1,18 +1,21 @@
 <template>
     <q-page padding>
-
-        <div class="flex justify-between">
-            <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
-
-            <div class="q-ml-md q-mr-md text-teal">Progresso: <b>{{ qtdRespondidas }}/{{ pontuacaoMax }} = {{
-                calculoPercentagem }}%</b>
-            </div>
-        </div>
-
-
-        <div class="text-teal">
-            <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
-                v-model="showRespondidas" />
+        <div class="row justify-center">
+            <q-card class="col-md-7 col-xs-12 col-sm-12 q-mt-md q-pa-md q-mb-md">
+                <div class="text-uppercase text-body2">{{ descritivoTitulo
+                }} -
+                    <b>Aprendiz:</b> {{ aprendizStore.nome_aprendiz }}
+                    <div class="q-mt-sm">Progresso: <b>{{ qtdRespondidas }}/{{ pontuacaoMax
+                            }} =
+                            {{
+                                calculoPercentagem }}%</b>
+                    </div>
+                    <div class="text-uppercase">
+                        <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
+                            v-model="showRespondidas" />
+                    </div>
+                </div>
+            </q-card>
         </div>
 
         <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
@@ -26,7 +29,7 @@
             <q-tab :name=titulo :label=titulo />
         </q-tabs>
 
-        <q-tab-panels v-model="objetivosTab">
+        <q-tab-panels v-model="objetivosTab" style="background-color: #f8f5f2;">
             <q-tab-panel name="objetivos">
                 <div class="row justify-center">
                     <div v-for="(item, index) in cards" :key="index" class="col-md-7 col-xs-12 col-sm-12">
@@ -39,7 +42,7 @@
                                 <div class="row items-center no-wrap">
                                     <div class="col">
                                         <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao
-                                            }}
+                                        }}
                                         </div>
                                         <div class="text-body2 q-mt-md" style="white-space: pre-line; ">
                                             {{
@@ -82,11 +85,11 @@
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="save" color="green" @click="salvar" />
+            <q-btn fab icon="save" color="positive" @click="salvar" />
         </q-page-sticky>
 
         <q-page-sticky position="bottom-left" :offset="[18, 18]">
-            <q-btn fab icon="mdi-arrow-left" color="primary"
+            <q-btn fab icon="mdi-arrow-left" color="info"
                 :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
         </q-page-sticky>
     </q-page>

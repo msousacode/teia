@@ -1,14 +1,20 @@
 <template>
     <q-page padding>
-        <div class="q-ml-md text-teal">{{ descritivoTitulo }} - Aprendiz: {{ aprendizStore.nome_aprendiz }}</div>
-        <div class="text-teal">
-            <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
-                v-model="showRespondidas" />
+        <div class="row justify-center">
+            <q-card class="col-md-7 col-xs-12 col-sm-12 q-ml-md q-mt-md q-pa-md q-mb-md">
+                <div class="text-uppercase text-body2">{{ descritivoTitulo
+                    }} -
+                    <b>Aprendiz:</b> {{ aprendizStore.nome_aprendiz }}
+                    <div class="text-uppercase">
+                        <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
+                            v-model="showRespondidas" />
+                    </div>
+                </div>
+            </q-card>
         </div>
         <!--TODO fazer depois essa contagem-->
         <!--div class="text-teal">{{ descritivoTitulo }} - Coletados {{ qtdCardsRespondidos }} de {{ qtdCards }}</div-->
-        <q-tabs v-model="tab1" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
-            narrow-indicator>
+        <q-tabs v-model="tab1" dense active-color="primary" indicator-color="primary" align="justify" narrow-indicator>
             <q-tab name="1" label="Nível 1" v-if="showAba('1')" @click="getTitulosAvaliacoes(1, '1')" />
             <q-tab name="2" label="Nível 2" v-if="showAba('2')" @click="getTitulosAvaliacoes(1, '2')" />
             <q-tab name="3" label="Nível 3" v-if="showAba('3')" @click="getTitulosAvaliacoes(1, '3')" />
@@ -19,7 +25,7 @@
                 <q-tab :name=item.tipo :label=item.titulo @click="getTitulosAvaliacoes(item.tipo)" />
             </div>
         </q-tabs>
-        <q-tab-panels v-model="tab3">
+        <q-tab-panels v-model="tab3" style="background-color: #f8f5f2;">
             <q-tab-panel name="objetivos">
                 <div class="row justify-center">
                     <div v-for="(item, index) in cards" :key="index" class="col-md-7 col-xs-12 col-sm-12">
@@ -113,21 +119,14 @@
                 </div>
             </q-tab-panel>
 
-            <q-tab-panel name="nivel2">
-                Teste 2
-            </q-tab-panel>
-
-            <q-tab-panel name="nivel3">
-                Test3
-            </q-tab-panel>
         </q-tab-panels>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
+            <q-btn fab icon="save" color="positive" @click="salvar" :disable="false" />
         </q-page-sticky>
 
         <q-page-sticky position="bottom-left" :offset="[18, 18]">
-            <q-btn fab icon="mdi-arrow-left" color="primary"
+            <q-btn fab icon="mdi-arrow-left" color="info"
                 :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
         </q-page-sticky>
     </q-page>

@@ -56,8 +56,8 @@ item, index
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-eye-outline" color="info" @click="editarAtendimento(props.row)" size="sm" />
-            <q-btn icon="mdi-play-outline" color="green-9" @click="iniciarAtendimento(props.row)" size="sm" />
+            <q-btn icon="mdi-eye" outline color="info" @click="editarAtendimento(props.row)" size="sm" />
+            <q-btn icon="mdi-play" outline color="green-9" @click="iniciarAtendimento(props.row)" size="sm" />
           </q-td>
         </template>
       </q-table>

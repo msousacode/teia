@@ -43,7 +43,7 @@
                 </template>
                 <template v-slot:body-cell-actionsz="props">
                     <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-delete-outline" color="red-7" dense size="sm"
+                        <q-btn icon="mdi-delete-outline" outline color="red-7" dense size="sm"
                             @click="deletarAvaliacao(props.row)">
                         </q-btn>
                     </q-td>
@@ -74,20 +74,20 @@
                         :rows-per-page-options="[10]" :rows-per-page="10" title="VB-MAPP">
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                                <q-btn icon="mdi-pencil" outline color="teal" @click="ir(props.row)" dense size="md"
                                     v-if="!(props.row.name == 'PEI')" />
                             </q-td>
                         </template>
                         <template v-slot:body-cell-actionsx="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-chart-line" color="amber-8"
+                                <q-btn icon="mdi-chart-line" outline color="amber-8"
                                     @click="props.row.name == 'MILESTONES' ? dialogIsVbMapp = true : dialogIsBarreiras = true"
                                     dense size="md" v-if="!(props.row.name == 'PEI')" />
                             </q-td>
                         </template>
                         <template v-slot:body-cell-actionsy="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                                <q-btn icon="mdi-file-pdf-outline" outline color="red-8" dense size="md"
                                     @click="gerarRelatorioVBMAPP(props.row.name)"
                                     v-if="(props.row.name == 'PEI') || (props.row.name == 'BARREIRAS')" />
                             </q-td>
@@ -100,19 +100,19 @@
                         :rows-per-page-options="[10]" :rows-per-page="10" title="Portage">
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                                <q-btn icon="mdi-pencil" outline color="teal" @click="ir(props.row)" dense size="md"
                                     v-if="props.row.name != 'PEI'" />
                             </q-td>
                         </template>
                         <template v-slot:body-cell-actionsx="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-chart-line" color="amber-8" @click="dialogIsPortage = true" dense
-                                    size="md" v-if="props.row.name != 'PEI'" />
+                                <q-btn icon="mdi-chart-line" outline color="amber-8" @click="dialogIsPortage = true"
+                                    dense size="md" v-if="props.row.name != 'PEI'" />
                             </q-td>
                         </template>
                         <template v-slot:body-cell-actionsy="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-file-pdf" color="red-8" dense size="md"
+                                <q-btn icon="mdi-file-pdf-outline" outline color="red-8" dense size="md"
                                     @click="gerarRelatorioPortage(props.row.name)" />
                             </q-td>
                         </template>
@@ -124,16 +124,17 @@
                         :rows-per-page-options="[30]" :rows-per-page="30" title="ABLLS-R">
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-pencil" color="teal" @click="ir(props.row)" dense size="md"
+                                <q-btn icon="mdi-pencil" outline color="teal" @click="ir(props.row)" dense size="md"
                                     v-if="props.row.name != 'PEI'" />
                             </q-td>
                         </template>
                         <template v-slot:body-cell-actionsx="props">
                             <q-td :props="props" class="q-gutter-x-sm">
-                                <q-btn icon="mdi-chart-line" color="amber-8" @click="abrirGraficoAblls(props.row)" dense
-                                    size="md" v-if="props.row.name != 'PEI'" />
-                                <q-btn icon="mdi-file-pdf" color="red-8" dense size="md" @click="gerarRelatorioAbllsPEI"
-                                    v-else />
+                                <q-btn icon="mdi-chart-line" outline color="amber-8"
+                                    @click="abrirGraficoAblls(props.row)" dense size="md"
+                                    v-if="props.row.name != 'PEI'" />
+                                <q-btn icon="mdi-file-pdf-outline" outline color="red-8" dense size="md"
+                                    @click="gerarRelatorioAbllsPEI" v-else />
                             </q-td>
                         </template>
                     </q-table>

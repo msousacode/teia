@@ -121,22 +121,23 @@
     </q-card>
 
     <div class="row justify-center">
-      <div class="col-md-7 col-xs-12 col-sm-12">
-        <div class="q-ma-md">
-          <div class="text-body1 q-mb-md text-teal text-center" v-if="isAssinante"><b>Sua Assinatura encontra-se
-              ativa e você pode cancelar a
-              qualquer
-              momento.</b></div>
-        </div>
+      <q-card class="q-qa-md col-md-7 col-xs-12 col-sm-12">
+
+        <div class="text-body1 text-uppercase q-pa-md" v-if="isAssinante">Sua Assinatura encontra-se
+          ativa e pode ser cancelada a
+          qualquer
+          momento.</div>
         <!-- Botão: Cancelar Assinatura -->
-        <q-btn label="DESEJO CANCELAR A MINHA ASSINATURA" icon="cancel" class="q-ma-md full-width" color="pink-5"
-          @click="dialogIsCancel = true" v-if="isAssinante" />
-      </div>
+        <div class="row justify-end">
+          <q-btn label="DESEJO CANCELAR A MINHA ASSINATURA" icon="cancel" color="grey" class="q-ma-md"
+            @click="dialogIsCancel = true" v-if="isAssinante" />
+        </div>
+      </q-card>
 
     </div>
 
     <q-page-sticky position="bottom-left" :offset="[18, 18]" v-if="isAssinante">
-      <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'relatorios' }" />
+      <q-btn fab icon="mdi-arrow-left" color="info" :to="{ name: 'relatorios' }" />
     </q-page-sticky>
   </q-page>
 </template>
