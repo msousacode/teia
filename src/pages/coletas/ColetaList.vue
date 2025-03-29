@@ -3,44 +3,45 @@
 
         <q-dialog v-model="visibleAnotacao" persistent>
             <q-card class="my-card q-pa-md full-width">
-                <div class="text-h6 text-teal q-mb-sm">Anotação</div>
+                <div class="text-h6 q-mb-sm">Anotação</div>
 
                 <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
                     :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
                     placeholder="Digite sua anotação aqui..." />
                 <q-checkbox v-model="podeImprimir" label="Marque para não exibir essa anotação no relatório." />
 
-                <q-card-actions align="around">
-                    <q-btn label="Salvar" color="green" no-caps @click="salvarAnotacao(podeImprimir)"
-                        class="full-width" />
-                    <q-btn label="Voltar" color="info" no-caps @click="visibleAnotacao = false"
-                        class="full-width q-mt-md" />
-                </q-card-actions>
+                <div class="q-mt-md q-gutter-x-md row justify-end">
+                    <q-btn color="info" @click="visibleAnotacao = false">Fechar</q-btn>
+                    <q-btn color="positive" @click="salvarAnotacao(podeImprimir)">Salvar</q-btn>
+                </div>
+
             </q-card>
         </q-dialog>
 
-        <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
-            narrow-indicator>
+        <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify">
             <q-tab name="pendentes" label="Pendentes" />
             <q-tab name="coletados" label="Coletados" />
             <q-tab name="anotacoes" label="Anotações" />
         </q-tabs>
-        <q-tab-panels v-model="tab" animated>
+        <q-tab-panels v-model="tab">
             <q-tab-panel name="pendentes" style="background-color: #f8f5f2;">
                 <div class="row justify-center ">
                     <div v-for="(item, index) in alvosPendentes" :key="index"
                         class="col-md-7 col-xs-12 col-sm-12 q-mb-md">
-                        <div class=" shadow-4">
-
-                            <q-card flat bordered class="my-card">
+                        <div>
+                            <div class="flex justify-center">
+                                <q-chip color="primary" text-color="white text-body2 q-mb-sm"
+                                    v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
+                                        item.semana }}ª
+                                    SEMANA</q-chip>
+                            </div>
+                            <q-card flat bordered class="my-card shadow-4">
                                 <q-card-section>
-                                    <q-chip color="info" text-color="white text-body2">{{ item.semana }}ª
-                                        SEMANA</q-chip>
                                     <div class="row items-center no-wrap">
                                         <div class="col">
                                             <div class="row items-center justify-between">
                                                 <div class="text-h6 text-uppercase">{{ item.alvo.nome_alvo }}</div>
-                                                <div><q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                                <div><q-btn icon="mdi-pencil" outline color="info" dense size="md"
                                                         @click="abreModalAnotacao(item, 'inserir')" /></div>
                                             </div>
                                             <div class="row items-center q-gutter-sm"
@@ -91,7 +92,7 @@
                 </div>
             </q-tab-panel>
 
-            <q-tab-panel name="coletados">
+            <q-tab-panel name="coletados" style="background-color: #f8f5f2;">
                 <div class="row justify-center">
                     <div v-for="(item, index) in alvosColetados" :key="index"
                         class="q-mb-sm col-md-7 col-xs-12 col-sm-12">
@@ -102,73 +103,75 @@
                                     item.semana }}ª
                                 SEMANA</q-chip>
                         </div>
+                        <div class=" shadow-4">
+                            <q-card flat bordered class="my-card white">
+                                <q-card-section>
+                                    <div class="row items-center no-wrap">
+                                        <div class="col">
+                                            <div class="row items-center justify-between">
+                                                <div class="text-h6 text-uppercase">{{ item.alvo.nome_alvo }}</div>
+                                                <div><q-btn icon="mdi-pencil" outline color="info" dense size="md"
+                                                        @click="abreModalAnotacao(item, 'inserir')" /></div>
+                                            </div>
+                                            <div class="text-subtitle1 text-teal q-mt-md"
+                                                v-if="item.alvo.descricao_alvo.length > 0">
+                                                Descrição do
+                                                Alvo:</div>
+                                            <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
 
-                        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
-                            <q-card-section>
-                                <div class="row items-center no-wrap">
-                                    <div class="col">
-                                        <div class="row items-center justify-between">
-                                            <div class="text-h6 text-teal">{{ item.alvo.nome_alvo }}</div>
-                                            <div><q-btn icon="mdi-pencil-outline" color="info" dense size="md"
-                                                    @click="abreModalAnotacao(item, 'inserir')" /></div>
-                                        </div>
-                                        <div class="text-subtitle2 text-teal q-mt-md"
-                                            v-if="item.alvo.descricao_alvo.length > 0">
-                                            Descrição do
-                                            Alvo:</div>
-                                        <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
+                                            <span class="text-subtitle2 text-teal"
+                                                v-if="item.alvo.pergunta > 0">Pergunta:
+                                            </span>
+                                            <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
 
-                                        <span class="text-subtitle2 text-teal" v-if="item.alvo.pergunta > 0">Pergunta:
-                                        </span>
-                                        <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
-
-                                        <div class="text-subtitle1 q-mt-md">
-                                            <span class="text-teal">Respondido por:</span> {{ item.respondido_por }}
+                                            <div class="text-subtitle1 q-mt-md">
+                                                <span class="text-teal">Respondido por:</span> {{ item.respondido_por }}
+                                            </div>
                                         </div>
                                     </div>
+                                </q-card-section>
+
+                                <div v-if="_tipoColeta === 'ocorrencia'">
+                                    <div class="text-h6 text-teal q-ml-md q-pb-md">Total: {{ item.resposta }}</div>
                                 </div>
-                            </q-card-section>
-
-                            <div v-if="_tipoColeta === 'ocorrencia'">
-                                <div class="text-h6 text-teal q-ml-md q-pb-md">Total: {{ item.resposta }}</div>
-                            </div>
-                            <div v-else>
-                                <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color color="red"
-                                    size="md" disable />
-                                <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color
-                                    color="orange" size="md" disable />
-                                <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color
-                                    color="green" size="md" disable />
-                                <q-radio v-model="respostas[item.coletaId]" val="nao-aplica" label="NÃO APLICA"
-                                    keep-color color="grey" size="md" disable />
-                            </div>
-                        </q-card>
-
+                                <div v-else>
+                                    <q-radio v-model="item.resposta" val="nao-fez" label="NÃO FEZ" keep-color
+                                        color="red" size="md" disable />
+                                    <q-radio v-model="item.resposta" val="com-ajuda" label="COM AJUDA" keep-color
+                                        color="orange" size="md" disable />
+                                    <q-radio v-model="item.resposta" val="sem-ajuda" label="SEM AJUDA" keep-color
+                                        color="green" size="md" disable />
+                                    <q-radio v-model="respostas[item.coletaId]" val="nao-aplica" label="NÃO APLICA"
+                                        keep-color color="grey" size="md" disable />
+                                </div>
+                            </q-card>
+                        </div>
                     </div>
                 </div>
             </q-tab-panel>
 
-            <q-tab-panel name="anotacoes">
+            <q-tab-panel name="anotacoes" style="background-color: #f8f5f2;">
                 <div class="row justify-center">
                     <div v-for="(item, index) in anotacoesFeitas" :key="index"
                         class="q-mb-sm col-md-7 col-xs-12 col-sm-12">
-                        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                        <q-card flat bordered class="my-card">
                             <q-card-section>
-                                <div class="row items-center justify-between">
-                                    <div>
-                                        <div class="text-subtitle2 text-teal">Anotado por:</div>
-                                        <div class="text-body1 text-dark">{{ item.criadoNome }}</div>
-                                        <div class="text-subtitle2 text-teal q-mt-md">Data da Anotação:</div>
-                                        <div class="text-body1 text-dark">{{ item.data_anotacao }}</div>
-                                        <div class="text-subtitle2 text-teal q-mt-md">Anotação:</div>
-                                        <div class="text-body1 text-dark" style="white-space: pre-line;">{{
-                                            item.anotacao }}</div>
-                                    </div>
-                                    <div class="row items-center q-gutter-x-sm q-mt-md">
-                                        <q-btn icon="mdi-pencil-outline" color="info" dense size="md"
+                                <div class="row items-center justify-end">
+                                    <!-- Botões no topo e alinhados à esquerda -->
+                                    <div class="row items-center q-gutter-x-sm q-mb-md">
+                                        <q-btn icon="mdi-pencil" outline color="info" dense size="md"
                                             @click="abreModalAnotacao(item, 'editar')" />
-                                        <q-btn icon="mdi-delete-outline" color="negative" dense size="md"
+                                        <q-btn icon="mdi-delete-outline" outline color="negative" dense size="md"
                                             @click="excluirAnotacao(item)" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="text-body2"><b>Anotado por:</b> {{ item.criadoNome }}</div>
+                                    <div class="text-body2 q-mt-sm"><b>Data da Anotação: </b>{{ item.data_anotacao }}
+                                    </div>
+                                    <div class="text-body2 q-mt-sm"><b>Anotação:</b></div>
+                                    <div class="text-body1 q-mt-sm" style="white-space: pre-line;">{{ item.anotacao }}
                                     </div>
                                 </div>
                             </q-card-section>
