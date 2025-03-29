@@ -4,14 +4,12 @@
         <div class="row justify-center">
             <div class="col-md-7 col-xs-12 col-sm-12">
                 <q-card>
-                    <q-card-section :class="'bg-grey-2'">
-                        <div class="text-subtitle2 text-teal">Título do objetivo:</div>
-                        <div class="text-subtitle1">{{ item.nomeAlvo }}</div>
+                    <q-card-section>
+                        <div class="text-subtitle1 text-uppercase"><b>{{ item.nomeAlvo }}</b></div>
 
-                        <div class="text-subtitle2 text-teal">Descrição do Alvo:
-                        </div>
-                        <div class="text-body2 q-mt-sm" style="white-space: pre-line;">{{ item.descricao }}</div>
-
+                        <div class="text-subtitle2 q-mt-md"><b>Descrição do Alvo:</b></div>
+                        <div class="text-body2 q-mt-md text-uppercase" style="white-space: pre-line;">{{ item.descricao
+                            }}</div>
                     </q-card-section>
 
                 </q-card>
@@ -20,7 +18,7 @@
 
     </div>
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
-        <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'treinamento-import' }" />
+        <q-btn fab icon="mdi-arrow-left" color="info" :to="{ name: 'treinamento-import' }" />
     </q-page-sticky>
 
 </template>

@@ -3,21 +3,21 @@
 
         <div class="row justify-center">
             <div class="col-md-7 col-xs-12 col-sm-12">
-                <div class="q-my-sm justify-start">
-                    <q-select stack-label outlined v-model="selected" :options="habilidades"
-                        label="Tipo de Habilidade" />
-                </div>
+                <q-card class="q-pa-md">
+                    <div class="q-my-sm justify-start">
+                        <q-select stack-label outlined v-model="selected" :options="habilidades"
+                            label="Tipo de Habilidade" />
+                    </div>
+                    <div class="q-my-sm flex justify-end">
+                        <q-btn label="Confirmar Importação" icon="upload" color="accent" class="q-pa-sm" no-caps
+                            @click="importarTreinamentos" :disable="treinamentosSelecionados.length == 0" />
+                    </div>
+                </q-card>
 
-                <div class="q-my-sm flex justify-end">
-                    <q-btn label="Confirmar Importação" icon="upload" color="green" class="q-pa-sm" no-caps
-                        @click="importarTreinamentos" :disable="treinamentosSelecionados.length == 0" />
-                </div>
-                <div class="q-pa-md row items-start q-gutter-md">
-                    <q-card class="my-card bg-grey-2 full-width" v-for="item in treinamentos"
-                        :key="item.treinamentoBaseId">
+                <div class="q-mt-sm row items-start q-gutter-y-md">
+                    <q-card class="my-card" v-for="item in treinamentos" :key="item.treinamentoBaseId" color="white">
                         <q-card-section>
-                            <q-chip color="blue-9" class="text-white" dense>{{ item.habilidade }}</q-chip>
-                            <q-chip color="orange-10" class="text-white" dense>Protocolo ABC</q-chip>
+                            <q-chip color="blue-9" class="text-white" dense>{{ item.protocolo }}</q-chip>
                             <q-btn dense flat icon="mdi-eye" color="blue-8" class="float-right"
                                 @click="redirecionar(item.treinamentoBaseId)">Ver</q-btn>
                             <div class="text-body1 q-mb-md q-mt-md"><b>{{ item.titulo }}</b></div>
@@ -37,8 +37,8 @@
 
             </div>
         </div>
-        <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="mdi-arrow-left" color="primary" :to="{ name: 'treinamentos' }" />
+        <q-page-sticky position="bottom-left" :offset="[18, 18]">
+            <q-btn fab icon="mdi-arrow-left" color="info" :to="{ name: 'treinamentos' }" />
         </q-page-sticky>
     </q-page>
 
