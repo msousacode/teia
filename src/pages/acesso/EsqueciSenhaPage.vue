@@ -7,22 +7,22 @@
     </q-header>
 
     <q-page-container>
-      <div class="row justify-center q-mt-lg">
+      <div class="row justify-center">
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-          <q-banner v-if=mostarMensagemSucesso class="bg-blue-1 text-green-9 q-mb-md q-pa-sm">
-            <span class="text-body1">Confira seu email e siga as orientações para criar a senha.</span></q-banner>
-          <div class="text-h6 text-teal">Recuperação de Senha</div>
-          <q-input outlined v-model="email" label="E-mail" stack-label />
+          <q-card class="q-pa-md">
+            <q-banner v-if=mostarMensagemSucesso class="bg-blue-1 text-green-9 q-mb-md q-pa-sm">
+              <span class="text-body1">Confira seu email e siga as orientações para criar a senha.</span>
+            </q-banner>
 
-          <div class="full-width">
-            <q-btn class="full-width bg-primary text-white q-pa-sm" no-caps label="Recuperar senha"
-              @click="recuperar" />
-          </div>
+            <div class="text-h6 q-mb-sm">Recuperação de Senha</div>
 
-          <div class="full-width">
-            <q-btn class="full-width text-teal" color="white" text-color="blue-9" unelevated to="/" label="Voltar"
-              no-caps />
-          </div>
+            <q-input outlined v-model="email" label="E-mail" stack-label />
+
+            <div class="q-mt-md q-gutter-x-md row justify-end">
+              <q-btn color="info" to="/">Voltar</q-btn>
+              <q-btn color="positive" @click="recuperar">confirmar</q-btn>
+            </div>
+          </q-card>
         </div>
       </div>
     </q-page-container>

@@ -4,39 +4,40 @@
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.1.1603</div><!--v1.major.melhoria.bug.mes e ano-->
+        <div style="color: white;">v1.0.0.1.2903</div><!--v1.major.melhoria.bug.mes e ano-->
       </q-toolbar>
     </q-header>
 
     <q-page-container>
 
-      <div class="row justify-center q-gutter-x-md q-mt-xl">
-        <div class="col-md-4 col-sm-6 col-xs-10">
-          <div class="q-pa-md">
+      <div class="flex justify-center items-center">
+        <q-img src="../../assets/sys.png" width="220px" height="220px" />
+      </div>
 
-            <div class="flex justify-center items-center">
-              <q-img src="../../assets/sys.png" width="120px" height="120px" />
+      <div class="row justify-center q-gutter-x-md">
+        <div class="col-md-4 col-sm-6 col-xs-10">
+          <q-card>
+            <div class="q-pa-md">
+
+              <div class="text-center text-h6 q-mb-md q-mt-md">Faça o seu Login</div>
+
+              <q-input outlined stack-label v-model="email" label="E-mail"
+                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]"
+                @blur="verificarEmail" />
+
+              <q-input outlined stack-label v-model="senha" label="Senha" type="password"
+                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
+
+              <div class="q-mt-md q-gutter-x-md row justify-center">
+                <q-btn color="info" to="/cadastrar">Criar conta</q-btn>
+                <q-btn color="positive" @click="entrar('normal')" :disable="!isSubmitted">Entrar</q-btn>
+              </div>
             </div>
 
-            <div class="text-center text-h6 q-mb-md q-mt-md">Faça o seu Login</div>
-
-            <q-input outlined stack-label v-model="email" label="E-mail"
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]"
-              @blur="verificarEmail" />
-
-            <q-input outlined stack-label v-model="senha" label="Senha" type="password"
-              :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
-
-            <q-btn class="full-width bg-primary text-white q-pa-sm q-mb-xl" no-caps label="ENTRAR"
-              @click="entrar('normal')" :disable="!isSubmitted" />
-
-
-            <q-btn class="full-width bg-blue-9 text-white" unelevated to="/cadastrar" label="Criar Conta" />
-          </div>
-
-          <div class="text-right text-blue text-body1 q-mt-md">
-            <q-btn text-color="blue-9" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
-          </div>
+            <div class="text-center text-blue">
+              <q-btn text-color="blue-9" unelevated to="/esqueci" label="Esqueci a minha senha" class="q-ma-md" />
+            </div>
+          </q-card>
         </div>
       </div>
     </q-page-container>

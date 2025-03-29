@@ -100,13 +100,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     hide: true,
     display: () => 'none',
   },
-  {
+  /*{
     title: 'Suporte',
     icon: 'mdi-help-circle',
     routeName: 'suporte',
     hide: true,
     display: () => 'none',
-  }
+  }*/
 ]);
 
 const restricoesEspecialista = ['Profissionais', 'Aprendizes', 'Assinatura'];
