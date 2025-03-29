@@ -1,20 +1,24 @@
 <template>
     <q-page class="q-pa-sm">
         <div class="row justify-center">
-            <q-form class="col-md-7 col-xs-12 col-sm-12">
-                <title-custom title="Meu Perfil" />
-                <q-input outlined label="Nome Completo" v-model="form.full_name"
-                    :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
+            <q-card class="col-md-7 col-xs-12 col-sm-12">
+                <q-form class="q-pa-md">
+                    <title-custom title="Meu Perfil" />
+                    <q-input outlined label="Nome Completo" v-model="form.full_name"
+                        :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
 
-                <q-input outlined label="E-mail" v-model="form.email"
-                    :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
-                    readonly />
+                    <q-input outlined label="E-mail" v-model="form.email"
+                        :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
+                        readonly />
 
-                <q-input outlined label="Registro Profissional:" v-model="form.documento" class="q-mb-md" />
+                    <q-input outlined label="Registro Profissional:" v-model="form.documento" class="q-mb-md" />
 
-                <q-btn no-caps label="Salvar" color="primary" class="full-width q-pa-sm" @click="submit"
-                    :disable="!isSubmitted" />
-            </q-form>
+                    <div class="q-mt-md q-gutter-x-md row justify-end">
+                        <q-btn color="info" :to="{ name: 'relatorios' }">Voltar</q-btn>
+                        <q-btn color="positive" @click="submit" :disable="!isSubmitted">Salvar</q-btn>
+                    </div>
+                </q-form>
+            </q-card>
         </div>
     </q-page>
 </template>

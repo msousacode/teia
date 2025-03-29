@@ -28,13 +28,13 @@
                 <div class="row justify-center ">
                     <div v-for="(item, index) in alvosPendentes" :key="index"
                         class="col-md-7 col-xs-12 col-sm-12 q-mb-md">
-                        <div>
-                            <div class="flex justify-center">
-                                <q-chip color="primary" text-color="white text-body2 q-mb-sm"
-                                    v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
-                                        item.semana }}ª
-                                    SEMANA</q-chip>
-                            </div>
+                        <div class="flex justify-center">
+                            <q-chip color="primary" text-color="white text-body2 q-mb-sm"
+                                v-if="exibirDivisorAlvosPorSemana(item.semana)">{{
+                                    item.semana }}ª
+                                SEMANA</q-chip>
+                        </div>
+                        <div class="shadow-4">
                             <q-card flat bordered class="my-card shadow-4">
                                 <q-card-section>
                                     <div class="row items-center no-wrap">
@@ -49,8 +49,9 @@
                                                 <div class="text-subtitle1 text-teal q-mt-md">Descrição do Alvo:</div>
                                             </div>
 
-                                            <div class="text-body2 q-mt-sm" style="white-space: pre-line;">{{
-                                                item.alvo.descricao_alvo }}</div>
+                                            <div class="text-body2 q-mt-sm text-uppercase"
+                                                style="white-space: pre-line;">{{
+                                                    item.alvo.descricao_alvo }}</div>
 
                                             <span class="text-subtitle2 text-teal"
                                                 v-if="item.alvo.pergunta > 0">Pergunta:
@@ -103,7 +104,7 @@
                                     item.semana }}ª
                                 SEMANA</q-chip>
                         </div>
-                        <div class=" shadow-4">
+                        <div class="shadow-4">
                             <q-card flat bordered class="my-card white">
                                 <q-card-section>
                                     <div class="row items-center no-wrap">
@@ -117,15 +118,17 @@
                                                 v-if="item.alvo.descricao_alvo.length > 0">
                                                 Descrição do
                                                 Alvo:</div>
-                                            <div class="text-subtitle1">{{ item.alvo.descricao_alvo }}</div>
+                                            <div class="text-body2 text-uppercase">{{ item.alvo.descricao_alvo }}
+                                            </div>
 
                                             <span class="text-subtitle2 text-teal"
                                                 v-if="item.alvo.pergunta > 0">Pergunta:
                                             </span>
                                             <div class="text-subtitle1">{{ item.alvo.pergunta }}</div>
 
-                                            <div class="text-subtitle1 q-mt-md">
-                                                <span class="text-teal">Respondido por:</span> {{ item.respondido_por }}
+                                            <div class="text-body2 q-mt-md">
+                                                <b>Respondido por:</b>
+                                                <p>{{ item.respondido_por }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -154,28 +157,36 @@
                 <div class="row justify-center">
                     <div v-for="(item, index) in anotacoesFeitas" :key="index"
                         class="q-mb-sm col-md-7 col-xs-12 col-sm-12">
-                        <q-card flat bordered class="my-card">
-                            <q-card-section>
-                                <div class="row items-center justify-end">
-                                    <!-- Botões no topo e alinhados à esquerda -->
-                                    <div class="row items-center q-gutter-x-sm q-mb-md">
-                                        <q-btn icon="mdi-pencil" outline color="info" dense size="md"
-                                            @click="abreModalAnotacao(item, 'editar')" />
-                                        <q-btn icon="mdi-delete-outline" outline color="negative" dense size="md"
-                                            @click="excluirAnotacao(item)" />
+                        <div class="shadow-4">
+                            <q-card flat bordered class="my-card">
+                                <q-card-section>
+                                    <div class="row items-center justify-end">
+                                        <!-- Botões no topo e alinhados à esquerda -->
+                                        <div class="row items-center q-gutter-x-sm q-mb-md">
+                                            <q-btn icon="mdi-pencil" outline color="info" dense size="md"
+                                                @click="abreModalAnotacao(item, 'editar')" />
+                                            <q-btn icon="mdi-delete-outline" outline color="negative" dense size="md"
+                                                @click="excluirAnotacao(item)" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div>
-                                    <div class="text-body2"><b>Anotado por:</b> {{ item.criadoNome }}</div>
-                                    <div class="text-body2 q-mt-sm"><b>Data da Anotação: </b>{{ item.data_anotacao }}
+                                    <div>
+                                        <div class="text-body2 q-mt-sm"><b>Anotação:</b></div>
+                                        <div class="text-body1 q-mt-sm" style="white-space: pre-line;">{{ item.anotacao
+                                        }}
+                                        </div>
+                                        <hr>
+                                        <div class="text-body2 q-mt-sm"><b>Data da Anotação: </b>{{ item.data_anotacao
+                                        }}
+                                        </div>
+                                        <div class="text-body2 q-mt-md">
+                                            <b>Anotado por:</b>
+                                            <p>{{ item.criadoNome }}</p>
+                                        </div>
                                     </div>
-                                    <div class="text-body2 q-mt-sm"><b>Anotação:</b></div>
-                                    <div class="text-body1 q-mt-sm" style="white-space: pre-line;">{{ item.anotacao }}
-                                    </div>
-                                </div>
-                            </q-card-section>
-                        </q-card>
+                                </q-card-section>
+                            </q-card>
+                        </div>
                     </div>
                 </div>
             </q-tab-panel>
