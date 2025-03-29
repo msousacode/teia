@@ -1,14 +1,15 @@
 <template>
-  <q-page class="q-pa-sm">
+  <q-page padding>
 
     <div class="row justify-center">
       <q-card class="col-md-7 col-xs-12 col-sm-12 q-mb-sm q-pa-md">
         <q-select stack-label outlined v-model="habilidadeFiltro" :options="habilidades" label="Tipo de Habilidade" />
       </q-card>
+    </div>
 
+    <div class="row justify-center">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
-        row-key="treinamentoId" selection="multiple" v-model:selected="selected"
-        class="col-md-7 col-xs-12 col-sm-12 q-mb-sm q-pa-md">
+        row-key="treinamentoId" selection="multiple" v-model:selected="selected" class="col-md-7 col-xs-12 col-sm-12">
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
             <q-btn icon="mdi-pencil" outline color="info" dense size="sm" @click="handleEdit(props.row)">
@@ -20,12 +21,11 @@
           </q-td>
         </template>
       </q-table>
+    </div>
 
-      <div class="q-gutter-x-md row justify-end q-mt-md">
-        <q-btn color="secondary" @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento"
-          :disable=isConfirm>Salvar</q-btn>
-      </div>
-
+    <div class="q-gutter-x-md row justify-end">
+      <q-btn color="secondary" @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento"
+        :disable=isConfirm>Salvar</q-btn>
     </div>
 
     <div class="row justify-center" v-show="!props.selecionarTreinamento">
