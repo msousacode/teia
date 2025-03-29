@@ -2,67 +2,58 @@
   <!-- Modal que abre o cadastro do alvo-->
   <q-dialog v-model="visible">
     <q-card class="full-width">
-      <q-card-section>
-        <title-custom title="Cadastro de Objetivo" />
-      </q-card-section>
       <q-card-section class="q-mt-none">
         <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
+          <title-custom title="Objetivo" />
           <q-input outlined label="Nome do Objetivo" v-model="form.nome_alvo"
-            :rules="[(val) => (val && val.length > 0) || 'Nome do Objetivo é obrigatório']" />
+            :rules="[(val) => (val && val.length > 0) || 'Nome do Objetivo é obrigatório']" class="text-uppercase" />
 
-          <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow />
+          <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow class="text-uppercase" />
 
           <q-input outlined label="Descrição do Objetivo" v-model="form.descricao_alvo" type="textarea"
-            class="q-mt-md" />
+            class="q-mt-md text-uppercase" />
 
-          <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" no-caps color="primary" type="submit" />
+          <div class="q-mt-md q-gutter-x-md row justify-end">
+            <q-btn color="info" @click="visible = false">Fechar</q-btn>
+            <q-btn color="positive" type="submit">Salvar</q-btn>
+          </div>
         </q-form>
       </q-card-section>
 
     </q-card>
   </q-dialog>
 
-  <!--div v-if="alvos.length == 0">
-    <div class="text-teal text-body1 q-mt-md text-center">Nenhum objetivo cadastrado. Adicione objetivos</div>
-  </div-->
 
-  <div v-for="(item, index) in alvos" :key="index" class="q-pa-sm">
-    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
-      <q-card-section>
-        <div class="row items-center no-wrap">
-          <div class="col">
-            <span class="text-subtitle2 text-teal">Nome do Objetivo: </span>
-            <div class="text-subtitle1">{{ item.nome_alvo }}</div>
-
-            <span class="text-subtitle2 text-teal">Pergunta: </span>
-            <div class="text-subtitle1">{{ item.pergunta }}</div>
-
-            <span class="text-subtitle2 text-teal">Descrição do Objetivo: </span>
-            <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
+  <div v-for="(item, index) in alvos" :key="index" class="q-mb-sm col-md-7 col-xs-12 col-sm-12">
+    <div class="shadow-4">
+      <q-card>
+        <q-card-section>
+          <div class="row items-center justify-end">
+            <!-- Botões no topo e alinhados à esquerda -->
+            <div class="row items-center q-gutter-x-sm q-mb-md">
+              <q-btn icon="mdi-pencil" outline color="info" dense size="md" @click="editarAlvo(item)" />
+              <q-btn icon="mdi-delete-outline" outline color="negative" dense size="md" @click="deletarAlvo(item)" />
+            </div>
           </div>
 
-          <div class="col-auto">
-            <q-btn color="grey-7" round flat icon="more_vert">
-              <q-menu cover auto-close>
-                <q-list>
-                  <q-item clickable>
-                    <q-item-section @click="editarAlvo(item)">Editar</q-item-section>
-                  </q-item>
-                  <q-item clickable>
-                    <q-item-section @click="deletarAlvo(item)">Remover</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
+          <div>
+            <div class="text-uppercase text-h6 q-mb-md">{{ item.nome_alvo }}</div>
+
+            <span class="text-subtitle2">Pergunta: </span>
+            <div class="text-subtitle1 text-uppercase">{{ item.pergunta }}</div>
+
+            <span class="text-subtitle2">Descrição do Objetivo: </span>
+            <div class="text-subtitle1 text-uppercase">{{ item.descricao_alvo }}</div>
           </div>
-        </div>
-      </q-card-section>
-    </q-card>
+        </q-card-section>
+      </q-card>
+    </div>
   </div>
 
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn fab icon="mdi-plus" color="blue-9" @click="visible = true" />
-  </q-page-sticky>
+  <div class="q-mt-md row justify-end">
+    <q-btn color="secondary" @click="visible = true">Incluir</q-btn>
+  </div>
+
 </template>
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from 'vue';

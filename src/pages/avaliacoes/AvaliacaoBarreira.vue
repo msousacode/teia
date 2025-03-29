@@ -1,26 +1,31 @@
 <template>
-    <div class="q-ml-md q-mt-md text-teal">Barreiras - Aprendiz: {{ aprendizStorage.nome_aprendiz }}</div>
-    <q-page>
+    <div class="row justify-center">
+        <div class="col-md-7 col-xs-12 col-sm-12 q-ml-md q-mt-md text-uppercase text-body2">Barreiras - <b>Aprendiz:</b>
+            {{
+                aprendizStorage.nome_aprendiz
+            }}</div>
+    </div>
+    <q-page class="q-pa-sm">
         <div class="row justify-center">
-            <form @submit.prevent="salvar" class="col-md-7 col-xs-12 col-sm-12">
-                <title-custom title="Barreiras" class="q-ml-sm"></title-custom>
-                <div v-for="assessment in barreiras" :key="assessment.id" class="q-mb-xl">
-                    <div class="text-h6">{{ assessment.question }}</div>
-                    <q-select v-model="assessment.id" @update:model-value="coletaResposta(assessment)"
-                        :options="assessment.options" label="Resposta" />
-                </div>
+            <q-card class="col-md-7 col-xs-12 col-sm-12">
+                <q-form @submit.prevent="salvar" class="q-pa-md">
+                    <title-custom title="Barreiras"></title-custom>
+                    <div v-for="assessment in barreiras" :key="assessment.id" class="q-mb-xl">
+                        <div class="text-body2 text-uppercase"><b>{{ assessment.question }}</b></div>
+                        <q-select v-model="assessment.id" @update:model-value="coletaResposta(assessment)"
+                            :options="assessment.options" label="Resposta" class="text-uppercase" />
+                    </div>
 
+                    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+                        <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
+                    </q-page-sticky>
 
-
-                <q-page-sticky position="bottom-right" :offset="[18, 18]">
-                    <q-btn fab icon="save" color="green" @click="salvar" :disable="false" />
-                </q-page-sticky>
-
-                <q-page-sticky position="bottom-left" :offset="[18, 18]">
-                    <q-btn fab icon="mdi-arrow-left" color="primary"
-                        :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
-                </q-page-sticky>
-            </form>
+                    <q-page-sticky position="bottom-left" :offset="[18, 18]">
+                        <q-btn fab icon="mdi-arrow-left" color="info"
+                            :to="{ name: 'avaliacoes', params: { label: aprendizStore.nome_aprendiz, value: aprendizStore.uuid } }" />
+                    </q-page-sticky>
+                </q-form>
+            </q-card>
         </div>
     </q-page>
 </template>

@@ -1,44 +1,50 @@
 <template>
-  <q-page padding>
-    <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify"
-      narrow-indicator>
-      <q-tab name="treinamento" label="Treino" />
-      <q-tab name="alvos" label="Objetivos" v-if="store.getTreinamentoUuid" />
-      <q-tab name="alvos" label="Objetivos" v-else disable />
-    </q-tabs>
 
+  <q-page padding>
     <div class="row justify-center">
       <div class="col-md-7 col-xs-12 col-sm-12">
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="treinamento">
-            <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvar">
-              <q-input stack-label outlined label="Nome do Treinamento" v-model="form.treinamento"
-                :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']" />
 
-              <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
-                :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode" />
+        <q-tabs v-model="tab" dense class="text-grey q-mb-md" active-color="primary" indicator-color="primary"
+          align="justify">
+          <q-tab name="treinamento" label="Treino" />
+          <q-tab name="alvos" label="Objetivos" v-if="store.getTreinamentoUuid" />
+          <q-tab name="alvos" label="Objetivos" v-else disable />
+        </q-tabs>
+
+        <q-card class="q-pa-md">
+          <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="treinamento">
+              <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvar">
+                <title-custom title="Aprendiz" />
+                <q-input stack-label outlined label="Nome do Treinamento" v-model="form.treinamento"
+                  :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']"
+                  class="text-uppercase" />
+
+                <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
+                  :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode"
+                  class="text-uppercase" />
 
 
-              <q-select stack-label outlined v-model="selected" :options="habilidades" label="Tipo de Habilidade"
-                class="q-mb-md" />
+                <q-select stack-label outlined v-model="selected" :options="habilidades" label="Tipo de Habilidade"
+                  class="q-mb-md" />
 
-              <q-input stack-label outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
-                class="q-mb-md" :rows="18" />
+                <q-input stack-label outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
+                  class="q-mb-md text-uppercase" :rows="18" />
 
+                <div class="q-mt-md q-gutter-x-md row justify-end">
+                  <q-btn color="info" :to="{ name: 'treinamentos' }">Voltar</q-btn>
+                  <q-btn color="positive" type="submit">Salvar</q-btn>
+                </div>
+              </q-form>
 
-              <q-btn label="Salvar" color="primary" class="full-width q-pa-sm" no-caps type="submit" />
+            </q-tab-panel>
 
-              <q-btn label="Voltar" color="primary" class="full-width q-pa-sm q-mt-md" no-caps flat
-                :to="{ name: 'treinamentos' }" />
+            <q-tab-panel name="alvos">
+              <AlvoForm />
+            </q-tab-panel>
 
-            </q-form>
-          </q-tab-panel>
-
-          <q-tab-panel name="alvos">
-            <AlvoForm />
-          </q-tab-panel>
-
-        </q-tab-panels>
+          </q-tab-panels>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -52,6 +58,7 @@ import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { TreinamentoService } from 'src/services/TreinamentoService';
 import { useQuasar } from 'quasar';
+import TitleCustom from 'src/components/TitleCustom.vue';
 
 const $q = useQuasar();
 

@@ -1,21 +1,20 @@
 <template>
-  <div class="q-pa-sm">
+  <q-page class="q-pa-sm">
 
-    <div class="q-my-sm justify-start">
-      <q-select stack-label outlined v-model="habilidadeFiltro" :options="habilidades" label="Tipo de Habilidade" />
-    </div>
+    <div class="row justify-center">
+      <q-card class="col-md-7 col-xs-12 col-sm-12 q-mb-sm q-pa-md">
+        <q-select stack-label outlined v-model="habilidadeFiltro" :options="habilidades" label="Tipo de Habilidade" />
+      </q-card>
 
-    <div class="row justify-end">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
-        row-key="treinamentoId" class="col-12" selection="multiple" v-model:selected="selected">
-        <template v-slot:top>
-        </template>
+        row-key="treinamentoId" selection="multiple" v-model:selected="selected"
+        class="col-md-7 col-xs-12 col-sm-12 q-mb-sm q-pa-md">
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="handleEdit(props.row)">
+            <q-btn icon="mdi-pencil" outline color="info" dense size="sm" @click="handleEdit(props.row)">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
-            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="deletar(props.row)">
+            <q-btn icon="mdi-delete-outline" outline color="negative" dense size="sm" @click="deletar(props.row)">
               <q-tooltip> Delete </q-tooltip>
             </q-btn>
           </q-td>
@@ -29,22 +28,17 @@
 
     </div>
 
-    <div class="q-my-md flex justify-center" v-show="!props.selecionarTreinamento">
-      <div class="q-mt-md text-body2">
-        (*) Você pode importar programas prontos do nosso banco de programas.
-      </div>
+    <div class="row justify-center" v-show="!props.selecionarTreinamento">
+      <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
+        <div class="q-gutter-x-md row justify-end">
+          <q-btn color="info" :to="{ name: 'treinamento-import' }" v-if="!props.selecionarTreinamento">banco de
+            programas</q-btn>
+          <q-btn color="positive" :to="{ name: 'treinamento-novo' }">Incluir</q-btn>
+        </div>
+      </q-card>
     </div>
 
-    <div class="q-pa-md q-gutter-md flex justify-center" v-if="!props.selecionarTreinamento">
-      <q-btn label="Acessar Banco de Programas" color="info" class="q-pa-sm" no-caps
-        :to="{ name: 'treinamento-import' }" />
-    </div>
-
-    <q-page-sticky position="bottom-right" :offset="[18, 18]" v-show="!props.selecionarTreinamento">
-      <q-btn fab icon="mdi-plus" color="blue-9" :to="{ name: 'treinamento-novo' }" />
-    </q-page-sticky>
-
-  </div>
+  </q-page>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, toRaw, watch } from 'vue';
