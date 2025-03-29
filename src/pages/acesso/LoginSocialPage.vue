@@ -11,7 +11,7 @@
     <q-page-container>
 
       <div class="flex justify-center items-center">
-        <q-img src="../../assets/sys.png" width="220px" height="220px" />
+        <q-img src="../../assets/sys.png" width="200px" height="200px" />
       </div>
 
       <div class="row justify-center q-gutter-x-md">
