@@ -1,9 +1,9 @@
 <template>
     <q-page padding>
         <div class="row justify-center">
-            <q-card class="col-md-7 col-xs-12 col-sm-12 q-ml-md q-mt-md q-pa-md q-mb-md">
+            <q-card class="col-md-7 col-xs-12 col-sm-12 q-mt-md q-pa-md q-mb-md">
                 <div class="text-uppercase text-body2">{{ descritivoTitulo
-                }} -
+                    }} -
                     <b>Aprendiz:</b> {{ aprendizStore.nome_aprendiz }}
                     <div class="text-uppercase">
                         <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
@@ -40,7 +40,7 @@
                                 <div class="row items-center no-wrap">
                                     <div class="col">
                                         <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao
-                                            }}
+                                        }}
                                         </div>
                                     </div>
                                 </div>

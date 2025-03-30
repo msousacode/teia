@@ -1,9 +1,9 @@
 <template>
     <q-page padding>
         <div class="row justify-center">
-            <q-card class="col-md-7 col-xs-12 col-sm-12 q-ml-md q-mt-md q-pa-md q-mb-md">
+            <q-card class="col-md-7 col-xs-12 col-sm-12 q-mt-md q-pa-md q-mb-md">
                 <div class="text-uppercase text-body2">{{ descritivoTitulo
-                    }} -
+                }} -
                     <b>Aprendiz:</b> {{ aprendizStore.nome_aprendiz }}
                     <div class="text-uppercase">
                         <q-toggle :false-value="true" :label="`Exibir não respondidas`" :true-value="false" color="red"
@@ -43,13 +43,13 @@
                                         <div class="text-h6">Materiais</div>
                                         <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                             item.observacoes.materiais
-                                            }}</div>
+                                        }}</div>
 
                                         <q-separator />
 
                                         <div class="text-h6">Exemplo</div>
                                         <div class="text-body1 text-justify q-mt-md q-mb-md">{{ item.observacoes.exemplo
-                                            }}
+                                        }}
                                         </div>
 
                                         <q-separator />
@@ -57,14 +57,14 @@
                                         <div class="text-h6">1 Ponto</div>
                                         <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                             item.observacoes.pontuacao.umPonto
-                                            }}</div>
+                                        }}</div>
 
                                         <div class="text-h6">0,5 Ponto</div>
 
                                         <q-separator />
                                         <div class="text-body1 text-justify q-mt-md q-mb-md">{{
                                             item.observacoes.pontuacao.meioPonto
-                                            }}
+                                        }}
                                         </div>
                                     </q-card-section>
                                     <q-card-actions>
@@ -90,7 +90,7 @@
                                 <div class="row items-center no-wrap">
                                     <div class="col">
                                         <div class="text-subtitle1"><b>({{ item.cod }})&nbsp;&nbsp;</b>{{ item.descricao
-                                            }}
+                                        }}
                                         </div>
                                     </div>
                                 </div>

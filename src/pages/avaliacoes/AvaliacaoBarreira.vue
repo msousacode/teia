@@ -1,7 +1,7 @@
 <template>
     <q-page padding>
         <div class="row justify-center">
-            <div class="col-md-7 col-xs-12 col-sm-12 q-ml-md q-mt-md text-uppercase text-body2">Barreiras -
+            <div class="col-md-7 col-xs-12 col-sm-12 q-mt-md text-uppercase text-body2">Barreiras -
                 <b>Aprendiz:</b>
                 {{
                     aprendizStorage.nome_aprendiz

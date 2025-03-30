@@ -1,83 +1,88 @@
 <template>
-    <div class="q-pa-md">
-        <title-custom title="Nova Avaliação" />
-        <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
-            <q-form>
-                <div class="q-mb-md">
-                    <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes"
-                        label="Selecione o Aprendiz" />
-                </div>
-                <div class="q-mb-md">
-                    <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Protocolos" />
-                </div>
-
-                <q-input outlined stack-label label="Objetivo do Documento" v-model="form.objetivo_documento"
-                    class="q-mb-md" />
-            </q-form>
-        </div>
-
-        <div class="q-mb-md" v-show="isVbmapp">
-            <q-table :rows="rowsVbMapp" :columns="columnsVbMapp" row-key="name" class="my-sticky-column-table"
-                v-model:selected="niveisSelcionados" selection="single" :rows-per-page-options="[10]"
-                :rows-per-page="10">
-                <template v-slot:body-cell-actionsx="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal">
-                        </q-btn>
-                    </q-td>
-                </template>
-            </q-table>
-        </div>
-
-        <div class="q-mb-md" v-show="isPortage">
-            <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
-                v-model:selected="idadeSelcionados" selection="multiple" :rows-per-page-options="[10]"
-                :rows-per-page="10">
-                <template v-slot:body-cell-actionsx="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal">
-                        </q-btn>
-                    </q-td>
-                </template>
-            </q-table>
-        </div>
-
-        <div class="q-mb-md" v-show="isAblls">
-            <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
-                v-model:selected="habilidadesSelcionadas" selection="multiple" :rows-per-page-options="[25]"
-                :rows-per-page="25">
-                <template v-slot:body-cell-actionsx="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-actions="props">
-                    <q-td :props="props" class="q-gutter-x-sm">
-                        <q-btn icon="mdi-pencil" color="teal">
-                        </q-btn>
-                    </q-td>
-                </template>
-            </q-table>
-        </div>
-
-        <div class="row q-pa-md">
-            <div class="col">
-                <q-btn label="Voltar" color="primary" class="full-width q-pa-sm" no-caps flat
-                    :to="{ name: 'avaliacoes' }" />
-            </div>
-            <div class="col">
-                <q-btn label="Avançar" color="blue-8" class="full-width q-pa-sm" no-caps @click="avancar"
-                    :disabled="isAvancarDisabled" />
+    <q-page padding>
+        <div class="row justify-center">
+            <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
+                <q-form class="col-md-7 col-xs-12 col-sm-12">
+                    <q-card class="q-pa-md">
+                        <title-custom title="Nova Avaliação" />
+                        <div class="q-mb-md">
+                            <q-select stack-label outlined v-model="form.aprendiz" :options="aprendizes"
+                                label="Selecione o Aprendiz" />
+                        </div>
+                        <div class="q-mb-md">
+                            <q-select stack-label outlined v-model="form.protocolo" :options="protocolos"
+                                label="Protocolos" />
+                        </div>
+                    </q-card>
+                </q-form>
             </div>
         </div>
-    </div>
+
+        <div class="row justify-center q-mt-sm">
+            <div class="col-md-7 col-xs-12 col-sm-12">
+                <div class="q-mb-md" v-show="isVbmapp">
+                    <q-table :rows="rowsVbMapp" :columns="columnsVbMapp" row-key="name" class="my-sticky-column-table"
+                        v-model:selected="niveisSelcionados" selection="single" :rows-per-page-options="[10]"
+                        :rows-per-page="10">
+                        <template v-slot:body-cell-actionsx="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actions="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-pencil" color="teal">
+                                </q-btn>
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+
+                <div class="q-mb-md" v-show="isPortage">
+                    <q-table :rows="rowsPortage" :columns="columnsPortage" row-key="name" class="my-sticky-column-table"
+                        v-model:selected="idadeSelcionados" selection="multiple" :rows-per-page-options="[10]"
+                        :rows-per-page="10">
+                        <template v-slot:body-cell-actionsx="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actions="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-pencil" color="teal">
+                                </q-btn>
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+
+                <div class="q-mb-md" v-show="isAblls">
+                    <q-table :rows="rowsAblls" :columns="columnsAblls" row-key="name" class="my-sticky-column-table"
+                        v-model:selected="habilidadesSelcionadas" selection="multiple" :rows-per-page-options="[25]"
+                        :rows-per-page="25">
+                        <template v-slot:body-cell-actionsx="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-actions="props">
+                            <q-td :props="props" class="q-gutter-x-sm">
+                                <q-btn icon="mdi-pencil" color="teal">
+                                </q-btn>
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-center">
+            <q-card class="q-pa-md col-md-7 col-xs-12 col-sm-12">
+                <div class="q-gutter-x-md row justify-end">
+                    <q-btn color="info" :to="{ name: 'avaliacoes' }">Voltar</q-btn>
+                    <q-btn color="secondary" @click="avancar" :disabled="isAvancarDisabled">Avançar</q-btn>
+                </div>
+            </q-card>
+        </div>
+
+    </q-page>
 </template>
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
