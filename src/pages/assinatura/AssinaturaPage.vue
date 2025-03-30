@@ -127,18 +127,16 @@
           ativa e pode ser cancelada a
           qualquer
           momento.</div>
-        <!-- Botão: Cancelar Assinatura -->
-        <div class="row justify-end">
-          <q-btn label="DESEJO CANCELAR A MINHA ASSINATURA" icon="cancel" color="grey" class="q-ma-md"
-            @click="dialogIsCancel = true" v-if="isAssinante" />
+
+        <div class="q-mt-md row justify-end q-gutter-x-sm q-pa-md">
+          <q-btn color="info" :to="{ name: 'relatorios' }" label="Voltar" />
+          <q-btn label="DESEJO CANCELAR A MINHA ASSINATURA" color="grey" @click="dialogIsCancel = true"
+            v-if="isAssinante" />
         </div>
       </q-card>
 
     </div>
 
-    <q-page-sticky position="bottom-left" :offset="[18, 18]" v-if="isAssinante">
-      <q-btn fab icon="mdi-arrow-left" color="info" :to="{ name: 'relatorios' }" />
-    </q-page-sticky>
   </q-page>
 </template>
 
