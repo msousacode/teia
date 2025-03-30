@@ -433,21 +433,17 @@ async function atualizarAnotacao(object: any) {
 }
 
 function excluirAnotacao(item: any) {
-    console.log(item)
     $q.dialog({
         title: 'Confirma a exclusão da Anotação?',
         ok: true,
         cancel: true,
     })
         .onOk(async () => {
-            /** TODO fazer o delete
-            db.anotacoes.delete(item.uuid).then(() => {
-                getAnotacoes();
-                success("Anotação excluída com sucesso");
-            }).catch((_error) => {
-                error("Ocorreu um erro ao excluir a anotação: ", _error);
-            });
-             */
+            anotacaoService.deleteAnotacaoById(item.uuid)
+                .then(async () => {
+                    success('Anotação deletada com sucesso!');
+                    await getAnotacoes();
+                });
         })
         .onDismiss(() => { });
 }

@@ -1,7 +1,9 @@
 <template>
   <q-dialog v-model="visible">
-    <q-card class="my-card q-pa-md">
-      <TreinamentoList :selecionar-treinamento="true" />
+    <q-card style="height: 600px;">
+      <q-card-section>
+        <TreinamentoList :selecionar-treinamento="true" />
+      </q-card-section>
     </q-card>
   </q-dialog>
   <q-dialog v-model="visibleConfiguracao">
@@ -130,59 +132,10 @@
             </q-expansion-item>
           </div>
 
-          <!--div class="q-gutter-y-sm q-mt-md">
-            <q-list bordered separator v-for="(item, index) in storeTreinamento.getTreinamentosSelecionados"
-              :key="index">
-
-              <q-item>
-                <q-item-section>
-                  <div class="text-body1"><b>Treinamento:</b></div>
-                  <div class="text-body1">{{ item.treinamento }}</div>
-
-                  <div class="text-body1 q-mt-sm"><b>Protocolo:</b></div>
-                  <div class="text-body1">{{ item.protocolo }}</div>
-
-                  <div v-if="item.configuracoes">
-                    <div class="text-body1 q-mt-sm"><b>Período:</b></div>
-                    <div>{{ `${form.data_inicio} até ${item.configuracoes.data_final}` }}</div>
-
-                    <div class="text-body1 q-mt-sm"><b>Repetir:</b></div>
-                    <div class="text-body1">{{ item.configuracoes.repetir }} por sessão</div>
-
-                    <div class="text-body1 q-mt-sm"><b>Dias de atendimento:</b></div>
-                    <q-item-label>
-                      <q-chip color="info" text-color="white" v-if="item.configuracoes.seg">
-                        {{ item.configuracoes.seg ? 'SEG' : '' }}
-                      </q-chip>
-                      <q-chip color="info" text-color="white" v-if="item.configuracoes.ter">
-                        {{ item.configuracoes.ter ? 'TER' : '' }}
-                      </q-chip>
-                      <q-chip color="info" text-color="white" v-if="item.configuracoes.qua">
-                        {{ item.configuracoes.qua ? 'QUA' : '' }}
-                      </q-chip>
-                      <q-chip color="info" text-color="white" v-if="item.configuracoes.qui">
-                        {{ item.configuracoes.qui ? 'QUI' : '' }}
-                      </q-chip>
-                      <q-chip color="info" text-color="white" v-if="item.configuracoes.sex">
-                        {{ item.configuracoes.sex ? 'SEX' : '' }}
-                      </q-chip>
-                      <q-chip color="info" text-color="white" v-if="item.configuracoes.sab">
-                        {{ item.configuracoes.sab ? 'SAB' : '' }}
-                      </q-chip>
-                    </q-item-label>
-                  </div>
-                </q-item-section>
-                <q-item-section side>
-                  <div class="col-auto q-gutter-x-sm">
-                    <q-btn icon="settings" color="accent" dense size="md" @click="abrirConfiguracoes(item)"
-                      v-if="!editMode">
-                    </q-btn>
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div-->
-
+          <div class="q-mb-md q-mt-xl text-uppercase"><b>Profissionais vículados ao atendimento:</b></div>
+          <div v-for="(item, index) in form.profissionais" :key="index">
+            <span class="text-uppercase">{{ item.full_name }}</span> - {{ item.perfil }}
+          </div>
         </q-form>
 
       </q-card>
@@ -254,6 +207,7 @@ const form = ref({
   data_inicio: '',
   sync: false,
   treinamentos: [{}],
+  profissionais: [{}],
   aprendiz_uuid_fk: '',
 });
 

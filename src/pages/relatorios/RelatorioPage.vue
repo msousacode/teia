@@ -359,7 +359,7 @@ async function gerarRelatorio() {
             message: 'Não foram encontrados dados para gerar relatório.',
             textColor: 'black',
             color: 'yellow-7',
-            position: 'center',
+            position: 'top',
         });
     }
 

@@ -6,7 +6,7 @@
 
         <q-tabs v-model="tab" dense class="text-grey q-mb-md" active-color="primary" indicator-color="primary"
           align="justify">
-          <q-tab name="treinamento" label="Treino" />
+          <q-tab name="treinamento" label="Programa" />
           <q-tab name="alvos" label="Objetivos" v-if="store.getTreinamentoUuid" />
           <q-tab name="alvos" label="Objetivos" v-else disable />
         </q-tabs>
@@ -16,17 +16,13 @@
             <q-tab-panel name="treinamento">
               <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvar">
                 <title-custom title="Aprendiz" />
-                <q-input stack-label outlined label="Nome do Treinamento" v-model="form.treinamento"
-                  :rules="[(val) => (val && val.length > 0) || 'Nome do treinamento é obrigatório']"
+                <q-input stack-label outlined label="Nome do Programa" v-model="form.treinamento"
+                  :rules="[(val) => (val && val.length > 0) || 'Nome do programa é obrigatório']"
                   class="text-uppercase" />
 
                 <q-select stack-label outlined v-model="form.protocolo" :options="protocolos" label="Tipo de Protocolo"
                   :rules="[(val) => (val && val.length > 0) || 'Tipo de protocolo é obrigatório']" :readonly="editMode"
                   class="text-uppercase" />
-
-
-                <q-select stack-label outlined v-model="selected" :options="habilidades" label="Tipo de Habilidade"
-                  class="q-mb-md" />
 
                 <q-input stack-label outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
                   class="q-mb-md text-uppercase" :rows="18" />
@@ -70,11 +66,9 @@ const routeLocation = useRoute();
 
 const store = useTreinamentoStore();
 
-const protocolos = ['Protocolo ABC', 'Protocolo Ocorrência de Resposta'];
+const protocolos = ['ABC', 'OCORRÊNCIA DE RESPOSTA', 'SEM PROTOCOLO'];
 
 const tab = ref('treinamento');
-
-const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
 
 const selected = ref<string>('ATENCAO');
 

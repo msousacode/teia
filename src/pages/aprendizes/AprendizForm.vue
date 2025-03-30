@@ -40,7 +40,7 @@
           <div v-if="routeLocation.params.action == 'edit'">
             <div class="text-body1 q-mt-md q-mb-md">Profissionais vínculados</div>
 
-            <q-table :rows="rows" :columns="columns" row-key="full_name" class="my-sticky-column-table"
+            <q-table :rows="rows" :columns="columns" row-key="full_name" class="my-sticky-column-table text-uppercase"
               v-model:selected="profissionaisSelecionados" selection="multiple" :rows-per-page-options="[10]"
               :rows-per-page="10">
             </q-table>
@@ -152,7 +152,6 @@ async function atualizar() {
 
     if (data) {
       success('Atualizado com sucesso!');
-      reset();
     }
   } catch (e) {
     error
@@ -238,6 +237,7 @@ columns.value = [
     align: 'center',
     field: 'full_name'
   },
+  { name: 'actions', align: 'center', label: 'Perfil', field: 'perfil' },
   { name: 'actions', align: 'center', label: 'E-mail', field: 'email' },
 ]
 

@@ -23,4 +23,8 @@ export class AnotacaoService {
   async getAnotacaoById(id: string | null) {
     return await http.get(`/anotacoes/${id}`);
   }
+
+  async deleteAnotacaoById(id: string | null) {
+    return await http.delete(`/anotacoes/${id}`);
+  }
 }

@@ -2,17 +2,18 @@
   <q-page class="q-pa-sm">
 
     <div class="row justify-center">
-      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-md-7 col-xs-12 col-sm-12"
-        :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
+      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id"
+        class="col-md-7 col-xs-12 col-sm-12 text-uppercase" :rows-per-page-options="[50, 100, 150, 200]"
+        :rows-per-page="50">
         <template v-slot:top>
           <div class="text-h6">Aprendizes</div>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editar(props.row)">
+            <q-btn icon="mdi-pencil-outline" outline color="info" dense size="sm" @click="editar(props.row)">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
-            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="remover(props.row)">
+            <q-btn icon="mdi-delete-outline" outline color="negative" dense size="sm" @click="remover(props.row)">
               <q-tooltip> Delete </q-tooltip>
             </q-btn>
           </q-td>

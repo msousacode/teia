@@ -37,6 +37,7 @@ item, index
                   </q-item-label>
                 </div>
               </q-item-section>
+
               <q-item-section side>
                 <q-btn sm label="Coletar" color="blue-9"
                   @click="redirecionaColetas(item.treinamentoId, item.protocolo, aprendizUuidSelecionado)" />
@@ -48,7 +49,7 @@ item, index
     </q-dialog>
 
     <div class="row justify-center">
-      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-md-7 col-xs-12 col-sm-12"
+      <q-table :rows="atendimentos" :columns="columns" row-key="id" class="col-md-7 col-xs-12 col-sm-12 text-uppercase"
         :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
         <template v-slot:top>
           <span class="text-h6"> Atendimentos </span>
@@ -142,7 +143,7 @@ onMounted(async () => {
         message: 'Não foram encontrados atendimentos.',
         textColor: 'black',
         color: 'yellow-7',
-        position: 'center',
+        position: 'top',
       });
     }
   } catch (e) {

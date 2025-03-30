@@ -1,15 +1,16 @@
 <template>
   <q-page padding>
 
-    <div class="row justify-center">
+    <div :class="props.selecionarTreinamento ? '' : 'row justify-center'">
       <q-card class="col-md-7 col-xs-12 col-sm-12 q-mb-sm q-pa-md">
         <q-select stack-label outlined v-model="habilidadeFiltro" :options="habilidades" label="Tipo de Habilidade" />
       </q-card>
     </div>
 
-    <div class="row justify-center">
+    <div :class="props.selecionarTreinamento ? '' : 'row justify-center'">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
-        row-key="treinamentoId" selection="multiple" v-model:selected="selected" class="col-md-7 col-xs-12 col-sm-12">
+        row-key="treinamentoId" selection="multiple" v-model:selected="selected"
+        :class="props.selecionarTreinamento ? '' : 'col-md-7 col-xs-12 col-sm-12'">
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
             <q-btn icon="mdi-pencil" outline color="info" dense size="sm" @click="handleEdit(props.row)">
@@ -23,12 +24,12 @@
       </q-table>
     </div>
 
-    <div class="q-gutter-x-md row justify-end">
-      <q-btn color="secondary" @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento"
-        :disable=isConfirm>Salvar</q-btn>
+    <div :class="props.selecionarTreinamento ? 'q-mt-md row justify-end' : 'q-gutter-x-md row justify-end'">
+      <q-btn color="positive" @click="handleSelectTreinamentos" v-show="props.selecionarTreinamento"
+        :disable=isConfirm>Incluir</q-btn>
     </div>
 
-    <div class="row justify-center" v-show="!props.selecionarTreinamento">
+    <div :class="props.selecionarTreinamento ? '' : 'row justify-center'" v-show="!props.selecionarTreinamento">
       <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
         <div class="q-gutter-x-md row justify-end">
           <q-btn color="info" :to="{ name: 'treinamento-import' }" v-if="!props.selecionarTreinamento">banco de
