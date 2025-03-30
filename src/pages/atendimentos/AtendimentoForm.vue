@@ -132,9 +132,12 @@
             </q-expansion-item>
           </div>
 
-          <div class="q-mb-md q-mt-xl text-uppercase"><b>Profissionais vículados ao atendimento:</b></div>
-          <div v-for="(item, index) in form.profissionais" :key="index">
-            <span class="text-uppercase">{{ item.full_name }}</span> - {{ item.perfil }}
+          <div v-if="editMode">
+            <div class="q-mb-md q-mt-xl text-uppercase"><b>Profissionais vículados ao atendimento:</b>
+            </div>
+            <div v-for="(item, index) in form.profissionais" :key="index">
+              <span class="text-uppercase">{{ item.full_name }}</span> - {{ item.perfil }}
+            </div>
           </div>
         </q-form>
 
