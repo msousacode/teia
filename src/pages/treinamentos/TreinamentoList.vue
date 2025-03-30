@@ -7,7 +7,7 @@
       </q-card>
     </div>
 
-    <div :class="props.selecionarTreinamento ? '' : 'row justify-center'">
+    <div :class="props.selecionarTreinamento ? '' : 'row justify-center text-uppercase'">
       <q-table :rows="treinamentos" :columns="props.selecionarTreinamento ? visibleColumns : columns"
         row-key="treinamentoId" selection="multiple" v-model:selected="selected"
         :class="props.selecionarTreinamento ? '' : 'col-md-7 col-xs-12 col-sm-12'">
