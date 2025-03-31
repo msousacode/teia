@@ -11,7 +11,7 @@
           <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow class="text-uppercase" />
 
           <q-input outlined label="Descrição do Objetivo" v-model="form.descricao_alvo" type="textarea"
-            class="q-mt-md text-uppercase" />
+            class="q-mt-md text-uppercase" style="white-space: pre-line;" />
 
           <div class="q-mt-md q-gutter-x-md row justify-end">
             <q-btn color="info" @click="visible = false">Fechar</q-btn>
@@ -39,11 +39,11 @@
           <div>
             <div class="text-uppercase text-h6 q-mb-md">{{ item.nome_alvo }}</div>
 
-            <span class="text-subtitle2">Pergunta: </span>
+            <span class="text-subtitle2" v-if="item.pergunta.length">Pergunta: </span>
             <div class="text-subtitle1 text-uppercase">{{ item.pergunta }}</div>
 
             <span class="text-subtitle2">Descrição do Objetivo: </span>
-            <div class="text-subtitle1 text-uppercase">{{ item.descricao_alvo }}</div>
+            <div class="text-subtitle1 text-uppercase" style="white-space: pre-line;">{{ item.descricao_alvo }}</div>
           </div>
         </q-card-section>
       </q-card>

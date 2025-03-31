@@ -25,7 +25,7 @@
                   class="text-uppercase" />
 
                 <q-input stack-label outlined label="Descrição do Treinamento" v-model="form.descricao" type="textarea"
-                  class="q-mb-md text-uppercase" :rows="18" />
+                  class="q-mb-md text-uppercase" :rows="18" style="white-space: pre-line;" />
 
                 <div class="q-mt-md q-gutter-x-md row justify-end">
                   <q-btn color="info" :to="{ name: 'treinamentos' }">Voltar</q-btn>

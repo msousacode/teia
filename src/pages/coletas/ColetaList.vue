@@ -3,12 +3,12 @@
 
         <q-dialog v-model="visibleAnotacao" persistent>
             <q-card class="my-card q-pa-md full-width">
-                <div class="text-h6 q-mb-sm">Anotação</div>
+                <div class="text-h6 q-mb-sm">Evolução</div>
 
-                <q-input outlined label="Anotação no alvo" v-model="anotacao" type="textarea"
+                <q-input outlined label="Anotar evolução" v-model="anotacao" type="textarea"
                     :rules="[(val) => (val && val.length > 0) || 'Anotação é obrigatória']"
                     placeholder="Digite sua anotação aqui..." />
-                <q-checkbox v-model="podeImprimir" label="Marque para não exibir essa anotação no relatório." />
+                <q-checkbox v-model="podeImprimir" label="Não exibir no relatório." />
 
                 <div class="q-mt-md q-gutter-x-md row justify-end">
                     <q-btn color="info" @click="visibleAnotacao = false">Fechar</q-btn>
@@ -18,10 +18,18 @@
             </q-card>
         </q-dialog>
 
-        <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="justify">
+        <div class="row justify-center">
+            <q-card class="col-md-7 col-xs-12 col-sm-12 q-mt-md q-pa-md q-mb-md">
+                <div class="text-uppercase text-body2">
+                    <b>Aprendiz:</b> {{ aprendizStore.nome_aprendiz }}
+                </div>
+            </q-card>
+        </div>
+
+        <q-tabs v-model="tab" dense active-color="primary" indicator-color="primary" align="justify">
             <q-tab name="pendentes" label="Pendentes" />
             <q-tab name="coletados" label="Coletados" />
-            <q-tab name="anotacoes" label="Anotações" />
+            <q-tab name="anotacoes" label="Evoluções" />
         </q-tabs>
         <q-tab-panels v-model="tab">
             <q-tab-panel name="pendentes" style="background-color: #f8f5f2;">
@@ -173,11 +181,11 @@
                                     <div>
                                         <div class="text-body2 q-mt-sm"><b>Anotação:</b></div>
                                         <div class="text-body1 q-mt-sm" style="white-space: pre-line;">{{ item.anotacao
-                                        }}
+                                            }}
                                         </div>
                                         <hr>
                                         <div class="text-body2 q-mt-sm"><b>Data da Anotação: </b>{{ item.data_anotacao
-                                        }}
+                                            }}
                                         </div>
                                         <div class="text-body2 q-mt-md">
                                             <b>Anotado por:</b>
@@ -198,7 +206,7 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, reactive, ref, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
@@ -248,6 +256,8 @@ let counts = ref<any[]>([]);
 let acaoAnotacao = '';
 
 const podeImprimir = ref<boolean>(false);
+
+const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 async function salvarRespostas() {
     $q.loading.show();
