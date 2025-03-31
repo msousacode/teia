@@ -18,13 +18,13 @@
             </q-card>
         </q-dialog>
 
-        <div class="row justify-center">
+        <!--div class="row justify-center">
             <q-card class="col-md-7 col-xs-12 col-sm-12 q-mt-md q-pa-md q-mb-md">
                 <div class="text-uppercase text-body2">
                     <b>Aprendiz:</b> {{ aprendizStore.nome_aprendiz }}
                 </div>
             </q-card>
-        </div>
+        </div-->
 
         <q-tabs v-model="tab" dense active-color="primary" indicator-color="primary" align="justify">
             <q-tab name="pendentes" label="Pendentes" />
@@ -206,7 +206,7 @@
     </q-page>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
@@ -257,7 +257,7 @@ let acaoAnotacao = '';
 
 const podeImprimir = ref<boolean>(false);
 
-const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
+//const aprendizStore = reactive(JSON.parse(localStorage.getItem('aprendizInfo')));
 
 async function salvarRespostas() {
     $q.loading.show();
