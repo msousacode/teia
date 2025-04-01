@@ -73,7 +73,9 @@ const { success, error } = useNotify();
 
 const treinamentosSelecionados = ref<string[]>([]);
 
-const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
+//const habilidades = ["ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA", "MEMORIA", "COORDENACAO", "RACIOCINIO", "SOCIALIZACAO", "AUTOAJUDDA"];
+
+const habilidades = ["ATENCAO", "IMITACAO"];
 
 const selected = ref<string>('ATENCAO');
 
