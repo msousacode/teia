@@ -50,7 +50,9 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { TreinamentoService } from 'src/services/TreinamentoService';
 
-const habilidades = ["TODOS", "ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA"];
+//const habilidades = ["TODOS", "ATENCAO", "IMITACAO", "LINGUAGEM_RECEPTIVA", "LINGUAGEM_EXPRESSIVA", "PRE_ACADEMICA"];
+
+const habilidades = ["TODOS", "ATENCAO", "IMITACAO"];
 
 const habilidadeFiltro = ref<string>('');
 
