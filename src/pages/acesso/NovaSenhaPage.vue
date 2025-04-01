@@ -24,14 +24,19 @@
     <q-page-container>
       <div class="row justify-center q-mt-lg">
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-          <div class="text-h6 text-teal">Criar Senha</div>
-          <q-input outlined v-model="novaSenha" label="Nova senha" stack-label
-            :rules="[val => (val && val.length >= 6) || 'Senha obrigatória']" type="password" />
+          <q-card class="q-pa-md">
+            <div class="text-h6 q-mb-sm">Criar Senha</div>
+            <q-input outlined v-model="novaSenha" label="Nova senha" stack-label
+              :rules="[val => (val && val.length >= 6) || 'Senha obrigatória']" type="password" />
 
-          <q-input outlined v-model="confirmarSenha" label="Confirmar senha" stack-label
-            :rules="[val => (val && val.length >= 6) || 'Confirmar senha é obrigatório']" type="password" />
+            <q-input outlined v-model="confirmarSenha" label="Confirmar senha" stack-label
+              :rules="[val => (val && val.length >= 6) || 'Confirmar senha é obrigatório']" type="password" />
 
-          <q-btn class="full-width bg-primary text-white" no-caps label="Salvar Senha" @click="recuperar" />
+            <div class="q-mt-md q-gutter-x-md row justify-end">
+              <q-btn color="info" :to="{ name: 'login' }">Voltar</q-btn>
+              <q-btn color="positive" @click="recuperar">Salvar</q-btn>
+            </div>
+          </q-card>
         </div>
       </div>
     </q-page-container>
