@@ -35,7 +35,8 @@
 
           <q-input outlined stack-label label="Nome do Responsável" v-model="form.nome_responsavel" class="q-mb-md" />
 
-          <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea" />
+          <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea"
+            :rules="[(val) => (val && val.length > 2000) ? 'Texto não deve ultrapassar os 2000 caracteres' : true]" />
 
           <div v-if="routeLocation.params.action == 'edit'">
             <div class="text-body1 q-mt-md q-mb-md">Profissionais vínculados</div>
@@ -48,7 +49,7 @@
 
           <div class="q-mt-md q-gutter-x-md row justify-end">
             <q-btn color="info" :to="{ name: 'aprendizes' }">Voltar</q-btn>
-            <q-btn color="positive" @click="submit">Salvar</q-btn>
+            <q-btn color="positive" @click="submit" :disable="!isSubmitted">Salvar</q-btn>
           </div>
 
         </q-card>
@@ -92,7 +93,7 @@ const rows = ref<any[]>([]);
 const profissionaisSelecionados = ref([]);
 
 let isSubmitted = computed(() => {
-  return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '';
+  return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '' && form.value.observacao.length < 2000;
 });
 
 const form = ref({

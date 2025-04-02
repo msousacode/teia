@@ -77,7 +77,8 @@
             <q-card class="q-pa-md col-md-7 col-xs-12 col-sm-12">
                 <div class="q-gutter-x-md row justify-end">
                     <q-btn color="info" :to="{ name: 'avaliacoes' }">Voltar</q-btn>
-                    <q-btn color="secondary" @click="avancar" :disabled="isAvancarDisabled">Avançar</q-btn>
+                    <q-btn color="secondary" @click="avancar"
+                        :disabled="!(isAvancarDisabled && isOpcoesSelecionadas)">Avançar</q-btn>
                 </div>
             </q-card>
         </div>
@@ -148,7 +149,9 @@ const isPortage = computed(() => form.value.protocolo.label === 'PORTAGE');
 
 const isAblls = computed(() => form.value.protocolo.label === 'ABLLS-R');
 
-const isAvancarDisabled = computed(() => (form.value.aprendiz == '' || form.value.protocolo == '') || (!(niveisSelcionados.value.length > 0 || idadeSelcionados.value.length > 0 || habilidadesSelcionadas.value.length > 0)));
+const isAvancarDisabled = computed(() => (form.value.aprendiz != '' || form.value.protocolo != ''));
+
+const isOpcoesSelecionadas = computed(() => niveisSelcionados.value.length != 0 || idadeSelcionados.value.length != 0);
 
 const vbMappService = new VbMappService();
 
