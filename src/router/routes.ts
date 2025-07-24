@@ -164,6 +164,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/suporte/SuportePage.vue'),
         meta: { requiresAuth: true },
       },
+      {
+        name: 'objetivos',
+        path: '/objetivos',
+        component: () => import('pages/v2/objetivos/ObjetivoPage.vue'),
+        meta: { requiresAuth: true },
+      },
     ],
   },
 ];
