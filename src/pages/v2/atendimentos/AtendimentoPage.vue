@@ -67,15 +67,9 @@
     <q-tab-panel name="evolucoes"> ANOTACAO </q-tab-panel>
   </q-tab-panels>
 
-  <div class="fixed-bottom q-pa-md">
-    <q-btn
-      icon="download"
-      label="Importar Objetivos"
-      color="secondary"
-      no-caps
-      class="full-width q-pa-sm text-h6"
-    />
-  </div>
+  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-btn fab icon="add" class="bg-green-8 text-white" />
+  </q-page-sticky>
 
   <q-dialog v-model="visibleAnotacao" persistent>
     <q-card class="my-card q-pa-md full-width">
