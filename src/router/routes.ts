@@ -85,7 +85,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'aprendiz-novo',
-        path: '/aprendiz-novo/:action?',
+        path: '/aprendiz-novo/:action?/aprendiz/:aprendizId?',
         component: () => import('pages/aprendizes/AprendizForm.vue'),
         meta: { requiresAuth: true },
       },

@@ -149,9 +149,9 @@
   </q-page-->
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, toRaw } from 'vue';
 import { v4 as uuid } from 'uuid';
-//import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 //import { useAprendizStore } from 'src/stores/aprendiz';
 import useNotify from 'src/composables/UseNotify';
 import { dias, diasAbreviados, meses } from 'src/composables/utils';
@@ -170,7 +170,7 @@ const { success, error } = useNotify();
 
 const $q = useQuasar();
 
-//const routeLocation = useRoute();
+const routeLocation = useRoute();
 
 //const columns = ref<any[]>([]);
 
@@ -197,10 +197,10 @@ const form = ref({
 async function salvar() {
   //isSubmitted.value = true;
 
-  /*if (routeLocation.params.action === 'edit') {
+  if (routeLocation.params.action == 'edit') {
     atualizar();
     return;
-  }*/
+  }
 
   form.value.uuid = uuid();
 
@@ -219,17 +219,18 @@ async function salvar() {
     $q.loading.hide();
   }
 }
-/*
+
 async function atualizar() {
   try {
     $q.loading.show();
 
     const object = toRaw(form.value);
 
+    /*
     if (profissionaisSelecionados.value.length > 0) {
       const profissionais = toRaw(profissionaisSelecionados.value);
       object.profissionais = profissionais.map((i) => i.email);
-    }
+    }*/
 
     const { data } = await aprendizeService.putAprendiz(object);
 
@@ -244,7 +245,7 @@ async function atualizar() {
     $q.loading.hide();
   }
 }
-*/
+
 function reset() {
   form.value.uuid = '';
   form.value.nome_aprendiz = '';
@@ -278,13 +279,13 @@ async function carregarProfissionais() {
     $q.loading.hide();
   }
 }
-
+*/
 onMounted(async () => {
   if (routeLocation.params.action === 'edit') {
     try {
       $q.loading.show();
       const { data } = await aprendizeService.getAprendizById(
-        store.getAprendizUuid
+        routeLocation.params.aprendizId.toString()
       );
 
       if (data) {
@@ -297,7 +298,7 @@ onMounted(async () => {
         form.value.observacao = data.observacao;
       }
 
-      profissionaisSelecionados.value = await buscarProfissionaisVinculados();
+      //profissionaisSelecionados.value = await buscarProfissionaisVinculados();
     } catch (e) {
       error('');
       throw e;
@@ -306,9 +307,9 @@ onMounted(async () => {
     }
   }
 
-  await carregarProfissionais();
+  //await carregarProfissionais();
 });
-
+/*
 async function buscarProfissionaisVinculados() {
   const { data } = await aprendizeService.getProfissionaisVinculados(
     store.getAprendizUuid
