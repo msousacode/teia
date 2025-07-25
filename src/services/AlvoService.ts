@@ -2,9 +2,13 @@ import createHttp from './base/baseHttp';
 
 const http = createHttp('/api');
 
-export class AlvoService {
-  async postAlvo(data: any) {
-    return await http.post('/alvos', data);
+export default class AlvoService {
+  async postAlvo(data: { nome_alvo: string }) {
+    return await http.post('/alvos/v2/salvar', data);
+  }
+
+  async getAlvosV2() {
+    return await http.get('/alvos/v2/all');
   }
 
   async putAlvo(data: any) {

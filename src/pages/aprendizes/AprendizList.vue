@@ -1,50 +1,67 @@
 <template>
-  <q-page class="q-pa-sm">
+  <div>
+    <q-item-label header class="text-h6">Crianças</q-item-label>
 
-    <div class="row">
-      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id" class="col-12"
-        :rows-per-page-options="[50, 100, 150, 200]" :rows-per-page="50">
-        <template v-slot:top>
-          <div class="text-h6 text-teal">Aprendizes</div>
-        </template>
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm" @click="editar(props.row)">
-              <q-tooltip> Edit </q-tooltip>
-            </q-btn>
-            <q-btn icon="mdi-delete-outline" color="negative" dense size="sm" @click="remover(props.row)">
-              <q-tooltip> Delete </q-tooltip>
-            </q-btn>
-          </q-td>
-        </template>
-      </q-table>
+    <q-item v-for="(item, index) in aprendizes" :key="index">
+      <q-item-section avatar>
+        <q-avatar color="primary" text-color="white"> T </q-avatar>
+      </q-item-section>
+
+      <q-item-section top>
+        <q-item-label lines="1" class="text-grey-8">
+          <span class="text-h6 text-uppercase">{{ item.nome_aprendiz }}</span>
+        </q-item-label>
+        <q-item-label lines="1">
+          <span class="text-body2 text-uppercase">{{
+            item.cargoDescricao
+          }}</span>
+        </q-item-label>
+        <q-item-label lines="1">
+          <span class="text-weight-medium">{{ item.nasc_aprendiz }}</span>
+        </q-item-label>
+
+        <q-item-label> </q-item-label>
+      </q-item-section>
+
+      <q-item-section side>
+        <div class="text-grey-8 q-gutter-xs">
+          <q-btn size="12px" flat dense round icon="delete" />
+          <q-btn size="12px" flat dense round icon="edit" />
+        </div>
+      </q-item-section>
+    </q-item>
+
+    <div class="fixed-bottom q-pa-md">
+      <q-btn
+        icon="add"
+        label="Adicionar Nova Criança"
+        color="info"
+        no-caps
+        class="full-width q-pa-sm text-h6"
+        :to="{ name: 'aprendiz-novo' }"
+      />
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn v-if="$q.platform.is.mobile || $q.platform.is.desktop" fab icon="mdi-plus" color="blue-9"
-        :to="{ name: 'aprendiz-novo' }" />
-    </q-page-sticky>
-  </q-page>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { columnsCategory } from './table';
-import { useAprendizStore } from 'src/stores/aprendiz';
-import { useRouter } from 'vue-router';
+//import { useAprendizStore } from 'src/stores/aprendiz';
+//import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { AprendizService } from 'src/services/AprendizService';
-import useNotify from 'src/composables/UseNotify';
+//import useNotify from 'src/composables/UseNotify';
 
 const aprendizService = new AprendizService();
 
-const store = useAprendizStore();
+//const store = useAprendizStore();
 
 const aprendizes = ref<any[]>([]);
 
-const { success, error } = useNotify();
+//const { success, error } = useNotify();
 
 const $q = useQuasar();
 
-const router = useRouter();
+//const router = useRouter();
 
 async function listar() {
   $q.loading.show();
@@ -52,13 +69,13 @@ async function listar() {
     const { data } = await aprendizService.getAprendizes();
     aprendizes.value = data;
   } catch (e) {
-    error('');
+    //error('');
     throw e;
   } finally {
     $q.loading.hide();
   }
 }
-
+/*
 function editar(aprendiz: any) {
   store.$state.aprendizUuid = aprendiz.uuid;
   router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
@@ -71,17 +88,18 @@ function remover(aprendiz: any) {
     cancel: true,
   })
     .onOk(async () => {
-
-      const { status } = await aprendizService.deleteAprendizById(aprendiz.uuid);
+      const { status } = await aprendizService.deleteAprendizById(
+        aprendiz.uuid
+      );
 
       if (status == 200) {
         success('Aprendiz excluído com sucesso!');
         listar();
       }
     })
-    .onDismiss(() => { });
+    .onDismiss(() => {});
 }
-
+*/
 onMounted(() => {
   listar();
 });

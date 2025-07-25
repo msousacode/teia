@@ -5,8 +5,10 @@ const http = createHttp('/api');
 export interface Usuario {
   full_name: string;
   email: string;
-  perfil: string;
-  senha: string;
+  perfil?: string;
+  senha?: string;
+  cargoDescricao: string;
+  preco: number | 0.0;
 }
 
 export interface Auth {
@@ -25,6 +27,18 @@ export class AcessoService {
   async criarNovoUsuario(usuario: Usuario, usuarioId?: string) {
     if (usuarioId != undefined) {
       return http.post(`/auth/usuarios/tenant/${usuarioId}`, usuario, config);
+    } else {
+      return http.post('/auth/usuarios', usuario, config);
+    }
+  }
+
+  async criarUsuarioProfissional(usuario: Usuario, usuarioId?: string) {
+    if (usuarioId != undefined) {
+      return http.post(
+        `/auth/usuarios/v2/tenant/${usuarioId}`,
+        usuario,
+        config
+      );
     } else {
       return http.post('/auth/usuarios', usuario, config);
     }

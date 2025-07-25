@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated style="background-color: #e91e63">
+    <q-header elevated style="background-color: #ff9f45">
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
       </q-toolbar>
@@ -12,7 +12,4 @@
   </q-layout>
 </template>
 
-<script setup lang="ts">
-
-
-</script>
+<script setup lang="ts"></script>
