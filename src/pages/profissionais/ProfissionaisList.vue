@@ -25,8 +25,22 @@
 
       <q-item-section side>
         <div class="text-grey-8 q-gutter-xs">
-          <q-btn size="12px" flat dense round icon="delete" />
-          <q-btn size="12px" flat dense round icon="edit" />
+          <q-btn
+            size="12px"
+            flat
+            dense
+            round
+            icon="delete"
+            @click="excluir(item)"
+          />
+          <q-btn
+            size="12px"
+            flat
+            dense
+            round
+            icon="edit"
+            @click="editar(item)"
+          />
         </div>
       </q-item-section>
     </q-item>
@@ -47,24 +61,24 @@
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { ProfissionalService } from 'src/services/ProfissionalService';
-import { onMounted, ref } from 'vue';
-//import { useRouter } from 'vue-router';
+import { onMounted, ref, toRaw } from 'vue';
+import { useRouter } from 'vue-router';
 
-const { error } = useNotify();
+const { success, error } = useNotify();
 
 const $q = useQuasar();
 
-//const router = useRouter();
+const router = useRouter();
 
 const service = new ProfissionalService();
 
 const list = ref<any[]>([]);
 
 //const check1 = ref(true);
-/*
+
 function excluir(row: any) {
   $q.dialog({
-    title: 'Confirma a exclusão do Profissional?',
+    title: 'Confirmar a exclusão?',
     ok: true,
     cancel: true,
   })
@@ -72,7 +86,7 @@ function excluir(row: any) {
       const { status } = await service.delete(toRaw(row).email);
 
       if (status == 200) {
-        success('Profissional excluído com sucesso!');
+        success('Excluído com sucesso!');
         await getProfissionais();
       }
     })
@@ -81,8 +95,8 @@ function excluir(row: any) {
 
 function editar(row: any) {
   const email = row.email;
-  router.push({ name: 'cadastrar', params: { email } });
-}*/
+  router.push({ name: 'profissionais/cadastro', params: { email } });
+}
 
 async function getProfissionais() {
   const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;

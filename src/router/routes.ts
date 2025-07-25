@@ -109,7 +109,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'profissionais/cadastro',
-        path: '/profissionais/cadastro',
+        path: '/profissionais/cadastro/:email?',
         component: () => import('pages/profissionais/ProfissionalForm.vue'),
         meta: { requiresAuth: true },
       },
