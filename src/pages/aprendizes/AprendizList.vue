@@ -2,14 +2,20 @@
   <div>
     <q-item-label header class="text-h6">Crianças</q-item-label>
 
-    <q-item v-for="(item, index) in aprendizes" :key="index">
+    <q-item
+      v-for="(item, index) in aprendizes"
+      :key="index"
+      :to="{ name: 'v2/atendimentos' }"
+    >
       <q-item-section avatar>
         <q-avatar color="primary" text-color="white"> T </q-avatar>
       </q-item-section>
 
       <q-item-section top>
         <q-item-label lines="1" class="text-grey-8">
-          <span class="text-h6 text-uppercase">{{ item.nome_aprendiz }}</span>
+          <span class="text-h6 text-blue text-uppercase">{{
+            item.nome_aprendiz
+          }}</span>
         </q-item-label>
         <q-item-label lines="1">
           <span class="text-body2 text-uppercase">{{

@@ -1,7 +1,7 @@
 <template>
   <q-item-label header class="text-h6">Cadastro de Profissionais</q-item-label>
   <q-item>
-    <q-item-section top>
+    <q-item-section>
       <q-input
         class="text-h6"
         v-model="formCadastro.nome"
@@ -13,7 +13,7 @@
   </q-item>
 
   <q-item>
-    <q-item-section top>
+    <q-item-section>
       <q-input
         class="text-h6"
         type="email"
@@ -26,12 +26,24 @@
   </q-item>
 
   <q-item>
-    <q-item-section top>
+    <q-item-section>
       <q-select
         class="text-h6"
         v-model="selected"
         :options="cargos"
         label="Selecione a Ocupação"
+      />
+    </q-item-section>
+  </q-item>
+
+  <q-item>
+    <q-item-section>
+      <q-input
+        label="* Opcional"
+        class="text-h6"
+        v-model="formCadastro.preco"
+        placeholder="Valor da Consulta"
+        stack-label
       />
     </q-item-section>
   </q-item>
@@ -48,15 +60,17 @@
   </div>
 </template>
 <script setup lang="ts">
+import useFormatUtil from 'src/composables/UseFormatUtil';
 import useNotify from 'src/composables/UseNotify';
 import { AcessoService } from 'src/services/AcessoService';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 const selected = ref<string>('');
 
 const formCadastro = reactive({
   nome: '',
   email: '',
+  preco: '',
 });
 
 const cargos = ['Piscologia', 'Fonoaudiologia'];
@@ -64,6 +78,8 @@ const cargos = ['Piscologia', 'Fonoaudiologia'];
 const acessoService = new AcessoService();
 
 const { error } = useNotify();
+
+const utils = useFormatUtil();
 
 function salvarProfissional() {
   const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
@@ -78,9 +94,13 @@ function salvarProfissional() {
       full_name: formCadastro.nome,
       email: formCadastro.email,
       cargoDescricao: selected.value,
-      preco: 200.0,
+      preco: formCadastro.preco,
     },
     usuarioId
   );
 }
+
+watch(formCadastro, (newValue) => {
+  formCadastro.preco = utils.formatMoeda(newValue.preco);
+});
 </script>

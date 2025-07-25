@@ -8,7 +8,7 @@ export interface Usuario {
   perfil?: string;
   senha?: string;
   cargoDescricao: string;
-  preco: number | 0.0;
+  preco: string;
 }
 
 export interface Auth {

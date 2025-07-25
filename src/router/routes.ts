@@ -51,6 +51,18 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
+    component: () => import('layouts/AtendimentoLayout.vue'),
+    children: [
+      {
+        name: 'v2/atendimentos',
+        path: '/v2/atendimentos',
+        component: () => import('pages/v2/atendimentos/AtendimentoPage.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -75,6 +87,30 @@ const routes: RouteRecordRaw[] = [
         name: 'aprendiz-novo',
         path: '/aprendiz-novo/:action?',
         component: () => import('pages/aprendizes/AprendizForm.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'suporte',
+        path: '/suporte',
+        component: () => import('pages/suporte/SuportePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'objetivos',
+        path: '/objetivos',
+        component: () => import('pages/v2/objetivos/ObjetivoPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'objetivos/cadastro',
+        path: '/objetivos/cadastro',
+        component: () => import('pages/v2/objetivos/ObjetivoForm.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'profissionais/cadastro',
+        path: '/profissionais/cadastro',
+        component: () => import('pages/profissionais/ProfissionalForm.vue'),
         meta: { requiresAuth: true },
       },
       /*{
@@ -157,31 +193,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/perfil/PerfilPage.vue'),
         meta: { requiresAuth: true },
       },*/
-
-      {
-        name: 'suporte',
-        path: '/suporte',
-        component: () => import('pages/suporte/SuportePage.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        name: 'objetivos',
-        path: '/objetivos',
-        component: () => import('pages/v2/objetivos/ObjetivoPage.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        name: 'objetivos/cadastro',
-        path: '/objetivos/cadastro',
-        component: () => import('pages/v2/objetivos/ObjetivoForm.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        name: 'profissionais/cadastro',
-        path: '/profissionais/cadastro',
-        component: () => import('pages/profissionais/ProfissionalForm.vue'),
-        meta: { requiresAuth: true },
-      },
     ],
   },
 ];

@@ -150,7 +150,7 @@ async function entrar() {
           }
 
           localStorage.setItem('_tsysaba', data.data);
-          router.push({ name: 'relatorios' });
+          router.push({ name: 'aprendizes' });
         })
         .catch(() => {
           error('Erro ao logar. Verifique suas credenciais');
@@ -188,7 +188,7 @@ async function verificarEmail() {
 
 onBeforeMount(() => {
   if (getToken() != null) {
-    router.push({ name: 'relatorios' });
+    router.push({ name: 'aprendizes' });
   }
 });
 

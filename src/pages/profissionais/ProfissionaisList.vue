@@ -38,7 +38,7 @@
         color="info"
         no-caps
         class="full-width q-pa-sm text-h6"
-        :to="{ name: '/profissionais/cadastro' }"
+        :to="{ name: 'profissionais/cadastro' }"
       />
     </div>
   </div>
