@@ -103,7 +103,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'objetivos/cadastro',
-        path: '/objetivos/cadastro',
+        path: '/objetivos/cadastro/:action?/:objetivoId?',
         component: () => import('pages/v2/objetivos/ObjetivoForm.vue'),
         meta: { requiresAuth: true },
       },
