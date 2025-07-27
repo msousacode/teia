@@ -29,11 +29,13 @@
           <q-item-section avatar @click="redirect">
             <q-avatar color="primary" text-color="white"> T </q-avatar>
           </q-item-section>
-          <q-item-section top>
-            <q-item-label class="text-grey-8" @click="redirect">
-              <span class="text-h6 text-blue">{{ item.nome_aprendiz }}</span>
+          <q-item-section top @click="redirect">
+            <q-item-label class="text-grey-8">
+              <span class="text-body1 text-blue"
+                ><b>{{ item.nome_aprendiz }}</b></span
+              >
             </q-item-label>
-            <q-item-label lines="1">
+            <q-item-label lines="1" @click="redirect">
               <span class="text-body2 text-uppercase">{{
                 item.nasc_aprendiz
               }}</span>

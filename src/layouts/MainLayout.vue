@@ -72,13 +72,6 @@ const perfil = ref();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
-    title: 'Relatórios',
-    icon: 'mdi-chart-line',
-    routeName: 'relatorios',
-    hide: true,
-    display: () => 'none',
-  },
-  {
     title: 'Crianças',
     icon: 'mdi-account-multiple',
     routeName: 'aprendizes',
@@ -96,6 +89,13 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
+    hide: true,
+    display: () => 'none',
+  },
+  {
+    title: 'Relatórios',
+    icon: 'mdi-chart-line',
+    routeName: 'relatorios',
     hide: true,
     display: () => 'none',
   },

@@ -46,7 +46,7 @@
       <q-item>
         <q-item-section top>
           <q-item-label class="text-grey-8">
-            <span class="text-h6">{{ item.nome_alvo }}</span>
+            <span class="text-body1">{{ item.nome_alvo }}</span>
           </q-item-label>
         </q-item-section>
 

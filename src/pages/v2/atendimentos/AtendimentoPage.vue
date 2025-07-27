@@ -1,4 +1,34 @@
 <template>
+  <q-banner class="bg-grey-3">
+    <div class="row justify-center items-center">
+      <ul>
+        <li class="text-subtitle2">
+          Atribua as estrelinhas para os objetivos e acompanhe a evolução.
+        </li>
+        <li class="text-subtitle2">
+          Ao terminar as coletas, encerre o atendimento e gere o relatório.
+        </li>
+      </ul>
+      <div class="row">
+        <q-btn
+          class="bg-white q-ma-sm"
+          outline
+          icon="add"
+          style="color: blue"
+          label="Importar"
+          :to="{ name: 'aprendiz-novo' }"
+        />
+        <q-btn
+          class="bg-white q-ma-sm"
+          outline
+          icon="close"
+          style="color: orangered"
+          label="Encerrar"
+          :to="{ name: 'aprendiz-novo' }"
+        />
+      </div>
+    </div>
+  </q-banner>
   <q-item>
     <q-item-section avatar>
       <q-avatar color="primary" text-color="white"> T </q-avatar>
@@ -6,12 +36,14 @@
 
     <q-item-section>
       <q-item-label lines="1" class="text-grey-8">
-        <span class="text-h6 text-info text-uppercase">Joaozinho Mock</span>
+        <span class="text-body1 text-info text-uppercase"
+          ><b>Joaozinho Mock</b></span
+        >
       </q-item-label>
 
       <q-item-label>
-        <q-icon name="star" color="green-8" size="24px" /> 5
-        <q-icon name="star" color="red-8" size="24px" class="q-ml-sm" /> 5
+        <q-icon name="star" color="green-8" size="26px" /> 5
+        <q-icon name="star" color="red-8" size="26px" class="q-ml-sm" /> 5
       </q-item-label>
     </q-item-section>
   </q-item>
@@ -19,57 +51,57 @@
   <q-tabs v-model="tab" class="text-teal">
     <q-tab name="objetivos" label="Objetivos" />
     <q-tab name="evolucoes" label="Evoluções" />
+    <!--<q-tab name="graficos" label="Gráficos" />-->
   </q-tabs>
 
   <q-tab-panels v-model="tab">
     <q-tab-panel name="objetivos">
-      <q-item v-for="(item, index) in list" :key="index">
-        <q-item-section top>
-          <q-item-label lines="1" class="text-grey-8">
-            <span class="text-h6">{{ item.nome_alvo }}</span>
-          </q-item-label>
-          <q-item-label>
+      <q-card
+        v-for="(item, index) in list"
+        :key="index"
+        class="q-mb-md shadow-2"
+        bordered
+      >
+        <q-item>
+          <q-item-section top>
+            <q-item-label class="text-grey-8">
+              <span class="text-body1">{{ item.nome_alvo }}</span>
+            </q-item-label>
+            <q-item-label>
+              <div class="text-grey-8 q-gutter-xs q-mt-sm">
+                <q-btn
+                  size="12px"
+                  label="Concluído"
+                  class="bg-green text-white"
+                />
+                <q-btn
+                  size="12px"
+                  label="Anotar"
+                  class="bg-info text-white"
+                  @click="visibleAnotacao = true"
+                />
+              </div>
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side>
             <div class="text-grey-8 q-gutter-xs">
+              <q-btn size="12px" dense round icon="star" class="text-green-8" />
+              +1
               <q-btn
                 size="12px"
-                label="Concluído"
                 dense
-                class="bg-green text-white"
+                round
+                icon="star"
+                class="text-red-8 q-ml-md"
               />
-              <q-btn
-                size="12px"
-                label="Anotar"
-                dense
-                class="bg-info text-white"
-                @click="visibleAnotacao = true"
-              />
+              -1
             </div>
-          </q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <div class="text-grey-8 q-gutter-xs">
-            <q-btn size="12px" dense round icon="star" class="text-green-8" />
-            +1
-            <q-btn
-              size="12px"
-              dense
-              round
-              icon="star"
-              class="text-red-8 q-ml-md"
-            />
-            -1
-          </div>
-        </q-item-section>
-
-        <q-item-section side> </q-item-section>
-      </q-item>
+          </q-item-section>
+        </q-item>
+      </q-card>
     </q-tab-panel>
     <q-tab-panel name="evolucoes"> ANOTACAO </q-tab-panel>
   </q-tab-panels>
-
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn fab icon="add" class="bg-green-8 text-white" />
-  </q-page-sticky>
 
   <q-dialog v-model="visibleAnotacao" persistent>
     <q-card class="my-card q-pa-md full-width">
