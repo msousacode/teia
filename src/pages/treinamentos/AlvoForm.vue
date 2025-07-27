@@ -6,19 +6,45 @@
         <title-custom title="Cadastro de Objetivo" />
       </q-card-section>
       <q-card-section class="q-mt-none">
-        <q-form class="col-md-7 col-xs-12 col-sm-12" @submit.prevent="salvarAlvo">
-          <q-input outlined label="Nome do Objetivo" v-model="form.nome_alvo"
-            :rules="[(val) => (val && val.length > 0) || 'Nome do Objetivo é obrigatório']" />
+        <q-form
+          class="col-md-7 col-xs-12 col-sm-12"
+          @submit.prevent="salvarAlvo"
+        >
+          <q-input
+            outlined
+            label="Nome do Objetivo"
+            v-model="form.nome_alvo"
+            :rules="[
+              (val) =>
+                (val && val.length > 0) || 'Nome do Objetivo é obrigatório',
+            ]"
+          />
 
-          <q-input outlined label="Pergunta" v-model="form.pergunta" type="textarea" autogrow />
+          <q-input
+            outlined
+            label="Pergunta"
+            v-model="form.pergunta"
+            type="textarea"
+            autogrow
+          />
 
-          <q-input outlined label="Descrição do Objetivo" v-model="form.descricao_alvo" type="textarea"
-            class="q-mt-md" />
+          <q-input
+            outlined
+            label="Descrição do Objetivo"
+            v-model="form.descricao_alvo"
+            type="textarea"
+            class="q-mt-md"
+          />
 
-          <q-btn label="Salvar" class="full-width q-pa-sm q-mt-md" no-caps color="primary" type="submit" />
+          <q-btn
+            label="Salvar"
+            class="full-width q-pa-sm q-mt-md"
+            no-caps
+            color="primary"
+            type="submit"
+          />
         </q-form>
       </q-card-section>
-
     </q-card>
   </q-dialog>
 
@@ -27,7 +53,12 @@
   </div-->
 
   <div v-for="(item, index) in alvos" :key="index" class="q-pa-sm">
-    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+    <q-card
+      flat
+      bordered
+      class="my-card"
+      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+    >
       <q-card-section>
         <div class="row items-center no-wrap">
           <div class="col">
@@ -37,7 +68,9 @@
             <span class="text-subtitle2 text-teal">Pergunta: </span>
             <div class="text-subtitle1">{{ item.pergunta }}</div>
 
-            <span class="text-subtitle2 text-teal">Descrição do Objetivo: </span>
+            <span class="text-subtitle2 text-teal"
+              >Descrição do Objetivo:
+            </span>
             <div class="text-subtitle1">{{ item.descricao_alvo }}</div>
           </div>
 
@@ -46,10 +79,14 @@
               <q-menu cover auto-close>
                 <q-list>
                   <q-item clickable>
-                    <q-item-section @click="editarAlvo(item)">Editar</q-item-section>
+                    <q-item-section @click="editarAlvo(item)"
+                      >Editar</q-item-section
+                    >
                   </q-item>
                   <q-item clickable>
-                    <q-item-section @click="deletarAlvo(item)">Remover</q-item-section>
+                    <q-item-section @click="deletarAlvo(item)"
+                      >Remover</q-item-section
+                    >
                   </q-item>
                 </q-list>
               </q-menu>
@@ -71,7 +108,7 @@ import { useRoute } from 'vue-router';
 import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import TitleCustom from 'src/components/TitleCustom.vue';
-import { AlvoService } from 'src/services/AlvoService';
+import AlvoService from 'src/services/AlvoService';
 
 const $q = useQuasar();
 
@@ -98,16 +135,14 @@ const form = ref({
 async function salvarAlvo() {
   $q.loading.show();
   if (form.value.alvoId) {
-
     try {
       const { data } = await alvoService.putAlvo(toRaw(form.value));
 
       if (data) {
         success('Salvo com sucesso!');
       } else {
-        error('Erro ao tentar atualizar.')
+        error('Erro ao tentar atualizar.');
       }
-
     } catch (e) {
       throw e;
     } finally {
@@ -119,12 +154,11 @@ async function salvarAlvo() {
         nome_alvo: '',
         pergunta: '',
         descricao_alvo: '',
-        treinamento_uuid_fk: store.getTreinamentoUuid
+        treinamento_uuid_fk: store.getTreinamentoUuid,
       };
 
       return;
     }
-
   }
 
   if (
@@ -144,9 +178,8 @@ async function salvarAlvo() {
       reset();
       getAlvos();
     }
-
   } catch (e) {
-    error("Ocorreu um erro ao salvar");
+    error('Ocorreu um erro ao salvar');
     throw e;
   } finally {
     visible.value = false;
@@ -175,7 +208,7 @@ function editarAlvo(item: any) {
 }
 
 function deletarAlvo(item: any) {
-  console.log(item)
+  console.log(item);
 
   $q.dialog({
     title: 'Confirma a exclusão do Alvo?',
@@ -183,7 +216,6 @@ function deletarAlvo(item: any) {
     cancel: true,
   })
     .onOk(async () => {
-
       /** TODO Fazer
       db.alvos
         .delete(item.uuid)
@@ -196,7 +228,7 @@ function deletarAlvo(item: any) {
           error('Erro ao tentar deletar o alvo', _error);
         }); */
     })
-    .onDismiss(() => { });
+    .onDismiss(() => {});
 }
 
 function reset() {

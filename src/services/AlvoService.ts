@@ -26,4 +26,8 @@ export default class AlvoService {
   async getAlvosByTreinamento(uuid: any) {
     return await http.get(`/alvos/all/treinamento/${uuid}`);
   }
+
+  async deletarAlvo(uuid: any) {
+    return await http.delete(`/alvos/${uuid}`);
+  }
 }

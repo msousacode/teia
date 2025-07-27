@@ -1,53 +1,117 @@
 <template>
-  <div>
-    <q-item-label header class="text-h6">Objetivos</q-item-label>
+  <q-banner class="bg-grey-3">
+    <div class="row justify-center items-center">
+      <div class="text-h6 q-pa-sm">Objetivos</div>
+      <div class="q-pa-sm q-mb-sm">
+        Cadastre novos objetivos e trabalhe com as crianças.
+      </div>
 
-    <q-item v-for="(item, index) in list" :key="index">
-      <q-item-section top>
-        <q-item-label lines="1" class="text-grey-8">
-          <span class="text-h6">{{ item.nome_alvo }}</span>
-        </q-item-label>
-        <q-item-label lines="1">
-          <span class="text-body2 text-uppercase">{{
-            item.cargoDescricao
-          }}</span>
-        </q-item-label>
-        <q-item-label lines="1">
-          <span class="text-weight-medium">{{ item.email }}</span>
-        </q-item-label>
-
-        <q-item-label> </q-item-label>
-      </q-item-section>
-
-      <q-item-section side>
-        <div class="text-grey-8 q-gutter-xs">
-          <q-btn size="12px" flat dense round icon="delete" />
-          <q-btn size="12px" flat dense round icon="edit" />
-        </div>
-      </q-item-section>
-    </q-item>
-
-    <div class="fixed-bottom q-pa-md">
-      <btn
+      <q-btn
+        class="bg-white q-ma-sm"
+        outline
         icon="add"
-        color="info"
-        label="Adicionar Novo Objetivo"
-        :path="{ name: 'objetivos/cadastro' }"
+        style="color: orange"
+        label="Adicionar novo Objetivo"
+        :to="{ name: 'objetivos/cadastro' }"
+      />
+
+      <q-input
+        v-model="searchText"
+        outlined
+        type="text"
+        placeholder="Digite o objetivo"
+        class="q-ma-sm bg-white"
+        style="min-height: 40px"
+        dense
+      />
+
+      <q-btn
+        class="bg-white q-ma-sm"
+        outline
+        icon="search"
+        style="color: blue"
+        label="Pesquisar"
+        :to="{ name: 'objetivos/cadastro' }"
       />
     </div>
-  </div>
+  </q-banner>
+
+  <q-page padding>
+    <q-card
+      v-for="(item, index) in list"
+      :key="index"
+      class="q-mb-md shadow-2"
+      bordered
+    >
+      <q-item>
+        <q-item-section top>
+          <q-item-label class="text-grey-8">
+            <span class="text-h6">{{ item.nome_alvo }}</span>
+          </q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          <div class="text-grey-8 q-gutter-xs">
+            <q-btn
+              class="text-red"
+              size="12px"
+              flat
+              dense
+              round
+              icon="delete"
+              @click="deletarAlvo(item)"
+            />
+            <q-btn size="12px" class="text-blue" flat dense round icon="edit" />
+          </div>
+        </q-item-section>
+      </q-item>
+    </q-card>
+  </q-page>
 </template>
 <script setup lang="ts">
+import { error } from 'console';
+import { useQuasar } from 'quasar';
+import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
 import { onMounted, ref } from 'vue';
-import btn from 'src/components/ButtonComponent.vue';
 
 const list = ref<any[]>([]);
+const searchText = ref('');
+
 const alvoService = new AlvoService();
 
-onMounted(async () => {
+const $q = useQuasar();
+
+const { success } = useNotify();
+
+function deletarAlvo(item: any) {
+  console.log(item);
+
+  $q.dialog({
+    title: 'Confirma a exclusão do Alvo?',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+      const { status } = await alvoService.deletarAlvo(item.alvoId);
+      if (status === 200) {
+        success('Alvo excluído com sucesso!');
+        await carregarObjetivos();
+        return;
+      }
+
+      error('Erro ao tentar excluir o alvo.');
+    })
+    .onDismiss(() => {});
+}
+
+async function carregarObjetivos() {
   const { data } = await alvoService.getAlvosV2();
   list.value = data;
+}
+
+onMounted(async () => {
+  await carregarObjetivos();
 });
 </script>
 <style lang="sass">
