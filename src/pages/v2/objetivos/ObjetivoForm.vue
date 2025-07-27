@@ -13,10 +13,10 @@
     </template>
     <div class="text-h6 text-orange">Dicas para um bom objetivo</div>
     <ul>
-      <li>Seja específico e claro</li>
-      <li>Use linguagem simples e objetiva</li>
-      <li>Considere a idade da criança</li>
-      <li>Use modelos do ABLLS, Portage e VB-MAPP</li>
+      <li class="text-subtitle2">Seja específico e claro</li>
+      <li class="text-subtitle2">Use linguagem simples e objetiva</li>
+      <li class="text-subtitle2">Considere a idade da criança</li>
+      <li class="text-subtitle2">Use modelos do ABLLS, Portage e VB-MAPP</li>
     </ul>
   </q-banner>
 
@@ -28,18 +28,20 @@
         type="textarea"
         v-model="nomeAlvo"
         placeholder="Informe o nome do objetivo"
-        class="text-h5"
+        class="text-h6"
+        :input-style="{ lineHeight: '1.6' }"
+        autogrow
       />
     </q-item-section>
   </q-item>
 
   <div class="fixed-bottom q-pa-md">
     <q-btn
+      class="full-width q-pa-sm"
+      outline
       icon="save"
+      style="color: green"
       label="Salvar Objetivo"
-      color="positive"
-      no-caps
-      class="full-width q-pa-sm text-h6"
       @click="salvar"
     />
   </div>
@@ -65,10 +67,37 @@ async function salvar() {
   $q.loading.show();
 
   try {
+    if (routeLocation.params.objetivoId) {
+      await atualizar();
+      return;
+    }
+
     const { data } = await alvoService.postAlvo({ nome_alvo: nomeAlvo.value });
 
     if (data) {
       success('Salvo com sucesso!');
+    } else {
+      error('Erro ao tentar salvar.');
+    }
+  } catch (e) {
+    throw e;
+  } finally {
+    $q.loading.hide();
+    nomeAlvo.value = '';
+  }
+}
+
+async function atualizar() {
+  $q.loading.show();
+
+  try {
+    const { data } = await alvoService.putAlvo({
+      alvoId: routeLocation.params.objetivoId,
+      nome_alvo: nomeAlvo.value,
+    });
+
+    if (data) {
+      success('Atualizado com sucesso!');
     } else {
       error('Erro ao tentar atualizar.');
     }

@@ -1,5 +1,28 @@
 <template>
-  <q-item-label header class="text-h6">Cadastro de Criança</q-item-label>
+  <q-banner class="bg-grey-3">
+    <template v-slot:avatar>
+      <div class="text-h6">
+        <q-btn
+          flat
+          round
+          dense
+          icon="arrow_back"
+          @click="$router.push({ name: 'profissionais' })"
+        />
+      </div>
+    </template>
+    <div class="text-h6 text-orange">Cadastre uma nova Criança</div>
+    <ul>
+      <li class="text-subtitle2">
+        A criança será compartilhada com os demais Profissionais cadastrados.
+      </li>
+      <li class="text-subtitle2">
+        Atribua os objetivos para as crianças e pontue com as estrelinhas.
+      </li>
+    </ul>
+  </q-banner>
+
+  <div class="text-h6 text-orange q-pa-md">Cadastre a Criança</div>
   <div>
     <q-item>
       <q-item-section top>
@@ -55,11 +78,11 @@
 
     <div class="fixed-bottom q-pa-md">
       <q-btn
+        class="full-width q-pa-sm"
+        outline
         icon="save"
+        style="color: green"
         label="Salvar Criança"
-        color="positive"
-        no-caps
-        class="full-width q-pa-sm text-h6"
         @click="salvar"
       />
     </div>

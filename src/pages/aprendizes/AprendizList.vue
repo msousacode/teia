@@ -1,69 +1,70 @@
 <template>
   <div>
-    <q-item-label header class="text-h6">Crianças</q-item-label>
-
-    <q-item v-for="(item, index) in aprendizes" :key="index" class="q-pa-md">
-      <q-item-section avatar>
-        <q-avatar
-          color="primary"
-          text-color="white"
-          class="cursor-pointer"
-          @click="redirect"
-        >
-          T
-        </q-avatar>
-      </q-item-section>
-
-      <q-item-section top class="cursor-pointer" @click="redirect">
-        <q-item-label lines="1" class="text-grey-8">
-          <span class="text-h6 text-blue text-uppercase">{{
-            item.nome_aprendiz
-          }}</span>
-        </q-item-label>
-        <q-item-label lines="1">
-          <span class="text-body2 text-uppercase">{{
-            item.cargoDescricao
-          }}</span>
-        </q-item-label>
-        <q-item-label lines="1">
-          <span class="text-weight-medium">{{ item.nasc_aprendiz }}</span>
-        </q-item-label>
-
-        <q-item-label> </q-item-label>
-      </q-item-section>
-
-      <q-item-section side>
-        <div class="text-grey-8 q-gutter-xs">
-          <q-btn
-            size="12px"
-            flat
-            dense
-            round
-            icon="delete"
-            @click="remover(item)"
-          />
-          <q-btn
-            size="12px"
-            flat
-            dense
-            round
-            icon="edit"
-            @click="editar(item)"
-          />
+    <q-banner class="bg-grey-3">
+      <div class="row justify-center items-center">
+        <div class="text-h6 q-pa-sm">Crianças</div>
+        <div class="q-pa-sm q-mb-sm">
+          Cadastre as crianças e compartilhe com os profissionais.
         </div>
-      </q-item-section>
-    </q-item>
 
-    <div class="fixed-bottom q-pa-md">
-      <q-btn
-        icon="add"
-        label="Adicionar Nova Criança"
-        color="info"
-        no-caps
-        class="full-width q-pa-sm text-h6"
-        :to="{ name: 'aprendiz-novo' }"
-      />
-    </div>
+        <q-btn
+          class="bg-white q-ma-sm"
+          outline
+          icon="add"
+          style="color: orange"
+          label="Adicionar nova Criança"
+          :to="{ name: 'aprendiz-novo' }"
+        />
+      </div>
+    </q-banner>
+
+    <q-page padding>
+      <q-card
+        v-for="(item, index) in aprendizes"
+        :key="index"
+        class="q-mb-md shadow-2"
+        bordered
+      >
+        <q-item>
+          <q-item-section avatar @click="redirect">
+            <q-avatar color="primary" text-color="white"> T </q-avatar>
+          </q-item-section>
+          <q-item-section top>
+            <q-item-label class="text-grey-8">
+              <span class="text-h6">{{ item.nome_aprendiz }}</span>
+            </q-item-label>
+            <q-item-label lines="1">
+              <span class="text-body2 text-uppercase">{{
+                item.nasc_aprendiz
+              }}</span>
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="text-grey-8 q-gutter-xs">
+              <q-btn
+                class="text-red"
+                size="12px"
+                flat
+                dense
+                round
+                icon="delete"
+                @click="remover(item)"
+              />
+              <q-btn
+                size="12px"
+                class="text-blue"
+                flat
+                dense
+                round
+                icon="edit"
+                @click="editar(item)"
+              />
+            </div>
+          </q-item-section>
+        </q-item>
+      </q-card>
+    </q-page>
   </div>
 </template>
 <script setup lang="ts">

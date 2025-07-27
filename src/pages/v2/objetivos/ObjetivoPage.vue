@@ -61,7 +61,18 @@
               icon="delete"
               @click="deletarAlvo(item)"
             />
-            <q-btn size="12px" class="text-blue" flat dense round icon="edit" />
+            <q-btn
+              size="12px"
+              class="text-blue"
+              flat
+              dense
+              round
+              icon="edit"
+              :to="{
+                name: 'objetivos/cadastro',
+                params: { action: 'edit', objetivoId: item.alvoId },
+              }"
+            />
           </div>
         </q-item-section>
       </q-item>
@@ -69,7 +80,6 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { error } from 'console';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
@@ -82,7 +92,7 @@ const alvoService = new AlvoService();
 
 const $q = useQuasar();
 
-const { success } = useNotify();
+const { success, error } = useNotify();
 
 function deletarAlvo(item: any) {
   console.log(item);
@@ -93,14 +103,15 @@ function deletarAlvo(item: any) {
     cancel: true,
   })
     .onOk(async () => {
-      const { status } = await alvoService.deletarAlvo(item.alvoId);
-      if (status === 200) {
-        success('Alvo excluído com sucesso!');
-        await carregarObjetivos();
-        return;
-      }
-
-      error('Erro ao tentar excluir o alvo.');
+      await alvoService
+        .deletarAlvo(item.alvoId)
+        .then(async () => {
+          success('Alvo excluído com sucesso!');
+          await carregarObjetivos();
+        })
+        .catch(() => {
+          error('Erro ao tentar excluir o alvo.');
+        });
     })
     .onDismiss(() => {});
 }

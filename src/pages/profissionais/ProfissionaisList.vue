@@ -1,60 +1,73 @@
 <template>
   <div>
-    <q-item-label header class="text-h6">Profissionais</q-item-label>
-
-    <q-item v-for="(item, index) in list" :key="index">
-      <q-item-section avatar>
-        <q-avatar color="primary" text-color="white"> T </q-avatar>
-      </q-item-section>
-
-      <q-item-section top>
-        <q-item-label lines="1" class="text-grey-8 text-uppercase">
-          <span class="text-h6">{{ item.full_name }}</span>
-        </q-item-label>
-        <q-item-label lines="1">
-          <span class="text-body2 text-uppercase">{{
-            item.cargoDescricao
-          }}</span>
-        </q-item-label>
-        <q-item-label lines="1">
-          <span class="text-weight-medium">{{ item.email }}</span>
-        </q-item-label>
-
-        <q-item-label> </q-item-label>
-      </q-item-section>
-
-      <q-item-section side>
-        <div class="text-grey-8 q-gutter-xs">
-          <q-btn
-            size="12px"
-            flat
-            dense
-            round
-            icon="delete"
-            @click="excluir(item)"
-          />
-          <q-btn
-            size="12px"
-            flat
-            dense
-            round
-            icon="edit"
-            @click="editar(item)"
-          />
+    <q-banner class="bg-grey-3">
+      <div class="row justify-center items-center">
+        <div class="text-h6 q-pa-sm">Profissionais</div>
+        <div class="q-pa-sm q-mb-sm">
+          Cadastre os seus profissionais e compartilhe as crianças.
         </div>
-      </q-item-section>
-    </q-item>
 
-    <div class="fixed-bottom q-pa-md">
-      <q-btn
-        icon="add"
-        label="Adicionar Novo Profissional"
-        color="info"
-        no-caps
-        class="full-width q-pa-sm text-h6"
-        :to="{ name: 'profissionais/cadastro' }"
-      />
-    </div>
+        <q-btn
+          class="bg-white q-ma-sm"
+          outline
+          icon="add"
+          style="color: orange"
+          label="Adicionar novo Profissional"
+          :to="{ name: 'profissionais/cadastro' }"
+        />
+      </div>
+    </q-banner>
+
+    <q-page padding>
+      <q-card
+        v-for="(item, index) in list"
+        :key="index"
+        class="q-mb-md shadow-2"
+        bordered
+      >
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar color="primary" text-color="white"> T </q-avatar>
+          </q-item-section>
+          <q-item-section top>
+            <q-item-label class="text-grey-8">
+              <span class="text-h6">{{ item.full_name }}</span>
+            </q-item-label>
+            <q-item-label lines="1">
+              <span class="text-body2 text-uppercase">{{
+                item.cargoDescricao
+              }}</span>
+            </q-item-label>
+            <q-item-label lines="1">
+              <span class="text-weight-medium">{{ item.email }}</span>
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="text-grey-8 q-gutter-xs">
+              <q-btn
+                class="text-red"
+                size="12px"
+                flat
+                dense
+                round
+                icon="delete"
+                @click="excluir(item)"
+              />
+              <q-btn
+                size="12px"
+                class="text-blue"
+                flat
+                dense
+                round
+                icon="edit"
+                @click="editar(item)"
+              />
+            </div>
+          </q-item-section>
+        </q-item>
+      </q-card>
+    </q-page>
   </div>
 </template>
 <script setup lang="ts">
