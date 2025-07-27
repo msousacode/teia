@@ -7,7 +7,7 @@
           round
           dense
           icon="arrow_back"
-          @click="$router.push({ name: 'profissionais' })"
+          @click="$router.push({ name: 'aprendizes' })"
         />
       </div>
     </template>

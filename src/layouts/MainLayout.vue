@@ -20,6 +20,21 @@
                 <q-item-label>Logout</q-item-label>
               </q-item-section>
             </q-item>
+            <q-item clickable v-close-popup :to="{ name: 'perfil' }">
+              <q-item-section>
+                <q-item-label>Meu Perfil</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup :to="{ name: 'assinatura' }">
+              <q-item-section>
+                <q-item-label>Assinaturas</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup :to="{ name: 'suporte' }">
+              <q-item-section>
+                <q-item-label>Suporte</q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-btn-dropdown>
       </q-toolbar>
@@ -84,7 +99,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     hide: true,
     display: () => 'none',
   },
-  {
+  /*{
     title: 'Meu Perfil',
     icon: 'mdi-cog',
     routeName: 'perfil',
@@ -105,7 +120,7 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     hide: true,
     display: () => 'none',
   },
-  /*{
+  {
     title: 'Protocolos',
     icon: 'mdi-chart-gantt',
     routeName: 'avaliacoes',

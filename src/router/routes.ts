@@ -113,6 +113,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/profissionais/ProfissionalForm.vue'),
         meta: { requiresAuth: true },
       },
+      {
+        name: 'perfil',
+        path: '/perfil',
+        component: () => import('pages/perfil/PerfilPage.vue'),
+        meta: { requiresAuth: true },
+      },
       /*{
         name: 'treinamentos',
         path: '/treinamentos',
@@ -187,12 +193,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/coletas/ColetaList.vue'),
         meta: { requiresAuth: true },
       },
-      {
-        name: 'perfil',
-        path: '/perfil',
-        component: () => import('pages/perfil/PerfilPage.vue'),
-        meta: { requiresAuth: true },
-      },*/
+      ,*/
     ],
   },
 ];
