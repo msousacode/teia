@@ -13,18 +13,26 @@
         <q-btn
           class="bg-white q-ma-sm"
           outline
+          dense
           icon="add"
           style="color: blue"
           label="Importar"
-          :to="{ name: 'aprendiz-novo' }"
         />
         <q-btn
           class="bg-white q-ma-sm"
           outline
+          dense
+          icon="file_download"
+          style="color: brown"
+          label="Relatório"
+        />
+        <q-btn
+          class="bg-white q-ma-sm"
+          outline
+          dense
           icon="close"
           style="color: orangered"
           label="Encerrar"
-          :to="{ name: 'aprendiz-novo' }"
         />
       </div>
     </div>

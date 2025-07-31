@@ -79,13 +79,6 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
-    title: 'Objetivos',
-    icon: 'mdi-account-multiple',
-    routeName: 'objetivos',
-    hide: true,
-    display: () => 'none',
-  },
-  {
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
@@ -93,13 +86,20 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     display: () => 'none',
   },
   {
+    title: 'Objetivos',
+    icon: 'mdi-account-multiple',
+    routeName: 'objetivos',
+    hide: true,
+    display: () => 'none',
+  },
+  /*{
     title: 'Relatórios',
     icon: 'mdi-chart-line',
     routeName: 'relatorios',
     hide: true,
     display: () => 'none',
   },
-  /*{
+  {
     title: 'Meu Perfil',
     icon: 'mdi-cog',
     routeName: 'perfil',
