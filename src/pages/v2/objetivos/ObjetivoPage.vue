@@ -94,8 +94,6 @@ const $q = useQuasar();
 
 const { success, error } = useNotify();
 
-const nomeUsuario = ref('');
-
 function deletarAlvo(item: any) {
   $q.dialog({
     title: 'Confirma a exclusão do Alvo?',

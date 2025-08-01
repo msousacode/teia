@@ -12,12 +12,11 @@
       </div>
     </template>
     <div class="text-h6 text-orange">Dicas para um bom objetivo</div>
-    <ul>
-      <li class="text-subtitle2">Seja específico e claro</li>
-      <li class="text-subtitle2">Use linguagem simples e objetiva</li>
-      <li class="text-subtitle2">Considere a idade da criança</li>
-      <li class="text-subtitle2">Use modelos do ABLLS, Portage e VB-MAPP</li>
-    </ul>
+
+    <li class="text-subtitle2">Seja específico e claro</li>
+    <li class="text-subtitle2">Use linguagem simples e objetiva</li>
+    <li class="text-subtitle2">Considere a idade da criança</li>
+    <li class="text-subtitle2">Use modelos do ABLLS, Portage e VB-MAPP</li>
   </q-banner>
 
   <div class="text-h6 text-orange q-pa-md">Digite o objetivo</div>
@@ -35,14 +34,37 @@
     </q-item-section>
   </q-item>
 
+  <div class="text-subtitle2 q-ma-md">
+    Esse recurso é usado somente para marcar a origem do objetivo.
+  </div>
+  <q-card class="q-ma-md">
+    <q-card-section>
+      <q-option-group
+        v-model="tag"
+        :options="[
+          { label: 'VB-MAPP', value: 'vbmap' },
+          { label: 'Portage', value: 'portage' },
+          { label: 'ABLLS', value: 'abbls' },
+          { label: 'Socially Savvy', value: 'socially' },
+          { label: 'Denver', value: 'denver' },
+          { label: 'Nenhum', value: null },
+        ]"
+        color="orange"
+        type="radio"
+        class="text-body2"
+      />
+    </q-card-section>
+  </q-card>
+
   <div class="fixed-bottom q-pa-md">
     <q-btn
-      class="full-width q-pa-sm"
+      class="full-width q-pa-sm text-white bg-green"
       outline
       icon="save"
       style="color: green"
       label="Salvar Objetivo"
       @click="salvar"
+      :disable="nomeAlvo.length == 0 || nomeAlvo.length > 500"
     />
   </div>
 </template>
@@ -62,6 +84,8 @@ const alvoService = new AlvoService();
 const nomeAlvo = ref('');
 
 const routeLocation = useRoute();
+
+const tag = ref(null);
 
 async function salvar() {
   $q.loading.show();
