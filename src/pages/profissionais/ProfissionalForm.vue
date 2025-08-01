@@ -12,15 +12,13 @@
       </div>
     </template>
     <div class="text-h6 text-orange">Cadastre um novo Profissional</div>
-    <ul>
-      <li class="text-subtitle2">
-        O Novo Profissional terá acesso às crianças e objetivos cadastrados.
-      </li>
-      <li class="text-subtitle2">
-        A Senha do Profissional deverá ser enviada pela pessoa que fez o
-        cadastro.
-      </li>
-    </ul>
+
+    <div class="text-subtitle2 q-mt-sm">
+      O Novo Profissional terá acesso às crianças e objetivos cadastrados.
+    </div>
+    <div class="text-subtitle2 q-mt-sm">
+      A Senha do Profissional deverá ser enviada pela pessoa que fez o cadastro.
+    </div>
   </q-banner>
 
   <q-item>
@@ -61,12 +59,11 @@
 
   <div class="fixed-bottom q-pa-md">
     <q-btn
-      class="full-width q-pa-sm"
-      outline
+      class="full-width q-pa-sm text-white bg-green"
       icon="save"
-      style="color: green"
       label="Salvar Profissional"
       @click="salvarProfissional"
+      :disable="!isSubmitted"
     />
   </div>
 </template>
@@ -76,7 +73,7 @@ import useFormatUtil from 'src/composables/UseFormatUtil';
 import useNotify from 'src/composables/UseNotify';
 import { AcessoService } from 'src/services/AcessoService';
 import { ProfissionalService } from 'src/services/ProfissionalService';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const selected = ref<string>('');
@@ -87,7 +84,23 @@ const formCadastro = reactive({
   preco: '',
 });
 
-const cargos = ['Piscologia', 'Fonoaudiologia'];
+const cargos = [
+  'Psicologia',
+  'Fonoaudiologia',
+  'Terapia Ocupacional',
+  'Fisioterapia',
+  'Psicopedagogia',
+  'Neuropsicologia',
+  'Análise do Comportamento Aplicada (ABA)',
+  'Musicoterapia',
+  'Educação Especial',
+  'Nutrição',
+  'Neuropediatria',
+  'Psiquiatria Infantil',
+  'Terapeuta de Integração Sensorial',
+  'Professor de Educação Física Adaptada',
+  'Assistente Social',
+];
 
 const acessoService = new AcessoService();
 
@@ -136,6 +149,14 @@ async function salvarProfissional() {
   formCadastro.preco = '';
   selected.value = '';
 }
+
+let isSubmitted = computed(() => {
+  return (
+    formCadastro.nome !== '' &&
+    formCadastro.email !== '' &&
+    selected.value !== ''
+  );
+});
 
 async function editarProfissional() {
   if (routeLocation.params.email.toString().trim() == '') {
