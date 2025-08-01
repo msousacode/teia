@@ -11,7 +11,7 @@
         outline
         icon="add"
         style="color: orange"
-        label="Adicionar novo Objetivo"
+        label="Adicionar Objetivo"
         :to="{ name: 'objetivos/cadastro' }"
       />
 
@@ -94,9 +94,9 @@ const $q = useQuasar();
 
 const { success, error } = useNotify();
 
-function deletarAlvo(item: any) {
-  console.log(item);
+const nomeUsuario = ref('');
 
+function deletarAlvo(item: any) {
   $q.dialog({
     title: 'Confirma a exclusão do Alvo?',
     ok: true,

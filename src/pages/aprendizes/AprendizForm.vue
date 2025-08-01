@@ -78,98 +78,14 @@
 
     <div class="fixed-bottom q-pa-md">
       <q-btn
-        class="full-width q-pa-sm"
-        outline
+        class="full-width q-pa-sm bg-green text-white"
         icon="save"
-        style="color: green"
         label="Salvar Criança"
         @click="salvar"
+        :disable="!isSubmitted"
       />
     </div>
   </div>
-
-  <!--q-page class="q-pa-sm">
-    <title-custom title="Aprendiz" />
-    <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-md">
-      <q-form @submit.prevent="submit">
-        <q-input
-          outlined
-          stack-label
-          label="Nome do Aprendiz"
-          v-model="form.nome_aprendiz"
-          :rules="[
-            (val) =>
-              isSubmitted
-                ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório'
-                : true,
-          ]"
-        />
-
-        
-
-        <q-input
-          outlined
-          stack-label
-          label="Nome da Mãe"
-          v-model="form.nome_mae"
-          class="q-mb-md"
-        />
-
-        <q-input
-          outlined
-          stack-label
-          label="Nome do Pai"
-          v-model="form.nome_pai"
-          class="q-mb-md"
-        />
-
-        <q-input
-          outlined
-          stack-label
-          label="Nome do Responsável"
-          v-model="form.nome_responsavel"
-          class="q-mb-md"
-        />
-
-        <q-input
-          outlined
-          stack-label
-          label="Observações"
-          v-model="form.observacao"
-          type="textarea"
-        />
-
-        <div v-if="routeLocation.params.action == 'edit'">
-          <div class="text-teal text-h6 q-mt-sm">Profissionais vínculados</div>
-
-          <q-table
-            :rows="rows"
-            :columns="columns"
-            row-key="full_name"
-            class="my-sticky-column-table"
-            v-model:selected="profissionaisSelecionados"
-            selection="multiple"
-            :rows-per-page-options="[10]"
-            :rows-per-page="10"
-          >
-          </q-table>
-        </div>
-      </q-form>
-
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="save" color="green" @click="submit" />
-      </q-page-sticky>
-
-      <q-page-sticky position="bottom-left" :offset="[18, 18]">
-        <q-btn
-          fab
-          icon="mdi-arrow-left"
-          color="primary"
-          :to="{ name: 'aprendizes' }"
-        />
-      </q-page-sticky>
-    </div>
-  </q-page-->
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';

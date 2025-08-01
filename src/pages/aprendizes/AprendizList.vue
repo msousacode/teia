@@ -1,9 +1,12 @@
 <template>
   <div>
     <q-banner class="bg-grey-3">
+      <div class="text-h6 q-pa-sm">
+        Olá,
+        <span class="text-blue">{{ nomeUsuario }}</span>
+      </div>
       <div class="row justify-center items-center">
-        <div class="text-h6 q-pa-sm">Crianças</div>
-        <div class="q-pa-sm q-mb-sm">
+        <div class="text-subtitle2">
           Cadastre as crianças e compartilhe com os profissionais.
         </div>
 
@@ -27,7 +30,9 @@
       >
         <q-item>
           <q-item-section avatar @click="redirect">
-            <q-avatar color="primary" text-color="white"> T </q-avatar>
+            <q-avatar color="primary" text-color="white">{{
+              item.nome_aprendiz.charAt(0)
+            }}</q-avatar>
           </q-item-section>
           <q-item-section top @click="redirect">
             <q-item-label class="text-grey-8">
@@ -86,6 +91,8 @@ const { success, error } = useNotify();
 
 const $q = useQuasar();
 
+const nomeUsuario = ref('');
+
 //const router = useRouter();
 
 async function listar() {
@@ -132,6 +139,12 @@ function remover(aprendiz: any) {
 }
 
 onMounted(() => {
+  const storage = JSON.parse(localStorage.getItem('user'));
+
+  if (storage) {
+    nomeUsuario.value = storage.fullName;
+  }
+
   listar();
 });
 </script>
