@@ -15,7 +15,7 @@
           outline
           icon="add"
           style="color: orange"
-          label="Adicionar nova Criança"
+          label="Adicionar Nova Criança"
           :to="{ name: 'aprendiz-novo' }"
         />
       </div>

@@ -27,7 +27,9 @@
       >
         <q-item>
           <q-item-section avatar>
-            <q-avatar color="primary" text-color="white"> T </q-avatar>
+            <q-avatar color="primary" text-color="white">{{
+              item.full_name.charAt(0)
+            }}</q-avatar>
           </q-item-section>
           <q-item-section top>
             <q-item-label class="text-grey-8">
@@ -40,6 +42,28 @@
             </q-item-label>
             <q-item-label lines="1">
               <span class="text-weight-medium">{{ item.email }}</span>
+            </q-item-label>
+
+            <q-item-label lines="1" v-if="usuarioLogadoPerfil == 'ADMIN'">
+              <span class="text-weight-medium q-mr-sm">Senha:</span>
+
+              <span class="text-weight-medium q-mr-sm">{{
+                isVisibility == 'visibility' ? item.senha : '******'
+              }}</span>
+
+              <q-btn
+                class="text-grey"
+                size="12px"
+                flat
+                dense
+                :icon="isVisibility"
+                @click="
+                  isVisibility =
+                    isVisibility == 'visibility'
+                      ? 'visibility_off'
+                      : 'visibility'
+                "
+              />
             </q-item-label>
           </q-item-section>
 
@@ -89,6 +113,12 @@ const list = ref<any[]>([]);
 
 //const check1 = ref(true);
 
+const isVisibility = ref('visibility_off');
+
+const usuarioId = ref<string>('');
+
+const usuarioLogadoPerfil = ref<string>('');
+
 function excluir(row: any) {
   $q.dialog({
     title: 'Confirmar a exclusão?',
@@ -112,18 +142,21 @@ function editar(row: any) {
 }
 
 async function getProfissionais() {
-  const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
-
-  if (!usuarioId) {
-    error('Erro ao recuperar userId');
-    return;
-  }
-
-  const { data } = await service.getProfissionais(usuarioId);
+  const { data } = await service.getProfissionais(usuarioId.value);
   list.value = data;
 }
 
 onMounted(async () => {
+  const usuario = JSON.parse(localStorage.getItem('user') || '');
+
+  if (!usuario) {
+    error('Erro ao recuperar userId');
+    return;
+  }
+
+  usuarioId.value = usuario.usuarioId;
+  usuarioLogadoPerfil.value = usuario.perfil;
+
   try {
     $q.loading.show();
     await getProfissionais();
