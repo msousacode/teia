@@ -12,14 +12,13 @@
       </div>
     </template>
     <div class="text-h6 text-orange">Cadastre uma nova Criança</div>
-    <ul>
-      <li class="text-subtitle2">
-        A criança será compartilhada com os demais Profissionais cadastrados.
-      </li>
-      <li class="text-subtitle2">
-        Atribua os objetivos para as crianças e pontue com as estrelinhas.
-      </li>
-    </ul>
+
+    <div class="text-subtitle2">
+      A criança será compartilhada com os demais Profissionais cadastrados.
+    </div>
+    <div class="text-subtitle2">
+      Atribua os objetivos para as crianças e pontue com as estrelinhas.
+    </div>
   </q-banner>
 
   <div class="text-h6 text-orange q-pa-md">Cadastre a Criança</div>

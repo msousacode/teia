@@ -2,7 +2,7 @@
   <q-banner class="bg-grey-3">
     <div class="row justify-center items-center">
       <div class="text-h6 q-pa-sm">Objetivos</div>
-      <div class="q-pa-sm q-mb-sm">
+      <div class="text-subtitle2">
         Cadastre novos objetivos e trabalhe com as crianças.
       </div>
 
@@ -30,7 +30,6 @@
         outline
         icon="search"
         style="color: blue"
-        label="Pesquisar"
         :to="{ name: 'objetivos/cadastro' }"
       />
     </div>

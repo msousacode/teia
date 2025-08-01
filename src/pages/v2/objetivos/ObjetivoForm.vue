@@ -13,10 +13,10 @@
     </template>
     <div class="text-h6 text-orange">Dicas para um bom objetivo</div>
 
-    <li class="text-subtitle2">Seja específico e claro</li>
-    <li class="text-subtitle2">Use linguagem simples e objetiva</li>
-    <li class="text-subtitle2">Considere a idade da criança</li>
-    <li class="text-subtitle2">Use modelos do ABLLS, Portage e VB-MAPP</li>
+    <div class="text-subtitle2">Seja específico e claro</div>
+    <div class="text-subtitle2">Use linguagem simples e objetiva</div>
+    <div class="text-subtitle2">Considere a idade da criança</div>
+    <div class="text-subtitle2">Use modelos do ABLLS, Portage e VB-MAPP</div>
   </q-banner>
 
   <div class="text-h6 text-orange q-pa-md">Digite o objetivo</div>
