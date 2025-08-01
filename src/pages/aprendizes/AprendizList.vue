@@ -18,6 +18,10 @@
           label="Adicionar Nova Criança"
           :to="{ name: 'aprendiz-novo' }"
         />
+
+        <div class="text-subtitle2">
+          Você tem {{ aprendizes.length }} crianças cadastradas.
+        </div>
       </div>
     </q-banner>
 
@@ -72,6 +76,36 @@
         </q-item>
       </q-card>
     </q-page>
+  </div>
+
+  <div class="fixed-bottom q-pa-md">
+    <q-card class="bg-gradient-blue shadow-3" flat bordered>
+      <q-card-section horizontal class="q-pa-sm">
+        <q-card-section class="q-pa-sm">
+          <q-icon name="schedule" color="white" size="24px" />
+        </q-card-section>
+
+        <q-card-section class="col q-pa-sm">
+          <div class="text-white text-weight-medium text-body2">
+            Você tem mais 3 dias de teste
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pa-sm">
+          <q-btn
+            dense
+            rounded
+            unelevated
+            color="white"
+            text-color="primary"
+            label="Assinar Agora"
+            class="text-weight-bold q-px-md"
+            size="md"
+            icon-right="arrow_forward"
+          />
+        </q-card-section>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 <script setup lang="ts">
@@ -139,12 +173,18 @@ function remover(aprendiz: any) {
 }
 
 onMounted(() => {
-  const storage = JSON.parse(localStorage.getItem('user'));
+  const storage = JSON.parse(localStorage.getItem('user') || '{}');
 
-  if (storage) {
+  if (storage && storage.fullName) {
     nomeUsuario.value = storage.fullName;
   }
 
   listar();
 });
 </script>
+
+<style lang="scss" scoped>
+.bg-gradient-blue {
+  background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+}
+</style>
