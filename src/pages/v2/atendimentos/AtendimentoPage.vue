@@ -17,6 +17,10 @@
           icon="add"
           style="color: blue"
           label="Importar"
+          :to="{
+            name: `objetivos/import`,
+            params: { id: aprendiz.aprendizId },
+          }"
         />
         <q-btn
           class="bg-white q-ma-sm"
@@ -39,13 +43,15 @@
   </q-banner>
   <q-item>
     <q-item-section avatar>
-      <q-avatar color="primary" text-color="white"> T </q-avatar>
+      <q-avatar color="primary" text-color="white">
+        {{ aprendiz.nome_aprendiz.charAt(0) }}
+      </q-avatar>
     </q-item-section>
 
     <q-item-section>
       <q-item-label lines="1" class="text-grey-8">
         <span class="text-body1 text-info text-uppercase"
-          ><b>Joaozinho Mock</b></span
+          ><b>{{ aprendiz.nome_aprendiz }}</b></span
         >
       </q-item-label>
 
@@ -73,7 +79,7 @@
         <q-item>
           <q-item-section top>
             <q-item-label class="text-grey-8">
-              <span class="text-body1">{{ item.nome_alvo }}</span>
+              <span class="text-body1">{{ item.nomeAlvo }}</span>
             </q-item-label>
             <q-item-label>
               <div class="text-grey-8 q-gutter-xs q-mt-sm">
@@ -141,7 +147,13 @@
 </template>
 <script setup lang="ts">
 import AlvoService from 'src/services/AlvoService';
+import { AprendizService } from 'src/services/AprendizService';
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const aprendizService = new AprendizService();
 
 const tab = ref('objetivos');
 
@@ -153,8 +165,22 @@ const visibleAnotacao = ref(false);
 
 const anotacao = ref('');
 
+const aprendiz = ref({
+  aprendizId: '',
+  nome_aprendiz: '',
+});
+
 onMounted(async () => {
-  const { data } = await alvoService.getAlvosV2();
+  const aprendizId = route.params.id as string;
+
+  const { data: aprendizData } = await aprendizService.getAprendizById(
+    aprendizId
+  );
+
+  aprendiz.value.aprendizId = aprendizData.aprendizId;
+  aprendiz.value.nome_aprendiz = aprendizData.nome_aprendiz;
+
+  const { data } = await alvoService.getAlvosImportadosV2(aprendizId);
   list.value = data;
 });
 </script>

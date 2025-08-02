@@ -55,8 +55,20 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         name: 'v2/atendimentos',
-        path: '/v2/atendimentos',
+        path: '/v2/atendimentos/:id',
         component: () => import('pages/v2/atendimentos/AtendimentoPage.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/',
+    component: () => import('layouts/ObjetivoImportLayout.vue'),
+    children: [
+      {
+        name: 'objetivos/import',
+        path: '/objetivos/import/:id',
+        component: () => import('pages/v2/objetivos/ObjetivoImportPage.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -107,6 +119,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/v2/objetivos/ObjetivoForm.vue'),
         meta: { requiresAuth: true },
       },
+
       {
         name: 'profissionais/cadastro',
         path: '/profissionais/cadastro/:email?',

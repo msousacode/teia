@@ -7,8 +7,19 @@ export default class AlvoService {
     return await http.post('/alvos/v2/salvar', data);
   }
 
+  async postImportarObjetivos(data: {
+    aprendizId: string;
+    objetivos: string[];
+  }) {
+    return await http.post('/alvos/v2/importar', data);
+  }
+
   async getAlvosV2() {
     return await http.get('/alvos/v2/all');
+  }
+
+  async getAlvosImportadosV2(aprendizId: string) {
+    return await http.get(`/alvos/v2/importados/all/${aprendizId}`);
   }
 
   async putAlvo(data: any) {

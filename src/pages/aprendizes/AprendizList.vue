@@ -33,18 +33,18 @@
         bordered
       >
         <q-item>
-          <q-item-section avatar @click="redirect">
+          <q-item-section avatar @click="redirect(item.uuid)">
             <q-avatar color="primary" text-color="white">{{
               item.nome_aprendiz.charAt(0)
             }}</q-avatar>
           </q-item-section>
-          <q-item-section top @click="redirect">
+          <q-item-section top @click="redirect(item.uuid)">
             <q-item-label class="text-grey-8">
               <span class="text-body1 text-blue"
                 ><b>{{ item.nome_aprendiz }}</b></span
               >
             </q-item-label>
-            <q-item-label lines="1" @click="redirect">
+            <q-item-label lines="1" @click="redirect(item.uuid)">
               <span class="text-body2 text-uppercase">{{
                 item.nasc_aprendiz
               }}</span>
@@ -142,8 +142,8 @@ async function listar() {
   }
 }
 
-function redirect() {
-  router.push({ name: 'v2/atendimentos' });
+function redirect(aprendizId: string) {
+  router.push({ name: 'v2/atendimentos', params: { id: aprendizId } });
 }
 
 function editar(aprendiz: any) {
