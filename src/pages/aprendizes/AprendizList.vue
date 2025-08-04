@@ -20,7 +20,8 @@
         />
 
         <div class="text-subtitle2">
-          Você tem {{ aprendizes.length }} crianças cadastradas.
+          Você tem {{ aprendizes ? aprendizes.length : 0 }} crianças
+          cadastradas.
         </div>
       </div>
     </q-banner>

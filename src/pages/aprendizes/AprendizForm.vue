@@ -147,8 +147,6 @@ async function salvar() {
   form.value.uuid = uuid();
 
   try {
-    const object = toRaw(form.value);
-
     $q.loading.show();
     const { status } = await aprendizeService.postAprendiz(form.value);
 
