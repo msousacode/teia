@@ -6,6 +6,7 @@ export type UsuarioInfo = {
   documento: string;
   email: string;
   full_name: string;
+  cargo: string;
 };
 
 export class UsuarioService {

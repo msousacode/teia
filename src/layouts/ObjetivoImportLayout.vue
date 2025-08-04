@@ -2,7 +2,14 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated style="background-color: #ff9f45">
       <q-toolbar>
-        <q-toolbar-title>SysABA</q-toolbar-title>
+        <q-btn
+          flat
+          dense
+          round
+          icon="arrow_back"
+          aria-label="Menu"
+          :to="{ name: 'v2/atendimentos' }"
+        />
       </q-toolbar>
     </q-header>
 
@@ -11,5 +18,3 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<script setup lang="ts"></script>

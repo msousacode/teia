@@ -1,43 +1,79 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated style="background-color: #e91e63">
+    <q-header elevated style="background-color: #ff9f45">
       <q-toolbar>
         <q-toolbar-title>SysABA</q-toolbar-title>
         <q-space />
-        <div style="color: white;">v1.0.0.1.2903</div><!--v1.major.melhoria.bug.mes e ano-->
+        <div style="color: white">1.1</div>
+        <!--v1.major.melhoria.bug.mes e ano-->
       </q-toolbar>
     </q-header>
 
     <q-page-container>
-
-      <div class="flex justify-center items-center">
-        <q-img src="../../assets/sys.png" width="200px" height="200px" />
-      </div>
-
-      <div class="row justify-center q-gutter-x-md">
+      <div class="row justify-center q-gutter-x-md q-mt-xl">
         <div class="col-md-4 col-sm-6 col-xs-10">
-          <q-card>
-            <div class="q-pa-md">
-
-              <div class="text-center text-h6 q-mb-md q-mt-md">Faça o seu Login</div>
-
-              <q-input outlined stack-label v-model="email" label="E-mail"
-                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]"
-                @blur="verificarEmail" />
-
-              <q-input outlined stack-label v-model="senha" label="Senha" type="password"
-                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Senha é obrigatória' : true]" />
-
-              <div class="q-mt-md q-gutter-x-md row justify-center">
-                <q-btn color="info" to="/cadastrar">Criar conta</q-btn>
-                <q-btn color="positive" @click="entrar('normal')" :disable="!isSubmitted">Entrar</q-btn>
-              </div>
+          <div class="q-pa-md">
+            <div class="flex justify-center items-center">
+              <q-img src="../../assets/sys.png" width="120px" height="120px" />
             </div>
 
-            <div class="text-center text-blue">
-              <q-btn text-color="blue-9" unelevated to="/esqueci" label="Esqueci a minha senha" class="q-ma-md" />
+            <div class="text-center text-h6 q-mb-md q-mt-md">
+              Faça o seu Login
             </div>
-          </q-card>
+
+            <q-input
+              outlined
+              stack-label
+              v-model="email"
+              label="E-mail"
+              :rules="[
+                (val) =>
+                  isSubmitted
+                    ? (val && val.length > 0) || 'Senha é obrigatória'
+                    : true,
+              ]"
+              @blur="verificarEmail"
+            />
+
+            <q-input
+              outlined
+              stack-label
+              v-model="senha"
+              label="Senha"
+              type="password"
+              :rules="[
+                (val) =>
+                  isSubmitted
+                    ? (val && val.length > 0) || 'Senha é obrigatória'
+                    : true,
+              ]"
+            />
+
+            <q-btn
+              class="full-width bg-primary text-white q-pa-sm q-mb-xl"
+              no-caps
+              label="ENTRAR"
+              @click="entrar('normal')"
+              :disable="!isSubmitted"
+            />
+
+            <q-btn
+              class="full-width bg-blue-9 text-white"
+              unelevated
+              to="/cadastrar"
+              label="Criar Conta"
+            />
+          </div>
+
+          <div class="text-right text-blue text-body1 q-mt-md">
+            <q-btn
+              text-color="blue-9"
+              no-caps
+              unelevated
+              to="/esqueci"
+              label="Esqueci a senha"
+            />
+          </div>
         </div>
       </div>
     </q-page-container>
@@ -69,19 +105,25 @@ const acessoService = new AcessoService();
 const $q = useQuasar();
 
 let isSubmitted = computed(() => {
-  return email.value !== '' && senha.value !== '' && senha.value.length > 5 && senha.value !== null;
+  return (
+    email.value !== '' &&
+    senha.value !== '' &&
+    senha.value.length > 5 &&
+    senha.value !== null
+  );
 });
 
 const assinaturaService = new AssinaturaService();
 
 async function entrar() {
-
   try {
     $q.loading.show();
 
-    const { data } = await acessoService.subscriptionInfoByEmail(email.value.toLowerCase().trim());
+    const { data } = await acessoService.subscriptionInfoByEmail(
+      email.value.toLowerCase().trim()
+    );
 
-    if (data == null || data == "") {
+    if (data == null || data == '') {
       error('Não encontrado.');
       return;
     }
@@ -95,44 +137,48 @@ async function entrar() {
     } else {
       const auth: Auth = {
         username: email.value.toLocaleLowerCase().trim(),
-        password: senha.value.trim()
-      }
+        password: senha.value.trim(),
+      };
 
       $q.loading.show();
-      await acessoService.login(auth).then((data) => {
+      await acessoService
+        .login(auth)
+        .then((data) => {
+          if (data.status == 401) {
+            error('Erro ao logar. Verifique suas credenciais');
+            return;
+          }
 
-        if (data.status == 401) {
+          localStorage.setItem('_tsysaba', data.data);
+          router.push({ name: 'aprendizes' });
+        })
+        .catch(() => {
           error('Erro ao logar. Verifique suas credenciais');
-          return;
-        }
-
-        localStorage.setItem('_tsysaba', data.data);
-        router.push({ name: 'relatorios' })
-      }).catch(() => {
-        error('Erro ao logar. Verifique suas credenciais');
-      });
+        });
     }
-
   } catch (e) {
-    throw Error("Erro ao confirmar assinatura.")
+    throw Error('Erro ao confirmar assinatura.');
   } finally {
     $q.loading.hide();
   }
 }
 
 async function verificarEmail() {
-
   try {
     $q.loading.show();
 
-    const { status } = await assinaturaService.verifyCheckout(email.value.toLowerCase().trim());
+    const { status } = await assinaturaService.verifyCheckout(
+      email.value.toLowerCase().trim()
+    );
 
     if (status == 200 || status == 404) {
       return;
     } else if (status == 403) {
-      router.push({ name: 'assinatura', params: { email: email.value.toLowerCase().trim() } });
+      router.push({
+        name: 'assinatura',
+        params: { email: email.value.toLowerCase().trim() },
+      });
     }
-
   } catch (e) {
     console.log(e);
   } finally {
@@ -142,12 +188,11 @@ async function verificarEmail() {
 
 onBeforeMount(() => {
   if (getToken() != null) {
-    router.push({ name: 'relatorios' });
+    router.push({ name: 'aprendizes' });
   }
 });
 
 localStorage.removeItem('periodoTeste');
-
 </script>
 
 <style scoped>

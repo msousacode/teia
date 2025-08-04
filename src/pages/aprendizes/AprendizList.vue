@@ -1,42 +1,115 @@
 <template>
-  <q-page class="q-pa-sm">
-
-    <div class="row justify-center">
-      <q-table :rows="aprendizes" :columns="columnsCategory" row-key="id"
-        class="col-md-7 col-xs-12 col-sm-12 text-uppercase" :rows-per-page-options="[50, 100, 150, 200]"
-        :rows-per-page="50">
-        <template v-slot:top>
-          <div class="text-h6">Aprendizes</div>
-        </template>
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" outline color="info" dense size="sm" @click="editar(props.row)">
-              <q-tooltip> Edit </q-tooltip>
-            </q-btn>
-            <q-btn icon="mdi-delete-outline" outline color="negative" dense size="sm" @click="remover(props.row)">
-              <q-tooltip> Delete </q-tooltip>
-            </q-btn>
-          </q-td>
-        </template>
-
-      </q-table>
-
-    </div>
-
-    <div class="row justify-center">
-      <q-card class="q-pa-md q-mt-sm col-md-7 col-xs-12 col-sm-12">
-        <div class="q-gutter-x-md row justify-end">
-          <q-btn color="secondary" :to="{ name: 'aprendiz-novo' }">Incluir</q-btn>
+  <div>
+    <q-banner class="bg-grey-3">
+      <div class="text-h6 q-pa-sm">
+        Olá,
+        <span class="text-blue">{{ nomeUsuario }}</span>
+      </div>
+      <div class="row justify-center items-center">
+        <div class="text-subtitle2">
+          Cadastre as crianças e compartilhe com os profissionais.
         </div>
-      </q-card>
-    </div>
 
-  </q-page>
+        <q-btn
+          class="bg-white q-ma-sm"
+          outline
+          icon="add"
+          style="color: orange"
+          label="Adicionar Nova Criança"
+          :to="{ name: 'aprendiz-novo' }"
+        />
+
+        <div class="text-subtitle2">
+          Você tem {{ aprendizes.length }} crianças cadastradas.
+        </div>
+      </div>
+    </q-banner>
+
+    <q-page padding>
+      <q-card
+        v-for="(item, index) in aprendizes"
+        :key="index"
+        class="q-mb-md shadow-2"
+        bordered
+      >
+        <q-item>
+          <q-item-section avatar @click="redirect(item.uuid)">
+            <q-avatar color="primary" text-color="white">{{
+              item.nome_aprendiz.charAt(0)
+            }}</q-avatar>
+          </q-item-section>
+          <q-item-section top @click="redirect(item.uuid)">
+            <q-item-label class="text-grey-8">
+              <span class="text-body1 text-blue"
+                ><b>{{ item.nome_aprendiz }}</b></span
+              >
+            </q-item-label>
+            <q-item-label lines="1" @click="redirect(item.uuid)">
+              <span class="text-body2 text-uppercase">{{
+                item.nasc_aprendiz
+              }}</span>
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="text-grey-8 q-gutter-xs">
+              <q-btn
+                class="text-red"
+                size="12px"
+                flat
+                dense
+                round
+                icon="delete"
+                @click="remover(item)"
+              />
+              <q-btn
+                size="12px"
+                class="text-blue"
+                flat
+                dense
+                round
+                icon="edit"
+                @click="editar(item)"
+              />
+            </div>
+          </q-item-section>
+        </q-item>
+      </q-card>
+    </q-page>
+  </div>
+
+  <div class="fixed-bottom q-pa-md">
+    <q-card class="bg-gradient-blue shadow-3" flat bordered>
+      <q-card-section horizontal class="q-pa-sm">
+        <q-card-section class="q-pa-sm">
+          <q-icon name="schedule" color="white" size="24px" />
+        </q-card-section>
+
+        <q-card-section class="col q-pa-sm">
+          <div class="text-white text-weight-medium text-body2">
+            Você tem mais 3 dias de teste
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pa-sm">
+          <q-btn
+            dense
+            rounded
+            unelevated
+            color="white"
+            text-color="primary"
+            label="Assinar Agora"
+            class="text-weight-bold q-px-md"
+            size="md"
+            icon-right="arrow_forward"
+          />
+        </q-card-section>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { columnsCategory } from './table';
-import { useAprendizStore } from 'src/stores/aprendiz';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { AprendizService } from 'src/services/AprendizService';
@@ -44,7 +117,7 @@ import useNotify from 'src/composables/UseNotify';
 
 const aprendizService = new AprendizService();
 
-const store = useAprendizStore();
+const router = useRouter();
 
 const aprendizes = ref<any[]>([]);
 
@@ -52,7 +125,9 @@ const { success, error } = useNotify();
 
 const $q = useQuasar();
 
-const router = useRouter();
+const nomeUsuario = ref('');
+
+//const router = useRouter();
 
 async function listar() {
   $q.loading.show();
@@ -60,37 +135,56 @@ async function listar() {
     const { data } = await aprendizService.getAprendizes();
     aprendizes.value = data;
   } catch (e) {
-    error('');
+    error('Erro ao listar aprendizes');
     throw e;
   } finally {
     $q.loading.hide();
   }
 }
 
+function redirect(aprendizId: string) {
+  router.push({ name: 'v2/atendimentos', params: { id: aprendizId } });
+}
+
 function editar(aprendiz: any) {
-  store.$state.aprendizUuid = aprendiz.uuid;
-  router.push({ name: 'aprendiz-novo', params: { action: 'edit' } });
+  router.push({
+    name: 'aprendiz-novo',
+    params: { action: 'edit', aprendizId: aprendiz.uuid },
+  });
 }
 
 function remover(aprendiz: any) {
   $q.dialog({
-    title: 'Confirma a exclusão do Aprendiz?',
+    title: 'Confirma a exclusão?',
     ok: true,
     cancel: true,
   })
     .onOk(async () => {
-
-      const { status } = await aprendizService.deleteAprendizById(aprendiz.uuid);
+      const { status } = await aprendizService.deleteAprendizById(
+        aprendiz.uuid
+      );
 
       if (status == 200) {
-        success('Aprendiz excluído com sucesso!');
+        success('Excluído com sucesso!');
         listar();
       }
     })
-    .onDismiss(() => { });
+    .onDismiss(() => {});
 }
 
 onMounted(() => {
+  const storage = JSON.parse(localStorage.getItem('user') || '{}');
+
+  if (storage && storage.fullName) {
+    nomeUsuario.value = storage.fullName;
+  }
+
   listar();
 });
 </script>
+
+<style lang="scss" scoped>
+.bg-gradient-blue {
+  background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+}
+</style>

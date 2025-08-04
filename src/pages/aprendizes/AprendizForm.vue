@@ -1,84 +1,108 @@
 <template>
-  <q-page class="q-pa-sm">
+  <q-banner class="bg-grey-3">
+    <template v-slot:avatar>
+      <div class="text-h6">
+        <q-btn
+          flat
+          round
+          dense
+          icon="arrow_back"
+          @click="$router.push({ name: 'aprendizes' })"
+        />
+      </div>
+    </template>
+    <div class="text-h6 text-orange">Cadastre uma nova Criança</div>
 
-    <div class="row justify-center">
-      <q-form @submit.prevent="submit" class="col-md-7 col-xs-12 col-sm-12">
-        <q-card class="q-pa-md">
-          <title-custom title="Aprendiz" />
+    <div class="text-subtitle2">
+      A criança será compartilhada com os demais Profissionais cadastrados.
+    </div>
+    <div class="text-subtitle2">
+      Atribua os objetivos para as crianças e pontue com as estrelinhas.
+    </div>
+  </q-banner>
 
-          <q-input outlined stack-label label="Nome do Aprendiz" v-model="form.nome_aprendiz"
-            :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome do aprendiz é obrigatório' : true]" />
+  <div class="text-h6 text-orange q-pa-md">Cadastre a Criança</div>
+  <div>
+    <q-item>
+      <q-item-section top>
+        <q-input
+          v-model="form.nome_aprendiz"
+          placeholder="Informe o nome da criança"
+          class="text-h5"
+        />
+      </q-item-section>
+    </q-item>
 
-          <q-input label="Data de Nasimento" outlined stack-label v-model="form.nasc_aprendiz" mask="##/##/####"
-            :rules="[val => isSubmitted ? (val && val.length > 0) || 'Data de nascimento é obrigatório' : true]">
-            <template v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                  <q-date v-model="form.nasc_aprendiz" :locale="{
+    <q-item>
+      <q-item-section top>
+        <q-input
+          placeholder="Informe a data de nascimento"
+          v-model="form.nasc_aprendiz"
+          class="text-h5"
+          mask="##/##/####"
+          :rules="[
+            (val) =>
+              isSubmitted
+                ? (val && val.length > 0) || 'Data de nascimento é obrigatório'
+                : true,
+          ]"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                cover
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date
+                  v-model="form.nasc_aprendiz"
+                  :locale="{
                     days: dias,
                     months: meses,
                     daysShort: diasAbreviados,
                     monthsShort: meses,
-                  }" mask="DD/MM/YYYY">
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+                  }"
+                  mask="DD/MM/YYYY"
+                >
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </q-item-section>
+    </q-item>
 
-          <q-input outlined stack-label label="Nome da Mãe" v-model="form.nome_mae" class="q-mb-md" />
-
-          <q-input outlined stack-label label="Nome do Pai" v-model="form.nome_pai" class="q-mb-md" />
-
-          <q-input outlined stack-label label="Nome do Responsável" v-model="form.nome_responsavel" class="q-mb-md" />
-
-          <q-input outlined stack-label label="Observações" v-model="form.observacao" type="textarea"
-            :rules="[(val) => (val && val.length > 2000) ? 'Texto não deve ultrapassar os 2000 caracteres' : true]" />
-
-          <div v-if="routeLocation.params.action == 'edit'">
-            <div class="text-body1 q-mt-md q-mb-md">Profissionais vínculados</div>
-
-            <q-table :rows="rows" :columns="columns" row-key="full_name" class="my-sticky-column-table text-uppercase"
-              v-model:selected="profissionaisSelecionados" selection="multiple" :rows-per-page-options="[10]"
-              :rows-per-page="10">
-            </q-table>
-          </div>
-
-          <div class="q-mt-md q-gutter-x-md row justify-end">
-            <q-btn color="info" :to="{ name: 'aprendizes' }">Voltar</q-btn>
-            <q-btn color="positive" @click="submit" :disable="!isSubmitted">Salvar</q-btn>
-          </div>
-
-        </q-card>
-      </q-form>
+    <div class="fixed-bottom q-pa-md">
+      <q-btn
+        class="full-width q-pa-sm bg-green text-white"
+        icon="save"
+        label="Salvar Criança"
+        @click="salvar"
+        :disable="!isSubmitted"
+      />
     </div>
-
-  </q-page>
+  </div>
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw } from 'vue';
 import { v4 as uuid } from 'uuid';
 import { useRoute } from 'vue-router';
-import { useAprendizStore } from 'src/stores/aprendiz';
+//import { useAprendizStore } from 'src/stores/aprendiz';
 import useNotify from 'src/composables/UseNotify';
-import TitleCustom from 'src/components/TitleCustom.vue';
-import {
-  dias,
-  diasAbreviados,
-  meses
-} from 'src/composables/utils';
-import { AprendizService } from 'src/services/AprendizService';
+import { dias, diasAbreviados, meses } from 'src/composables/utils';
+//import { AprendizService } from 'src/services/AprendizService';
 import { useQuasar } from 'quasar';
-import { ProfissionalService } from 'src/services/ProfissionalService';
+import { AprendizService } from 'src/services/AprendizService';
+//import { ProfissionalService } from 'src/services/ProfissionalService';
 
 const aprendizeService = new AprendizService();
 
-const profissionalService = new ProfissionalService();
+//const profissionalService = new ProfissionalService();
 
-const store = useAprendizStore();
+//const store = useAprendizStore();
 
 const { success, error } = useNotify();
 
@@ -86,14 +110,18 @@ const $q = useQuasar();
 
 const routeLocation = useRoute();
 
-const columns = ref<any[]>([]);
+//const columns = ref<any[]>([]);
 
-const rows = ref<any[]>([]);
+//const rows = ref<any[]>([]);
 
-const profissionaisSelecionados = ref([]);
+//const profissionaisSelecionados = ref([]);
 
 let isSubmitted = computed(() => {
-  return form.value.nome_aprendiz !== '' && form.value.nasc_aprendiz !== '' && form.value.observacao.length < 2000;
+  return (
+    form.value.nome_aprendiz !== '' &&
+    form.value.nasc_aprendiz !== '' &&
+    form.value.observacao.length < 2000
+  );
 });
 
 const form = ref({
@@ -105,13 +133,13 @@ const form = ref({
   nome_responsavel: '',
   observacao: '',
   ativo: true,
-  profissionais: []
+  profissionais: [],
 });
 
-async function submit() {
-  isSubmitted.value = true;
+async function salvar() {
+  //isSubmitted.value = true;
 
-  if (routeLocation.params.action === 'edit') {
+  if (routeLocation.params.action == 'edit') {
     atualizar();
     return;
   }
@@ -119,23 +147,21 @@ async function submit() {
   form.value.uuid = uuid();
 
   try {
-
     const object = toRaw(form.value);
 
     $q.loading.show();
-    const { status } = await aprendizeService.postAprendiz(object);
+    const { status } = await aprendizeService.postAprendiz(form.value);
 
     if (status == 200) {
       reset();
       success();
     }
   } catch (e) {
-    error
+    error;
     throw e;
   } finally {
     $q.loading.hide();
   }
-
 }
 
 async function atualizar() {
@@ -144,10 +170,11 @@ async function atualizar() {
 
     const object = toRaw(form.value);
 
+    /*
     if (profissionaisSelecionados.value.length > 0) {
-      const profissionais = toRaw(profissionaisSelecionados.value)
-      object.profissionais = profissionais.map(i => i.email);
-    }
+      const profissionais = toRaw(profissionaisSelecionados.value);
+      object.profissionais = profissionais.map((i) => i.email);
+    }*/
 
     const { data } = await aprendizeService.putAprendiz(object);
 
@@ -155,7 +182,7 @@ async function atualizar() {
       success('Atualizado com sucesso!');
     }
   } catch (e) {
-    error
+    error;
     throw e;
   } finally {
     $q.loading.hide();
@@ -170,9 +197,9 @@ function reset() {
   form.value.nome_pai = '';
   form.value.nome_responsavel = '';
   form.value.observacao = '';
-  store.$reset();
+  //store.$reset();
 }
-
+/*
 async function carregarProfissionais() {
   try {
     const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
@@ -195,12 +222,14 @@ async function carregarProfissionais() {
     $q.loading.hide();
   }
 }
-
+*/
 onMounted(async () => {
   if (routeLocation.params.action === 'edit') {
     try {
       $q.loading.show();
-      const { data } = await aprendizeService.getAprendizById(store.getAprendizUuid);
+      const { data } = await aprendizeService.getAprendizById(
+        routeLocation.params.aprendizId.toString()
+      );
 
       if (data) {
         form.value.uuid = data.uuid || '';
@@ -209,39 +238,37 @@ onMounted(async () => {
         form.value.nome_mae = data.nome_mae;
         form.value.nome_pai = data.nome_pai;
         form.value.nome_responsavel = data.nome_responsavel;
-        form.value.observacao = data.observacao;;
+        form.value.observacao = data.observacao;
       }
 
-
-      profissionaisSelecionados.value = await buscarProfissionaisVinculados();
-
+      //profissionaisSelecionados.value = await buscarProfissionaisVinculados();
     } catch (e) {
-      error('')
+      error('');
       throw e;
     } finally {
       $q.loading.hide();
     }
   }
 
-  await carregarProfissionais();
+  //await carregarProfissionais();
 });
-
+/*
 async function buscarProfissionaisVinculados() {
-  const { data } = await aprendizeService.getProfissionaisVinculados(store.getAprendizUuid);
+  const { data } = await aprendizeService.getProfissionaisVinculados(
+    store.getAprendizUuid
+  );
   return data;
-
 }
 
 columns.value = [
   {
     label: 'Profissional',
     align: 'center',
-    field: 'full_name'
+    field: 'full_name',
   },
   { name: 'actions', align: 'center', label: 'Perfil', field: 'perfil' },
   { name: 'actions', align: 'center', label: 'E-mail', field: 'email' },
-]
+];
 
-rows.value = [
-]
+rows.value = [];*/
 </script>

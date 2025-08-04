@@ -1,8 +1,15 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated style="background-color: #e91e63">
+    <q-header elevated style="background-color: #ff9f45">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
 
         <q-toolbar-title> </q-toolbar-title>
 
@@ -13,6 +20,21 @@
                 <q-item-label>Logout</q-item-label>
               </q-item-section>
             </q-item>
+            <q-item clickable v-close-popup :to="{ name: 'perfil' }">
+              <q-item-section>
+                <q-item-label>Meu Perfil</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup :to="{ name: 'assinatura' }">
+              <q-item-section>
+                <q-item-label>Assinaturas</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup :to="{ name: 'suporte' }">
+              <q-item-section>
+                <q-item-label>Suporte</q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-btn-dropdown>
       </q-toolbar>
@@ -21,7 +43,12 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> Menu </q-item-label>
-        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" @click="link.display" />
+        <EssentialLink
+          v-for="link in essentialLinks"
+          :key="link.title"
+          v-bind="link"
+          @click="link.display"
+        />
       </q-list>
     </q-drawer>
 
@@ -45,14 +72,7 @@ const perfil = ref();
 
 const essentialLinks: EssentialLinkProps[] = reactive([
   {
-    title: 'Relatórios',
-    icon: 'mdi-chart-line',
-    routeName: 'relatorios',
-    hide: true,
-    display: () => 'none',
-  },
-  {
-    title: 'Aprendizes',
+    title: 'Crianças',
     icon: 'mdi-account-multiple',
     routeName: 'aprendizes',
     hide: true,
@@ -62,27 +82,20 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     title: 'Profissionais',
     icon: 'mdi-account-multiple',
     routeName: 'profissionais',
-    hide: perfil.value == 'ADMIN' ? true : false,
-    display: () => 'none',
-  },
-  {
-    title: 'Avaliações',
-    icon: 'mdi-chart-gantt',
-    routeName: 'avaliacoes',
     hide: true,
     display: () => 'none',
   },
   {
-    title: 'Atendimentos',
-    icon: 'mdi-view-dashboard',
-    routeName: 'atendimentos',
+    title: 'Objetivos',
+    icon: 'mdi-account-multiple',
+    routeName: 'objetivos',
     hide: true,
     display: () => 'none',
   },
-  {
-    title: 'Programas',
-    icon: 'mdi-chart-line-variant',
-    routeName: 'treinamentos',
+  /*{
+    title: 'Relatórios',
+    icon: 'mdi-chart-line',
+    routeName: 'relatorios',
     hide: true,
     display: () => 'none',
   },
@@ -106,45 +119,48 @@ const essentialLinks: EssentialLinkProps[] = reactive([
     routeName: 'suporte',
     hide: true,
     display: () => 'none',
-  }*/
+  },
+  {
+    title: 'Protocolos',
+    icon: 'mdi-chart-gantt',
+    routeName: 'avaliacoes',
+    hide: true,
+    display: () => 'none',
+  },
+  {
+    title: 'Intervenções',
+    icon: 'mdi-view-dashboard',
+    routeName: 'atendimentos',
+    hide: true,
+    display: () => 'none',
+  },
+  {
+    title: 'Programas',
+    icon: 'mdi-chart-line-variant',
+    routeName: 'treinamentos',
+    hide: true,
+    display: () => 'none',
+  },*/
 ]);
 
-const restricoesEspecialista = ['Profissionais', 'Aprendizes', 'Assinatura'];
-
-const restricoesAt = ['Profissionais', 'Aprendizes', 'Assinatura', 'Avaliações', 'Programas'];
+const restricoesAt = [
+  'Profissionais',
+  'Aprendizes',
+  'Assinatura',
+  'Protocolos',
+  'Programas',
+  'Suporte',
+];
 
 watch(perfil, (newValue) => {
-
-  if (newValue == 'ESPECIALISTA') {
-    restricoesEspecialista.forEach(link => {
-      try {
-        essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
-      } catch (e) {
-        console.debug(e);
+  if (newValue == 'CONVIDADO') {
+    restricoesAt.forEach((link) => {
+      const foundLink = essentialLinks.find((item) => item.title == link);
+      if (foundLink) {
+        foundLink.hide = newValue == 'ADMIN';
       }
     });
     return;
-  }
-
-  if (newValue == 'AT') {
-    restricoesAt.forEach(link => {
-      try {
-        essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
-      } catch (e) {
-        console.debug(e);
-      }
-    });
-    return;
-  }
-
-  if (newValue == 'ADMIN') {
-    restricoesEspecialista.forEach(link => {
-      try {
-        essentialLinks.find(item => item.title == link).hide = newValue == 'ADMIN';
-      } catch (e) {
-        console.debug(e);
-      }
-    });
   }
 });
 
@@ -162,12 +178,10 @@ const sair = async () => {
 };
 
 onMounted(async () => {
-
   const storage = JSON.parse(localStorage.getItem('user'));
 
   if (storage == null) {
-    await usuarioService.getUsuarioInfo().then(data => {
-
+    await usuarioService.getUsuarioInfo().then((data) => {
       if (data.ativo == false) {
         localStorage.clear();
         router.push({ name: 'login' });
@@ -175,12 +189,10 @@ onMounted(async () => {
 
       perfil.value = data.perfil;
 
-      localStorage.setItem("user", JSON.stringify(data));
-
+      localStorage.setItem('user', JSON.stringify(data));
     });
   }
 
   perfil.value = storage.perfil;
 });
-
 </script>

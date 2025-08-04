@@ -68,7 +68,7 @@ module.exports = configure(function (ctx) {
           ? 'http://localhost:9000/'
           : 'https://sysaba.netlify.app',
         //BACKEND_URL: 'http://localhost:8080',
-        BACKEND_URL: 'https://sysaba.tech',
+        BACKEND_URL: 'https://abateam.com.br',
         STRIPE_PUBLISHABLE_KEY:
           'pk_test_51QOdWGE7oRUy6lRCzUrOMQmucN9hftFYGaF4GbYAgcDpQ0ILL3nx975cfJ1L7DiDRorpaeBZVAytvD60SAEjGvlY00NgxNJ056',
         STRIPE_SECRET_KEY:

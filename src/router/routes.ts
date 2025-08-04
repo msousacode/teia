@@ -51,6 +51,30 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
+    component: () => import('layouts/AtendimentoLayout.vue'),
+    children: [
+      {
+        name: 'v2/atendimentos',
+        path: '/v2/atendimentos/:id',
+        component: () => import('pages/v2/atendimentos/AtendimentoPage.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/',
+    component: () => import('layouts/ObjetivoImportLayout.vue'),
+    children: [
+      {
+        name: 'objetivos/import',
+        path: '/objetivos/import/:id',
+        component: () => import('pages/v2/objetivos/ObjetivoImportPage.vue'),
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -73,11 +97,42 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'aprendiz-novo',
-        path: '/aprendiz-novo/:action?',
+        path: '/aprendiz-novo/:action?/aprendiz/:aprendizId?',
         component: () => import('pages/aprendizes/AprendizForm.vue'),
         meta: { requiresAuth: true },
       },
       {
+        name: 'suporte',
+        path: '/suporte',
+        component: () => import('pages/suporte/SuportePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'objetivos',
+        path: '/objetivos',
+        component: () => import('pages/v2/objetivos/ObjetivoPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'objetivos/cadastro',
+        path: '/objetivos/cadastro/:action?/:objetivoId?',
+        component: () => import('pages/v2/objetivos/ObjetivoForm.vue'),
+        meta: { requiresAuth: true },
+      },
+
+      {
+        name: 'profissionais/cadastro',
+        path: '/profissionais/cadastro/:email?',
+        component: () => import('pages/profissionais/ProfissionalForm.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: 'perfil',
+        path: '/perfil',
+        component: () => import('pages/perfil/PerfilPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      /*{
         name: 'treinamentos',
         path: '/treinamentos',
         component: () => import('pages/treinamentos/TreinamentoList.vue'),
@@ -157,19 +212,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/coletas/ColetaList.vue'),
         meta: { requiresAuth: true },
       },
-      {
-        name: 'perfil',
-        path: '/perfil',
-        component: () => import('pages/perfil/PerfilPage.vue'),
-        meta: { requiresAuth: true },
-      },
-
-      {
-        name: 'suporte',
-        path: '/suporte',
-        component: () => import('pages/suporte/SuportePage.vue'),
-        meta: { requiresAuth: true },
-      },
+      ,*/
     ],
   },
 ];
