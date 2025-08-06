@@ -28,7 +28,7 @@
           dense
           icon="file_download"
           style="color: brown"
-          label="Relatório"
+          label="PDF"
         />
         <q-btn
           class="bg-white q-ma-sm"

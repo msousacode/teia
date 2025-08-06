@@ -96,7 +96,10 @@ async function salvar() {
       return;
     }
 
-    const { data } = await alvoService.postAlvo({ nome_alvo: nomeAlvo.value });
+    const { data } = await alvoService.postAlvo({
+      nome_alvo: nomeAlvo.value,
+      tag: tag.value,
+    });
 
     if (data) {
       success('Salvo com sucesso!');
@@ -108,6 +111,7 @@ async function salvar() {
   } finally {
     $q.loading.hide();
     nomeAlvo.value = '';
+    tag.value = null;
   }
 }
 

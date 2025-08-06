@@ -3,7 +3,7 @@ import createHttp from './base/baseHttp';
 const http = createHttp('/api');
 
 export default class AlvoService {
-  async postAlvo(data: { nome_alvo: string }) {
+  async postAlvo(data: { nome_alvo: string; tag: string | null }) {
     return await http.post('/alvos/v2/salvar', data);
   }
 
