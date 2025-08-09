@@ -56,8 +56,10 @@
       </q-item-label>
 
       <q-item-label>
-        <q-icon name="star" color="green-8" size="26px" /> 5
-        <q-icon name="star" color="red-8" size="26px" class="q-ml-sm" /> 5
+        <q-icon name="star" color="green-8" size="26px" />
+        {{ sumEstrelasPositivas }}
+        <q-icon name="star" color="red-8" size="26px" class="q-ml-sm" />
+        {{ sumEstrelasNetagivas }}
       </q-item-label>
     </q-item-section>
   </q-item>
@@ -114,25 +116,35 @@
             </q-item-label>
           </q-item-section>
           <q-item-section side>
-            <div class="text-grey-8 q-gutter-xs">
-              <q-btn
-                size="12px"
-                dense
-                round
-                icon="star"
-                class="text-green-8"
-                :disable="item.concluido"
-              />
-              +1
-              <q-btn
-                size="12px"
-                dense
-                round
-                icon="star"
-                class="text-red-8 q-ml-md"
-                :disable="item.concluido"
-              />
-              -1
+            <div class="column q-gutter-xs items-center">
+              <div class="row items-center q-gutter-xs">
+                <q-btn
+                  size="12px"
+                  dense
+                  round
+                  icon="star"
+                  class="text-green-8"
+                  :disable="item.concluido"
+                  @click="adicionarEstrela(item, 'positiva')"
+                />
+                <span class="text-weight-bold text-green-8">{{
+                  item.totalEstrelaPositiva || 0
+                }}</span>
+              </div>
+              <div class="row items-center q-gutter-xs">
+                <q-btn
+                  size="12px"
+                  dense
+                  round
+                  icon="star"
+                  class="text-red-8"
+                  :disable="item.concluido"
+                  @click="adicionarEstrela(item, 'negativa')"
+                />
+                <span class="text-weight-bold text-red-8">{{
+                  item.totalEstrelaNegativa || 0
+                }}</span>
+              </div>
             </div>
           </q-item-section>
         </q-item>
@@ -170,9 +182,10 @@
   </q-dialog>
 </template>
 <script setup lang="ts">
+import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
 import { AprendizService } from 'src/services/AprendizService';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -189,10 +202,82 @@ const visibleAnotacao = ref(false);
 
 const anotacao = ref('');
 
+const { success, error } = useNotify();
+
 const aprendiz = ref({
   aprendizId: '',
   nome_aprendiz: '',
 });
+
+const sumEstrelasNetagivas = ref(0);
+const sumEstrelasPositivas = ref(0);
+
+// Sistema de delay para otimizar requisições
+const estrelasPendentes = ref<Map<string, any>>(new Map());
+const delayTimer = ref<NodeJS.Timeout | null>(null);
+const DELAY_TIME = 2000; // 2 segundos de delay
+
+function adicionarEstrela(item: any, tipo: 'positiva' | 'negativa') {
+  // Atualiza o contador localmente (feedback imediato)
+  if (tipo === 'positiva') {
+    item.totalEstrelaPositiva = (item.totalEstrelaPositiva || 0) + 1;
+  } else {
+    item.totalEstrelaNegativa = (item.totalEstrelaNegativa || 0) + 1;
+  }
+
+  // Armazena a mudança pendente
+  const chave = `${item.alvoId}_${tipo}`;
+  const pendente = estrelasPendentes.value.get(chave) || {
+    alvoId: item.alvoId,
+    tipo,
+    quantidade: 0,
+  };
+
+  pendente.quantidade += 1;
+  estrelasPendentes.value.set(chave, pendente);
+
+  // Cancela timer anterior e cria novo
+  if (delayTimer.value) {
+    clearTimeout(delayTimer.value);
+  }
+
+  delayTimer.value = setTimeout(() => {
+    enviarEstrelasPendentes();
+  }, DELAY_TIME);
+}
+
+async function enviarEstrelasPendentes() {
+  if (estrelasPendentes.value.size === 0) return;
+
+  // Agrupa todas as mudanças pendentes
+  const mudancas = Array.from(estrelasPendentes.value.values());
+
+  const { status } = await alvoService.atualizarEstrelas(mudancas);
+
+  if (status == 200) {
+    success('Estrelas salvas!');
+    // Atualiza apenas os totais gerais sem recarregar toda a lista
+    atualizarTotaisGerais();
+  } else {
+    error('Erro ao enviar estrelas');
+    // Em caso de erro, reverte as mudanças locais
+    await carregarObjetivos();
+  }
+
+  // Limpa pendências após processar
+  estrelasPendentes.value.clear();
+}
+
+function atualizarTotaisGerais() {
+  // Recalcula os totais baseado nos dados atuais da lista
+  sumEstrelasNetagivas.value = 0;
+  sumEstrelasPositivas.value = 0;
+
+  list.value.forEach((item) => {
+    sumEstrelasNetagivas.value += item.totalEstrelaNegativa || 0;
+    sumEstrelasPositivas.value += item.totalEstrelaPositiva || 0;
+  });
+}
 
 async function concluirAlvo(uuid: string) {
   const { status } = await alvoService.concluirAlvo(uuid);
@@ -206,7 +291,18 @@ async function carregarObjetivos() {
   const aprendizId = route.params.id as string;
 
   const { data } = await alvoService.getAlvosImportadosV2(aprendizId);
+
   list.value = data;
+
+  // Reseta os totais antes de recalcular
+  sumEstrelasNetagivas.value = 0;
+  sumEstrelasPositivas.value = 0;
+
+  // Calcula os totais das estrelas
+  list.value.forEach((item) => {
+    sumEstrelasNetagivas.value += item.totalEstrelaNegativa || 0;
+    sumEstrelasPositivas.value += item.totalEstrelaPositiva || 0;
+  });
 }
 
 onMounted(async () => {
@@ -220,5 +316,13 @@ onMounted(async () => {
   aprendiz.value.nome_aprendiz = aprendizData.nome_aprendiz;
 
   await carregarObjetivos();
+});
+
+onUnmounted(() => {
+  // Limpa o timer e envia pendências antes de sair
+  if (delayTimer.value) {
+    clearTimeout(delayTimer.value);
+    enviarEstrelasPendentes();
+  }
 });
 </script>

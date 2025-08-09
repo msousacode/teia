@@ -26,6 +26,10 @@ export default class AlvoService {
     return await http.put(`/alvos/v2/concluir/${uuid}`);
   }
 
+  async atualizarEstrelas(data: any) {
+    return await http.put('/alvos/v2/atualizar-estrelas', { mudancas: data });
+  }
+
   async putAlvo(data: any) {
     return await http.put('/alvos', data);
   }
