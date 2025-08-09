@@ -79,19 +79,35 @@
         <q-item>
           <q-item-section top>
             <q-item-label class="text-grey-8">
-              <span class="text-body1">{{ item.nomeAlvo }}</span>
+              <span
+                class="text-body1"
+                :class="{ 'text-strike': item.concluido }"
+                >{{ item.nomeAlvo }}</span
+              >
             </q-item-label>
             <q-item-label>
               <div class="text-grey-8 q-gutter-xs q-mt-sm">
                 <q-btn
+                  v-if="!item.concluido"
                   size="12px"
                   label="Concluído"
                   class="bg-green text-white"
+                  @click="concluirAlvo(item.alvoId)"
                 />
+
+                <q-btn
+                  v-else
+                  size="12px"
+                  label="Reabrir"
+                  class="bg-orange-8 text-white"
+                  @click="concluirAlvo(item.alvoId)"
+                />
+
                 <q-btn
                   size="12px"
                   label="Anotar"
                   class="bg-info text-white"
+                  :disable="item.concluido"
                   @click="visibleAnotacao = true"
                 />
               </div>
@@ -99,7 +115,14 @@
           </q-item-section>
           <q-item-section side>
             <div class="text-grey-8 q-gutter-xs">
-              <q-btn size="12px" dense round icon="star" class="text-green-8" />
+              <q-btn
+                size="12px"
+                dense
+                round
+                icon="star"
+                class="text-green-8"
+                :disable="item.concluido"
+              />
               +1
               <q-btn
                 size="12px"
@@ -107,6 +130,7 @@
                 round
                 icon="star"
                 class="text-red-8 q-ml-md"
+                :disable="item.concluido"
               />
               -1
             </div>
@@ -170,6 +194,21 @@ const aprendiz = ref({
   nome_aprendiz: '',
 });
 
+async function concluirAlvo(uuid: string) {
+  const { status } = await alvoService.concluirAlvo(uuid);
+  if (status === 200) {
+    await carregarObjetivos();
+  }
+  console.log(status);
+}
+
+async function carregarObjetivos() {
+  const aprendizId = route.params.id as string;
+
+  const { data } = await alvoService.getAlvosImportadosV2(aprendizId);
+  list.value = data;
+}
+
 onMounted(async () => {
   const aprendizId = route.params.id as string;
 
@@ -180,7 +219,6 @@ onMounted(async () => {
   aprendiz.value.aprendizId = aprendizData.aprendizId;
   aprendiz.value.nome_aprendiz = aprendizData.nome_aprendiz;
 
-  const { data } = await alvoService.getAlvosImportadosV2(aprendizId);
-  list.value = data;
+  await carregarObjetivos();
 });
 </script>

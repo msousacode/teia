@@ -122,6 +122,7 @@ async function atualizar() {
     const { data } = await alvoService.putAlvo({
       alvoId: routeLocation.params.objetivoId,
       nome_alvo: nomeAlvo.value,
+      tag: tag.value,
     });
 
     if (data) {
@@ -147,6 +148,7 @@ onMounted(async () => {
 
       if (data) {
         nomeAlvo.value = data.nome_alvo;
+        tag.value = data.tag;
       }
 
       //profissionaisSelecionados.value = await buscarProfissionaisVinculados();

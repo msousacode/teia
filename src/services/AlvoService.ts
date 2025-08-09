@@ -22,6 +22,10 @@ export default class AlvoService {
     return await http.get(`/alvos/v2/importados/all/${aprendizId}`);
   }
 
+  async concluirAlvo(uuid: any) {
+    return await http.put(`/alvos/v2/concluir/${uuid}`);
+  }
+
   async putAlvo(data: any) {
     return await http.put('/alvos', data);
   }
