@@ -20,6 +20,10 @@ export class AnotacaoService {
     );
   }
 
+  async getAnotacoesPorAprendiz(aprendizId: string) {
+    return await http.get(`/anotacoes/v2/aprendiz/${aprendizId}`);
+  }
+
   async getAnotacaoById(id: string | null) {
     return await http.get(`/anotacoes/${id}`);
   }

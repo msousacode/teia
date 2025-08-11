@@ -67,7 +67,6 @@
   <q-tabs v-model="tab" class="text-teal">
     <q-tab name="objetivos" label="Objetivos" />
     <q-tab name="evolucoes" label="Evoluções" />
-    <!--<q-tab name="graficos" label="Gráficos" />-->
   </q-tabs>
 
   <q-tab-panels v-model="tab">
@@ -110,7 +109,12 @@
                   label="Anotar"
                   class="bg-info text-white"
                   :disable="item.concluido"
-                  @click="visibleAnotacao = true"
+                  @click="
+                    () => {
+                      alvoAtualId = item.alvoId;
+                      visibleAnotacao = true;
+                    }
+                  "
                 />
               </div>
             </q-item-label>
@@ -150,33 +154,191 @@
         </q-item>
       </q-card>
     </q-tab-panel>
-    <q-tab-panel name="evolucoes"> ANOTACAO </q-tab-panel>
+
+    <q-tab-panel name="evolucoes">
+      <div class="column q-gutter-md">
+        <!-- Lista de anotações -->
+        <div v-if="anotacoesList.length > 0" class="column q-gutter-md">
+          <q-card
+            v-for="(item, index) in anotacoesList"
+            :key="index"
+            class="shadow-3 rounded-borders-lg"
+            style="border-left: 4px solid var(--q-primary)"
+          >
+            <!-- Header do card -->
+            <q-card-section class="bg-grey-1 q-pa-md">
+              <div class="row items-center justify-between">
+                <div class="row items-center q-gutter-md">
+                  <q-avatar color="primary" text-color="white" size="40px">
+                    <q-icon name="person" size="20px" />
+                  </q-avatar>
+                  <div>
+                    <div class="text-subtitle1 text-weight-medium text-grey-8">
+                      {{ item.criadoNome }}
+                    </div>
+                    <div class="text-caption text-grey-6">
+                      Profissional responsável
+                    </div>
+                  </div>
+                </div>
+                <q-chip
+                  icon="schedule"
+                  color="grey-7"
+                  text-color="white"
+                  size="sm"
+                  class="q-px-md"
+                >
+                  {{ item.data_anotacao }}
+                </q-chip>
+              </div>
+            </q-card-section>
+
+            <!-- Conteúdo da anotação -->
+            <q-card-section class="q-pa-lg">
+              <div class="row items-start q-gutter-md">
+                <q-icon
+                  name="format_quote"
+                  color="primary"
+                  size="24px"
+                  class="q-mt-xs"
+                />
+                <div class="col">
+                  <div
+                    class="text-body1 text-grey-8"
+                    style="line-height: 1.7; font-style: italic"
+                  >
+                    "{{ item.anotacao }}"
+                  </div>
+                </div>
+              </div>
+            </q-card-section>
+
+            <!-- Footer com badge de status -->
+            <q-card-section class="q-pa-md q-pt-none">
+              <div class="row items-center justify-between">
+                <q-badge
+                  :color="index === 0 ? 'positive' : 'info'"
+                  :label="
+                    index === 0
+                      ? 'Mais recente'
+                      : `Registro #${anotacoesList.length - index}`
+                  "
+                  class="q-px-sm"
+                />
+                <div class="row q-gutter-xs">
+                  <q-btn
+                    icon="edit"
+                    color="primary"
+                    size="sm"
+                    round
+                    flat
+                    class="q-pa-xs"
+                  >
+                    <q-tooltip>Editar anotação</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    icon="delete"
+                    color="negative"
+                    size="sm"
+                    round
+                    flat
+                    class="q-pa-xs"
+                  >
+                    <q-tooltip>Excluir anotação</q-tooltip>
+                  </q-btn>
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+
+        <!-- Estado vazio melhorado -->
+        <q-card
+          v-else
+          flat
+          class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
+        >
+          <q-card-section class="q-pa-xl">
+            <div class="column items-center q-gutter-md">
+              <q-icon name="note_add" size="80px" color="grey-4" />
+              <div class="text-h6 text-grey-6">
+                Nenhuma evolução registrada ainda
+              </div>
+              <div
+                class="text-body2 text-grey-5 text-center"
+                style="max-width: 400px"
+              >
+                Quando você registrar anotações sobre a evolução do aprendiz,
+                elas aparecerão aqui organizadas cronologicamente
+              </div>
+              <q-btn
+                color="primary"
+                icon="add_circle"
+                label="Registrar primeira evolução"
+                no-caps
+                rounded
+                class="q-mt-md"
+                @click="
+                  () => {
+                    alvoAtualId = '';
+                    visibleAnotacao = true;
+                  }
+                "
+              />
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+    </q-tab-panel>
   </q-tab-panels>
 
+  <!-- Dialog para nova anotação (único para toda a página) -->
   <q-dialog v-model="visibleAnotacao" persistent>
-    <q-card class="my-card q-pa-md full-width">
-      <div class="text-h6 text-teal">Anotação</div>
-      <q-card-section>
+    <q-card class="q-pa-md" style="width: 100%; max-width: 500px">
+      <q-card-section class="q-pa-none">
+        <div class="row items-center q-gutter-sm q-mb-md">
+          <q-icon name="edit_note" color="primary" size="24px" />
+          <span class="text-subtitle1 text-primary">Nova Anotação</span>
+        </div>
+        <div class="text-body2 text-grey-7 q-mb-md">
+          Registre a evolução. Essa anotação será visível para os demais
+          profissionais.
+        </div>
         <q-input
           outlined
-          label="Anotação no alvo"
+          label="Digite sua anotação"
           v-model="anotacao"
           type="textarea"
           :rules="[
             (val) => (val && val.length > 0) || 'Anotação é obrigatória',
           ]"
-          placeholder="Digite sua anotação aqui..."
+          placeholder="Descreva a evolução observada..."
+          rows="6"
+          counter
+          maxlength="500"
         />
       </q-card-section>
-      <q-card-actions>
-        <q-btn label="Salvar" color="green" no-caps class="full-width" />
-        <q-btn
-          label="Voltar"
-          color="info"
-          no-caps
-          @click="visibleAnotacao = false"
-          class="full-width q-mt-md"
-        />
+
+      <q-card-actions class="q-pa-none q-mt-md">
+        <div class="row q-gutter-sm full-width">
+          <q-btn
+            label="Cancelar"
+            color="grey-6"
+            no-caps
+            outline
+            @click="visibleAnotacao = false"
+            class="col q-pa-sm"
+            icon="close"
+          />
+          <q-btn
+            label="Salvar Anotação"
+            color="green"
+            no-caps
+            class="col q-pa-sm"
+            icon="save"
+            @click="salvarAnotacao(alvoAtualId)"
+          />
+        </div>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -184,6 +346,7 @@
 <script setup lang="ts">
 import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
+import { AnotacaoService } from 'src/services/AnotacaoService';
 import { AprendizService } from 'src/services/AprendizService';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -198,11 +361,19 @@ const list = ref<any[]>([]);
 
 const alvoService = new AlvoService();
 
+const anotacaoService = new AnotacaoService();
+
 const visibleAnotacao = ref(false);
 
 const anotacao = ref('');
 
+const anotacoesList = ref<any[]>([]);
+
+const alvoAtualId = ref<string>(''); // Para armazenar o ID do alvo sendo anotado
+
 const { success, error } = useNotify();
+
+const aprendizId = ref();
 
 const aprendiz = ref({
   aprendizId: '',
@@ -305,17 +476,53 @@ async function carregarObjetivos() {
   });
 }
 
+async function carregarAnotacoes() {
+  const { data } = await anotacaoService.getAnotacoesPorAprendiz(
+    aprendizId.value
+  );
+
+  if (data) {
+    anotacoesList.value = data;
+    return;
+  }
+}
+
+async function salvarAnotacao(alvoId: string) {
+  if (!anotacao.value.trim()) {
+    error('Anotação não pode ser vazia');
+    return;
+  }
+
+  const { status } = await anotacaoService.postAnotacao({
+    coletaId: alvoId,
+    aprendizId: aprendizId.value,
+    anotacao: anotacao.value,
+  });
+
+  if (status == 200) {
+    success('Anotação salva com sucesso!');
+    visibleAnotacao.value = false;
+    anotacao.value = '';
+    // Recarrega as anotações para mostrar a nova
+    await carregarAnotacoes();
+    return;
+  }
+
+  error('Erro ao tentar salvar a anotação');
+}
+
 onMounted(async () => {
-  const aprendizId = route.params.id as string;
+  aprendizId.value = route.params.id as string;
 
   const { data: aprendizData } = await aprendizService.getAprendizById(
-    aprendizId
+    aprendizId.value
   );
 
   aprendiz.value.aprendizId = aprendizData.aprendizId;
   aprendiz.value.nome_aprendiz = aprendizData.nome_aprendiz;
 
   await carregarObjetivos();
+  await carregarAnotacoes();
 });
 
 onUnmounted(() => {
