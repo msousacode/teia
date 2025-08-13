@@ -153,7 +153,7 @@ async function carregarObjetivos() {
   list.value = data;
 }
 
-function pesquisar(texto: string) {
+function pesquisar(texto: string | '') {
   if (!texto.trim()) {
     // Se não há texto de pesquisa, mostra todos os dados
     list.value = store.value.data;
