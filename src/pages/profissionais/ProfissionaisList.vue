@@ -2,8 +2,8 @@
   <div>
     <q-banner class="bg-grey-3">
       <div class="row justify-center items-center">
-        <div class="text-h6 q-pa-sm">Profissionais</div>
-        <div class="text-subtitle2">
+        <div class="text-h6 text-grey-7 q-pa-sm">Profissionais</div>
+        <div class="text-body2 text-grey-7 q-mt-sm">
           Cadastre os seus profissionais e compartilhe as crianças.
         </div>
 

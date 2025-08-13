@@ -2,9 +2,9 @@
   <div>
     <q-banner class="bg-grey-3">
       <div class="column q-gutter-sm">
-        <div class="row justify-center text-center">
+        <div class="row">
           <div class="col-12">
-            <div class="text-h6 q-pa-sm">
+            <div class="text-h6 text-grey-7 q-pa-sm">
               Olá,
               <span class="text-blue">{{ nomeUsuario }}</span>
             </div>
@@ -12,10 +12,8 @@
         </div>
 
         <div class="row justify-center">
-          <div class="col-12 col-md-10">
-            <div class="text-subtitle2 text-center">
-              Cadastre as crianças e compartilhe com os profissionais.
-            </div>
+          <div class="text-body2 text-grey-7 q-mt-sm">
+            Cadastre as crianças e compartilhe com os profissionais.
           </div>
         </div>
 
@@ -34,7 +32,7 @@
 
         <div class="row justify-center">
           <div class="col-12 col-md-10">
-            <div class="text-subtitle2 text-center">
+            <div class="text-body2 text-grey-7 text-center">
               Você tem {{ aprendizes ? aprendizes.length : 0 }} crianças
               cadastradas.
             </div>

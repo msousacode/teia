@@ -3,8 +3,8 @@
     <div class="column q-gutter-sm">
       <div class="row justify-center text-center">
         <div class="col-12">
-          <div class="text-h6 q-pa-sm">Objetivos</div>
-          <div class="text-subtitle2">
+          <div class="text-h6 text-grey-7 q-pa-sm">Objetivos</div>
+          <div class="text-body2 text-grey-7 q-mt-sm">
             Cadastre novos objetivos e trabalhe com as crianças.
           </div>
         </div>
@@ -23,28 +23,16 @@
         </div>
 
         <div class="col-12 col-sm-8 col-md-6">
-          <div class="row q-gutter-sm">
-            <div class="col">
-              <q-input
-                v-model="searchText"
-                outlined
-                type="text"
-                placeholder="Digite o objetivo"
-                class="bg-white"
-                style="min-height: 40px"
-                dense
-              />
-            </div>
-            <div class="col-auto">
-              <q-btn
-                class="bg-white"
-                outline
-                icon="search"
-                style="color: blue; min-height: 40px"
-                :to="{ name: 'objetivos/cadastro' }"
-              />
-            </div>
-          </div>
+          <q-input
+            v-model="searchText"
+            outlined
+            type="text"
+            placeholder="Digite o objetivo"
+            class="bg-white"
+            style="min-height: 40px"
+            dense
+            clearable
+          />
         </div>
       </div>
     </div>
@@ -108,9 +96,13 @@
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
-import { onMounted, ref } from 'vue';
+import { useObjetivosStore } from 'src/stores/objetivos';
+import { onMounted, ref, watch } from 'vue';
+
+const store = ref(useObjetivosStore());
 
 const list = ref<any[]>([]);
+
 const searchText = ref('');
 
 const alvoService = new AlvoService();
@@ -118,6 +110,22 @@ const alvoService = new AlvoService();
 const $q = useQuasar();
 
 const { success, error } = useNotify();
+
+// Sistema de debounce para pesquisa
+let searchTimeout: NodeJS.Timeout;
+
+// Watch para detectar mudanças no texto de pesquisa
+watch(searchText, (newValue) => {
+  // Cancela o timeout anterior se existir
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+
+  // Define um novo timeout para executar a pesquisa após 500ms
+  searchTimeout = setTimeout(() => {
+    pesquisar(newValue);
+  }, 500);
+});
 
 function deletarAlvo(item: any) {
   $q.dialog({
@@ -141,7 +149,20 @@ function deletarAlvo(item: any) {
 
 async function carregarObjetivos() {
   const { data } = await alvoService.getAlvosV2();
+  store.value.setData(data);
   list.value = data;
+}
+
+function pesquisar(texto: string) {
+  if (!texto.trim()) {
+    // Se não há texto de pesquisa, mostra todos os dados
+    list.value = store.value.data;
+  } else {
+    // Filtra os dados que contêm o texto pesquisado (case insensitive)
+    list.value = store.value.data.filter((item: any) =>
+      item.nome_alvo.toLowerCase().includes(texto.toLowerCase())
+    );
+  }
 }
 
 onMounted(async () => {

@@ -2,7 +2,7 @@
   <q-banner class="bg-grey-3">
     <div class="column q-gutter-sm">
       <div class="row justify-center items-center text-center">
-        <div class="text-subtitle2 col-12 col-md-8">
+        <div class="text-body2 text-grey-7 q-mt-md">
           Selecione e importe os objetivos que deseja trabalhar com a Criança.
         </div>
       </div>
@@ -19,15 +19,7 @@
                 class="bg-white"
                 style="min-height: 40px"
                 dense
-              />
-            </div>
-            <div class="col-auto">
-              <q-btn
-                class="bg-white"
-                outline
-                icon="search"
-                style="color: blue; min-height: 40px"
-                :to="{ name: 'objetivos/cadastro' }"
+                clearable
               />
             </div>
           </div>
@@ -55,12 +47,20 @@
           <div class="col">
             <q-item-label class="text-grey-8">
               <span class="text-body1">{{ item.nome_alvo }}</span>
+              <div v-if="item.tag" class="q-mt-sm">
+                <q-chip
+                  dense
+                  color="pink-4"
+                  text-color="white"
+                  class="text-uppercase"
+                  >{{ item.tag }}</q-chip
+                >
+              </div>
             </q-item-label>
           </div>
         </q-item>
       </q-card>
     </div>
-
     <div class="fixed-bottom q-pa-md">
       <q-btn
         class="full-width q-pa-sm text-white bg-green"
@@ -76,12 +76,15 @@
 </template>
 <script setup lang="ts">
 import AlvoService from 'src/services/AlvoService';
-import { onMounted, ref } from 'vue';
+import { useObjetivosStore } from 'src/stores/objetivos';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const list = ref<any[]>([]);
 
 const searchText = ref('');
+
+const store = ref(useObjetivosStore());
 
 const alvoService = new AlvoService();
 
@@ -91,8 +94,25 @@ const routeLocation = useRoute();
 
 const aprendizId = ref<string>('');
 
+// Sistema de debounce para pesquisa
+let searchTimeout: NodeJS.Timeout;
+
+// Watch para detectar mudanças no texto de pesquisa
+watch(searchText, (newValue) => {
+  // Cancela o timeout anterior se existir
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+
+  // Define um novo timeout para executar a pesquisa após 500ms
+  searchTimeout = setTimeout(() => {
+    pesquisar(newValue);
+  }, 500);
+});
+
 async function carregarObjetivos() {
   const { data } = await alvoService.getAlvosV2();
+  store.value.setData(data);
   list.value = data;
 }
 
@@ -119,6 +139,18 @@ async function importarObjetivos() {
     await carregarObjetivos();
   } catch (error) {
     console.error('Erro ao importar objetivos:', error);
+  }
+}
+
+function pesquisar(texto: string) {
+  if (!texto.trim()) {
+    // Se não há texto de pesquisa, mostra todos os dados
+    list.value = store.value.data;
+  } else {
+    // Filtra os dados que contêm o texto pesquisado (case insensitive)
+    list.value = store.value.data.filter((item: any) =>
+      item.nome_alvo.toLowerCase().includes(texto.toLowerCase())
+    );
   }
 }
 

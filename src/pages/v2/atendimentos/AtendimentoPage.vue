@@ -1,14 +1,13 @@
 <template>
   <q-banner class="bg-grey-3">
     <div class="row justify-center items-center">
-      <ul>
-        <li class="text-subtitle2">
-          Atribua as estrelinhas para os objetivos e acompanhe a evolução.
-        </li>
-        <li class="text-subtitle2">
-          Ao terminar as coletas, encerre o atendimento e gere o relatório.
-        </li>
-      </ul>
+      <div class="text-body2 text-grey-7 q-mt-sm">
+        Atribua as estrelinhas para os objetivos e acompanhe a evolução.
+      </div>
+      <div class="text-body2 text-grey-7 q-mt-sm">
+        Ao terminar as coletas, encerre o atendimento e gere o relatório.
+      </div>
+
       <div class="row">
         <q-btn
           class="bg-white q-ma-sm"
@@ -300,7 +299,7 @@
           <q-icon name="edit_note" color="primary" size="24px" />
           <span class="text-subtitle1 text-primary">Nova Anotação</span>
         </div>
-        <div class="text-body2 text-grey-7 q-mb-md">
+        <div class="text-body2 text-grey-7 q-mt-sm">
           Registre a evolução. Essa anotação será visível para os demais
           profissionais.
         </div>

@@ -13,10 +13,16 @@
     </template>
     <div class="text-h6 text-orange">Dicas para um bom objetivo</div>
 
-    <div class="text-subtitle2">Seja específico e claro</div>
-    <div class="text-subtitle2">Use linguagem simples e objetiva</div>
-    <div class="text-subtitle2">Considere a idade da criança</div>
-    <div class="text-subtitle2">Use modelos do ABLLS, Portage e VB-MAPP</div>
+    <div class="text-body2 text-grey-7 q-mt-sm">Seja específico e claro</div>
+    <div class="text-body2 text-grey-7 q-mt-sm">
+      Use linguagem simples e objetiva
+    </div>
+    <div class="text-body2 text-grey-7 q-mt-sm">
+      Considere a idade da criança
+    </div>
+    <div class="text-body2 text-grey-7 q-mt-sm">
+      Use modelos do ABLLS, Portage e VB-MAPP
+    </div>
   </q-banner>
 
   <div class="text-h6 text-orange q-pa-md">Digite o objetivo</div>
@@ -34,7 +40,7 @@
     </q-item-section>
   </q-item>
 
-  <div class="text-subtitle2 q-ma-md">
+  <div class="text-body2 text-grey-7 q-mt-sm q-ma-md">
     Esse recurso é usado somente para marcar a origem do objetivo.
   </div>
   <q-card class="q-ma-md">

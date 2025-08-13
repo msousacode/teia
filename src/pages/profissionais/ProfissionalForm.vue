@@ -13,10 +13,10 @@
     </template>
     <div class="text-h6 text-orange">Cadastre um novo Profissional</div>
 
-    <div class="text-subtitle2 q-mt-sm">
+    <div class="text-body2 text-grey-7 q-mt-sm">
       O Novo Profissional terá acesso às crianças e objetivos cadastrados.
     </div>
-    <div class="text-subtitle2 q-mt-sm">
+    <div class="text-body2 text-grey-7 q-mt-sm">
       A Senha do Profissional deverá ser enviada pela pessoa que fez o cadastro.
     </div>
   </q-banner>
