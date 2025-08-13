@@ -50,7 +50,7 @@
               <div v-if="item.tag" class="q-mt-sm">
                 <q-chip
                   dense
-                  color="pink-4"
+                  color="blue-8"
                   text-color="white"
                   class="text-uppercase"
                   >{{ item.tag }}</q-chip
