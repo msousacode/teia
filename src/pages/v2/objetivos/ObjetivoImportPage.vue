@@ -107,7 +107,7 @@ watch(searchText, (newValue) => {
   // Define um novo timeout para executar a pesquisa após 500ms
   searchTimeout = setTimeout(() => {
     pesquisar(newValue);
-  }, 500);
+  }, 300);
 });
 
 async function carregarObjetivos() {
