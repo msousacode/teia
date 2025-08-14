@@ -1,4 +1,46 @@
 <template>
+  <q-dialog persistent v-model="precisaAssinar">
+    <q-card class="q-pa-lg" style="max-width: 500px; width: 90vw">
+      <!-- Header -->
+      <q-card-section class="text-center q-pb-md">
+        <q-icon name="schedule" size="48px" color="orange" class="q-mb-sm" />
+        <div class="text-h6 text-weight-medium q-mb-xs">
+          Período de teste finalizado
+        </div>
+        <div class="text-body2 text-grey-6">
+          Continue aproveitando todos os recursos do aplicativo
+        </div>
+      </q-card-section>
+
+      <!-- Conteúdo -->
+      <q-card-section class="q-py-none">
+        <div class="text-center">
+          <div class="text-body1 q-mb-md">
+            Se você gostou do aplicativo e deseja continuar aproveitando os
+            recursos, assine um plano:
+          </div>
+
+          <q-btn
+            color="primary"
+            size="lg"
+            rounded
+            unelevated
+            class="q-px-xl q-py-sm text-weight-medium"
+            :to="{ name: 'assinatura' }"
+            icon="credit_card"
+          >
+            Assinar Plano
+          </q-btn>
+        </div>
+      </q-card-section>
+
+      <!-- Footer -->
+      <q-card-section class="text-center q-pt-md">
+        <div class="text-body1 text-grey-5">Cancele quando quiser</div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+
   <div>
     <q-banner class="bg-grey-3">
       <div class="column q-gutter-sm">
@@ -122,14 +164,19 @@
           </div>
 
           <!-- Layout desktop: horizontal -->
-          <q-card-section horizontal class="q-pa-sm lt-sm">
+          <q-card-section
+            horizontal
+            class="q-pa-sm lt-sm"
+            v-if="!precisaAssinar"
+          >
             <q-card-section class="col-auto q-pa-sm">
               <q-icon name="schedule" color="white" size="20px" />
             </q-card-section>
 
             <q-card-section class="col q-pa-sm">
               <div class="text-white text-weight-medium">
-                Você tem mais 3 dias de teste
+                Você tem mais
+                {{ quantidadeDiasTeste - diasRestantesFimTeste }} dias de teste
               </div>
             </q-card-section>
 
@@ -157,6 +204,9 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { AprendizService } from 'src/services/AprendizService';
 import useNotify from 'src/composables/UseNotify';
+import { AssinaturaService } from 'src/services/AssinaturaService';
+
+const precisaAssinar = ref(false);
 
 const aprendizService = new AprendizService();
 
@@ -170,6 +220,11 @@ const $q = useQuasar();
 
 const nomeUsuario = ref('');
 
+const assinaturaService = new AssinaturaService();
+
+const diasRestantesFimTeste = ref(0);
+
+const quantidadeDiasTeste = ref(7);
 //const router = useRouter();
 
 async function listar() {
@@ -215,11 +270,42 @@ function remover(aprendiz: any) {
     .onDismiss(() => {});
 }
 
+async function verificarEmail(email: string) {
+  try {
+    $q.loading.show();
+
+    const { status, data } = await assinaturaService.verifyCheckout(
+      email.toLowerCase().trim()
+    );
+
+    if (status == 200 && data) {
+      diasRestantesFimTeste.value = data;
+      if (quantidadeDiasTeste.value < diasRestantesFimTeste.value) {
+        precisaAssinar.value = true;
+      }
+    }
+
+    if (status == 200 || status == 404) {
+      return;
+    } else if (status == 403) {
+      router.push({
+        name: 'assinatura',
+        params: { email: email.toLowerCase().trim() },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    $q.loading.hide();
+  }
+}
+
 onMounted(() => {
   const storage = JSON.parse(localStorage.getItem('user') || '{}');
 
   if (storage && storage.fullName) {
     nomeUsuario.value = storage.fullName;
+    verificarEmail(storage.email);
   }
 
   listar();
@@ -229,5 +315,17 @@ onMounted(() => {
 <style lang="scss" scoped>
 .bg-gradient-blue {
   background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+}
+
+.bg-gradient-orange {
+  background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 50%, #ffa000 100%);
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+.opacity-75 {
+  opacity: 0.75;
 }
 </style>
