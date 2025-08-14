@@ -176,7 +176,8 @@
             <q-card-section class="col q-pa-sm">
               <div class="text-white text-weight-medium">
                 Você tem mais
-                {{ quantidadeDiasTeste - diasRestantesFimTeste }} dias de teste
+                {{ quantidadeDiasTeste - diasRestantesFimTeste }} dia(s) de
+                teste.
               </div>
             </q-card-section>
 
@@ -280,7 +281,7 @@ async function verificarEmail(email: string) {
 
     if (status == 200 && data) {
       diasRestantesFimTeste.value = data;
-      if (quantidadeDiasTeste.value < diasRestantesFimTeste.value) {
+      if (quantidadeDiasTeste.value <= diasRestantesFimTeste.value) {
         precisaAssinar.value = true;
       }
     }
