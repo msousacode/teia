@@ -50,22 +50,28 @@
             />
 
             <q-btn
-              class="full-width bg-primary text-white q-pa-sm q-mb-xl"
-              no-caps
-              label="ENTRAR"
+              color="primary-9"
+              rounded
+              unelevated
+              class="full-width bg-primary text-white q-pa-sm q-mb-md"
               @click="entrar('normal')"
               :disable="!isSubmitted"
-            />
+            >
+              Acessar
+            </q-btn>
 
             <q-btn
-              class="full-width bg-blue-9 text-white"
+              color="blue-9"
+              rounded
               unelevated
+              class="full-width text-white q-pa-sm q-mb-xl"
               to="/cadastrar"
-              label="Criar Conta"
-            />
+            >
+              Testar 7 dias
+            </q-btn>
           </div>
 
-          <div class="text-right text-blue text-body1 q-mt-md">
+          <div class="text-right text-blue text-body1">
             <q-btn
               text-color="blue-9"
               no-caps

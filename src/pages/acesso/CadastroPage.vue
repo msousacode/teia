@@ -1,4 +1,38 @@
 <template>
+  <q-dialog persistent v-model="exibirDialog">
+    <q-card class="q-pa-lg" style="max-width: 500px; width: 90vw">
+      <!-- Header -->
+      <q-card-section class="text-center q-pb-md">
+        <q-icon name="check_circle" size="48px" color="green" class="q-mb-sm" />
+        <div class="text-h6 text-weight-medium q-mb-xs">
+          Sua conta foi criada com sucesso!
+        </div>
+        <div class="text-body1 text-grey-6">
+          A partir de hoje você possui 7 dias grátis para usar o aplicativo.
+        </div>
+      </q-card-section>
+
+      <!-- Conteúdo -->
+      <q-card-section class="q-py-none">
+        <div class="text-center">
+          <div class="text-body1 q-mb-md">
+            Acesse a tela de login e informe usuário e senha.
+          </div>
+
+          <q-btn
+            color="blue-7"
+            rounded
+            unelevated
+            class="q-px-xl q-py-sm text-weight-medium"
+            @click="redirectLogin"
+          >
+            Ir para Login
+          </q-btn>
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
@@ -8,33 +42,93 @@
 
     <q-page class="q-pa-sm">
       <div class="row justify-center">
-
         <div class="col-md-7 col-xs-12 col-sm-12">
           <q-card class="q-pa-md">
             <title-custom title="Usuários" />
             <section>
-              <q-input outlined v-model="formCadastro.nome" label="Nome Completo" stack-label
-                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'Nome é obrigatório' : true]" />
+              <q-input
+                outlined
+                v-model="formCadastro.nome"
+                label="Nome Completo"
+                stack-label
+                :rules="[
+                  (val) =>
+                    isSubmitted
+                      ? (val && val.length > 0) || 'Nome é obrigatório'
+                      : true,
+                ]"
+              />
 
-              <q-input type="email" outlined v-model="formCadastro.email" label="E-mail" stack-label
-                :rules="[(val) => isSubmitted ? (val && val.length > 0) || 'E-mail é obrigatório' : true]"
-                :readonly="edit" @blur="verificarEmail" />
-              <q-select stack-label outlined v-model="selected" :options="perfil" label="Permissão"
-                v-if="(tipoPerfil == 'ADMIN')" />
+              <q-input
+                type="email"
+                outlined
+                v-model="formCadastro.email"
+                label="E-mail"
+                stack-label
+                :rules="[
+                  (val) =>
+                    isSubmitted
+                      ? (val && val.length > 0) || 'E-mail é obrigatório'
+                      : true,
+                ]"
+                :readonly="edit"
+                @blur="verificarEmail"
+              />
+              <q-select
+                stack-label
+                outlined
+                v-model="selected"
+                :options="perfil"
+                label="Permissão"
+                v-if="tipoPerfil == 'ADMIN'"
+              />
 
               <section v-if="!(tipoPerfil == 'ADMIN')">
-                <q-input type="password" outlined v-model="formCadastro.senha" label="Senha" stack-label
-                  :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
-
-                <q-input type="password" outlined v-model="formCadastro.senhaConfirmada" label="Confirme a senha"
+                <q-input
+                  type="password"
+                  outlined
+                  v-model="formCadastro.senha"
+                  label="Senha"
                   stack-label
-                  :rules="[(val) => isSubmitted ? (val && val.length > 0 || val.length < 6) || 'Senha é obrigatória e deve ter mínimo 6 caracteres' : true]" />
-              </section>
+                  :rules="[
+                    (val) =>
+                      isSubmitted
+                        ? (val && val.length > 0) ||
+                          val.length < 6 ||
+                          'Senha é obrigatória e deve ter mínimo 6 caracteres'
+                        : true,
+                  ]"
+                />
 
+                <q-input
+                  type="password"
+                  outlined
+                  v-model="formCadastro.senhaConfirmada"
+                  label="Confirme a senha"
+                  stack-label
+                  :rules="[
+                    (val) =>
+                      isSubmitted
+                        ? (val && val.length > 0) ||
+                          val.length < 6 ||
+                          'Senha é obrigatória e deve ter mínimo 6 caracteres'
+                        : true,
+                  ]"
+                />
+              </section>
             </section>
             <div class="q-mt-md q-gutter-x-md row justify-end">
-              <q-btn color="info" :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'">Voltar</q-btn>
-              <q-btn color="positive" @click="cadastrar()" :disable="!isSubmitted">Salvar</q-btn>
+              <q-btn
+                color="info"
+                :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'"
+                >Voltar</q-btn
+              >
+              <q-btn
+                color="positive"
+                @click="cadastrar()"
+                :disable="!isSubmitted"
+                >Salvar</q-btn
+              >
             </div>
           </q-card>
         </div>
@@ -70,32 +164,47 @@ const assinaturaService = new AssinaturaService();
 
 const selected = ref<string>('');
 
-const perfil = ["Especialista", "AT"];
+const perfil = ['Especialista', 'AT'];
 
 const routeLocation = useRoute();
 
 const edit = routeLocation.params.email ? true : false;
+
+const exibirDialog = ref(false);
 
 const formCadastro = reactive({
   nome: '',
   email: '',
   senha: '',
   senhaConfirmada: '',
-  banco_demonstracao: '3e19d9a2-2587-4d65-b673-181989780416'//Nome do banco que deve ser usado para demonstração.
+  banco_demonstracao: '3e19d9a2-2587-4d65-b673-181989780416', //Nome do banco que deve ser usado para demonstração.
 });
 
 let isSubmitted = computed(() => {
   if (tipoPerfil.value == 'ADMIN') {
-    return formCadastro.email !== '' && formCadastro.nome !== '' && selected.value !== '';
+    return (
+      formCadastro.email !== '' &&
+      formCadastro.nome !== '' &&
+      selected.value !== ''
+    );
   }
-  return formCadastro.email !== '' && formCadastro.senha !== '' && formCadastro.senha.length > 5 && formCadastro.senhaConfirmada.length > 5 && formCadastro.senhaConfirmada !== '';
+  return (
+    formCadastro.email !== '' &&
+    formCadastro.senha !== '' &&
+    formCadastro.senha.length > 5 &&
+    formCadastro.senhaConfirmada.length > 5 &&
+    formCadastro.senhaConfirmada !== ''
+  );
 });
 
 async function criarContaStripe(name: string, email: string) {
   try {
     $q.loading.show();
 
-    const { id } = await createStripeCustomer({ name: name, email: email.toLowerCase().trim() });
+    const { id } = await createStripeCustomer({
+      name: name,
+      email: email.toLowerCase().trim(),
+    });
 
     if (!id) {
       error('Erro ao criar customer Stripe!');
@@ -108,7 +217,6 @@ async function criarContaStripe(name: string, email: string) {
 }
 
 async function cadastrar() {
-
   if (tipoPerfil.value != 'ADMIN') {
     if (formCadastro.senha.trim() !== formCadastro.senhaConfirmada.trim()) {
       error('Senhas não conferem');
@@ -116,29 +224,36 @@ async function cadastrar() {
     }
   }
 
-  const novoUsuario = { full_name: formCadastro.nome, email: formCadastro.email.toLowerCase().trim(), senha: formCadastro.senhaConfirmada, perfil: selected.value } as Usuario;
+  const novoUsuario = {
+    full_name: formCadastro.nome,
+    email: formCadastro.email.toLowerCase().trim(),
+    senha: formCadastro.senhaConfirmada,
+    perfil: selected.value,
+  } as Usuario;
 
   try {
     $q.loading.show();
 
-
-    if (localStorage.getItem('user') == null) {//Significa que o usuário não está logado.
+    if (localStorage.getItem('user') == null) {
+      //Significa que o usuário não está logado.
       const { data } = await acessoService.criarNovoUsuario(novoUsuario);
 
       if (data == null) {
-        throw Error("Erro ao cadastrar novo usuário.");
+        throw Error('Erro ao cadastrar novo usuário.');
       }
 
       if (tipoPerfil.value != 'ADMIN') {
-        await criarContaStripe(formCadastro.nome, formCadastro.email.toLowerCase().trim());
+        await criarContaStripe(
+          formCadastro.nome,
+          formCadastro.email.toLowerCase().trim()
+        );
 
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        router.push({ name: 'assinatura' });
+        localStorage.setItem('userInfo', JSON.stringify(data));
+        exibirDialog.value = true;
       }
 
       //success('Usuário cadastrado com sucesso!');
       return;
-
     }
 
     const usuarioId = JSON.parse(localStorage.getItem('user') || '').usuarioId;
@@ -153,10 +268,13 @@ async function cadastrar() {
       return;
     }
 
-    const { status } = await acessoService.criarNovoUsuario(novoUsuario, usuarioId);
+    const { status } = await acessoService.criarNovoUsuario(
+      novoUsuario,
+      usuarioId
+    );
 
     if (status != 200) {
-      throw Error("Erro ao cadastrar novo usuário.");
+      throw Error('Erro ao cadastrar novo usuário.');
     }
 
     formCadastro.nome = '';
@@ -164,28 +282,30 @@ async function cadastrar() {
     selected.value = '';
 
     success('Usuário cadastrado com sucesso!');
-
   } catch (e) {
     console.log(e);
     error('Erro ao criar novo usuário. Contate o Suporte.');
   } finally {
     $q.loading.hide();
   }
-};
+}
 
 async function verificarEmail() {
-
   try {
     $q.loading.show();
 
-    const { status } = await assinaturaService.verifyCheckout(formCadastro.email.toLowerCase().trim());
+    const { status } = await assinaturaService.verifyCheckout(
+      formCadastro.email.toLowerCase().trim()
+    );
 
     if (status == 200 || status == 404) {
       return;
     } else if (status == 403) {
-      router.push({ name: 'assinatura', params: { email: formCadastro.email.toLowerCase().trim() } });
+      router.push({
+        name: 'assinatura',
+        params: { email: formCadastro.email.toLowerCase().trim() },
+      });
     }
-
   } catch (e) {
     console.log(e);
   } finally {
@@ -194,21 +314,19 @@ async function verificarEmail() {
 }
 
 async function atualizarUsuario(novoUsurio: Usuario, email: any) {
-
   try {
     $q.loading.show();
 
     const { data } = await profissionalService.atualizar(novoUsurio, email);
 
     if (data == null) {
-      throw Error("Erro ao atualizar usuário.");
+      throw Error('Erro ao atualizar usuário.');
     } else {
       formCadastro.nome = data.full_name;
       formCadastro.email = data.email;
       selected.value = data.perfil;
       success('Usuário atualizado com sucesso!');
     }
-
   } catch (e) {
     console.log(e);
     error('Erro ao atualizar usuário. Contate o Suporte.');
@@ -217,11 +335,16 @@ async function atualizarUsuario(novoUsurio: Usuario, email: any) {
   }
 }
 
+function redirectLogin() {
+  router.push({ name: 'login' });
+}
 
 onMounted(async () => {
   tipoPerfil.value = JSON.parse(localStorage.getItem('user') || '').perfil;
   if (routeLocation.params.email) {
-    const { data } = await profissionalService.getByEmail(routeLocation.params.email);
+    const { data } = await profissionalService.getByEmail(
+      routeLocation.params.email
+    );
 
     if (data) {
       formCadastro.nome = data.full_name;
@@ -229,6 +352,5 @@ onMounted(async () => {
       selected.value = data.perfil;
     }
   }
-
 });
 </script>

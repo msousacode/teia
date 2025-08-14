@@ -84,7 +84,7 @@
     </q-banner>
 
     <q-page padding class="row justify-center">
-      <div class="col-12 col-md-10 col-lg-8">
+      <div class="col-12 col-md-10 col-lg-8" v-if="aprendizes.length != 0">
         <q-card
           v-for="(item, index) in aprendizes"
           :key="index"
@@ -135,6 +135,25 @@
           </q-item>
         </q-card>
       </div>
+
+      <q-card
+        v-else
+        flat
+        class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
+      >
+        <q-card-section class="q-pa-xl">
+          <div class="column items-center q-gutter-md">
+            <q-icon name="note_add" size="80px" color="grey-4" />
+            <div class="text-h6 text-grey-6">Nenhuma criança cadastrada</div>
+            <div
+              class="text-body2 text-grey-6 text-center"
+              style="max-width: 400px"
+            >
+              Cadastre as crianças para começar os atendimentos.
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
     </q-page>
   </div>
 
