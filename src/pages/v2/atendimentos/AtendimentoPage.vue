@@ -5,7 +5,7 @@
         Atribua as estrelinhas para os objetivos e acompanhe a evolução.
       </div>
       <div class="text-body2 text-grey-7 q-mt-sm">
-        Ao terminar as coletas, encerre o atendimento e gere o relatório.
+        Gere o relatório para acessar todas as informações.
       </div>
 
       <div class="row">
@@ -36,6 +36,7 @@
           icon="close"
           style="color: orangered"
           label="Encerrar"
+          @click="encerrar"
         />
       </div>
     </div>
@@ -70,87 +71,109 @@
 
   <q-tab-panels v-model="tab">
     <q-tab-panel name="objetivos">
+      <div v-if="list.length > 0" class="column q-gutter-md">
+        <q-card
+          v-for="(item, index) in list"
+          :key="index"
+          class="q-mb-md shadow-2"
+          bordered
+        >
+          <q-item>
+            <q-item-section top>
+              <q-item-label class="text-grey-8">
+                <span
+                  class="text-body1"
+                  :class="{ 'text-strike': item.concluido }"
+                  >{{ item.nomeAlvo }}</span
+                >
+              </q-item-label>
+              <q-item-label>
+                <div class="text-grey-8 q-gutter-xs q-mt-sm">
+                  <q-btn
+                    v-if="!item.concluido"
+                    size="12px"
+                    label="Concluído"
+                    class="bg-green text-white"
+                    @click="concluirAlvo(item.alvoId)"
+                  />
+
+                  <q-btn
+                    v-else
+                    size="12px"
+                    label="Reabrir"
+                    class="bg-orange-8 text-white"
+                    @click="concluirAlvo(item.alvoId)"
+                  />
+
+                  <q-btn
+                    size="12px"
+                    label="Anotar"
+                    class="bg-info text-white"
+                    :disable="item.concluido"
+                    @click="
+                      () => {
+                        alvoAtualId = item.alvoId;
+                        visibleAnotacao = true;
+                      }
+                    "
+                  />
+                </div>
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <div class="column q-gutter-xs items-center">
+                <div class="row items-center q-gutter-xs">
+                  <q-btn
+                    size="12px"
+                    dense
+                    round
+                    icon="star"
+                    class="text-green-8"
+                    :disable="item.concluido"
+                    @click="adicionarEstrela(item, 'positiva')"
+                  />
+                  <span class="text-weight-bold text-green-8">{{
+                    item.totalEstrelaPositiva || 0
+                  }}</span>
+                </div>
+                <div class="row items-center q-gutter-xs">
+                  <q-btn
+                    size="12px"
+                    dense
+                    round
+                    icon="star"
+                    class="text-red-8"
+                    :disable="item.concluido"
+                    @click="adicionarEstrela(item, 'negativa')"
+                  />
+                  <span class="text-weight-bold text-red-8">{{
+                    item.totalEstrelaNegativa || 0
+                  }}</span>
+                </div>
+              </div>
+            </q-item-section>
+          </q-item>
+        </q-card>
+      </div>
+
       <q-card
-        v-for="(item, index) in list"
-        :key="index"
-        class="q-mb-md shadow-2"
-        bordered
+        v-else
+        flat
+        class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
       >
-        <q-item>
-          <q-item-section top>
-            <q-item-label class="text-grey-8">
-              <span
-                class="text-body1"
-                :class="{ 'text-strike': item.concluido }"
-                >{{ item.nomeAlvo }}</span
-              >
-            </q-item-label>
-            <q-item-label>
-              <div class="text-grey-8 q-gutter-xs q-mt-sm">
-                <q-btn
-                  v-if="!item.concluido"
-                  size="12px"
-                  label="Concluído"
-                  class="bg-green text-white"
-                  @click="concluirAlvo(item.alvoId)"
-                />
-
-                <q-btn
-                  v-else
-                  size="12px"
-                  label="Reabrir"
-                  class="bg-orange-8 text-white"
-                  @click="concluirAlvo(item.alvoId)"
-                />
-
-                <q-btn
-                  size="12px"
-                  label="Anotar"
-                  class="bg-info text-white"
-                  :disable="item.concluido"
-                  @click="
-                    () => {
-                      alvoAtualId = item.alvoId;
-                      visibleAnotacao = true;
-                    }
-                  "
-                />
-              </div>
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <div class="column q-gutter-xs items-center">
-              <div class="row items-center q-gutter-xs">
-                <q-btn
-                  size="12px"
-                  dense
-                  round
-                  icon="star"
-                  class="text-green-8"
-                  :disable="item.concluido"
-                  @click="adicionarEstrela(item, 'positiva')"
-                />
-                <span class="text-weight-bold text-green-8">{{
-                  item.totalEstrelaPositiva || 0
-                }}</span>
-              </div>
-              <div class="row items-center q-gutter-xs">
-                <q-btn
-                  size="12px"
-                  dense
-                  round
-                  icon="star"
-                  class="text-red-8"
-                  :disable="item.concluido"
-                  @click="adicionarEstrela(item, 'negativa')"
-                />
-                <span class="text-weight-bold text-red-8">{{
-                  item.totalEstrelaNegativa || 0
-                }}</span>
-              </div>
+        <q-card-section class="q-pa-xl">
+          <div class="column items-center q-gutter-md">
+            <q-icon name="note_add" size="80px" color="grey-4" />
+            <div class="text-h6 text-grey-6">Nenhuma objetivo presente</div>
+            <div
+              class="text-body2 text-grey-6 text-center"
+              style="max-width: 400px"
+            >
+              Acesse o botão de importar para acessar os objetivos cadastros e
+              importe para poder trabalhar com as Crianças.
             </div>
-          </q-item-section>
-        </q-item>
+          </div>
+        </q-card-section>
       </q-card>
     </q-tab-panel>
 
@@ -264,26 +287,12 @@
                 Nenhuma evolução registrada ainda
               </div>
               <div
-                class="text-body2 text-grey-5 text-center"
+                class="text-body2 text-grey-6 text-center"
                 style="max-width: 400px"
               >
                 Quando você registrar anotações sobre a evolução do aprendiz,
                 elas aparecerão aqui organizadas cronologicamente
               </div>
-              <q-btn
-                color="primary"
-                icon="add_circle"
-                label="Registrar primeira evolução"
-                no-caps
-                rounded
-                class="q-mt-md"
-                @click="
-                  () => {
-                    alvoAtualId = '';
-                    visibleAnotacao = true;
-                  }
-                "
-              />
             </div>
           </q-card-section>
         </q-card>
@@ -323,19 +332,15 @@
           <q-btn
             label="Cancelar"
             color="grey-6"
-            no-caps
-            outline
             @click="visibleAnotacao = false"
             class="col q-pa-sm"
-            icon="close"
           />
           <q-btn
-            label="Salvar Anotação"
+            label="Salvar"
             color="green"
-            no-caps
             class="col q-pa-sm"
-            icon="save"
             @click="salvarAnotacao(alvoAtualId)"
+            :disable="anotacao.length > 500"
           />
         </div>
       </q-card-actions>
@@ -343,12 +348,15 @@
   </q-dialog>
 </template>
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
 import { AnotacaoService } from 'src/services/AnotacaoService';
 import { AprendizService } from 'src/services/AprendizService';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+
+const $q = useQuasar();
 
 const route = useRoute();
 
@@ -508,6 +516,25 @@ async function salvarAnotacao(alvoId: string) {
   }
 
   error('Erro ao tentar salvar a anotação');
+}
+
+function encerrar() {
+  $q.dialog({
+    title: 'Confirma o encerramento?',
+    message:
+      'As informações não serão perdidas. Todas as informações poderão ser consultadas no relatório PDF.',
+    ok: true,
+    cancel: true,
+  })
+    .onOk(async () => {
+      const { status } = await alvoService.encerrar(aprendizId.value);
+
+      if (status == 200) {
+        success('Encerrado com sucesso!');
+        carregarObjetivos();
+      }
+    })
+    .onDismiss(() => {});
 }
 
 onMounted(async () => {

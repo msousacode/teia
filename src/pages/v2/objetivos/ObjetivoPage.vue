@@ -31,7 +31,6 @@
             class="bg-white"
             style="min-height: 40px"
             dense
-            clearable
           />
         </div>
       </div>

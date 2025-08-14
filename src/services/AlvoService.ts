@@ -34,6 +34,10 @@ export default class AlvoService {
     return await http.put('/alvos', data);
   }
 
+  async encerrar(id: string) {
+    return await http.put(`/alvos/encerrar/aprendiz/${id}`);
+  }
+
   async getAlvos(id: string | null) {
     return await http.get(`/alvos/all/${id}`);
   }
