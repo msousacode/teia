@@ -28,6 +28,7 @@
           icon="file_download"
           style="color: brown"
           label="PDF"
+          @click="gerarRelatorio(aprendiz.aprendizId)"
         />
         <q-btn
           class="bg-white q-ma-sm"
@@ -353,6 +354,7 @@ import useNotify from 'src/composables/UseNotify';
 import AlvoService from 'src/services/AlvoService';
 import { AnotacaoService } from 'src/services/AnotacaoService';
 import { AprendizService } from 'src/services/AprendizService';
+import { RelatorioService } from 'src/services/relatorio/relatorio';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -381,6 +383,8 @@ const alvoAtualId = ref<string>(''); // Para armazenar o ID do alvo sendo anotad
 const { success, error } = useNotify();
 
 const aprendizId = ref();
+
+const relatorioService = new RelatorioService();
 
 const aprendiz = ref({
   aprendizId: '',
@@ -535,6 +539,10 @@ function encerrar() {
       }
     })
     .onDismiss(() => {});
+}
+
+function gerarRelatorio() {
+  relatorioService.gerarDadosRelatorio(aprendizId.value);
 }
 
 onMounted(async () => {
