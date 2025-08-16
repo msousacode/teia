@@ -1,30 +1,53 @@
 <template>
   <div>
     <q-banner class="bg-grey-3">
-      <div class="row justify-center items-center">
-        <div class="text-h6 text-grey-7 q-pa-sm">Profissionais</div>
-        <div class="text-body2 text-grey-7 q-mt-sm">
-          Cadastre os seus profissionais e compartilhe as crianças.
+      <div class="column q-gutter-sm">
+        <div class="row">
+          <div class="col-12">
+            <div class="text-h6 text-grey-7 q-pa-sm">
+              Profissionais
+            </div>
+          </div>
         </div>
 
-        <q-btn
-          class="bg-white q-ma-sm"
-          outline
-          icon="add"
-          style="color: orange"
-          label="Adicionar novo Profissional"
-          :to="{ name: 'profissionais/cadastro' }"
-        />
+        <div class="row justify-center">
+          <div class="text-body2 text-grey-7 q-mt-sm">
+            Cadastre os seus profissionais e compartilhe as crianças.
+          </div>
+        </div>
+
+        <div class="row justify-center">
+          <div class="col-12 col-sm-auto">
+            <q-btn
+              class="bg-white full-width"
+              outline
+              icon="add"
+              style="color: orange"
+              label="Adicionar novo Profissional"
+              :to="{ name: 'profissionais/cadastro' }"
+            />
+          </div>
+        </div>
+
+        <div class="row justify-center">
+          <div class="col-12 col-md-10">
+            <div class="text-body2 text-grey-7 text-center">
+              Você tem {{ list ? list.length : 0 }} profissionais
+              cadastrados.
+            </div>
+          </div>
+        </div>
       </div>
     </q-banner>
 
-    <q-page padding>
-      <q-card
-        v-for="(item, index) in list"
-        :key="index"
-        class="q-mb-md shadow-2"
-        bordered
-      >
+    <q-page padding class="row justify-center">
+      <div class="col-12 col-md-10 col-lg-8" v-if="list.length != 0">
+        <q-card
+          v-for="(item, index) in list"
+          :key="index"
+          class="q-mb-md shadow-2"
+          bordered
+        >
         <q-item>
           <q-item-section avatar>
             <q-avatar color="primary" text-color="white">{{
@@ -33,7 +56,9 @@
           </q-item-section>
           <q-item-section top>
             <q-item-label class="text-grey-8">
-              <span class="text-h6">{{ item.full_name }}</span>
+              <span class="text-body1 text-blue"
+                ><b>{{ item.full_name }}</b></span
+              >
             </q-item-label>
             <q-item-label lines="1">
               <span class="text-body2 text-uppercase">{{
@@ -90,6 +115,26 @@
             </div>
           </q-item-section>
         </q-item>
+        </q-card>
+      </div>
+
+      <q-card
+        v-else
+        flat
+        class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
+      >
+        <q-card-section class="q-pa-xl">
+          <div class="column items-center q-gutter-md">
+            <q-icon name="people" size="80px" color="grey-4" />
+            <div class="text-h6 text-grey-6">Nenhum profissional cadastrado</div>
+            <div
+              class="text-body2 text-grey-6 text-center"
+              style="max-width: 400px"
+            >
+              Cadastre profissionais para compartilhar o atendimento das crianças.
+            </div>
+          </div>
+        </q-card-section>
       </q-card>
     </q-page>
   </div>
