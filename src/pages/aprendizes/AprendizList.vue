@@ -159,35 +159,13 @@
 
   <div class="fixed-bottom q-pa-md">
     <div class="row justify-center">
-      <div class="col-12 col-md-10 col-lg-8">
+      <div
+        class="col-12 col-md-10 col-lg-8"
+        v-if="diasRestantesFimTeste <= quantidadeDiasTeste"
+      >
         <q-card class="bg-gradient-blue shadow-3" flat bordered>
-          <!-- Layout mobile: vertical stack -->
-          <div class="column q-gutter-sm q-pa-sm gt-xs">
-            <div class="row items-center q-gutter-sm">
-              <q-icon name="schedule" color="white" size="24px" />
-              <div class="text-white text-weight-medium text-body2">
-                Você tem mais 3 dias de teste
-              </div>
-            </div>
-            <q-btn
-              dense
-              rounded
-              unelevated
-              color="white"
-              text-color="primary"
-              label="Assinar Agora"
-              class="text-weight-bold q-px-md full-width"
-              size="md"
-              icon-right="arrow_forward"
-            />
-          </div>
-
           <!-- Layout desktop: horizontal -->
-          <q-card-section
-            horizontal
-            class="q-pa-sm lt-sm"
-            v-if="!precisaAssinar"
-          >
+          <q-card-section horizontal class="q-pa-sm lt-sm">
             <q-card-section class="col-auto q-pa-sm">
               <q-icon name="schedule" color="white" size="20px" />
             </q-card-section>
