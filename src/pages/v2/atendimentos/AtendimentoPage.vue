@@ -389,6 +389,7 @@ const relatorioService = new RelatorioService();
 const aprendiz = ref({
   aprendizId: '',
   nome_aprendiz: '',
+  nasc_aprendiz: '',
 });
 
 const sumEstrelasNetagivas = ref(0);
@@ -542,7 +543,11 @@ function encerrar() {
 }
 
 function gerarRelatorio() {
-  relatorioService.gerarDadosRelatorio(aprendizId.value);
+  relatorioService.gerarDadosRelatorio(
+    aprendizId.value,
+    aprendiz.value.nome_aprendiz,
+    aprendiz.value.nasc_aprendiz
+  );
 }
 
 onMounted(async () => {
@@ -554,6 +559,7 @@ onMounted(async () => {
 
   aprendiz.value.aprendizId = aprendizData.aprendizId;
   aprendiz.value.nome_aprendiz = aprendizData.nome_aprendiz;
+  aprendiz.value.nasc_aprendiz = aprendizData.nasc_aprendiz;
 
   await carregarObjetivos();
   await carregarAnotacoes();
