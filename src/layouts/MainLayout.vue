@@ -183,7 +183,7 @@ const sair = async () => {
 };
 
 onMounted(async () => {
-  const storage = JSON.parse(localStorage.getItem('user'));
+  let storage = JSON.parse(localStorage.getItem('user'));
 
   if (storage == null) {
     await usuarioService.getUsuarioInfo().then((data) => {
@@ -192,6 +192,7 @@ onMounted(async () => {
         router.push({ name: 'login' });
       }
 
+      storage = data;
       perfil.value = data.perfil;
 
       localStorage.setItem('user', JSON.stringify(data));

@@ -42,7 +42,7 @@
   </q-dialog>
 
   <div>
-    <q-banner class="bg-grey-3">
+    <q-banner class="bg-grey-3" v-if="perfil == 'ADMIN'">
       <div class="column q-gutter-sm">
         <div class="row">
           <div class="col-12">
@@ -83,6 +83,25 @@
       </div>
     </q-banner>
 
+    <q-banner class="bg-grey-3" v-else>
+      <div class="column q-gutter-sm">
+        <div class="row">
+          <div class="col-12">
+            <div class="text-h6 text-grey-7 q-pa-sm">
+              Olá,
+              <span class="text-blue">{{ nomeUsuario }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-center">
+          <div class="text-body2 text-grey-7 q-mt-sm">
+            Selecione a criança, atribua estrelinhas e registre as evoluções.
+          </div>
+        </div>
+      </div>
+    </q-banner>
+
     <q-page padding class="row justify-center">
       <div class="col-12 col-md-10 col-lg-8" v-if="aprendizes.length != 0">
         <q-card
@@ -110,7 +129,7 @@
               </q-item-label>
             </q-item-section>
 
-            <q-item-section side>
+            <q-item-section side v-if="perfil == 'ADMIN'">
               <div class="text-grey-8 q-gutter-xs">
                 <q-btn
                   class="text-red"
@@ -156,12 +175,11 @@
       </q-card>
     </q-page>
   </div>
-
   <div class="fixed-bottom q-pa-md">
     <div class="row justify-center">
       <div
         class="col-12 col-md-10 col-lg-8"
-        v-if="diasRestantesFimTeste <= quantidadeDiasTeste"
+        v-if="diasRestantesFimTeste <= quantidadeDiasTeste && perfil == 'ADMIN'"
       >
         <q-card class="bg-gradient-blue shadow-3" flat bordered>
           <!-- Layout desktop: horizontal -->
@@ -203,6 +221,7 @@ import { useQuasar } from 'quasar';
 import { AprendizService } from 'src/services/AprendizService';
 import useNotify from 'src/composables/UseNotify';
 import { AssinaturaService } from 'src/services/AssinaturaService';
+import { UsuarioService } from 'src/services/UsuarioService';
 
 const precisaAssinar = ref(false);
 
@@ -218,12 +237,16 @@ const $q = useQuasar();
 
 const nomeUsuario = ref('');
 
+const perfil = ref('');
+
 const assinaturaService = new AssinaturaService();
 
 const diasRestantesFimTeste = ref(0);
 
 const quantidadeDiasTeste = ref(7);
 //const router = useRouter();
+
+const usuarioService = new UsuarioService();
 
 async function listar() {
   $q.loading.show();
@@ -298,11 +321,26 @@ async function verificarEmail(email: string) {
   }
 }
 
-onMounted(() => {
-  const storage = JSON.parse(localStorage.getItem('user') || '{}');
+onMounted(async () => {
+  let storage = JSON.parse(localStorage.getItem('user'));
 
-  if (storage && storage.fullName) {
+  if (storage == null) {
+    await usuarioService.getUsuarioInfo().then((data) => {
+      if (data.ativo == false) {
+        localStorage.clear();
+        router.push({ name: 'login' });
+      }
+
+      storage = data;
+      perfil.value = data.perfil;
+
+      localStorage.setItem('user', JSON.stringify(data));
+    });
+  }
+
+  if (storage) {
     nomeUsuario.value = storage.fullName;
+    perfil.value = storage.perfil;
     verificarEmail(storage.email);
   }
 

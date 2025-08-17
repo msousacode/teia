@@ -93,8 +93,8 @@ export class RelatorioService {
 
   async imprimirPDFV2(
     relatorio: RelatorioV2,
-    nomeAprendiz?: string,
-    nascimento?: string
+    nomeAprendiz?: string
+    //nascimento?: string
   ): Promise<any> {
     const data = relatorio;
 
@@ -146,7 +146,7 @@ export class RelatorioService {
       });
     }
 
-    if (nascimento) {
+    /*if (nascimento) {
       pdf.text('Data de nascimento', eixoX, (eixoY += spaceY), {
         align: 'left',
       });
@@ -154,7 +154,7 @@ export class RelatorioService {
       pdf.text(this.formatDate(nascimento), eixoX + 50, eixoY, {
         align: 'left',
       });
-    }
+    }*/
 
     // Calculate summary statistics
     const totalObjectivos = data.alvos.length;
@@ -210,32 +210,33 @@ export class RelatorioService {
       { align: 'left' }
     );
 
-    let eixoTableY = 90;
-    const limit = data.alvos.length;
-    let count = 0;
+    let eixoTableY = 80;
 
-    data.alvos.forEach((alvo) => {
+    //let count = 0;
+
+    data.alvos.forEach((alvo, i) => {
       // Target header table
+      i++;
       autoTable(pdf, {
         startY: eixoTableY,
-        head: [['Objetivo', 'Status', 'Estrelas']],
+        head: [[`Objetivo #${i}`, 'Status', 'tag', 'Estrelas']],
         body: [
           [
             `${alvo.nomeAlvo}`,
-            //`Tag: ${alvo.tag}`,
             `${alvo.concluido ? 'Concluído' : 'Em andamento'}`,
+            `${alvo.tag || 'N/A'}`,
             `Positivas: ${alvo.totalEstrelaPositiva} | Negativas: ${alvo.totalEstrelaNegativa}`,
           ],
         ],
-        styles: {
-          fillColor: [255, 183, 111], // Amarelo pastel (RGB)
-          textColor: [0, 0, 0], // Preto
-        },
       });
+
+      // Captura a posição Y após a tabela do objetivo
+      const currentY = (pdf as any).lastAutoTable.finalY + 5;
 
       // Annotations table if there are any
       if (alvo.anotacoes && alvo.anotacoes.length > 0) {
         autoTable(pdf, {
+          startY: currentY,
           head: [['Data', 'Anotação', 'Anotado por']],
           body: alvo.anotacoes.map((anotacao) => {
             return [
@@ -245,34 +246,26 @@ export class RelatorioService {
             ];
           }),
           columnStyles: {
-            0: { cellWidth: 'auto' },
-            1: { cellWidth: 30 },
+            0: { cellWidth: 30 },
+            1: { cellWidth: 'auto' },
             2: { cellWidth: 30 },
-          },
-          styles: {
-            fillColor: [255, 207, 154], // Cinza claro
-            textColor: [0, 0, 0], // Cinza
           },
         });
       } else {
         // Show empty annotations table
         autoTable(pdf, {
+          startY: currentY,
           head: [['Anotações']],
           body: [['Nenhuma anotação disponível para este alvo.']],
-          styles: {
-            fillColor: [255, 183, 111], // Cinza claro
-            //textColor: [128, 128, 128], // Cinza
-            fontStyle: 'italic',
-          },
         });
       }
 
-      eixoTableY = 20;
-      count++;
+      // Calcula a próxima posição Y baseada no final da última tabela
+      const nextY = (pdf as any).lastAutoTable.finalY + 15;
 
-      if (count < limit) {
-        pdf.addPage();
-      }
+      eixoTableY = nextY;
+      // Verifica se há espaço suficiente na página atual para o próximo alvo
+      // Se não houver espaço (próximo Y > 280 aproximadamente) ou se não é o último alvo
     });
 
     try {
