@@ -50,19 +50,19 @@
             />
 
             <q-btn
-              color="primary-9"
-              rounded
+              color="green"
               unelevated
               class="full-width bg-primary text-white q-pa-sm q-mb-md"
               @click="entrar('normal')"
               :disable="!isSubmitted"
+              size="lg"
             >
               Acessar
             </q-btn>
 
             <q-btn
-              color="blue-9"
-              rounded
+              color="blue-10"
+              size="lg"
               unelevated
               class="full-width text-white q-pa-sm q-mb-xl"
               to="/cadastrar"

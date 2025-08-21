@@ -7,7 +7,7 @@
         <div class="text-h6 text-weight-medium q-mb-xs">
           Sua conta foi criada com sucesso!
         </div>
-        <div class="text-body1 text-grey-6">
+        <div class="text-body1">
           A partir de hoje você possui 7 dias grátis para usar o aplicativo.
         </div>
       </q-card-section>
@@ -43,94 +43,96 @@
     <q-page class="q-pa-sm">
       <div class="row justify-center">
         <div class="col-md-7 col-xs-12 col-sm-12">
-          <q-card class="q-pa-md">
-            <title-custom title="Usuários" />
-            <section>
+          <h6 class="q-mt-md q-mb-md text-center">Cadastro de Acesso</h6>
+          <section>
+            <q-input
+              outlined
+              v-model="formCadastro.nome"
+              label="Nome"
+              stack-label
+              :rules="[
+                (val) =>
+                  isSubmitted
+                    ? (val && val.length > 0) || 'Nome é obrigatório'
+                    : true,
+              ]"
+            />
+
+            <q-input
+              type="email"
+              outlined
+              v-model="formCadastro.email"
+              label="E-mail"
+              stack-label
+              :rules="[
+                (val) =>
+                  isSubmitted
+                    ? (val && val.length > 0) || 'E-mail é obrigatório'
+                    : true,
+              ]"
+              :readonly="edit"
+              @blur="verificarEmail"
+            />
+            <q-select
+              stack-label
+              outlined
+              v-model="selected"
+              :options="perfil"
+              label="Permissão"
+              v-if="tipoPerfil == 'ADMIN'"
+            />
+
+            <section v-if="!(tipoPerfil == 'ADMIN')">
               <q-input
+                type="password"
                 outlined
-                v-model="formCadastro.nome"
-                label="Nome Completo"
+                v-model="formCadastro.senha"
+                label="Senha"
                 stack-label
                 :rules="[
                   (val) =>
                     isSubmitted
-                      ? (val && val.length > 0) || 'Nome é obrigatório'
+                      ? (val && val.length > 0) ||
+                        val.length < 6 ||
+                        'Senha é obrigatória e deve ter mínimo 6 caracteres'
                       : true,
                 ]"
               />
 
               <q-input
-                type="email"
+                type="password"
                 outlined
-                v-model="formCadastro.email"
-                label="E-mail"
+                v-model="formCadastro.senhaConfirmada"
+                label="Confirme a senha"
                 stack-label
                 :rules="[
                   (val) =>
                     isSubmitted
-                      ? (val && val.length > 0) || 'E-mail é obrigatório'
+                      ? (val && val.length > 0) ||
+                        val.length < 6 ||
+                        'Senha é obrigatória e deve ter mínimo 6 caracteres'
                       : true,
                 ]"
-                :readonly="edit"
-                @blur="verificarEmail"
               />
-              <q-select
-                stack-label
-                outlined
-                v-model="selected"
-                :options="perfil"
-                label="Permissão"
-                v-if="tipoPerfil == 'ADMIN'"
-              />
+              <div class="q-gutter-y-md">
+                <q-btn
+                  color="positive"
+                  size="lg"
+                  @click="cadastrar()"
+                  :disable="!isSubmitted"
+                  class="full-width"
+                  >Cadastrar</q-btn
+                >
 
-              <section v-if="!(tipoPerfil == 'ADMIN')">
-                <q-input
-                  type="password"
-                  outlined
-                  v-model="formCadastro.senha"
-                  label="Senha"
-                  stack-label
-                  :rules="[
-                    (val) =>
-                      isSubmitted
-                        ? (val && val.length > 0) ||
-                          val.length < 6 ||
-                          'Senha é obrigatória e deve ter mínimo 6 caracteres'
-                        : true,
-                  ]"
-                />
-
-                <q-input
-                  type="password"
-                  outlined
-                  v-model="formCadastro.senhaConfirmada"
-                  label="Confirme a senha"
-                  stack-label
-                  :rules="[
-                    (val) =>
-                      isSubmitted
-                        ? (val && val.length > 0) ||
-                          val.length < 6 ||
-                          'Senha é obrigatória e deve ter mínimo 6 caracteres'
-                        : true,
-                  ]"
-                />
-              </section>
+                <q-btn
+                  unelevated
+                  :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'"
+                  class="full-width text-blue"
+                  >Voltar</q-btn
+                >
+              </div>
             </section>
-            <div class="q-mt-md q-gutter-x-md row justify-end">
-              <q-btn
-                color="info"
-                :to="tipoPerfil == 'ADMIN' ? '/profissionais' : '/'"
-                >Voltar</q-btn
-              >
-              <q-btn
-                color="positive"
-                @click="cadastrar()"
-                :disable="!isSubmitted"
-                >Salvar</q-btn
-              >
-            </div>
-          </q-card>
+          </section>
         </div>
       </div>
     </q-page>
@@ -144,7 +146,6 @@ import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRoute, useRouter } from 'vue-router';
 import { createStripeCustomer } from 'src/services/stripe';
-import TitleCustom from 'src/components/TitleCustom.vue';
 import { ProfissionalService } from 'src/services/ProfissionalService';
 import { AssinaturaService } from 'src/services/AssinaturaService';
 
