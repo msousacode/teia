@@ -82,6 +82,18 @@
           <q-item>
             <q-item-section top>
               <q-item-label class="text-grey-8">
+                <span class="text-body1">{{ item.nome_alvo }}</span>
+                <div v-if="item.tag" class="q-mt-sm">
+                  <q-chip
+                    dense
+                    color="blue-8"
+                    text-color="white"
+                    class="text-uppercase"
+                    >{{ item.tag }}</q-chip
+                  >
+                </div>
+              </q-item-label>
+              <q-item-label class="text-grey-8">
                 <span
                   class="text-body1"
                   :class="{ 'text-strike': item.concluido }"
