@@ -63,7 +63,7 @@
             <q-btn
               color="blue-10"
               size="lg"
-              unelevated
+              unelevatedObj
               class="full-width text-white q-pa-sm q-mb-xl"
               to="/cadastrar"
             >

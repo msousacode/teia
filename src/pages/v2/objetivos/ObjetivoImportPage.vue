@@ -59,6 +59,30 @@
           </div>
         </q-item>
       </q-card>
+
+      <q-card-section class="q-pa-xl" v-if="list.length < 1">
+        <div class="column items-center q-gutter-md">
+          <q-icon name="note_add" size="80px" color="grey-4" />
+          <div class="text-h6 text-grey-6">Nenhuma objetivo presente</div>
+          <div
+            class="text-body2 text-grey-6 text-center"
+            style="max-width: 400px"
+          >
+            Aperte o botão abaixo para incluir os objetivos e começar a
+            trabalhar com as crianças.
+            <div class="col-12 col-sm-auto">
+              <q-btn
+                class="bg-white full-width"
+                outline
+                icon="add"
+                style="color: orange; min-height: 40px"
+                label="Adicionar Objetivo"
+                :to="{ name: 'objetivos/cadastro' }"
+              />
+            </div>
+          </div>
+        </div>
+      </q-card-section>
     </div>
     <div class="fixed-bottom q-pa-md">
       <q-btn

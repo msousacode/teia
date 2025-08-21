@@ -206,6 +206,7 @@
                 class="text-weight-bold text-h6"
                 size="md"
                 icon-right="arrow_forward"
+                :to="{ name: 'assinatura' }"
               />
             </q-card-section>
           </q-card-section>

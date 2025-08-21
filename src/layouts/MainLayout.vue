@@ -25,12 +25,22 @@
                 <q-item-label>Meu Perfil</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup :to="{ name: 'assinatura' }">
+            <q-item
+              clickable
+              v-close-popup
+              :to="{ name: 'assinatura' }"
+              v-if="perfil == 'ADMIN'"
+            >
               <q-item-section>
                 <q-item-label>Assinaturas</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup :to="{ name: 'suporte' }">
+            <q-item
+              clickable
+              v-close-popup
+              :to="{ name: 'suporte' }"
+              v-if="perfil == 'ADMIN'"
+            >
               <q-item-section>
                 <q-item-label>Suporte</q-item-label>
               </q-item-section>
