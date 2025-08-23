@@ -3,6 +3,10 @@ interface Assinatura {
   assinatura_id: string;
   tipo_assinatura: 'ASSINANTE' | 'NAO_ASSINANTE'; // Definindo tipo literal
   data_contratacao: string | null; // pode ser uma string ou null
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  stripeSubscriptionStatus?: string;
+  stripePriceId?: string;
 }
 
 export interface UsuarioAssinaturaInfo {

@@ -214,3 +214,90 @@ export const getUserCurrentPlan = async (userId: string) => {
     },
   };
 };
+
+export const getSubscriptionByCustomer = async (customerId: string) => {
+  try {
+    const subscriptions = await stripe.subscriptions.list({
+      customer: customerId,
+      status: 'active',
+      limit: 1,
+    });
+
+    if (subscriptions.data.length === 0) {
+      throw new Error('No active subscription found for customer');
+    }
+
+    return subscriptions.data[0];
+  } catch (error) {
+    console.error('Error getting subscription by customer:', error);
+    throw new Error('Error retrieving customer subscription');
+  }
+};
+
+export const cancelSubscriptionImmediate = async (subscriptionId: string) => {
+  try {
+    const canceledSubscription = await stripe.subscriptions.cancel(subscriptionId);
+    
+    await stripeService.notifySubscriptionCancellation({
+      subscriptionId,
+      cancellationType: 'immediate',
+      status: canceledSubscription.status,
+    });
+
+    return {
+      success: true,
+      subscription: canceledSubscription,
+      message: 'Subscription canceled immediately',
+    };
+  } catch (error) {
+    console.error('Error canceling subscription immediately:', error);
+    throw new Error('Failed to cancel subscription immediately');
+  }
+};
+
+export const cancelSubscriptionAtPeriodEnd = async (subscriptionId: string) => {
+  try {
+    const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: true,
+    });
+
+    await stripeService.notifySubscriptionCancellation({
+      subscriptionId,
+      cancellationType: 'at_period_end',
+      status: updatedSubscription.status,
+      cancelAt: updatedSubscription.cancel_at,
+    });
+
+    return {
+      success: true,
+      subscription: updatedSubscription,
+      message: 'Subscription will be canceled at the end of the current period',
+      cancelAt: updatedSubscription.cancel_at,
+    };
+  } catch (error) {
+    console.error('Error scheduling subscription cancellation:', error);
+    throw new Error('Failed to schedule subscription cancellation');
+  }
+};
+
+export const reactivateSubscription = async (subscriptionId: string) => {
+  try {
+    const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: false,
+    });
+
+    await stripeService.notifySubscriptionReactivation({
+      subscriptionId,
+      status: updatedSubscription.status,
+    });
+
+    return {
+      success: true,
+      subscription: updatedSubscription,
+      message: 'Subscription reactivated successfully',
+    };
+  } catch (error) {
+    console.error('Error reactivating subscription:', error);
+    throw new Error('Failed to reactivate subscription');
+  }
+};

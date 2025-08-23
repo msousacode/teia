@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.stripe.com)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

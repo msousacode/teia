@@ -14,4 +14,20 @@ export class StripeService {
       };
     });
   }
+
+  async notifySubscriptionCancellation(data: {
+    subscriptionId: string;
+    cancellationType: 'immediate' | 'at_period_end';
+    status: string;
+    cancelAt?: number | null;
+  }) {
+    return await http.patch('/stripe/cancel', data);
+  }
+
+  async notifySubscriptionReactivation(data: {
+    subscriptionId: string;
+    status: string;
+  }) {
+    return await http.patch('/stripe/reactivate', data);
+  }
 }
