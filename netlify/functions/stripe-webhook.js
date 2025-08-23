@@ -43,7 +43,7 @@ exports.handler = async (event) => {
 
     try {
       await axios.post(
-        'https://sysaba.tech/sysaba/api/auth/assinatura/pago',
+        'https://abateam.com.br/sysaba/api/auth/assinatura/pago',
         payload
       );
     } catch (error) {
