@@ -60,6 +60,7 @@ export const createCheckoutSession = async (
         payment_method_types: ['card'],
         mode: 'subscription',
         client_reference_id: customer.id,
+        customer_email: userEmail.toLowerCase().trim(),
         success_url: `${process.env.API_URL}#/sucesso`,
         cancel_url: `${process.env.API_URL}#/falha`,
         line_items: [
@@ -74,6 +75,7 @@ export const createCheckoutSession = async (
         payment_method_types: ['card'],
         mode: 'subscription',
         client_reference_id: customer.id,
+        customer_email: userEmail.toLowerCase().trim(),
         success_url: `${process.env.API_URL}#/sucesso`,
         cancel_url: `${process.env.API_URL}#/falha`,
         line_items: [
@@ -88,6 +90,7 @@ export const createCheckoutSession = async (
         payment_method_types: ['card'],
         mode: 'subscription',
         client_reference_id: customer.id,
+        customer_email: userEmail.toLowerCase().trim(),
         success_url: `${process.env.API_URL}#/sucesso`,
         cancel_url: `${process.env.API_URL}#/falha`,
         line_items: [
