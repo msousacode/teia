@@ -175,7 +175,7 @@
       </q-card>
     </q-page>
   </div>
-  <div class="fixed-bottom q-pa-md">
+  <div class="fixed-bottom q-pa-md" v-if="!isAssinante">
     <div class="row justify-center">
       <div
         class="col-12 col-md-10 col-lg-8"
@@ -245,7 +245,8 @@ const assinaturaService = new AssinaturaService();
 const diasRestantesFimTeste = ref(0);
 
 const quantidadeDiasTeste = ref(7);
-//const router = useRouter();
+
+const isAssinante = ref(false);
 
 const usuarioService = new UsuarioService();
 
@@ -305,15 +306,24 @@ async function verificarEmail(email: string) {
       if (quantidadeDiasTeste.value <= diasRestantesFimTeste.value) {
         precisaAssinar.value = true;
       }
+      return;
     }
 
-    if (status == 200 || status == 404) {
+    if (status == 200 && data == null) {
+      isAssinante.value = true;
       return;
-    } else if (status == 403) {
+    }
+
+    if (status == 403) {
       router.push({
         name: 'assinatura',
         params: { email: email.toLowerCase().trim() },
       });
+    }
+
+    if (status == 404) {
+      router.push({ name: 'login' });
+      localStorage.clear();
     }
   } catch (e) {
     console.log(e);

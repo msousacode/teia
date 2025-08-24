@@ -28,58 +28,68 @@
           <q-icon name="warning" size="40px" color="orange" class="q-mb-sm" />
           <div class="text-h6 q-mb-sm">Cancelar Assinatura</div>
           <div class="text-body2 text-grey-7 q-mb-md">
-            Escolha como deseja cancelar sua assinatura:
+            Cancelar sua assinatura:
           </div>
         </q-card-section>
 
         <q-card-section class="q-pa-sm">
           <div class="q-gutter-sm">
             <!-- Opção cancelamento imediato -->
-            <q-card 
-              class="cursor-pointer" 
-              :class="{ 'bg-red-1 text-red-9': cancelationType === 'immediate' }"
+            <q-card
+              class="cursor-pointer"
+              :class="{
+                'bg-red-1 text-red-9': cancelationType === 'immediate',
+              }"
               @click="cancelationType = 'immediate'"
               flat
               bordered
             >
-              <q-card-section class="q-pa-md">
+              <!--q-card-section class="q-pa-md">
                 <div class="row items-center">
-                  <q-radio 
-                    v-model="cancelationType" 
-                    val="immediate" 
+                  <q-radio
+                    v-model="cancelationType"
+                    val="immediate"
                     color="negative"
                     class="q-mr-sm"
                   />
                   <div class="col">
-                    <div class="text-subtitle2 text-weight-medium">Cancelar Imediatamente</div>
+                    <div class="text-subtitle2 text-weight-medium">
+                      Cancelar Imediatamente
+                    </div>
                     <div class="text-caption text-grey-6">
-                      Sua assinatura será cancelada agora e você perderá o acesso ao sistema
+                      Sua assinatura será cancelada agora e você perderá o
+                      acesso ao sistema
                     </div>
                   </div>
                 </div>
-              </q-card-section>
+              </q-card-section-->
             </q-card>
 
             <!-- Opção cancelamento no final do período -->
-            <q-card 
-              class="cursor-pointer" 
-              :class="{ 'bg-orange-1 text-orange-9': cancelationType === 'period_end' }"
+            <q-card
+              class="cursor-pointer"
+              :class="{
+                'bg-orange-1 text-orange-9': cancelationType === 'period_end',
+              }"
               @click="cancelationType = 'period_end'"
               flat
               bordered
             >
               <q-card-section class="q-pa-md">
                 <div class="row items-center">
-                  <q-radio 
-                    v-model="cancelationType" 
-                    val="period_end" 
+                  <q-radio
+                    v-model="cancelationType"
+                    val="period_end"
                     color="orange"
                     class="q-mr-sm"
                   />
                   <div class="col">
-                    <div class="text-subtitle2 text-weight-medium">Cancelar no Final do Período</div>
+                    <div class="text-subtitle2 text-weight-medium">
+                      Cancelar no Final do Período
+                    </div>
                     <div class="text-caption text-grey-6">
-                      Continue usando até o final do período pago, depois a assinatura será cancelada
+                      Continue usando até o final do período pago, depois a
+                      assinatura será cancelada
                     </div>
                   </div>
                 </div>
@@ -114,7 +124,12 @@
     <q-dialog v-model="dialogCancelConfirm" persistent>
       <q-card class="q-pa-md" style="max-width: 400px">
         <q-card-section class="text-center q-pa-sm">
-          <q-icon name="check_circle" size="48px" color="positive" class="q-mb-sm" />
+          <q-icon
+            name="check_circle"
+            size="48px"
+            color="positive"
+            class="q-mb-sm"
+          />
           <div class="text-h6 q-mb-sm">{{ cancelConfirmTitle }}</div>
           <div class="text-body2 text-grey-7 q-mb-md">
             {{ cancelConfirmMessage }}
@@ -316,7 +331,7 @@
               outline
               size="sm"
               class="col"
-              :to="{ name: 'relatorios' }"
+              :to="{ name: 'aprendizes' }"
             />
             <q-btn
               label="Cancelar"
@@ -337,11 +352,11 @@
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { UsuarioAssinaturaInfo } from 'src/models/assinatura.model';
-import { 
-  createCheckoutSession, 
+import {
+  createCheckoutSession,
   cancelSubscriptionImmediate,
   cancelSubscriptionAtPeriodEnd,
-  getSubscriptionByCustomer
+  getSubscriptionByCustomer,
 } from 'src/services/stripe';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -354,7 +369,7 @@ const { error, success } = useNotify();
 
 const dialogIsCancel = ref(false);
 const dialogCancelConfirm = ref(false);
-const cancelationType = ref<'immediate' | 'period_end' | null>(null);
+const cancelationType = ref<'immediate' | 'period_end' | null>('period_end');
 const loadingCancel = ref(false);
 const cancelConfirmTitle = ref('');
 const cancelConfirmMessage = ref('');
@@ -408,7 +423,7 @@ async function confirmarCancelamento() {
     loadingCancel.value = true;
 
     let subId = subscriptionId.value;
-    
+
     // Se não temos o subscription ID, buscar pelo customer ID
     if (!subId && customerId.value) {
       const subscription = await getSubscriptionByCustomer(customerId.value);
@@ -420,26 +435,27 @@ async function confirmarCancelamento() {
     }
 
     let result;
-    
+
     if (cancelationType.value === 'immediate') {
       result = await cancelSubscriptionImmediate(subId);
       cancelConfirmTitle.value = 'Assinatura Cancelada';
-      cancelConfirmMessage.value = 'Sua assinatura foi cancelada imediatamente. Você não será mais cobrado.';
+      cancelConfirmMessage.value =
+        'Sua assinatura foi cancelada imediatamente. Você não será mais cobrado.';
       // Atualizar status local
       isAssinante.value = false;
     } else {
       result = await cancelSubscriptionAtPeriodEnd(subId);
       cancelConfirmTitle.value = 'Cancelamento Agendado';
-      cancelConfirmMessage.value = 'Sua assinatura será cancelada ao final do período atual. Você pode continuar usando até lá.';
+      cancelConfirmMessage.value =
+        'Sua assinatura será cancelada ao final do período atual. Você pode continuar usando até lá.';
     }
 
     success(result.message);
     dialogIsCancel.value = false;
     dialogCancelConfirm.value = true;
-    
+
     // Reset form
     cancelationType.value = null;
-    
   } catch (e: any) {
     console.error('Erro ao cancelar assinatura:', e);
     error(e.message || 'Erro ao cancelar assinatura. Tente novamente.');
@@ -448,13 +464,18 @@ async function confirmarCancelamento() {
   }
 }
 
-onMounted(() => {
-  const userInfoString = localStorage.getItem('userInfo');
-  if (userInfoString) {
+onMounted(async () => {
+  //let storage = JSON.parse(localStorage.getItem('user'));
+
+  isAssinante.value = true;
+
+  //fazer uma chamada para o /subscription
+
+  if (1 == 1) {
     const usuario: UsuarioAssinaturaInfo = JSON.parse(userInfoString).data;
     emailCancelamento.value = usuario.email;
-    isAssinante.value = usuario.assinatura.tipo_assinatura == 'ASSINANTE';
-    
+    isAssinante.value = true;
+
     // Armazenar IDs para cancelamento
     if (usuario.assinatura.stripeSubscriptionId) {
       subscriptionId.value = usuario.assinatura.stripeSubscriptionId;
