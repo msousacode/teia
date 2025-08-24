@@ -243,7 +243,7 @@ async function cadastrar() {
         throw Error('Erro ao cadastrar novo usuário.');
       }
 
-      if (tipoPerfil.value != 'ADMIN') {
+      if (tipoPerfil.value == 'ADMIN') {
         await criarContaStripe(
           formCadastro.nome,
           formCadastro.email.toLowerCase().trim()
