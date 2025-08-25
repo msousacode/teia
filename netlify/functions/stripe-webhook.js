@@ -39,6 +39,7 @@ exports.handler = async (event) => {
       invoiceId: paymentIntent.id,
       customerId: paymentIntent.customer,
       email: paymentIntent.customer_email,
+      stripeSubscriptionId: paymentIntent.subscription,
     };
 
     try {
