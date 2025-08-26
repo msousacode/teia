@@ -8,7 +8,7 @@
           Sua conta foi criada com sucesso!
         </div>
         <div class="text-body1">
-          A partir de hoje você possui 7 dias grátis para usar o aplicativo.
+          Aproveite os seus 7 dias grátis para usar o aplicativo.
         </div>
       </q-card-section>
 
@@ -145,7 +145,7 @@ import useNotify from 'src/composables/UseNotify';
 import { useQuasar } from 'quasar';
 import { AcessoService, Usuario } from 'src/services/AcessoService';
 import { useRoute, useRouter } from 'vue-router';
-import { createStripeCustomer } from 'src/services/stripe';
+//import { createStripeCustomer } from 'src/services/stripe';
 import { ProfissionalService } from 'src/services/ProfissionalService';
 import { AssinaturaService } from 'src/services/AssinaturaService';
 
@@ -198,6 +198,7 @@ let isSubmitted = computed(() => {
   );
 });
 
+/*
 async function criarContaStripe(name: string, email: string) {
   try {
     $q.loading.show();
@@ -215,7 +216,7 @@ async function criarContaStripe(name: string, email: string) {
   } finally {
     $q.loading.hide();
   }
-}
+}*/
 
 async function cadastrar() {
   if (tipoPerfil.value != 'ADMIN') {
@@ -243,15 +244,8 @@ async function cadastrar() {
         throw Error('Erro ao cadastrar novo usuário.');
       }
 
-      if (tipoPerfil.value == 'ADMIN') {
-        await criarContaStripe(
-          formCadastro.nome,
-          formCadastro.email.toLowerCase().trim()
-        );
-
-        localStorage.setItem('userInfo', JSON.stringify(data));
-        exibirDialog.value = true;
-      }
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      exibirDialog.value = true;
 
       //success('Usuário cadastrado com sucesso!');
       return;

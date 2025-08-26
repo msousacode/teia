@@ -175,7 +175,7 @@
       </q-card>
     </q-page>
   </div>
-  <div class="fixed-bottom q-pa-md" v-if="!isAssinante">
+  <div class="fixed-bottom q-pa-md" v-if="isAssinante">
     <div class="row justify-center">
       <div
         class="col-12 col-md-10 col-lg-8"
@@ -246,7 +246,7 @@ const diasRestantesFimTeste = ref(0);
 
 const quantidadeDiasTeste = ref(7);
 
-const isAssinante = ref(false);
+const isAssinante = ref(true);
 
 const usuarioService = new UsuarioService();
 
@@ -301,7 +301,7 @@ async function verificarEmail(email: string) {
       email.toLowerCase().trim()
     );
 
-    if (status == 200 && data) {
+    if (status == 200 && data != undefined) {
       diasRestantesFimTeste.value = data;
       if (quantidadeDiasTeste.value <= diasRestantesFimTeste.value) {
         precisaAssinar.value = true;
@@ -309,7 +309,7 @@ async function verificarEmail(email: string) {
       return;
     }
 
-    if (status == 200 && data == null) {
+    if (status == 200 && data == null && data != undefined) {
       isAssinante.value = true;
       return;
     }

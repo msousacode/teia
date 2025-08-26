@@ -73,7 +73,7 @@ export default function createHttp(base: string) {
     if (res.status === 200) {
       if (res.data.content) {
         result.data = res.data.content;
-      } else if (res.data) {
+      } else if (res.data != undefined) {
         result.data = res.data;
       }
       result.error = ''; // Sucesso não deve ter erro
