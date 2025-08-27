@@ -352,6 +352,7 @@
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { UsuarioAssinaturaInfo } from 'src/models/assinatura.model';
+import { AssinaturaService } from 'src/services/AssinaturaService';
 import {
   createCheckoutSession,
   cancelSubscriptionImmediate,
@@ -378,9 +379,10 @@ const routeLocation = useRoute();
 
 const emailUsuario = routeLocation.params.email;
 
-const emailCancelamento = ref<string>();
 const subscriptionId = ref<string>();
 const customerId = ref<string>();
+
+const assinaturaService = new AssinaturaService();
 
 async function assinar(tipoPlano: 'started' | 'profissional' | 'clinic') {
   try {
@@ -465,24 +467,32 @@ async function confirmarCancelamento() {
 }
 
 onMounted(async () => {
-  //let storage = JSON.parse(localStorage.getItem('user'));
+  let storage = JSON.parse(localStorage.getItem('user'));
 
-  isAssinante.value = true;
+  if (storage == null || storage == undefined) {
+    error('Não foi possível carregar o usuário');
+  }
 
-  //fazer uma chamada para o /subscription
+  const { data } = await assinaturaService.verifyCheckout(
+    storage.email.toLowerCase().trim()
+  );
 
-  if (1 == 1) {
-    const usuario: UsuarioAssinaturaInfo = JSON.parse(userInfoString).data;
-    emailCancelamento.value = usuario.email;
+  let response: { diasRestantesTeste: number; tipoAssinaturaEnum: string } =
+    data;
+
+  if (response.tipoAssinaturaEnum == 'ASSINANTE') {
     isAssinante.value = true;
 
     // Armazenar IDs para cancelamento
-    if (usuario.assinatura.stripeSubscriptionId) {
-      subscriptionId.value = usuario.assinatura.stripeSubscriptionId;
-    }
-    if (usuario.assinatura.stripeCustomerId) {
-      customerId.value = usuario.assinatura.stripeCustomerId;
-    }
+    //if (usuario.assinatura.stripeSubscriptionId) {
+    //subscriptionId.value = usuario.assinatura.stripeSubscriptionId;
+    //}
+    //if (usuario.assinatura.stripeCustomerId) {
+    //customerId.value = usuario.assinatura.stripeCustomerId;
+    //}
+    return;
   }
+
+  isAssinante.value = false;
 });
 </script>
