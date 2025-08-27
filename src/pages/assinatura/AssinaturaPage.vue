@@ -329,7 +329,7 @@
               label="Voltar"
               color="primary"
               outline
-              size="sm"
+              size="md"
               class="col"
               :to="{ name: 'aprendizes' }"
             />
@@ -337,7 +337,7 @@
               label="Cancelar"
               color="negative"
               outline
-              size="sm"
+              size="md"
               class="col"
               @click="dialogIsCancel = true"
             />
