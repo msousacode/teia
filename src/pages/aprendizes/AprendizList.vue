@@ -301,15 +301,22 @@ async function verificarEmail(email: string) {
       email.toLowerCase().trim()
     );
 
-    if (status == 200 && data != undefined) {
-      diasRestantesFimTeste.value = data;
+    let response: { diasRestantesTeste: number; tipoAssinaturaEnum: string } =
+      data;
+
+    if (status == 200 && response.tipoAssinaturaEnum == 'TESTE') {
+      diasRestantesFimTeste.value = response.diasRestantesTeste;
       if (quantidadeDiasTeste.value <= diasRestantesFimTeste.value) {
         precisaAssinar.value = true;
       }
       return;
     }
 
-    if (status == 200 && data == null && data != undefined) {
+    if (
+      status == 200 &&
+      data == null &&
+      response.tipoAssinaturaEnum == 'ASSINANTE'
+    ) {
       isAssinante.value = true;
       return;
     }

@@ -92,7 +92,6 @@ import useNotify from 'src/composables/UseNotify';
 import { useManagerTokens } from 'src/composables/managerTokens';
 import { AcessoService, Auth } from 'src/services/AcessoService';
 import { useQuasar } from 'quasar';
-import { createCheckoutSession } from 'src/services/stripe';
 import { AssinaturaService } from 'src/services/AssinaturaService';
 
 const { error } = useNotify();
@@ -124,43 +123,26 @@ async function entrar() {
   try {
     $q.loading.show();
 
-    const { data } = await acessoService.subscriptionInfoByEmail(
-      email.value.toLowerCase().trim()
-    );
+    const auth: Auth = {
+      username: email.value.toLocaleLowerCase().trim(),
+      password: senha.value.trim(),
+    };
 
-    if (data == null || data == '') {
-      error('Não encontrado.');
-      return;
-    }
-
-    if (data.assinatura.tipo_assinatura == 'NAO_ASSINANTE') {
-      const { url } = await createCheckoutSession(data.email);
-
-      if (url) {
-        window.location.href = url;
-      }
-    } else {
-      const auth: Auth = {
-        username: email.value.toLocaleLowerCase().trim(),
-        password: senha.value.trim(),
-      };
-
-      $q.loading.show();
-      await acessoService
-        .login(auth)
-        .then((data) => {
-          if (data.status == 401) {
-            error('Erro ao logar. Verifique suas credenciais');
-            return;
-          }
-
-          localStorage.setItem('_tsysaba', data.data);
-          router.push({ name: 'aprendizes' });
-        })
-        .catch(() => {
+    $q.loading.show();
+    await acessoService
+      .login(auth)
+      .then((data) => {
+        if (data.status == 401) {
           error('Erro ao logar. Verifique suas credenciais');
-        });
-    }
+          return;
+        }
+
+        localStorage.setItem('_tsysaba', data.data);
+        router.push({ name: 'aprendizes' });
+      })
+      .catch(() => {
+        error('Erro ao logar. Verifique suas credenciais');
+      });
   } catch (e) {
     throw Error('Erro ao confirmar assinatura.');
   } finally {
