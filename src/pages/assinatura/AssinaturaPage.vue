@@ -423,7 +423,7 @@ async function confirmarCancelamento() {
     }
 
     if (!subId) {
-      throw new Error('Não foi possível encontrar a assinatura');
+      throw new Error('Não foi possível cancelar a assinatura');
     }
 
     let result;
@@ -437,9 +437,15 @@ async function confirmarCancelamento() {
       isAssinante.value = false;
     } else {
       result = await cancelSubscriptionAtPeriodEnd(subId);
-      cancelConfirmTitle.value = 'Cancelamento Agendado';
-      cancelConfirmMessage.value =
-        'Sua assinatura será cancelada ao final do período atual. Você pode continuar usando até lá.';
+
+      if (result.cancelAt) {
+        const formattedDate = formatTimestampToDate(result.cancelAt);
+
+        cancelConfirmTitle.value = 'Sua Assinatura foi Cancelada com Sucesso!';
+        cancelConfirmMessage.value =
+          'Você pode continuar usando o aplicativo até o final do período: ' +
+          formattedDate;
+      }
     }
 
     success(result.message);
@@ -456,6 +462,15 @@ async function confirmarCancelamento() {
   }
 }
 
+function formatTimestampToDate(timestamp: number): string {
+  const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 onMounted(async () => {
   let storage = JSON.parse(localStorage.getItem('user'));
 
@@ -467,20 +482,20 @@ onMounted(async () => {
     storage.email.toLowerCase().trim()
   );
 
-  let response: { diasRestantesTeste: number; tipoAssinaturaEnum: string } =
-    data;
+  let response: {
+    diasRestantesTeste: number;
+    tipoAssinaturaEnum: string;
+    stripeSubscriptionId: string;
+  } = data;
 
   if (response.tipoAssinaturaEnum == 'ASSINANTE') {
     isAssinante.value = true;
 
     // Armazenar IDs para cancelamento
-    //if (usuario.assinatura.stripeSubscriptionId) {
-    //subscriptionId.value = usuario.assinatura.stripeSubscriptionId;
-    //}
-    //if (usuario.assinatura.stripeCustomerId) {
-    //customerId.value = usuario.assinatura.stripeCustomerId;
-    //}
-    return;
+    if (response.stripeSubscriptionId) {
+      subscriptionId.value = response.stripeSubscriptionId;
+      return;
+    }
   }
 
   isAssinante.value = false;
