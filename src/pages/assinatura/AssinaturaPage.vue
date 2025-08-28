@@ -1,26 +1,5 @@
 <template>
   <q-page class="bg-grey-1">
-    <!-- Header da página -->
-    <div class="row justify-center q-pt-md q-pb-sm">
-      <div class="col-12 col-md-8 text-center q-px-md">
-        <div
-          class="text-h5 text-primary text-weight-medium q-mb-xs"
-          v-if="!isAssinante"
-        >
-          Escolha seu Plano
-        </div>
-        <div
-          class="text-h6 text-positive text-weight-medium q-mb-xs"
-          v-if="isAssinante"
-        >
-          Assinatura Ativa
-        </div>
-        <div class="text-body2 text-grey-6" v-if="!isAssinante">
-          Contrate um plano para acessar o sistema
-        </div>
-      </div>
-    </div>
-
     <!-- Dialog de cancelamento -->
     <q-dialog v-model="dialogIsCancel" persistent>
       <q-card class="q-pa-md" style="max-width: 450px">
@@ -149,10 +128,21 @@
     </q-dialog>
 
     <!-- Cards dos planos -->
-    <div
-      class="row justify-center q-gutter-sm q-px-md q-pb-md"
-      v-if="!isAssinante"
-    >
+
+    <!-- Header da página -->
+    <div class="row justify-center q-pt-md q-pb-sm" v-if="isAssinante">
+      <div class="col-12 col-md-8 text-center q-px-md">
+        <div class="text-h6 text-positive text-weight-medium q-mb-xs">
+          Assinatura Ativa
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-center q-gutter-sm q-px-md q-pb-md q-mt-md" v-else>
+      <div class="text-subtitle1 text-blue-8 text-weight-bold">
+        Contrate um plano para acessar o sistema
+      </div>
+
       <!-- Plano STARTED -->
       <div class="col-12 col-sm-6 col-md-4" style="max-width: 320px">
         <q-card class="shadow-2">
@@ -364,7 +354,7 @@ import { useRoute } from 'vue-router';
 
 const $q = useQuasar();
 
-const isAssinante = ref(false);
+const isAssinante = ref(true);
 
 const { error, success } = useNotify();
 

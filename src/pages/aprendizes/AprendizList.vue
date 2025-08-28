@@ -175,7 +175,7 @@
       </q-card>
     </q-page>
   </div>
-  <div class="fixed-bottom q-pa-md" v-if="isAssinante">
+  <div class="fixed-bottom q-pa-md" v-if="!isAssinante">
     <div class="row justify-center">
       <div
         class="col-12 col-md-10 col-lg-8"
@@ -312,11 +312,7 @@ async function verificarEmail(email: string) {
       return;
     }
 
-    if (
-      status == 200 &&
-      data == null &&
-      response.tipoAssinaturaEnum == 'ASSINANTE'
-    ) {
+    if (status == 200 && response.tipoAssinaturaEnum == 'ASSINANTE') {
       isAssinante.value = true;
       return;
     }
