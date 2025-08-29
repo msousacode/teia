@@ -9,7 +9,7 @@ const avaliacaoNivelDois = {
           id: 200,
           cod: '6M',
           descricao:
-            'Imita10 ações que exigem selecionar um objeto específico de um arranjo (e. g., seleciona uma baqueta de um arranjo que também contém uma corneta e um sino e imita o adulto batendo tambor com a baqueta). (T)',
+            'Imita 10 ações que exigem selecionar um objeto específico de um arranjo (e. g., seleciona uma baqueta de um arranjo que também contém uma corneta e um sino e imita o adulto batendo tambor com a baqueta). (T)',
           selected: null,
           observacoes: {
             objetivo:

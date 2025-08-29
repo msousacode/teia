@@ -175,12 +175,12 @@
       </q-card>
     </q-page>
   </div>
-  <div class="fixed-bottom q-pa-md" v-if="!isAssinante">
+  <div
+    class="fixed-bottom q-pa-md"
+    v-if="diasRestantesFimTeste <= quantidadeDiasTeste && perfil == 'ADMIN'"
+  >
     <div class="row justify-center">
-      <div
-        class="col-12 col-md-10 col-lg-8"
-        v-if="diasRestantesFimTeste <= quantidadeDiasTeste && perfil == 'ADMIN'"
-      >
+      <div class="col-12 col-md-10 col-lg-8">
         <q-card class="bg-gradient-blue shadow-3" flat bordered>
           <!-- Layout desktop: horizontal -->
           <q-card-section horizontal class="q-pa-sm lt-sm">

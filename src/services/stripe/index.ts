@@ -2,8 +2,10 @@ import Stripe from 'stripe';
 
 import { config } from '../../config';
 import { StripeService } from './StripeService';
+import { AssinaturaService } from '../AssinaturaService';
 
 const stripeService = new StripeService();
+const assinaturaService = new AssinaturaService();
 
 export const stripe = new Stripe(config.stripe.secretKey || '', {
   httpClient: Stripe.createFetchHttpClient(),
@@ -239,8 +241,10 @@ export const getSubscriptionByCustomer = async (customerId: string) => {
 
 export const cancelSubscriptionImmediate = async (subscriptionId: string) => {
   try {
-    const canceledSubscription = await stripe.subscriptions.cancel(subscriptionId);
-    
+    const canceledSubscription = await stripe.subscriptions.cancel(
+      subscriptionId
+    );
+
     await stripeService.notifySubscriptionCancellation({
       subscriptionId,
       cancellationType: 'immediate',
@@ -260,9 +264,12 @@ export const cancelSubscriptionImmediate = async (subscriptionId: string) => {
 
 export const cancelSubscriptionAtPeriodEnd = async (subscriptionId: string) => {
   try {
-    const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
-      cancel_at_period_end: true,
-    });
+    const updatedSubscription = await stripe.subscriptions.update(
+      subscriptionId,
+      {
+        cancel_at_period_end: true,
+      }
+    );
 
     await stripeService.notifySubscriptionCancellation({
       subscriptionId,
@@ -270,6 +277,9 @@ export const cancelSubscriptionAtPeriodEnd = async (subscriptionId: string) => {
       status: updatedSubscription.status,
       cancelAt: updatedSubscription.cancel_at,
     });
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    assinaturaService.confirmarCancelamento(user.id);
 
     return {
       success: true,
@@ -285,9 +295,12 @@ export const cancelSubscriptionAtPeriodEnd = async (subscriptionId: string) => {
 
 export const reactivateSubscription = async (subscriptionId: string) => {
   try {
-    const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
-      cancel_at_period_end: false,
-    });
+    const updatedSubscription = await stripe.subscriptions.update(
+      subscriptionId,
+      {
+        cancel_at_period_end: false,
+      }
+    );
 
     await stripeService.notifySubscriptionReactivation({
       subscriptionId,
