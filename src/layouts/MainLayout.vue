@@ -30,7 +30,7 @@
             </q-item>
             <q-item disable v-close-popup @click="sair">
               <q-item-section>
-                <q-item-label>version 1.8</q-item-label>
+                <q-item-label>version 1.9</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
