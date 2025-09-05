@@ -20,64 +20,33 @@
               Faça o seu Login
             </div>
 
-            <q-input
-              outlined
-              stack-label
-              v-model="email"
-              label="E-mail"
-              :rules="[
-                (val) =>
-                  isSubmitted
-                    ? (val && val.length > 0) || 'Senha é obrigatória'
-                    : true,
-              ]"
-              @blur="verificarEmail"
-            />
+            <q-input outlined stack-label v-model="email" label="E-mail" :rules="[
+              (val) =>
+                isSubmitted
+                  ? (val && val.length > 0) || 'Senha é obrigatória'
+                  : true,
+            ]" @blur="verificarEmail" />
 
-            <q-input
-              outlined
-              stack-label
-              v-model="senha"
-              label="Senha"
-              type="password"
-              :rules="[
-                (val) =>
-                  isSubmitted
-                    ? (val && val.length > 0) || 'Senha é obrigatória'
-                    : true,
-              ]"
-            />
+            <q-input outlined stack-label v-model="senha" label="Senha" type="password" :rules="[
+              (val) =>
+                isSubmitted
+                  ? (val && val.length > 0) || 'Senha é obrigatória'
+                  : true,
+            ]" />
 
-            <q-btn
-              color="green"
-              unelevated
-              class="full-width bg-primary text-white q-pa-sm q-mb-md"
-              @click="entrar('normal')"
-              :disable="!isSubmitted"
-              size="lg"
-            >
+            <q-btn color="green" unelevated class="full-width bg-primary text-white q-pa-sm q-mb-md"
+              @click="entrar('normal')" :disable="!isSubmitted" size="lg">
               Acessar
             </q-btn>
 
-            <q-btn
-              color="blue-10"
-              size="lg"
-              unelevatedObj
-              class="full-width text-white q-pa-sm q-mb-xl"
-              to="/cadastrar"
-            >
-              Testar 7 dias
+            <q-btn color="blue-10" size="lg" unelevatedObj class="full-width text-white q-pa-sm q-mb-xl"
+              to="/cadastrar">
+              Testar 7 dias Grátis
             </q-btn>
           </div>
 
           <div class="text-right text-blue text-body1">
-            <q-btn
-              text-color="blue-9"
-              no-caps
-              unelevated
-              to="/esqueci"
-              label="Esqueci a senha"
-            />
+            <q-btn text-color="blue-9" no-caps unelevated to="/esqueci" label="Esqueci a senha" />
           </div>
         </div>
       </div>

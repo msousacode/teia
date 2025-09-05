@@ -9,36 +9,14 @@
       </div>
 
       <div class="row">
-        <q-btn
-          class="bg-white q-ma-sm"
-          outline
-          dense
-          icon="add"
-          style="color: blue"
-          label="Importar"
-          :to="{
-            name: `objetivos/import`,
-            params: { id: aprendiz.aprendizId },
-          }"
-        />
-        <q-btn
-          class="bg-white q-ma-sm"
-          outline
-          dense
-          icon="file_download"
-          style="color: brown"
-          label="PDF"
-          @click="gerarRelatorio(aprendiz.aprendizId)"
-        />
-        <q-btn
-          class="bg-white q-ma-sm"
-          outline
-          dense
-          icon="close"
-          style="color: orangered"
-          label="Encerrar"
-          @click="encerrar"
-        />
+        <q-btn class="bg-white q-ma-sm" outline dense icon="add" style="color: blue" label="Importar" :to="{
+          name: `objetivos/import`,
+          params: { id: aprendiz.aprendizId },
+        }" />
+        <q-btn class="bg-white q-ma-sm" outline dense icon="file_download" style="color: brown" label="PDF"
+          @click="gerarRelatorio(aprendiz.aprendizId)" />
+        <q-btn class="bg-white q-ma-sm" outline dense icon="close" style="color: orangered" label="Encerrar"
+          @click="encerrar" />
       </div>
     </div>
   </q-banner>
@@ -51,9 +29,7 @@
 
     <q-item-section>
       <q-item-label lines="1" class="text-grey-8">
-        <span class="text-body1 text-info text-uppercase"
-          ><b>{{ aprendiz.nome_aprendiz }}</b></span
-        >
+        <span class="text-body1 text-info text-uppercase"><b>{{ aprendiz.nome_aprendiz }}</b></span>
       </q-item-label>
 
       <q-item-label>
@@ -73,92 +49,47 @@
   <q-tab-panels v-model="tab">
     <q-tab-panel name="objetivos">
       <div v-if="list.length > 0" class="column q-gutter-md">
-        <q-card
-          v-for="(item, index) in list"
-          :key="index"
-          class="q-mb-md shadow-2"
-          bordered
-        >
+        <q-card v-for="(item, index) in list" :key="index" class="q-mb-md shadow-2" bordered>
           <q-item>
             <q-item-section top>
               <q-item-label class="text-grey-8">
                 <span class="text-body1">{{ item.nome_alvo }}</span>
                 <div v-if="item.tag" class="q-mt-sm">
-                  <q-chip
-                    dense
-                    color="blue-8"
-                    text-color="white"
-                    class="text-uppercase"
-                    >{{ item.tag }}</q-chip
-                  >
+                  <q-chip dense color="blue-8" text-color="white" class="text-uppercase">{{ item.tag }}</q-chip>
                 </div>
               </q-item-label>
               <q-item-label class="text-grey-8">
-                <span
-                  class="text-body1"
-                  :class="{ 'text-strike': item.concluido }"
-                  >{{ item.nomeAlvo }}</span
-                >
+                <span class="text-body1" :class="{ 'text-strike': item.concluido }">{{ item.nomeAlvo }}</span>
               </q-item-label>
               <q-item-label>
                 <div class="text-grey-8 q-gutter-xs q-mt-sm">
-                  <q-btn
-                    v-if="!item.concluido"
-                    size="12px"
-                    label="Concluído"
-                    class="bg-green text-white"
-                    @click="concluirAlvo(item.alvoId)"
-                  />
+                  <q-btn v-if="!item.concluido" size="12px" label="Concluído" class="bg-green text-white"
+                    @click="concluirAlvo(item.alvoId)" />
 
-                  <q-btn
-                    v-else
-                    size="12px"
-                    label="Reabrir"
-                    class="bg-orange-8 text-white"
-                    @click="concluirAlvo(item.alvoId)"
-                  />
+                  <q-btn v-else size="12px" label="Reabrir" class="bg-orange-8 text-white"
+                    @click="concluirAlvo(item.alvoId)" />
 
-                  <q-btn
-                    size="12px"
-                    label="Anotar"
-                    class="bg-info text-white"
-                    :disable="item.concluido"
-                    @click="
-                      () => {
-                        alvoAtualId = item.alvoId;
-                        visibleAnotacao = true;
-                      }
-                    "
-                  />
+                  <q-btn size="12px" label="Anotar" class="bg-info text-white" :disable="item.concluido" @click="
+                    () => {
+                      alvoAtualId = item.alvoId;
+                      visibleAnotacao = true;
+                    }
+                  " />
                 </div>
               </q-item-label>
             </q-item-section>
             <q-item-section side>
               <div class="column q-gutter-xs items-center">
                 <div class="row items-center q-gutter-xs">
-                  <q-btn
-                    size="12px"
-                    dense
-                    round
-                    icon="star"
-                    class="text-green-8"
-                    :disable="item.concluido"
-                    @click="adicionarEstrela(item, 'positiva')"
-                  />
+                  <q-btn size="12px" dense round icon="star" class="text-green-8" :disable="item.concluido"
+                    @click="adicionarEstrela(item, 'positiva')" />
                   <span class="text-weight-bold text-green-8">{{
                     item.totalEstrelaPositiva || 0
                   }}</span>
                 </div>
                 <div class="row items-center q-gutter-xs">
-                  <q-btn
-                    size="12px"
-                    dense
-                    round
-                    icon="star"
-                    class="text-red-8"
-                    :disable="item.concluido"
-                    @click="adicionarEstrela(item, 'negativa')"
-                  />
+                  <q-btn size="12px" dense round icon="star" class="text-red-8" :disable="item.concluido"
+                    @click="adicionarEstrela(item, 'negativa')" />
                   <span class="text-weight-bold text-red-8">{{
                     item.totalEstrelaNegativa || 0
                   }}</span>
@@ -169,19 +100,12 @@
         </q-card>
       </div>
 
-      <q-card
-        v-else
-        flat
-        class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
-      >
+      <q-card v-else flat class="text-center q-pa-xl bg-grey-1 rounded-borders-lg">
         <q-card-section class="q-pa-xl">
           <div class="column items-center q-gutter-md">
             <q-icon name="note_add" size="80px" color="grey-4" />
             <div class="text-h6 text-grey-6">Nenhuma objetivo presente</div>
-            <div
-              class="text-body2 text-grey-6 text-center"
-              style="max-width: 400px"
-            >
+            <div class="text-body2 text-grey-6 text-center" style="max-width: 400px">
               Acesse o botão de importar para acessar os objetivos cadastros e
               importe para poder trabalhar com as Crianças.
             </div>
@@ -194,12 +118,8 @@
       <div class="column q-gutter-md">
         <!-- Lista de anotações -->
         <div v-if="anotacoesList.length > 0" class="column q-gutter-md">
-          <q-card
-            v-for="(item, index) in anotacoesList"
-            :key="index"
-            class="shadow-3 rounded-borders-lg"
-            style="border-left: 4px solid var(--q-primary)"
-          >
+          <q-card v-for="(item, index) in anotacoesList" :key="index" class="shadow-3 rounded-borders-lg"
+            style="border-left: 4px solid var(--q-primary)">
             <!-- Header do card -->
             <q-card-section class="bg-grey-1 q-pa-md">
               <div class="row items-center justify-between">
@@ -216,13 +136,7 @@
                     </div>
                   </div>
                 </div>
-                <q-chip
-                  icon="schedule"
-                  color="grey-7"
-                  text-color="white"
-                  size="sm"
-                  class="q-px-md"
-                >
+                <q-chip icon="schedule" color="grey-7" text-color="white" size="sm" class="q-px-md">
                   {{ item.data_anotacao }}
                 </q-chip>
               </div>
@@ -231,17 +145,9 @@
             <!-- Conteúdo da anotação -->
             <q-card-section class="q-pa-lg">
               <div class="row items-start q-gutter-md">
-                <q-icon
-                  name="format_quote"
-                  color="primary"
-                  size="24px"
-                  class="q-mt-xs"
-                />
+                <q-icon name="format_quote" color="primary" size="24px" class="q-mt-xs" />
                 <div class="col">
-                  <div
-                    class="text-body1 text-grey-8"
-                    style="line-height: 1.7; font-style: italic"
-                  >
+                  <div class="text-body1 text-grey-8" style="line-height: 1.7; font-style: italic">
                     "{{ item.anotacao }}"
                   </div>
                 </div>
@@ -251,34 +157,15 @@
             <!-- Footer com badge de status -->
             <q-card-section class="q-pa-md q-pt-none">
               <div class="row items-center justify-between">
-                <q-badge
-                  :color="index === 0 ? 'positive' : 'info'"
-                  :label="
-                    index === 0
-                      ? 'Mais recente'
-                      : `Registro #${anotacoesList.length - index}`
-                  "
-                  class="q-px-sm"
-                />
+                <q-badge :color="index === 0 ? 'positive' : 'info'" :label="index === 0
+                  ? 'Mais recente'
+                  : `Registro #${anotacoesList.length - index}`
+                  " class="q-px-sm" />
                 <div class="row q-gutter-xs">
-                  <q-btn
-                    icon="edit"
-                    color="primary"
-                    size="sm"
-                    round
-                    flat
-                    class="q-pa-xs"
-                  >
+                  <q-btn icon="edit" color="primary" size="sm" round flat class="q-pa-xs">
                     <q-tooltip>Editar anotação</q-tooltip>
                   </q-btn>
-                  <q-btn
-                    icon="delete"
-                    color="negative"
-                    size="sm"
-                    round
-                    flat
-                    class="q-pa-xs"
-                  >
+                  <q-btn icon="delete" color="negative" size="sm" round flat class="q-pa-xs">
                     <q-tooltip>Excluir anotação</q-tooltip>
                   </q-btn>
                 </div>
@@ -288,21 +175,14 @@
         </div>
 
         <!-- Estado vazio melhorado -->
-        <q-card
-          v-else
-          flat
-          class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
-        >
+        <q-card v-else flat class="text-center q-pa-xl bg-grey-1 rounded-borders-lg">
           <q-card-section class="q-pa-xl">
             <div class="column items-center q-gutter-md">
               <q-icon name="note_add" size="80px" color="grey-4" />
               <div class="text-h6 text-grey-6">
                 Nenhuma evolução registrada ainda
               </div>
-              <div
-                class="text-body2 text-grey-6 text-center"
-                style="max-width: 400px"
-              >
+              <div class="text-body2 text-grey-6 text-center" style="max-width: 400px">
                 Quando você registrar anotações sobre a evolução do aprendiz,
                 elas aparecerão aqui organizadas cronologicamente
               </div>
@@ -325,36 +205,16 @@
           Registre a evolução. Essa anotação será visível para os demais
           profissionais.
         </div>
-        <q-input
-          outlined
-          label="Digite sua anotação"
-          v-model="anotacao"
-          type="textarea"
-          :rules="[
-            (val) => (val && val.length > 0) || 'Anotação é obrigatória',
-          ]"
-          placeholder="Descreva a evolução observada..."
-          rows="6"
-          counter
-          maxlength="500"
-        />
+        <q-input outlined label="Digite sua anotação" v-model="anotacao" type="textarea" :rules="[
+          (val) => (val && val.length > 0) || 'Anotação é obrigatória',
+        ]" placeholder="Descreva a evolução observada..." rows="6" counter maxlength="500" />
       </q-card-section>
 
       <q-card-actions class="q-pa-none q-mt-md">
         <div class="row q-gutter-sm full-width">
-          <q-btn
-            label="Cancelar"
-            color="grey-6"
-            @click="visibleAnotacao = false"
-            class="col q-pa-sm"
-          />
-          <q-btn
-            label="Salvar"
-            color="green"
-            class="col q-pa-sm"
-            @click="salvarAnotacao(alvoAtualId)"
-            :disable="anotacao.length > 500"
-          />
+          <q-btn label="Cancelar" color="grey-6" @click="visibleAnotacao = false" class="col q-pa-sm" />
+          <q-btn label="Salvar" color="green" class="col q-pa-sm" @click="salvarAnotacao(alvoAtualId)"
+            :disable="anotacao.length > 500" />
         </div>
       </q-card-actions>
     </q-card>
@@ -367,12 +227,15 @@ import AlvoService from 'src/services/AlvoService';
 import { AnotacaoService } from 'src/services/AnotacaoService';
 import { AprendizService } from 'src/services/AprendizService';
 import { RelatorioService } from 'src/services/relatorio/relatorio';
+import { useObjetivosStore } from 'src/stores/objetivos';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const $q = useQuasar();
 
 const route = useRoute();
+
+const storeObjetivos = useObjetivosStore();
 
 const aprendizService = new AprendizService();
 
@@ -488,6 +351,7 @@ async function carregarObjetivos() {
   const { data } = await alvoService.getAlvosImportadosV2(aprendizId);
 
   list.value = data;
+  storeObjetivos.setImportList(list.value);
 
   // Reseta os totais antes de recalcular
   sumEstrelasNetagivas.value = 0;
@@ -551,7 +415,7 @@ function encerrar() {
         carregarObjetivos();
       }
     })
-    .onDismiss(() => {});
+    .onDismiss(() => { });
 }
 
 function gerarRelatorio() {
