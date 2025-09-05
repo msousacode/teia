@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated style="background-color: #ff9f45">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title> </q-toolbar-title>
 
@@ -17,7 +10,7 @@
           <q-list>
             <q-item clickable v-close-popup @click="sair">
               <q-item-section>
-                <q-item-label>Logout</q-item-label>
+                <q-item-label>Sair</q-item-label>
               </q-item-section>
             </q-item>
             <q-item clickable v-close-popup :to="{ name: 'perfil' }">
@@ -25,22 +18,12 @@
                 <q-item-label>Meu Perfil</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item
-              clickable
-              v-close-popup
-              :to="{ name: 'assinatura' }"
-              v-if="perfil == 'ADMIN'"
-            >
+            <q-item clickable v-close-popup :to="{ name: 'assinatura' }" v-if="perfil == 'ADMIN'">
               <q-item-section>
                 <q-item-label>Assinaturas</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item
-              clickable
-              v-close-popup
-              :to="{ name: 'suporte' }"
-              v-if="perfil == 'ADMIN'"
-            >
+            <q-item clickable v-close-popup :to="{ name: 'suporte' }" v-if="perfil == 'ADMIN'">
               <q-item-section>
                 <q-item-label>Suporte</q-item-label>
               </q-item-section>
@@ -58,12 +41,7 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> Menu </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-          @click="link.display"
-        />
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" @click="link.display" />
       </q-list>
     </q-drawer>
 

@@ -20,15 +20,8 @@
             recursos, assine um plano:
           </div>
 
-          <q-btn
-            color="primary"
-            size="lg"
-            rounded
-            unelevated
-            class="q-px-xl q-py-sm text-weight-medium"
-            :to="{ name: 'assinatura' }"
-            icon="credit_card"
-          >
+          <q-btn color="primary" size="lg" rounded unelevated class="q-px-xl q-py-sm text-weight-medium"
+            :to="{ name: 'assinatura' }" icon="credit_card">
             Assinar Plano
           </q-btn>
         </div>
@@ -61,14 +54,8 @@
 
         <div class="row justify-center">
           <div class="col-12 col-sm-auto">
-            <q-btn
-              class="bg-white full-width"
-              outline
-              icon="add"
-              style="color: orange"
-              label="Adicionar Nova Criança"
-              :to="{ name: 'aprendiz-novo' }"
-            />
+            <q-btn class="bg-white full-width" outline icon="add" style="color: orange" label="Adicionar Nova Criança"
+              :to="{ name: 'aprendiz-novo' }" />
           </div>
         </div>
 
@@ -104,12 +91,7 @@
 
     <q-page padding class="row justify-center">
       <div class="col-12 col-md-10 col-lg-8" v-if="aprendizes.length != 0">
-        <q-card
-          v-for="(item, index) in aprendizes"
-          :key="index"
-          class="q-mb-md shadow-2"
-          bordered
-        >
+        <q-card v-for="(item, index) in aprendizes" :key="index" class="q-mb-md shadow-2" bordered>
           <q-item>
             <q-item-section avatar @click="redirect(item.uuid)">
               <q-avatar color="primary" text-color="white">{{
@@ -118,9 +100,7 @@
             </q-item-section>
             <q-item-section top @click="redirect(item.uuid)">
               <q-item-label class="text-grey-8">
-                <span class="text-body1 text-blue"
-                  ><b>{{ item.nome_aprendiz }}</b></span
-                >
+                <span class="text-body1 text-blue"><b>{{ item.nome_aprendiz }}</b></span>
               </q-item-label>
               <q-item-label lines="1" @click="redirect(item.uuid)">
                 <span class="text-body2 text-uppercase">{{
@@ -131,43 +111,20 @@
 
             <q-item-section side v-if="perfil == 'ADMIN'">
               <div class="text-grey-8 q-gutter-xs">
-                <q-btn
-                  class="text-red"
-                  size="12px"
-                  flat
-                  dense
-                  round
-                  icon="delete"
-                  @click="remover(item)"
-                />
-                <q-btn
-                  size="12px"
-                  class="text-blue"
-                  flat
-                  dense
-                  round
-                  icon="edit"
-                  @click="editar(item)"
-                />
+                <q-btn class="text-red" size="12px" flat dense round icon="delete" @click="remover(item)" />
+                <q-btn size="12px" class="text-blue" flat dense round icon="edit" @click="editar(item)" />
               </div>
             </q-item-section>
           </q-item>
         </q-card>
       </div>
 
-      <q-card
-        v-else
-        flat
-        class="text-center q-pa-xl bg-grey-1 rounded-borders-lg"
-      >
+      <q-card v-else flat class="text-center q-pa-xl bg-grey-1 rounded-borders-lg">
         <q-card-section class="q-pa-xl">
           <div class="column items-center q-gutter-md">
             <q-icon name="note_add" size="80px" color="grey-4" />
             <div class="text-h6 text-grey-6">Nenhuma criança cadastrada</div>
-            <div
-              class="text-body2 text-grey-6 text-center"
-              style="max-width: 400px"
-            >
+            <div class="text-body2 text-grey-6 text-center" style="max-width: 400px">
               Cadastre as crianças para começar os atendimentos.
             </div>
           </div>
@@ -175,10 +132,8 @@
       </q-card>
     </q-page>
   </div>
-  <div
-    class="fixed-bottom q-pa-md"
-    v-if="diasRestantesFimTeste <= quantidadeDiasTeste && perfil == 'ADMIN'"
-  >
+
+  <div class="fixed-bottom q-pa-md" v-if="!isAssinante">
     <div class="row justify-center">
       <div class="col-12 col-md-10 col-lg-8">
         <q-card class="bg-gradient-blue shadow-3" flat bordered>
@@ -197,17 +152,8 @@
             </q-card-section>
 
             <q-card-section class="col-auto q-pa-sm">
-              <q-btn
-                rounded
-                unelevated
-                color="white"
-                text-color="primary"
-                label="Assinar"
-                class="text-weight-bold text-h6"
-                size="md"
-                icon-right="arrow_forward"
-                :to="{ name: 'assinatura' }"
-              />
+              <q-btn rounded unelevated color="white" text-color="primary" label="Assinar"
+                class="text-weight-bold text-h6" size="md" icon-right="arrow_forward" :to="{ name: 'assinatura' }" />
             </q-card-section>
           </q-card-section>
         </q-card>
@@ -246,7 +192,7 @@ const diasRestantesFimTeste = ref(0);
 
 const quantidadeDiasTeste = ref(7);
 
-const isAssinante = ref(true);
+const isAssinante = ref();
 
 const usuarioService = new UsuarioService();
 
@@ -290,7 +236,7 @@ function remover(aprendiz: any) {
         listar();
       }
     })
-    .onDismiss(() => {});
+    .onDismiss(() => { });
 }
 
 async function verificarEmail(email: string) {
