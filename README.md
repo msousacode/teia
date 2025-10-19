@@ -1,58 +1,14 @@
-# Stack
+## 🎨 Sobre o Projeto
 
-Framework Quasar + Vue (Options Api)
-Linguagem de programação Typescript
-Supabase (Postgres + Storage)
-Netlify (Hospedagem)
+Tenho muito orgulho deste **frontend** que construí! 💚  
+Neste projeto, tive uma **vivência real** do que é desenvolver um frontend profissional, aplicando conceitos como **componentização** e **gerenciamento de estado com Pinia**.  
 
-# Build para versão PWA
+Durante o desenvolvimento, descobri **habilidades que nem eu mesmo sabia que possuía** — e cada desafio se transformou em uma grande oportunidade de aprendizado.  
 
-quasar build -m pwa
+Este frontend foi desenvolvido para funcionar em conjunto com o backend disponível neste repositório:  
+🔗 [sysaba-backend](https://github.com/msousacode/sysaba-backend)
 
-# Run ambiente desenvolvimento
+Na ocasião, publiquei o sistema na **Netlify**, o que me proporcionou uma experiência incrível com **configuração de build** e **funções serverless** (*Netlify Functions*).  
+O projeto chegou ao ponto de utilizar **WebHooks** para receber notificações de pagamentos de assinantes via **Stripe**, tornando-se um sistema completo e funcional em produção.  
 
-quasar dev -m pwa
-
-# Quasar App (unirsi)
-
-A Quasar Project
-
-## Install the dependencies
-
-```bash
-yarn
-# or
-npm install
-```
-
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-
-```bash
-quasar dev
-```
-
-### Lint the files
-
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-### Format the files
-
-```bash
-yarn format
-# or
-npm run format
-```
-
-### Build the app for production
-
-```bash
-quasar build
-```
-
-### Customize the configuration
-
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+Foi, sem dúvidas, uma **jornada maravilhosa**, repleta de aprendizados e evolução profissional. 🚀
